@@ -26,7 +26,7 @@ say "live $LIVE_ID sha ${LIVE_SHA:0:12} as_of $OLD_ASOF"
 cd $TREE || fail 12 "no pipeline tree"
 if [ "${KT_SKIP_FETCH:-0}" = 1 ]; then echo "KT_SKIP_FETCH: using frozen inputs already in tree/data" > $RD/refresh.json; else timeout 300 python3 src/refresh.py > $RD/refresh.json 2>&1; fi || fail 13 "refresh.py failed: $(tail -n 3 $RD/refresh.json)"
 python3 -c "import json,sys;l=json.load(open('data/out/refresh_log.json'));sys.exit(1 if l['errors'] else 0)" || fail 13 "ESPN errors: $(python3 -c "import json;print(json.load(open('data/out/refresh_log.json'))['errors'])")"
-tar czf $RD/inputs.tgz --exclude=data/cache/val data/store data/cache 2>/dev/null || true
+tar czf $RD/inputs.tgz --exclude=data/cache/val data/store data/cache data/out/refresh_log.json 2>/dev/null || true
 read FP1 DONE <<< "$(python3 $TOOLS/results_fp.py $TREE)"
 say "results fp $FP0 -> $FP1 (completed $DONE)"
 if [ "$FP1" = "$FP0" ] && [ $FORCE = 0 ]; then say "no new final, score or kickoff change: skip, nothing deployed"; echo "{\"run\":\"$RUN\",\"exit\":0,\"skipped\":true}" > $RD/result.json; exit 0; fi

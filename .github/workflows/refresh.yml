@@ -63,6 +63,7 @@ jobs:
         run: |
           if [ -n "${{ inputs.inputs_run }}" ]; then
             gh run download "${{ inputs.inputs_run }}" -n "inputs-${{ inputs.inputs_run }}" -D /tmp/inp && tar xzf $(ls /tmp/inp/*/inputs.tgz) -C tree
+            if [ ! -e tree/data/out/refresh_log.json ]; then gh run download "${{ inputs.inputs_run }}" -n "run-${{ inputs.inputs_run }}" -D /tmp/runart && mkdir -p tree/data/out && cp $(ls /tmp/runart/runs/*/refresh.json | head -n 1) tree/data/out/refresh_log.json; fi
             echo "KT_SKIP_FETCH=1" >> $GITHUB_ENV; echo "changed=1" >> $GITHUB_OUTPUT; echo "replaying inputs of run ${{ inputs.inputs_run }}"; exit 0
           fi
           python3 -m pip install -q numpy==2.5.4

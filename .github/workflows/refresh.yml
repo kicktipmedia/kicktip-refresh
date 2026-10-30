@@ -14,6 +14,10 @@ on:
         description: "run even if no result changed"
         type: boolean
         default: false
+      inputs_run:
+        description: "replay the frozen ESPN inputs of this earlier run id (no fetch)"
+        type: string
+        default: ""
   schedule:
     # UTC. Saturday game window (about 10 AM to 1 AM MT): every 15 min
     - cron: "*/15 16-23 * * 6"
@@ -57,6 +61,10 @@ jobs:
       - name: Pull ESPN and decide (cheap gate)
         id: gate
         run: |
+          if [ -n "${{ inputs.inputs_run }}" ]; then
+            gh run download "${{ inputs.inputs_run }}" -n "inputs-${{ inputs.inputs_run }}" -D /tmp/inp && tar xzf $(ls /tmp/inp/*/inputs.tgz) -C tree
+            echo "KT_SKIP_FETCH=1" >> $GITHUB_ENV; echo "changed=1" >> $GITHUB_OUTPUT; echo "replaying inputs of run ${{ inputs.inputs_run }}"; exit 0
+          fi
           python3 -m pip install -q numpy==2.5.4
           cd tree && python3 src/refresh.py > /tmp/refresh.json && cd ..
           FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")

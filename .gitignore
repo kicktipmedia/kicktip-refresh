@@ -20,3 +20,5 @@ tree/data/cache/odds_ncaaf.json
 tree/crops/
 tree/testlogs/
 .auto_refresh.lock
+natranks/last/
+natranks/cur/

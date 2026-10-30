@@ -21,8 +21,9 @@ AGE=$(python3 -c "import time,sys
 try: print(int((time.time()-int(open('$L/fetched_at').read().strip()))/3600))
 except Exception: print(9999)")
 if [ "$AGE" -ge "$CAP" ]; then
-  A=""; [ "${KT_RANKS_FAIL:-}" = fetch ] && A="--offline --cache /tmp/ranks-empty-cache"
-  if timeout 300 python3 $R/natranks/build_ranks.py --teams "$TEAMS" --out /tmp/ranks-new.json $A && ok /tmp/ranks-new.json; then
+  P=(); [ "${KT_RANKS_FAIL:-}" = fetch ] && P=(env https_proxy=http://127.0.0.1:9 HTTPS_PROXY=http://127.0.0.1:9)   # test: unreachable network
+  rm -f /tmp/ranks-new.json
+  if timeout 300 "${P[@]}" python3 $R/natranks/build_ranks.py --teams "$TEAMS" --out /tmp/ranks-new.json && ok /tmp/ranks-new.json; then
     cp /tmp/ranks-new.json "$L/ranks.json"; date +%s > "$L/fetched_at"; FRESH=1; echo "ranks: fresh fetch OK"
   else echo "::warning::national ranks fetch/parse/gate failed; keeping last good ranks.json"; echo "ranks: FALLBACK to last good"; fi
 else echo "ranks: cached (${AGE}h old < ${CAP}h cap): fetch skipped"; fi

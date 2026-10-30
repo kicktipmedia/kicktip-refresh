@@ -38,8 +38,8 @@ jobs:
       KT_ROOT: ${{ github.workspace }}
       KT_RELATIVE: "1"
       KT_PREVIEW_BRANCH: refresh-gh
-      KT_WRANGLER: ${{ runner.temp }}/wr/node_modules/.bin/wrangler
-      KT_WRANGLER_DIR: ${{ runner.temp }}/wr
+      KT_WRANGLER: /home/runner/wr/node_modules/.bin/wrangler
+      KT_WRANGLER_DIR: /home/runner/wr
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       TZ: America/Toronto

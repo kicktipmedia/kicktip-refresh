@@ -61,3 +61,21 @@ cd /workspace/kicktip-refresh-1030 && S0=/workspace/kicktip-refresh/pipeline/202
 No cron is installed. See the recommendation in the latest report. When the go comes, the job line is
 `*/15 * * * * cd /workspace/kicktip-refresh && tools/auto_refresh.sh >/dev/null 2>&1`
 (the lock makes overlaps harmless, and runs without a change cost about 3 s).
+
+## GitHub Actions (kicktipmedia/kicktip-refresh, private)
+- Workflow `.github/workflows/refresh.yml`. Scheduled runs only fire when repo variable `KT_SCHEDULE=on`
+  (`gh variable set KT_SCHEDULE --body off` pauses them; manual runs always work: `gh workflow run refresh.yml -f deploy_target=preview|production|none [-f force=true]`).
+- Base lives in release `base` (kicktip-site.zip = current live zip, s0-site.tar.gz = pipeline site it was built from). `tools/fetch_base.sh` checks the zip sha against `state.json`.
+- Guard unchanged: Production only if Cloudflare canonical deployment == `state.json` live_id. FREEZE file in the repo root stops every run.
+- Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID (set with `gh secret set`, never echoed).
+- Each changed run uploads `inputs-<run>` (fetched ESPN store/cache). Box replay on the same data: extract into tree/ and run `KT_SKIP_FETCH=1 tools/auto_refresh.sh --no-deploy --force`.
+
+### After ANY deploy from the box (feature builds, hotfixes) — required, or the next refresh stops at the guard
+    export GH_CONFIG_DIR=/workspace/kicktip-refresh/.gh   # plus CLOUDFLARE_API_TOKEN in env
+    cd /workspace/kicktip-gh/repo && tools/publish_base.sh <deployed zip> <deployment id>
+  It refuses unless the canonical deployment is that id, then uploads the zip to release `base`, updates state.json, commits, pushes.
+  (Add `--s0 <pipeline site> --as-of "..." --fp <fp> --completed N` only if the build also changed the pipeline data.)
+
+### Measured on GitHub 2-core runner (run 41009757889, 2026-10-30)
+setup+checkout+base+gate ~20 s; installs 38 s; calibrate 15 s; moves (driver tables) 624 s; what-if 1280 s per model x3 (blend, elo, eff).
+The full pipeline exceeds the 60-min run_all timeout there. See the report for options.

@@ -88,6 +88,13 @@ jobs:
         run: |
           if [ -e FREEZE ] && ! git ls-files --error-unmatch FREEZE >/dev/null 2>&1; then
             git add FREEZE && git -c user.name=kicktipmedia -c user.email=kicktipmedia@users.noreply.github.com commit -m "FREEZE after failed post-deploy check" && git pull --rebase && git push; fi
+      - name: Keep fetched ESPN inputs (box replay with KT_SKIP_FETCH=1)
+        if: always() && steps.gate.outputs.changed == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: inputs-${{ github.run_id }}
+          retention-days: 7
+          path: runs/*/inputs.tgz
       - name: Keep run logs
         if: always() && steps.gate.outputs.changed == '1'
         uses: actions/upload-artifact@v4
@@ -98,4 +105,5 @@ jobs:
             runs/*/*.log
             runs/*/*.txt
             runs/*/*.json
+            tree/data/out/run_meta.json
             runs/*/crops-*/*-top.png

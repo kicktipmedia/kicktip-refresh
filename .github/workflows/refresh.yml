@@ -19,9 +19,9 @@ on:
         type: string
         default: ""
   schedule:
-    # UTC. Saturday game window (about 10 AM to 1 AM MT): every 15 min
-    - cron: "*/15 16-23 * * 6"
-    - cron: "*/15 0-7 * * 0"
+    # UTC. Saturday game window (about 10 AM to 1 AM MT): every 30 min. A full run is ~65 min; concurrency keeps one running + at most one pending (newer ticks replace the pending one), so the effective Saturday cadence is back-to-back full runs
+    - cron: "*/30 16-23 * * 6"
+    - cron: "*/30 0-7 * * 0"
     # rest of the week: hourly
     - cron: "7 8-23 * * 0"
     - cron: "7 * * * 1-5"

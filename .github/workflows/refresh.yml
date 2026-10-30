@@ -58,7 +58,8 @@ jobs:
         with: { node-version: "20.19.2" }
       - name: Fetch base (live zip + S0) and check sha
         run: tools/fetch_base.sh
-      # National ranks (NCAA.com): last-good cache, fetch at most once per 20 h, fallback to last good; never fails the run
+      # National ranks (NCAA.com): last-good cache, fetch at most once per 20 h (failure retry 6 h), never older than live,
+      # one ranks-only forced run per ranks version per 20 h and none on Saturday (tools/ranks_step.sh); never fails the run
       - name: National ranks cache (restore last good)
         uses: actions/cache/restore@v4
         with: { path: natranks/last, key: "natranks-${{ github.run_id }}", restore-keys: "natranks-" }
@@ -66,8 +67,8 @@ jobs:
         id: ranks
         continue-on-error: true
         run: tools/ranks_step.sh
-      - name: National ranks cache (save after a fresh fetch)
-        if: steps.ranks.outputs.ranks_fresh == '1'
+      - name: National ranks cache (save when its state changed)
+        if: steps.ranks.outputs.ranks_save == '1'
         continue-on-error: true
         uses: actions/cache/save@v4
         with: { path: natranks/last, key: "natranks-${{ github.run_id }}" }
@@ -84,7 +85,7 @@ jobs:
           FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")
           echo "fp $OLD -> $FP"
           if [ "$FP" = "$OLD" ] && [ "${{ inputs.force }}" != "true" ]; then
-            if [ "${{ steps.ranks.outputs.ranks_changed }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
+            if [ "${{ steps.ranks.outputs.ranks_force }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
             else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff: skip." >> $GITHUB_STEP_SUMMARY; fi
           else echo "changed=1" >> $GITHUB_OUTPUT; fi
           git checkout -- tree/data/store

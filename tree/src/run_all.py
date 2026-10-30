@@ -33,7 +33,7 @@ def main():
         t = time.time(); refresh.main(); times["refresh_s"] = round(time.time() - t, 1)
     t = time.time(); calibrate.main(); times["calibrate_s"] = round(time.time() - t, 1)      # v6a: refit the three models on the current games (fail-closed stamp), BEFORE any simulation
     t = time.time(); R = sim.run(a.seasons, a.seed); times["simulate_s"] = round(R["runtime"], 1)           # default model = KickTip blend
-    sim.write_outputs(R); outputs.write_standings(R); write_reference(); export_web.build(R["S"])
+    sim.write_outputs(R, asof=os.environ.get("KT_ASOF") or None); outputs.write_standings(R); write_reference(); export_web.build(R["S"])
     asof = json.load(open(f"{ROOT}/data/out/sim_teams.json"))["as_of"]; t = time.time()
     for mod in models_registry.MODELS[1:]:                                                                  # alternates: same data, same seed, same as_of -> data/out/m/<id>/, data/out/web/m/<id>/
         R2 = sim.run(a.seasons, a.seed, verbose=False, S=sim.Season(mod["id"])); od = f"{ROOT}/data/out/m/{mod['id']}"

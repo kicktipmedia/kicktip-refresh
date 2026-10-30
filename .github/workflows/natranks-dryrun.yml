@@ -1,0 +1,60 @@
+name: natranks dry run (fetch + parse only)
+# Dry-run of the refresh.yml national-ranks hook. Branch only. No secrets, no token use, no commit, no deploy.
+on:
+  push:
+    branches: [natranks-dryrun]
+permissions:
+  contents: read
+concurrency: { group: natranks-dryrun, cancel-in-progress: false }
+jobs:
+  ranks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env: { KT_ROOT: "${{ github.workspace }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - name: Public base assets (no token)
+        run: |
+          mkdir -p base/s0/site
+          curl -fsSL -o base/kicktip-site.zip https://github.com/kicktipmedia/kicktip-refresh/releases/download/base/kicktip-site.zip
+          curl -fsSL https://github.com/kicktipmedia/kicktip-refresh/releases/download/base/s0-site.tar.gz | tar xz -C base/s0/site
+          sha256sum base/kicktip-site.zip
+      - name: National ranks cache (restore last good)
+        id: restore
+        uses: actions/cache/restore@v4
+        with: { path: natranks/last, key: "natranks-dry-${{ github.run_id }}", restore-keys: "natranks-dry-" }
+      - name: "case a: first ranks step of this run"
+        id: a
+        continue-on-error: true
+        run: echo "cache-hit-key=${{ steps.restore.outputs.cache-matched-key }}"; tools/ranks_step.sh
+      - name: National ranks cache (save after a fresh fetch)
+        if: steps.a.outputs.ranks_fresh == '1'
+        uses: actions/cache/save@v4
+        with: { path: natranks/last, key: "natranks-dry-${{ github.run_id }}" }
+      - name: "case b: rerun inside 20h (fetch skipped)"
+        id: b
+        run: sha256sum natranks/last/ranks.json; tools/ranks_step.sh | tee /tmp/b.log; grep -q "fetch skipped" /tmp/b.log
+      - name: "case c: forced fetch failure (fallback, green)"
+        id: c
+        run: |
+          H0=$(sha256sum natranks/last/ranks.json | cut -c1-64); echo 0 > natranks/last/fetched_at
+          KT_RANKS_FAIL=fetch tools/ranks_step.sh | tee /tmp/c.log; echo "exit ${PIPESTATUS[0]}"
+          grep -q "FALLBACK" /tmp/c.log; [ "$(sha256sum natranks/cur/ranks.json | cut -c1-64)" = "$H0" ]
+      - name: "case d: mapping-gate failure (fallback, green)"
+        id: d
+        run: |
+          H0=$(sha256sum natranks/last/ranks.json | cut -c1-64); echo 0 > natranks/last/fetched_at
+          python3 -c "import json;d=json.load(open('base/s0/site/data/pred-teams.json'));k=next(iter(d['teams']));d['teams']['zz-fake-u']=d['teams'][k];json.dump(d,open('/tmp/teams-bad.json','w'))"
+          KT_RANKS_TEAMS=/tmp/teams-bad.json tools/ranks_step.sh | tee /tmp/d.log; echo "exit ${PIPESTATUS[0]}"
+          grep -q "FALLBACK" /tmp/d.log; [ "$(sha256sum natranks/cur/ranks.json | cut -c1-64)" = "$H0" ]
+      - name: Outputs
+        run: |
+          echo "a fresh=${{ steps.a.outputs.ranks_fresh }} changed=${{ steps.a.outputs.ranks_changed }} out=${{ steps.a.outputs.ranks_out }}"
+          echo "b fresh=${{ steps.b.outputs.ranks_fresh }} changed=${{ steps.b.outputs.ranks_changed }}"
+          echo "c fresh=${{ steps.c.outputs.ranks_fresh }} changed=${{ steps.c.outputs.ranks_changed }}"
+          echo "d fresh=${{ steps.d.outputs.ranks_fresh }} changed=${{ steps.d.outputs.ranks_changed }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: ranks-dry, path: natranks/last/, retention-days: 7, include-hidden-files: true }

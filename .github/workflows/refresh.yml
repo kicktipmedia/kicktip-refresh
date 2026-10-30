@@ -25,14 +25,17 @@ on:
 concurrency:
   group: refresh
   cancel-in-progress: false
+# public repo: only manual + schedule triggers (no pull_request / pull_request_target); secrets only in the two steps that deploy
 permissions:
-  contents: write
+  contents: read
 jobs:
   refresh:
     # scheduled runs only when repo variable KT_SCHEDULE=on (gh variable set KT_SCHEDULE --body off  to pause)
     if: github.event_name != 'schedule' || vars.KT_SCHEDULE == 'on'
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    permissions:
+      contents: write   # release 'base' upload + state.json commit
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
       KT_ROOT: ${{ github.workspace }}
@@ -40,8 +43,6 @@ jobs:
       KT_PREVIEW_BRANCH: refresh-gh
       KT_WRANGLER: /home/runner/wr/node_modules/.bin/wrangler
       KT_WRANGLER_DIR: /home/runner/wr
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       TZ: America/Toronto
     steps:
       - uses: actions/checkout@v4
@@ -70,12 +71,18 @@ jobs:
           mkdir -p $KT_WRANGLER_DIR && cd $KT_WRANGLER_DIR && echo '{}' > package.json && npm i -s --no-audit --no-fund wrangler@3.114.17
       - name: Refresh
         if: steps.gate.outputs.changed == '1'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           A=""; case "${{ inputs.deploy_target || 'production' }}" in preview) A="--preview-only";; none) A="--no-deploy";; esac
           [ "${{ inputs.force }}" = "true" ] && A="$A --force"
           tools/auto_refresh.sh $A
       - name: Record new live base
         if: steps.gate.outputs.changed == '1' && (inputs.deploy_target || 'production') == 'production'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           R=$(ls -d runs/* | tail -n 1)/result.json; cat $R
           if python3 -c "import json,sys;sys.exit(0 if 'live_id' in json.load(open('$R')) else 1)"; then

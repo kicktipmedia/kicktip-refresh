@@ -76,6 +76,8 @@ No cron is installed. See the recommendation in the latest report. When the go c
   It refuses unless the canonical deployment is that id, then uploads the zip to release `base`, updates state.json, commits, pushes.
   (Add `--s0 <pipeline site> --as-of "..." --fp <fp> --completed N` only if the build also changed the pipeline data.)
 
-### Measured on GitHub 2-core runner (run 41009757889, 2026-10-30)
-setup+checkout+base+gate ~20 s; installs 38 s; calibrate 15 s; moves (driver tables) 624 s; what-if 1280 s per model x3 (blend, elo, eff).
-The full pipeline exceeds the 60-min run_all timeout there. See the report for options.
+### Measured (repo is public: standard 4-core runners, no minute cap)
+- Run 41027620992 (full, preview, replayed inputs): setup+base+installs ~1.5 min; run_all 29 min (moves 248 s, what-if blend 494 s, all models 1472 s); build+apply_data+suite+preview ~4 min; Refresh step 33.6 min, job ~35 min. First public run 41019832179: run_all 55 min (runner speed varies).
+- Box replay on the same inputs (KT_SKIP_FETCH=1): 1011 of 1014 files identical; the 3 sim-bundle.json files differ only in last-digit float noise in 4 model-metadata fields (resume_sd, bench, sor_sd, hfa; CPU/BLAS rounding). No displayed number differs.
+- Every refresh is a full run (what-ifs on the same as-of as scores). One as-of per run: model stamp = results-pulled minute (KT_ASOF in run_all.py).
+- Cadence: off-days hourly check (skip ~20 s when nothing changed). Saturday ticks every 30 min; concurrency group 'refresh' runs one at a time and keeps at most ONE pending run (GitHub replaces an older pending run with the newer one), so busy Saturdays run back-to-back: a fresh update roughly every 35-60 min.

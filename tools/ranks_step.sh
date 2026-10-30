@@ -30,7 +30,8 @@ else echo "ranks: cached (${AGE}h old < ${CAP}h cap): fetch skipped"; fi
 CH=0
 if [ -s "$L/ranks.json" ] && ok "$L/ranks.json" 2>/dev/null; then
   cp "$L/ranks.json" "$OUT"
-  if [ -s $LIVE ] && cmp -s "$OUT" $LIVE; then echo "ranks: same as live"; else CH=1; echo "ranks: differs from live"; fi
+  if [ ! -s $LIVE ]; then echo "ranks: live base has no data/ranks.json (pre-ranks site): no ranks-only run"
+  elif cmp -s "$OUT" $LIVE; then echo "ranks: same as live"; else CH=1; echo "ranks: differs from live"; fi
 else rm -f "$OUT"; echo "ranks: no good file; live copy kept"; fi
 echo "ranks_changed=$CH" >> "$GO"; echo "ranks_fresh=$FRESH" >> "$GO"
 [ -s "$OUT" ] && echo "ranks_out=$OUT" >> "$GO"

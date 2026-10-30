@@ -29,6 +29,8 @@ permissions:
   contents: write
 jobs:
   refresh:
+    # scheduled runs only when repo variable KT_SCHEDULE=on (gh variable set KT_SCHEDULE --body off  to pause)
+    if: github.event_name != 'schedule' || vars.KT_SCHEDULE == 'on'
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:

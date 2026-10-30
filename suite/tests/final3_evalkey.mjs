@@ -1,0 +1,23 @@
+// final3: Preview-only AI_EVAL_KEY (fresh scenario counter keys; caps unchanged; inert in Production). Offline mocks. usage: node tests/final3_evalkey.mjs NEW_TREE
+import path from 'node:path'; import { createRequire } from 'node:module'; import assert from 'node:assert/strict';
+import { loadWorker, makeEnv, installFetch } from './browser/mock.mjs';
+const NEWT = path.resolve(process.argv[2]); const require = createRequire(import.meta.url); const W = await loadWorker(NEWT), T = W._ask;
+const FX = require('./eval_facts.json').items, C = FX.find((x) => x.q === 'What if BYU and Texas Tech both end with just one loss?').compact;
+const GOOD = "In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play, and KickTip's numbers show Utah can still reach 8-1 too. If BYU and Texas Tech are tied at 8-1, step 1 is head-to-head. The result depends on games the scenario does not set.";
+let n = 0, bad = 0; const chk = async (k, f) => { n++; try { await f(); console.log('PASS ' + k); } catch (e) { bad++; console.log('FAIL ' + k + ' :: ' + String(e.message).slice(0, 800)); } };
+const PV = 'https://preview.kicktip.pages.dev', LIVE = 'https://kicktipmedia.com';
+const mk = (over) => { const E = makeEnv(W, Object.assign({ AI_SCN: 'on' }, over)); installFetch(E.st); E.env.AI = { run: async (m, i) => { E.st.ai_calls.push(m); return { response: JSON.stringify({ v: 1, prose: GOOD }) }; } }; return E; };
+const scn = async (E, host) => { const r = await W.fetch(new Request(host + '/api/ask', { method: 'POST', headers: { 'CF-Connecting-IP': '203.0.113.9', Origin: host, 'Content-Type': 'application/json', 'Sec-Fetch-Site': 'same-origin' }, body: JSON.stringify({ mode: 'scn', facts: C, cf_turnstile: 'good' }) }), E.env); return r.json(); };
+const keys = (E) => [...E.db.rows.keys()].map((k) => k.split('|')[0]).filter((k) => /^ask(scn|g)/.test(k)).sort();
+const U = (h) => new URL(h + '/api/ask');
+await chk('askEvalKey: Preview host + KT_ENV=preview + valid key -> ":k"', () => assert.equal(T.askEvalKey({ KT_ENV: 'preview', AI_EVAL_KEY: 'f3eval' }, U(PV)), ':f3eval'));
+await chk('askEvalKey: Production env (no KT_ENV) -> ""', () => assert.equal(T.askEvalKey({ AI_EVAL_KEY: 'f3eval' }, U(PV)), ''));
+await chk('askEvalKey: KT_ENV=production -> ""', () => assert.equal(T.askEvalKey({ KT_ENV: 'production', AI_EVAL_KEY: 'f3eval' }, U(PV)), ''));
+await chk('askEvalKey: live host even with KT_ENV=preview -> ""', () => { assert.equal(T.askEvalKey({ KT_ENV: 'preview', AI_EVAL_KEY: 'f3eval' }, U(LIVE)), ''); assert.equal(T.askEvalKey({ KT_ENV: 'preview', AI_EVAL_KEY: 'f3eval' }, U('https://www.kicktipmedia.com')), ''); });
+await chk('askEvalKey: unset / bad shapes -> ""', () => { for (const k of [undefined, '', 'UPPER', 'a:b', 'x'.repeat(17), '../x', ' ']) assert.equal(T.askEvalKey({ KT_ENV: 'preview', AI_EVAL_KEY: k }, U(PV)), '', String(k)); });
+await chk('Preview + key: write-up counts on askscn:p:f3eval and askg:p:f3eval only', async () => { const E = mk({ AI_EVAL_KEY: 'f3eval' }); const j = await scn(E, PV); assert.ok(j.ok, JSON.stringify(j)); assert.deepEqual(keys(E), ['askg:p:f3eval', 'askscn:p:f3eval']); });
+await chk('Preview, no key: unchanged keys askscn:p / askg:p', async () => { const E = mk({}); const j = await scn(E, PV); assert.ok(j.ok); assert.deepEqual(keys(E), ['askg:p', 'askscn:p']); });
+await chk('Production env with the key set: unchanged keys askscn / askg', async () => { const E = mk({ KT_ENV: undefined, AI_EVAL_KEY: 'f3eval' }); delete E.env.KT_ENV; const j = await scn(E, LIVE); assert.ok(j.ok, JSON.stringify(j)); assert.deepEqual(keys(E), ['askg', 'askscn']); });
+await chk('key does not raise the cap: 61st write-up on the eval key -> scn_cap', async () => { const E = mk({ AI_EVAL_KEY: 'f3eval' }); let last; for (let i = 0; i < 61; i++) last = await scn(E, PV); assert.equal(last.reason, 'scn_cap'); assert.equal(T.SCN.DAY_CAP, 60); });
+await chk('exhausted askscn:p is bypassed only by the Preview key', async () => { const E = mk({}); for (let i = 0; i < 61; i++) await scn(E, PV); assert.equal((await scn(E, PV)).reason, 'scn_cap'); E.env.AI_EVAL_KEY = 'f3eval'; assert.ok((await scn(E, PV)).ok); });
+console.log(`${n} checks, ${bad} failed`); process.exit(bad ? 1 : 0);

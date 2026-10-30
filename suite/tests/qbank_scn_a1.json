@@ -1,0 +1,831 @@
+{
+ "about": "scn_a1 QA bank: question, the kind of answer the home What-If panel gives (card | clarify | nocard | unchanged), and the facts to check on the card. Every row also needs: no /api/ask call, text ASCII, no banned word.",
+ "rows": [
+  {
+   "id": "scn01",
+   "text": "What if BYU, Utah, and Texas tech all end with just one loss?",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "scn02",
+   "text": "What if BYU, Utah and Texas Tech all end with one loss?",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "scn03",
+   "text": "What if BYU and Texas Tech both end with just one loss?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU and Texas Tech",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets these final conference records: BYU 8-1, Texas Tech 8-1.",
+    "teams": [
+     "BYU",
+     "Texas Tech"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     7
+    ]
+   }
+  },
+  {
+   "id": "scn04",
+   "text": "what if BYU wins out and Texas Tech loses to Arizona",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU, Arizona and Texas Tech",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 8-1.",
+    "teams": [
+     "BYU",
+     "Arizona",
+     "Texas Tech"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn05",
+   "text": "What if BYU ends with just one loss?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 8-1.",
+    "teams": [
+     "BYU"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn06",
+   "text": "What if Utah finishes with just one loss?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Utah",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets Utah's final conference record at 8-1.",
+    "teams": [
+     "Utah"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn07",
+   "text": "What if BYU wins out?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 8-1.",
+    "teams": [
+     "BYU"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn08",
+   "text": "What if BYU loses out?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 3-6.",
+    "teams": [
+     "BYU"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn09",
+   "text": "What if BYU ends with 3 losses?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 6-3.",
+    "teams": [
+     "BYU"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn10",
+   "text": "What if BYU finishes with no losses?",
+   "kind": "clarify",
+   "expect": {
+    "reason": "invalid_loss_count"
+   }
+  },
+  {
+   "id": "scn11",
+   "text": "What if Utah finishes with no losses?",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Utah",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets Utah's final conference record at 9-0.",
+    "teams": [
+     "Utah"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn12",
+   "text": "what if Utah and Texas Tech win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Utah and Texas Tech",
+    "status": "settled",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "In this scenario, Utah and Texas Tech reach the Big 12 conference championship game, on our reading of the rules.",
+    "teams": [
+     "Utah",
+     "Texas Tech"
+    ],
+    "pair": [
+     "Utah",
+     "Texas Tech"
+    ],
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn13",
+   "text": "what if Arizona State and Houston win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Arizona State and Houston",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets these final conference records: Arizona State 7-2, Houston 7-2.",
+    "teams": [
+     "Arizona State",
+     "Houston"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     7
+    ]
+   }
+  },
+  {
+   "id": "scn14",
+   "text": "what if Texas Tech loses out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Texas Tech",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets Texas Tech's final conference record at 3-6.",
+    "teams": [
+     "Texas Tech"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn15",
+   "text": "what if Arizona ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Arizona",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets Arizona's final conference record at 7-2.",
+    "teams": [
+     "Arizona"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn16",
+   "text": "what if Kansas State wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Kansas State",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets Kansas State's final conference record at 6-3.",
+    "teams": [
+     "Kansas State"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn17",
+   "text": "what if New Mexico State and Western Kentucky win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for New Mexico State and Western Kentucky",
+    "status": "settled",
+    "branches": 1,
+    "conference": "Conference USA",
+    "lead": "In this scenario, New Mexico State and Western Kentucky reach the Conference USA conference championship game, on our reading of the rules.",
+    "teams": [
+     "New Mexico State",
+     "Western Kentucky"
+    ],
+    "pair": [
+     "New Mexico State",
+     "Western Kentucky"
+    ],
+    "tie_steps": [
+     [
+      1
+     ]
+    ],
+    "if_tied_steps": [
+     6
+    ]
+   }
+  },
+  {
+   "id": "scn18",
+   "text": "what if Liberty and Jacksonville State win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Liberty and Jacksonville State",
+    "status": "settled",
+    "branches": 1,
+    "conference": "Conference USA",
+    "lead": "In this scenario, Jacksonville State and Liberty reach the Conference USA conference championship game, on our reading of the rules.",
+    "teams": [
+     "Liberty",
+     "Jacksonville State"
+    ],
+    "pair": [
+     "Jacksonville State",
+     "Liberty"
+    ],
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     6
+    ]
+   }
+  },
+  {
+   "id": "scn19",
+   "text": "what if Miami (OH) and Toledo win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Miami (OH) and Toledo",
+    "status": "settled",
+    "branches": 1,
+    "conference": "MAC",
+    "lead": "In this scenario, Miami (OH) and Toledo reach the MAC conference championship game, on our reading of the rules.",
+    "teams": [
+     "Miami (OH)",
+     "Toledo"
+    ],
+    "pair": [
+     "Miami (OH)",
+     "Toledo"
+    ],
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     6
+    ]
+   }
+  },
+  {
+   "id": "scn20",
+   "text": "what if Oklahoma State and Utah win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Oklahoma State and Utah",
+    "status": "settled",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "In this scenario, Utah and Oklahoma State reach the Big 12 conference championship game, on our reading of the rules.",
+    "teams": [
+     "Oklahoma State",
+     "Utah"
+    ],
+    "pair": [
+     "Utah",
+     "Oklahoma State"
+    ],
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn21",
+   "text": "what if Ohio State and Indiana both win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Ohio State and Indiana",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big Ten",
+    "lead": "Your scenario sets these final conference records: Ohio State 9-0, Indiana 8-1.",
+    "teams": [
+     "Ohio State",
+     "Indiana"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn22",
+   "text": "what if Indiana wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Indiana",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big Ten",
+    "lead": "Your scenario sets Indiana's final conference record at 8-1.",
+    "teams": [
+     "Indiana"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn23",
+   "text": "what if Ohio State ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Ohio State",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big Ten",
+    "lead": "Your scenario sets Ohio State's final conference record at 8-1.",
+    "teams": [
+     "Ohio State"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn24",
+   "text": "what if Georgia wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Georgia",
+    "status": "partial",
+    "branches": 1,
+    "conference": "SEC",
+    "lead": "Your scenario sets Georgia's final conference record at 8-1.",
+    "teams": [
+     "Georgia"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn25",
+   "text": "what if Alabama and Ole Miss win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Alabama and Ole Miss",
+    "status": "partial",
+    "branches": 1,
+    "conference": "SEC",
+    "lead": "Your scenario sets these final conference records: Alabama 7-2, Ole Miss 7-2.",
+    "teams": [
+     "Alabama",
+     "Ole Miss"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     6
+    ]
+   }
+  },
+  {
+   "id": "scn26",
+   "text": "what if Vanderbilt wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Vanderbilt",
+    "status": "partial",
+    "branches": 1,
+    "conference": "SEC",
+    "lead": "Your scenario sets Vanderbilt's final conference record at 4-5.",
+    "teams": [
+     "Vanderbilt"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn27",
+   "text": "what if Texas wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Texas",
+    "status": "partial",
+    "branches": 1,
+    "conference": "SEC",
+    "lead": "Your scenario sets Texas's final conference record at 7-2.",
+    "teams": [
+     "Texas"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn28",
+   "text": "what if Wake Forest ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Wake Forest",
+    "status": "partial",
+    "branches": 2,
+    "conference": "ACC",
+    "lead": "The result depends on how the games in your scenario fall. Each result below counts the ways, not the chances.",
+    "teams": [
+     "Wake Forest"
+    ],
+    "tie_steps": [
+     [],
+     []
+    ],
+    "if_tied_steps": [
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn29",
+   "text": "what if SMU ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for SMU",
+    "status": "partial",
+    "branches": 2,
+    "conference": "ACC",
+    "lead": "The result depends on how the games in your scenario fall. Each result below counts the ways, not the chances.",
+    "teams": [
+     "SMU"
+    ],
+    "tie_steps": [
+     [],
+     []
+    ],
+    "if_tied_steps": [
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn30",
+   "text": "what if Miami wins out",
+   "kind": "unchanged",
+   "expect": {
+    "note": "the standard parser does not read this one; it takes the same path as router2c (AI mode or the not-understood line)"
+   }
+  },
+  {
+   "id": "scn31",
+   "text": "what if Duke loses out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Duke",
+    "status": "partial",
+    "branches": 1,
+    "conference": "ACC",
+    "lead": "Your scenario sets Duke's final conference record at 2-7.",
+    "teams": [
+     "Duke"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn32",
+   "text": "what if Boise State ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Boise State",
+    "status": "partial",
+    "branches": 2,
+    "conference": "Pac-12",
+    "lead": "The result depends on how the games in your scenario fall. Each result below counts the ways, not the chances.",
+    "teams": [
+     "Boise State"
+    ],
+    "tie_steps": [
+     [],
+     []
+    ],
+    "if_tied_steps": [
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn33",
+   "text": "what if James Madison ends with 2 losses",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for James Madison",
+    "status": "partial",
+    "branches": 2,
+    "conference": "Sun Belt",
+    "lead": "The result depends on how the games in your scenario fall. Each result below counts the ways, not the chances.",
+    "teams": [
+     "James Madison"
+    ],
+    "tie_steps": [
+     [],
+     []
+    ],
+    "if_tied_steps": [
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn34",
+   "text": "what if Tulane wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Tulane",
+    "status": "partial",
+    "branches": 1,
+    "conference": "American",
+    "lead": "Your scenario sets Tulane's final conference record at 6-2.",
+    "teams": [
+     "Tulane"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn35",
+   "text": "what if South Florida and Memphis win out",
+   "kind": "clarify",
+   "expect": {
+    "reason": "conflict"
+   }
+  },
+  {
+   "id": "scn36",
+   "text": "what if Notre Dame wins out",
+   "kind": "nocard",
+   "expect": {
+    "reason": "no_conference"
+   }
+  },
+  {
+   "id": "scn37",
+   "text": "what if BYU beats Utah",
+   "kind": "nocard",
+   "expect": {
+    "reason": "nothing_final"
+   }
+  },
+  {
+   "id": "scn38",
+   "text": "what if BYU beats Texas Tech and Utah beats Iowa State",
+   "kind": "clarify",
+   "expect": {
+    "reason": "no_remaining_game"
+   }
+  },
+  {
+   "id": "scn39",
+   "text": "what if BYU wins its next game",
+   "kind": "nocard",
+   "expect": {
+    "reason": "nothing_final"
+   }
+  },
+  {
+   "id": "scn40",
+   "text": "what if Georgia and Ohio State win out",
+   "kind": "nocard",
+   "expect": {
+    "reason": "two_conferences"
+   }
+  },
+  {
+   "id": "scn41",
+   "text": "what if BYU, Utah, Texas Tech and Arizona win out",
+   "kind": "unchanged",
+   "expect": {
+    "note": "the standard parser does not read this one; it takes the same path as router2c (AI mode or the not-understood line)"
+   }
+  },
+  {
+   "id": "scn42",
+   "text": "what if BYU wins 3 of their remaining 5",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "conference": "Big 12",
+    "lead": "Your scenario sets BYU's final conference record at 6-3.",
+    "teams": [
+     "BYU"
+    ],
+    "pair": null,
+    "tie_steps": [
+     []
+    ],
+    "if_tied_steps": [
+     0
+    ]
+   }
+  },
+  {
+   "id": "scn43",
+   "text": "what if BYU and Utah each finish with two losses",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "scn44",
+   "text": "what if BYU ends with 9 losses",
+   "kind": "clarify",
+   "expect": {
+    "reason": "too_many_games"
+   }
+  },
+  {
+   "id": "scn45",
+   "text": "what if the sun explodes",
+   "kind": "unchanged",
+   "expect": {
+    "note": "the standard parser does not read this one; it takes the same path as router2c (AI mode or the not-understood line)"
+   }
+  }
+ ]
+}

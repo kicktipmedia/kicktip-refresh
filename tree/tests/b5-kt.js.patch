@@ -1,0 +1,27 @@
+--- rollback/20261024-0142-b5-pre-src/assets/kt.js	2026-10-24 01:42:40.155104245 -0400
++++ src/assets/kt.js	2026-10-24 01:47:00.853318215 -0400
+@@ -85,16 +85,18 @@
+     if (page === 'playoff' && T) playoff(T, d.teams.field);
+     sized(D);
+   }
++  function LG() { return window.KTLogo || { team: function () { return ''; }, conf: function () { return ''; } }; } /* logo tiles come from lg.js (same markup as the static pages) */
+   function arr(T) { return Object.keys(T).map(function (k) { var t = T[k]; t.k = k; return t; }); }
+-  function rowTop(t, i) {
+-    return '<tr><td class="n">' + (i + 1) + '</td><td><a class="tl" href="/team/' + t.k + '/">' + esc(t.n) + '</a></td><td>' + esc(t.cn) + '</td><td class="n">' + cellPct(t.p) + '</td><td class="n">' + cellPct(t.b) + '</td><td class="n">' + cellPct(t.c) + '</td><td class="n">' + cellPct(t.w) + '</td></tr>';
++  function rowTop(t, i, logo) {
++    var nm = '<a class="tl" href="/team/' + t.k + '/">' + esc(t.n) + '</a>';
++    return '<tr><td class="n">' + (i + 1) + '</td><td>' + (logo ? '<span class="tnm">' + LG().team(t.k, 24, i >= 6) + nm + '</span>' : nm) + '</td><td>' + esc(t.cn) + '</td><td class="n">' + cellPct(t.p) + '</td><td class="n">' + cellPct(t.b) + '</td><td class="n">' + cellPct(t.c) + '</td><td class="n">' + cellPct(t.w) + '</td></tr>';
+   }
+-  function topTable(T) { var b = D.querySelector('#top12 tbody'); if (!b) return; b.innerHTML = arr(T).sort(function (x, y) { return y.p - x.p || x.n.localeCompare(y.n); }).slice(0, 12).map(rowTop).join(''); }
++  function topTable(T) { var b = D.querySelector('#top12 tbody'); if (!b) return; b.innerHTML = arr(T).sort(function (x, y) { return y.p - x.p || x.n.localeCompare(y.n); }).slice(0, 12).map(function (t, i) { return rowTop(t, i, true); }).join(''); }
+   function playoff(T, f) {
+-    var b = D.querySelector('#chances tbody'); if (b) b.innerHTML = arr(T).sort(function (x, y) { return y.p - x.p || x.n.localeCompare(y.n); }).slice(0, 25).map(rowTop).join('');
+-    f = f || []; [].forEach.call(D.querySelectorAll('[data-seed]'), function (s) { var e = f[+s.getAttribute('data-seed') - 1]; s.textContent = e ? T[e[0]].n : ''; });
++    var b = D.querySelector('#chances tbody'); if (b) b.innerHTML = arr(T).sort(function (x, y) { return y.p - x.p || x.n.localeCompare(y.n); }).slice(0, 25).map(function (t, i) { return rowTop(t, i, false); }).join('');
++    f = f || []; [].forEach.call(D.querySelectorAll('[data-seed]'), function (s) { var e = f[+s.getAttribute('data-seed') - 1]; s.textContent = e ? T[e[0]].n : ''; if (e) s.insertAdjacentHTML('beforebegin', LG().team(e[0], 28, false)); });
+     var fb = D.querySelector('#field tbody'); if (!fb) return;
+-    fb.innerHTML = f.map(function (e, i) { var t = T[e[0]], s = i + 1; return '<tr><td class="n">' + s + '</td><td><a class="tl" href="/team/' + e[0] + '/">' + esc(t.n) + '</a></td><td>' + esc(t.cn) + '</td><td>' + (s <= 4 ? 'First-round bye' : s <= 8 ? 'Hosts a first-round game' : 'Plays on the road') + (e[1] ? ' (conference leader)' : '') + '</td></tr>'; }).join('');
++    fb.innerHTML = f.map(function (e, i) { var t = T[e[0]], s = i + 1; return '<tr><td class="n">' + s + '</td><td><span class="tnm">' + LG().team(e[0], 24, true) + '<a class="tl" href="/team/' + e[0] + '/">' + esc(t.n) + '</a></span></td><td><span class="tnm">' + LG().conf(t.cs, 20, true) + '<span>' + esc(t.cn) + '</span></span></td><td>' + (s <= 4 ? 'First-round bye' : s <= 8 ? 'Hosts a first-round game' : 'Plays on the road') + (e[1] ? ' (conference leader)' : '') + '</td></tr>'; }).join('');
+   }
+   function destiny(T) {
+     var ul = D.querySelector('#dest'); if (!ul) return; var cs = main.getAttribute('data-conf');

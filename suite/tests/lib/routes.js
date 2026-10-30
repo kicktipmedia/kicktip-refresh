@@ -1,0 +1,9 @@
+/* print {text: match} for every bank row on one tree (own process, so two trees never share the toolbox global). usage: node routes.js <tree> <bank.json> <live:off|on> <extra,ids> */
+"use strict";
+const fs = require("fs"), path = require("path"), T = require("./tbq.js")(process.argv[2]), W = fs.readFileSync(path.join(process.argv[2], "_worker.js"), "utf8");
+const L19 = JSON.parse(/const TB_LIVE_TOOLS = (\[[^\]]*\]);/.exec(W)[1].replace(/'/g, '"')), extra = (process.argv[5] || "").split(",").filter(Boolean);
+const drop = (process.argv[6] || "").split(",").filter(Boolean); if (drop.length) { const k = L19.length; L19.splice(0, k, ...L19.filter(x => !drop.includes(x))); if (L19.length !== k - drop.length) throw new Error("drop ids not all in the live list"); }   /* set3m: optional 6th arg drops live ids (game_win_chance) to get the vis1c flag-off baseline */
+const BR = ["What does Arizona need to reach the conference championship game?", "What has to happen for Indiana to make the playoff?", "How many wins does Utah need?", "What is Utah's path to the conference championship game?", "How can BYU reach the conference championship game?", "What is Indiana's path to a first-round bye?", "How can Ohio State get into the playoff field?", "What does BYU need to do on its path to the playoff?", "How can Utah reach the conference championship game, and what does it need?", "How many games can Utah lose and still reach the conference championship game?", "How can Utah win the Big 12?", "Compare Utah's and Arizona's path to a bye."];
+const rows = JSON.parse(fs.readFileSync(process.argv[3], "utf8")).rows, seen = {}, texts = [];
+rows.map(r => r.text).concat(BR).forEach(t => { if (!seen[t]) { seen[t] = 1; texts.push(t); } });
+(async () => { const out = {}; T.TB.setLive(process.argv[4] === "on" ? L19.concat(extra) : L19); for (const t of texts) out[t] = (await T.match(t)) || null; process.stdout.write(JSON.stringify(out)); })();

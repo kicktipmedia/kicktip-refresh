@@ -1,0 +1,205 @@
+{
+ "asof": "2026-10-24 23:58 MT",
+ "confs": {
+  "acc": {
+   "analyst": "not_verified",
+   "mismatches": [
+    "acc_chain_pairing",
+    "ineligible_teams_not_in_data"
+   ],
+   "variants": {
+    "h2h_only": [],
+    "reading_B": [],
+    "elim_flip": []
+   },
+   "calls": []
+  },
+  "big10": {
+   "analyst": "partial",
+   "mismatches": [
+    "bt_section_b_second_place",
+    "ineligible_teams_not_in_data"
+   ],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": [
+    {
+     "team": "michigan-state",
+     "name": "Michigan State",
+     "call": "out",
+     "method": "search",
+     "record": "0-5",
+     "left": 4,
+     "ahead_on_record": 1,
+     "margin": -1,
+     "wins_total_proof_k": 0,
+     "changes_under": [],
+     "ineligibility_sensitive": true,
+     "tiebreak_encoding_sensitive": false
+    }
+   ]
+  },
+  "big12": {
+   "analyst": "verified",
+   "mismatches": [],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": []
+  },
+  "sec": {
+   "analyst": "verified",
+   "mismatches": [],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": [
+    {
+     "team": "vanderbilt",
+     "name": "Vanderbilt",
+     "call": "out",
+     "method": "search",
+     "record": "0-5",
+     "left": 4,
+     "ahead_on_record": 1,
+     "margin": -1,
+     "wins_total_proof_k": 0,
+     "changes_under": [],
+     "ineligibility_sensitive": false,
+     "tiebreak_encoding_sensitive": false
+    }
+   ]
+  },
+  "American": {
+   "analyst": "verified",
+   "mismatches": [
+    "am_10_6_restart",
+    "ineligible_teams_not_in_data"
+   ],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": []
+  },
+  "usa": {
+   "analyst": "partial",
+   "mismatches": [],
+   "variants": {
+    "h2h_only": [],
+    "reading_A": [],
+    "reading_B": [],
+    "elim_flip": []
+   },
+   "calls": []
+  },
+  "midam": {
+   "analyst": "verified",
+   "mismatches": [],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": [
+    {
+     "team": "akron",
+     "name": "Akron",
+     "call": "tie_only",
+     "method": null,
+     "record": "0-4",
+     "left": 4,
+     "ahead_on_record": null,
+     "margin": null,
+     "wins_total_proof_k": null,
+     "changes_under": [],
+     "ineligibility_sensitive": false,
+     "tiebreak_encoding_sensitive": true
+    },
+    {
+     "team": "sacramento-state",
+     "name": "Sacramento State",
+     "call": "out",
+     "method": "search",
+     "record": "0-5",
+     "left": 3,
+     "ahead_on_record": 1,
+     "margin": -1,
+     "wins_total_proof_k": 1,
+     "changes_under": [],
+     "ineligibility_sensitive": false,
+     "tiebreak_encoding_sensitive": false
+    }
+   ]
+  },
+  "mwest": {
+   "analyst": "partial",
+   "mismatches": [
+    "mw_pool_not_in_original_tie",
+    "mw_restart_vs_continue",
+    "mw_ineligible_removed_first",
+    "ineligible_teams_not_in_data"
+   ],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": [
+    {
+     "team": "hawaii",
+     "name": "Hawai'i",
+     "call": "tie_only",
+     "method": null,
+     "record": "1-4",
+     "left": 3,
+     "ahead_on_record": null,
+     "margin": null,
+     "wins_total_proof_k": null,
+     "changes_under": [],
+     "ineligibility_sensitive": false,
+     "tiebreak_encoding_sensitive": true
+    }
+   ]
+  },
+  "pac12": {
+   "analyst": "verified",
+   "mismatches": [],
+   "variants": {
+    "h2h_only": [],
+    "reading_A": [],
+    "reading_B": [],
+    "elim_flip": []
+   },
+   "calls": [
+    {
+     "team": "washington-state",
+     "name": "Washington State",
+     "call": "tie_only",
+     "method": null,
+     "record": "0-4",
+     "left": 3,
+     "ahead_on_record": null,
+     "margin": null,
+     "wins_total_proof_k": null,
+     "changes_under": [],
+     "ineligibility_sensitive": false,
+     "tiebreak_encoding_sensitive": true
+    }
+   ]
+  },
+  "belt": {
+   "analyst": "partial",
+   "mismatches": [
+    "belt_ineligible_champion"
+   ],
+   "variants": {
+    "h2h_only": [],
+    "elim_flip": []
+   },
+   "calls": []
+  }
+ }
+}

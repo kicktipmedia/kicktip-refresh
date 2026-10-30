@@ -1,0 +1,116 @@
+{
+ "source": "/workspace/hub/kicktip-tb-verify-1026/verdicts.json (Analyst, retrieved 2026-10-26)",
+ "retrieved": "2026-10-26",
+ "checked_against": {
+  "ccg-rules.json_sha256": "9af7543178480678d78f8579f3be3e488f65f02f6e5727216d091e4e040a6ff4",
+  "ccgsim.js_sha256": "dcd9298db8281a4e3c5de342b22f9070857ffd3c19e9e91cb377b4519938b6a2"
+ },
+ "conferences": {
+  "acc": {
+   "name": "ACC",
+   "verdict": "not_verified",
+   "verdict_text": "NOT VERIFIED",
+   "revision": "As Amended July 1, 2026 (posted Jul 15, 2026)",
+   "quoted_text_sha256": "c46dd1caa56ee86cf3c1f6a56afd9cf25790fd5a41f5a305d88e5ca2f8fb75ce",
+   "notes": "Steps match; unequal-schedule tied-team chain (policy 1.a-b, 2.a; On3/Strickland) not modeled: probe/acc3.js shows engine cannot return the team the chain reaches. Do not claim out/clinched when an 8-game team (BC, Clemson, FSU, Georgia Tech, UNC) can be in the tied group. Ineligible teams not removed.",
+   "mismatch_ids": [
+    "acc_chain_pairing",
+    "ineligible_teams_not_in_data"
+   ]
+  },
+  "mwest": {
+   "name": "Mountain West",
+   "verdict": "partial",
+   "verdict_text": "PARTIAL",
+   "revision": "Dated Oct 12, 2026 (in-season)",
+   "quoted_text_sha256": "ac6f140e8715e8bcd2c355d2fc57102cfdef25ceb4a125a3093aa4c8577bd530",
+   "notes": "Order of steps matches. Encoding differs after the CFP/composite step: step 4 pool is 'not included in the original standings tie'; steps 3-5 continue (restart only at step 1 and at two teams for one spot); ineligible teams removed first (not modeled). Mismatches are masked because the CFP/composite step branches over all tied teams. Flip only for calls that hold under every ranking outcome.",
+   "mismatch_ids": [
+    "mw_pool_not_in_original_tie",
+    "mw_restart_vs_continue",
+    "mw_ineligible_removed_first",
+    "ineligible_teams_not_in_data"
+   ]
+  },
+  "belt": {
+   "name": "Sun Belt",
+   "verdict": "partial",
+   "verdict_text": "PARTIAL",
+   "revision": "Live page, URL dated 2018, footer 2026; no revision stamp",
+   "quoted_text_sha256": "be6a0026b59dd505dab6b156247444a8e0bd27d641ebbf782e1a0d580d985981",
+   "notes": "All steps match. Page still lists Texas State (West) and no Louisiana Tech; 2026 divisions taken from official 2026 schedule release and standings. Ineligible-champion rule not modeled. Flip for outcomes settled before the CFP/computer step.",
+   "mismatch_ids": [
+    "belt_ineligible_champion"
+   ]
+  },
+  "pac12": {
+   "name": "Pac-12",
+   "verdict": "verified",
+   "verdict_text": "VERIFIED MATCH",
+   "revision": "Published Sept 3, 2026",
+   "quoted_text_sha256": "c0ecef56dfe47661fbf48fc30e9728361feb8444ca6d2069d9e9a6e7e9da792f",
+   "notes": "All steps and orders match. Tie-for-second reading (head-to-head first or not) is ambiguous and carried as two readings by the engine. Text silent on teams dropped from a 3+ tie (engine continues down the list).",
+   "mismatch_ids": []
+  },
+  "usa": {
+   "name": "Conference USA",
+   "verdict": "partial",
+   "verdict_text": "PARTIAL",
+   "revision": "File last modified Nov 16, 2025; no 2026-dated version",
+   "quoted_text_sha256": "9c0a3601a049e4248e8d6816b4b15aab308d9cdbe782c8acde78794313fb15e0",
+   "notes": "Encoding matches this PDF step for step. Secondary sources (PFSN Nov 10, 2025; July 2025 forum post) show a different order (CFP-ranked, APR). Not confirmed which is current. 3+ team head-to-head wording is thin (two readings carried). Flip only for win-percentage or head-to-head calls.",
+   "mismatch_ids": []
+  },
+  "midam": {
+   "name": "MAC",
+   "verdict": "verified",
+   "verdict_text": "VERIFIED MATCH",
+   "revision": "Posted Nov 12, 2025 (live; footer 2026)",
+   "quoted_text_sha256": "ab3c1c79ea04badae86ecd3db9eb15aa9b96e164b7d74b6e6f1c1517c1e23cf9",
+   "notes": "Full step match. Text silent on what happens to remaining teams after one advances in a 3+ tie (engine restarts). No 2026 revision found.",
+   "mismatch_ids": []
+  },
+  "big10": {
+   "name": "Big Ten",
+   "verdict": "partial",
+   "verdict_text": "PARTIAL",
+   "revision": "2024 Big Ten Football Championship Game Tiebreaker, Aug 23, 2024 PDF (copy from earlier agent)",
+   "quoted_text_sha256": "27b47c245d80d179da19cc8e93e0063cf5af1a38bf1fb49acfb7c4c2103f5ef0",
+   "notes": "Steps match the 2024 text. Official URL is 404 and no 2026 republication found, so 2026 applicability is inferred. Section B names ties for first only. Sanctions-ineligible rule not modeled. Low risk.",
+   "mismatch_ids": [
+    "bt_section_b_second_place",
+    "ineligible_teams_not_in_data"
+   ]
+  },
+  "American": {
+   "name": "American",
+   "verdict": "verified",
+   "verdict_text": "VERIFIED MATCH",
+   "revision": "Dated Sept 30, 2026",
+   "quoted_text_sha256": "803b8343aad6dd045fccc67752812db1755a81efa68ef5676b878ee6cdbf0049",
+   "notes": "Full step match, including host list. 10.6.1 'ranking' wording makes restart vs continue unspecified for 4+ team ties. Exempt games and ineligible rule (10.7) not modeled.",
+   "mismatch_ids": [
+    "am_10_6_restart",
+    "ineligible_teams_not_in_data"
+   ]
+  },
+  "big12": {
+   "name": "Big 12",
+   "verdict": "verified",
+   "verdict_text": "VERIFIED MATCH",
+   "revision": "Updated 16 Team FB Tiebreakers 2024-Present, Nov 4, 2025",
+   "quoted_text_sha256": "6d6758372c54e57aeeab62e1f4cf821410f614c0bb74528f6f027dd2d4aecbc2",
+   "notes": "Full match; no 2026 change found. Silent on teams dropped from a 3+ tie for second (engine continues). 12-game wins step needs all non-conference games played.",
+   "mismatch_ids": []
+  },
+  "sec": {
+   "name": "SEC",
+   "verdict": "verified",
+   "verdict_text": "VERIFIED MATCH",
+   "revision": "PDF dated Oct 29, 2024; no 2026 change found",
+   "quoted_text_sha256": "37e20bf4d5e2a82fbbc57da4369f90deddfcb0a15f5e496eab09aac00ba64565",
+   "notes": "Order and restart semantics match; sub-branches of the 22 pages not each tested against the engine. Step E capped scoring margin (Appendix A) treated as external.",
+   "mismatch_ids": []
+  }
+ }
+}

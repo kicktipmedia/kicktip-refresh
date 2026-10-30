@@ -1,0 +1,75 @@
+{
+ "note": "Title game slots as announced by each conference (date, time, TV, site); times shown in ET/CT/PT with the MT conversion.",
+ "ccg": {
+  "acc": {
+   "conference": "ACC",
+   "date": "2026-12-05",
+   "slot": "Sat 2026-12-05, noon ET (10:00 AM MT), ABC, Charlotte",
+   "format": "top2",
+   "neutral_site": true
+  },
+  "big12": {
+   "conference": "Big 12",
+   "date": "2026-12-04",
+   "slot": "Fri 2026-12-04, 7:00 PM CT (6:00 PM MT), ABC, AT&T Stadium, Arlington",
+   "format": "top2",
+   "neutral_site": true
+  },
+  "big10": {
+   "conference": "Big Ten",
+   "date": "2026-12-05",
+   "slot": "Sat 2026-12-05, 8:00 PM ET (6:00 PM MT), FOX, Lucas Oil Stadium, Indianapolis",
+   "format": "top2",
+   "neutral_site": true
+  },
+  "sec": {
+   "conference": "SEC",
+   "date": "2026-12-05",
+   "slot": "Sat 2026-12-05, 4:00 PM ET (2:00 PM MT), ABC, Mercedes-Benz Stadium, Atlanta",
+   "format": "top2",
+   "neutral_site": true
+  },
+  "American": {
+   "conference": "American",
+   "date": "2026-12-05",
+   "slot": "Sat 2026-12-05, 8:00 PM ET (6:00 PM MT), ABC, at the higher seed",
+   "format": "top2",
+   "neutral_site": false
+  },
+  "usa": {
+   "conference": "Conference USA",
+   "date": "2026-12-04",
+   "slot": "Fri 2026-12-04, 6:00 PM CT (5:00 PM MT), CBSSN, at the team with the higher win percentage",
+   "format": "top2",
+   "neutral_site": false
+  },
+  "midam": {
+   "conference": "MAC",
+   "date": "2026-12-05",
+   "slot": "Sat 2026-12-05, noon ET (10:00 AM MT), ESPN, Ford Field, Detroit",
+   "format": "top2",
+   "neutral_site": true
+  },
+  "mwest": {
+   "conference": "Mountain West",
+   "date": "2026-12-04",
+   "slot": "Fri 2026-12-04, 9:00 PM ET (7:00 PM MT), FOX, at the higher seed",
+   "format": "top2",
+   "neutral_site": false
+  },
+  "pac12": {
+   "conference": "Pac-12",
+   "date": "2026-12-04",
+   "slot": "Fri 2026-12-04, 5:00 PM PT (6:00 PM MT), CBS, at the higher seed",
+   "format": "top2",
+   "neutral_site": false
+  },
+  "belt": {
+   "conference": "Sun Belt",
+   "date": "2026-12-04",
+   "slot": "Fri 2026-12-04, 7:00 PM ET (5:00 PM MT), ESPN, at the home of the division champion with the better conference record",
+   "format": "div",
+   "neutral_site": false
+  }
+ }
+}

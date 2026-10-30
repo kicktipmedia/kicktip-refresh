@@ -1,0 +1,474 @@
+{
+ "failures": [],
+ "checks": [
+  [
+   "model default (no param, no storage): answer says 'Model: KickTip blend (default model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model default (no param, no storage): header names the model",
+   true,
+   ""
+  ],
+  [
+   "model default (no param, no storage): fetches only /data/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/sim-bundle.json']"
+  ],
+  [
+   "model default (no param, no storage): what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/whatif/index.json']"
+  ],
+  [
+   "model default (no param, no storage): the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model default (no param, no storage): localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "model ?model=elo: answer says 'Model: Elo-style (alternate model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model ?model=elo: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model ?model=elo: fetches only /data/m/elo/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/m/elo/sim-bundle.json']"
+  ],
+  [
+   "model ?model=elo: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/m/elo/whatif/index.json']"
+  ],
+  [
+   "model ?model=elo: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model ?model=elo: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "model ?model=eff: answer says 'Model: Efficiency (alternate model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model ?model=eff: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model ?model=eff: fetches only /data/m/eff/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/m/eff/sim-bundle.json']"
+  ],
+  [
+   "model ?model=eff: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/m/eff/whatif/index.json']"
+  ],
+  [
+   "model ?model=eff: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model ?model=eff: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "model storage kicktip_model=eff: answer says 'Model: Efficiency (alternate model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model storage kicktip_model=eff: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model storage kicktip_model=eff: fetches only /data/m/eff/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/m/eff/sim-bundle.json']"
+  ],
+  [
+   "model storage kicktip_model=eff: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/m/eff/whatif/index.json']"
+  ],
+  [
+   "model storage kicktip_model=eff: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model storage kicktip_model=eff: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate', 'kicktip_model']"
+  ],
+  [
+   "model URL elo beats stored eff: answer says 'Model: Elo-style (alternate model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model URL elo beats stored eff: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model URL elo beats stored eff: fetches only /data/m/elo/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/m/elo/sim-bundle.json']"
+  ],
+  [
+   "model URL elo beats stored eff: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/m/elo/whatif/index.json']"
+  ],
+  [
+   "model URL elo beats stored eff: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model URL elo beats stored eff: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate', 'kicktip_model']"
+  ],
+  [
+   "model ?model=msm ignored (not offered): answer says 'Model: KickTip blend (default model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model ?model=msm ignored (not offered): header names the model",
+   true,
+   ""
+  ],
+  [
+   "model ?model=msm ignored (not offered): fetches only /data/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/sim-bundle.json']"
+  ],
+  [
+   "model ?model=msm ignored (not offered): what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/whatif/index.json']"
+  ],
+  [
+   "model ?model=msm ignored (not offered): the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model ?model=msm ignored (not offered): localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "model ?model=junk ignored: answer says 'Model: KickTip blend (default model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model ?model=junk ignored: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model ?model=junk ignored: fetches only /data/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/sim-bundle.json']"
+  ],
+  [
+   "model ?model=junk ignored: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/whatif/index.json']"
+  ],
+  [
+   "model ?model=junk ignored: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model ?model=junk ignored: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "model stored msm ignored: answer says 'Model: KickTip blend (default model)'",
+   true,
+   "point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "model stored msm ignored: header names the model",
+   true,
+   ""
+  ],
+  [
+   "model stored msm ignored: fetches only /data/sim-bundle.json",
+   true,
+   "['http://127.0.0.1:40595/data/sim-bundle.json']"
+  ],
+  [
+   "model stored msm ignored: what-if index is that model's",
+   true,
+   "['http://127.0.0.1:40595/data/whatif/index.json']"
+  ],
+  [
+   "model stored msm ignored: the chat writes no storage (no setItem/removeItem/clear)",
+   true,
+   "[]"
+  ],
+  [
+   "model stored msm ignored: localStorage keys unchanged by the chat",
+   true,
+   "['kicktip_gate']"
+  ],
+  [
+   "different models give different numbers for the same question",
+   true,
+   ""
+  ],
+  [
+   "registry names 'KickTip blend'",
+   true,
+   ""
+  ],
+  [
+   "registry names 'Elo-style'",
+   true,
+   ""
+  ],
+  [
+   "registry names 'Efficiency'",
+   true,
+   ""
+  ],
+  [
+   "bare 'X loses' picks X's earliest remaining game",
+   true,
+   ""
+  ],
+  [
+   "bare 'X loses': chip echoes the game ('X loses to Y (next game: Day, Mon d)')",
+   true,
+   "Western Kentucky loses to Delaware (next game: Tue, Oct 27)\n\u00d7"
+  ],
+  [
+   "bare 'X loses': the table shows both teams moving",
+   true,
+   ""
+  ],
+  [
+   "bare 'X wins': chip says 'beats'",
+   true,
+   "Western Kentucky beats Delaware (next game: Tue, Oct 27)\n\u00d7"
+  ],
+  [
+   "in-progress game: the chip is labelled in progress",
+   true,
+   "Oklahoma State loses to Colorado (next game: Sat, Oct 24, in progress)\n\u00d7"
+  ],
+  [
+   "in-progress game: answer carries the 'data updates every few hours' line",
+   true,
+   "numbers come from a fresh run in your browser and can differ from the page by a point or two (random sampling).\n\nConference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.\n\nGames not in the scenario play out as simulated.\n\nRun again (new random sample)\n\nCalculated in your browser from public model data. Your question is not sent to any server.\n\nFull disclaimer \u00b7 Method"
+  ],
+  [
+   "three-game question: three chips and a table",
+   true,
+   "3"
+  ],
+  [
+   "answer carries the honest wording line exactly",
+   true,
+   ""
+  ],
+  [
+   "answer carries the noise line",
+   true,
+   ""
+  ],
+  [
+   "answer carries the tiebreaker footer and no claim of official tiebreaker exactness",
+   true,
+   ""
+  ],
+  [
+   "answer shows the N used and the as-of stamp",
+   true,
+   ""
+  ],
+  [
+   "answer shows the model line",
+   true,
+   ""
+  ],
+  [
+   "regenerate: button re-runs with a new random sample (numbers move by sampling noise only)",
+   true,
+   ""
+  ],
+  [
+   "regenerate: same question, same chips, answer re-rendered",
+   true,
+   ""
+  ],
+  [
+   "regenerate: numbers differ from the first run by at most 2.5 pts (sampling noise), max 1.4",
+   true,
+   "1.3999999999999986"
+  ],
+  [
+   "asking the same question twice gives the same table (seed fixed until Regenerate)",
+   true,
+   ""
+  ],
+  [
+   "margin: 'Wins and losses only' with the exact sentence",
+   true,
+   "What if Western Kentucky beats Delaware by 10?\n?\nWINS AND LOSSES ONLY\n\nKickTip simulates wins and losses, not scores or margins.\n\nRun it without the margin: What if Western Kentucky beats Delaware?What if Utah Utes lose to Houston?"
+  ],
+  [
+   "margin: offers the plain question as a button",
+   true,
+   ""
+  ],
+  [
+   "margin: the plain button runs the question",
+   true,
+   ""
+  ],
+  [
+   "title scenario message: What if Western Kentucky wins the conference?",
+   true,
+   "What if Western Kentucky wins the conference?\n?\nNOT SUPPORTED YET\n\nConference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beats another in a regul"
+  ],
+  [
+   "title scenario message: What if Western Kentucky reaches the title game?",
+   true,
+   "What if Western Kentucky reaches the title game?\n?\nNOT SUPPORTED YET\n\nConference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beats another in a re"
+  ],
+  [
+   "title scenario message: What if Western Kentucky beats Delaware in the cha",
+   true,
+   "What if Western Kentucky beats Delaware in the championship game?\n?\nNOT SUPPORTED YET\n\nConference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beat"
+  ],
+  [
+   "9-game question fits the 200 character box for this test",
+   true,
+   "189"
+  ],
+  [
+   "9 game results: 'Up to 8 game results' and no run",
+   true,
+   ""
+  ],
+  [
+   "8 game results run (the cap is 8, not lower)",
+   true,
+   "8"
+  ],
+  [
+   "already played: shows the result and week",
+   true,
+   "What if TCU beats North Carolina?\n?\nTHAT GAME IS ALREADY FINAL\n\nTCU vs North Carolina has already been played: North Carolina won 15-10 (week 1). Only games still to be played can be changed.\n\nWhat if Utah Utes lose to Houston?What if Utah Utes lose to Houston and Arizona beats Texas Tech?"
+  ],
+  [
+   "the typed text is in no request (URL or body) and nothing is POSTed",
+   true,
+   "[]"
+  ],
+  [
+   "no off-origin requests and no console errors during all of the above",
+   true,
+   "[]"
+  ],
+  [
+   "the whole session wrote no storage from the chat",
+   true,
+   "[]"
+  ],
+  [
+   "running view: 'runs in your browser' wording and the seasons counter",
+   true,
+   "What if Utah Utes lose to Houston and Arizona beats Texas Tech?\nSIMULATION ANALYSIS, NOT BETTING ADVICE\nRUNNING SIMULATION\u2026\nHouston beats Utah (in progress)\nArizona beats Texas Tech\n\n3,000 of 10,000 seasons \u00b7 runs in your browser"
+  ],
+  [
+   "CSP string is exactly the planned one (with worker-src 'self')",
+   true,
+   "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; worker-src 'self'"
+  ],
+  [
+   "Chromium: no CSP violation events across gate-accepted use (engine in a Web Worker)",
+   true,
+   "[][]"
+  ],
+  [
+   "Chromium: a Web Worker ran",
+   true,
+   ""
+  ],
+  [
+   "WebKit: no CSP violation events across gate-accepted use (engine in a Web Worker)",
+   true,
+   "[][]"
+  ],
+  [
+   "WebKit: a Web Worker ran",
+   true,
+   ""
+  ],
+  [
+   "perf @6x throttle: every scenario answered (runs: [2.42, 1.4, 1.38] s, N=10,000)",
+   true,
+   "[2.42, 1.4, 1.38]"
+  ],
+  [
+   "gz payload on first use (blend): 58.2 KB (bundle 19.7 KB)",
+   true,
+   ""
+  ]
+ ],
+ "perf": {
+  "throttle": 6,
+  "viewport": 390,
+  "seconds_per_run": [
+   2.42,
+   1.4,
+   1.38
+  ],
+  "N_last": "10,000"
+ },
+ "gzip_bytes": {
+  "data/sim-bundle.json": 20195,
+  "data/m/elo/sim-bundle.json": 20179,
+  "data/m/eff/sim-bundle.json": 20187,
+  "assets/chat.js": 10002,
+  "assets/chat-worker.js": 1250,
+  "assets/chat.css": 2170,
+  "assets/ks/sim.js": 6893,
+  "assets/ks/parse.js": 5921,
+  "assets/ks/scenario.js": 1985,
+  "assets/ks/answer.js": 5039,
+  "data/whatif/index.json": 6098
+ },
+ "gzip_total_blend_first_use": 59553
+}

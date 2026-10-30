@@ -1,0 +1,1972 @@
+{
+ "tool": "path_compare",
+ "schema": 1,
+ "frozen": "2026-10-24",
+ "run": [
+  {
+   "id": "PC-RUN-utah-arizona-championship_game",
+   "params": {
+    "teams": [
+     "utah",
+     "arizona"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "utah",
+    "facts.teams.1.team.slug": "arizona",
+    "facts.teams.0.team.name": "Utah",
+    "facts.teams.1.team.name": "Arizona",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.609,
+    "facts.teams.1.now": 0.3294,
+    "facts.teams.0.game_chance": 0.609,
+    "facts.teams.1.game_chance": 0.3294,
+    "facts.teams.0.field_chance": 0.5354,
+    "facts.teams.1.field_chance": 0.1877,
+    "facts.teams.0.bye_chance": 0.1456,
+    "facts.teams.1.bye_chance": 0.006,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 4,
+     "l": 0
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 3,
+     "l": 1
+    },
+    "facts.teams.0.cg.left": 5,
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 1,
+    "facts.teams.1.cg.minw": null,
+    "facts.teams.0.cg.losses_allowed": 4,
+    "facts.teams.1.cg.losses_allowed": null,
+    "facts.meet": {
+     "id": "401856864",
+     "week": 11
+    }
+   },
+   "render": {
+    "contains": [
+     "Utah and Arizona: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "60.9%",
+     "32.9%",
+     "play each other in week 11"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-utah-arizona-playoff",
+   "params": {
+    "teams": [
+     "utah",
+     "arizona"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "utah",
+    "facts.teams.1.team.slug": "arizona",
+    "facts.teams.0.team.name": "Utah",
+    "facts.teams.1.team.name": "Arizona",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.5354,
+    "facts.teams.1.now": 0.1877,
+    "facts.teams.0.game_chance": 0.609,
+    "facts.teams.1.game_chance": 0.3294,
+    "facts.teams.0.field_chance": 0.5354,
+    "facts.teams.1.field_chance": 0.1877,
+    "facts.teams.0.bye_chance": 0.1456,
+    "facts.teams.1.bye_chance": 0.006,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.meet": {
+     "id": "401856864",
+     "week": 11
+    }
+   },
+   "render": {
+    "contains": [
+     "Utah and Arizona: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "53.5%",
+     "18.8%",
+     "play each other in week 11"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-utah-arizona-bye",
+   "params": {
+    "teams": [
+     "utah",
+     "arizona"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "utah",
+    "facts.teams.1.team.slug": "arizona",
+    "facts.teams.0.team.name": "Utah",
+    "facts.teams.1.team.name": "Arizona",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.1456,
+    "facts.teams.1.now": 0.006,
+    "facts.teams.0.game_chance": 0.609,
+    "facts.teams.1.game_chance": 0.3294,
+    "facts.teams.0.field_chance": 0.5354,
+    "facts.teams.1.field_chance": 0.1877,
+    "facts.teams.0.bye_chance": 0.1456,
+    "facts.teams.1.bye_chance": 0.006,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 12,
+      "l": 0
+     },
+     "wins": 12,
+     "losses": 0
+    },
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.meet": {
+     "id": "401856864",
+     "week": 11
+    }
+   },
+   "render": {
+    "contains": [
+     "Utah and Arizona: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "14.6%",
+     "0.6%",
+     "play each other in week 11"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-byu-utah-championship_game",
+   "params": {
+    "teams": [
+     "byu",
+     "utah"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "byu",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "BYU",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.463,
+    "facts.teams.1.now": 0.609,
+    "facts.teams.0.game_chance": 0.463,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.6458,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.1555,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 3,
+     "l": 1
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 4,
+     "l": 0
+    },
+    "facts.teams.0.cg.left": 5,
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": null,
+    "facts.teams.1.cg.minw": 1,
+    "facts.teams.0.cg.losses_allowed": null,
+    "facts.teams.1.cg.losses_allowed": 4,
+    "facts.meet": {
+     "id": "401856849",
+     "week": 10
+    }
+   },
+   "render": {
+    "contains": [
+     "BYU and Utah: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "46.3%",
+     "60.9%",
+     "play each other in week 10"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-byu-utah-playoff",
+   "params": {
+    "teams": [
+     "byu",
+     "utah"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "byu",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "BYU",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.6458,
+    "facts.teams.1.now": 0.5354,
+    "facts.teams.0.game_chance": 0.463,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.6458,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.1555,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.meet": {
+     "id": "401856849",
+     "week": 10
+    }
+   },
+   "render": {
+    "contains": [
+     "BYU and Utah: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "64.6%",
+     "53.5%",
+     "play each other in week 10"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-byu-utah-bye",
+   "params": {
+    "teams": [
+     "byu",
+     "utah"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "byu",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "BYU",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.1555,
+    "facts.teams.1.now": 0.1456,
+    "facts.teams.0.game_chance": 0.463,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.6458,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.1555,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 12,
+      "l": 0
+     },
+     "wins": 12,
+     "losses": 0
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.meet": {
+     "id": "401856849",
+     "week": 10
+    }
+   },
+   "render": {
+    "contains": [
+     "BYU and Utah: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "15.6%",
+     "14.6%",
+     "play each other in week 10"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-indiana-ohio-state-championship_game",
+   "params": {
+    "teams": [
+     "indiana",
+     "ohio-state"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "indiana",
+    "facts.teams.1.team.slug": "ohio-state",
+    "facts.teams.0.team.name": "Indiana",
+    "facts.teams.1.team.name": "Ohio State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.6161,
+    "facts.teams.1.now": 0.8436,
+    "facts.teams.0.game_chance": 0.6161,
+    "facts.teams.1.game_chance": 0.8436,
+    "facts.teams.0.field_chance": 0.9353,
+    "facts.teams.1.field_chance": 0.9779,
+    "facts.teams.0.bye_chance": 0.2987,
+    "facts.teams.1.bye_chance": 0.7796,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 4,
+     "l": 1
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 4,
+     "l": 0
+    },
+    "facts.teams.0.cg.left": 4,
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 1,
+    "facts.teams.1.cg.minw": 1,
+    "facts.teams.0.cg.losses_allowed": 3,
+    "facts.teams.1.cg.losses_allowed": 4,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Indiana and Ohio State: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "61.6%",
+     "84.4%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-indiana-ohio-state-playoff",
+   "params": {
+    "teams": [
+     "indiana",
+     "ohio-state"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "indiana",
+    "facts.teams.1.team.slug": "ohio-state",
+    "facts.teams.0.team.name": "Indiana",
+    "facts.teams.1.team.name": "Ohio State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.9353,
+    "facts.teams.1.now": 0.9779,
+    "facts.teams.0.game_chance": 0.6161,
+    "facts.teams.1.game_chance": 0.8436,
+    "facts.teams.0.field_chance": 0.9353,
+    "facts.teams.1.field_chance": 0.9779,
+    "facts.teams.0.bye_chance": 0.2987,
+    "facts.teams.1.bye_chance": 0.7796,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 8,
+      "l": 4
+     },
+     "wins": 8,
+     "losses": 4
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Indiana and Ohio State: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "93.5%",
+     "97.8%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-indiana-ohio-state-bye",
+   "params": {
+    "teams": [
+     "indiana",
+     "ohio-state"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "indiana",
+    "facts.teams.1.team.slug": "ohio-state",
+    "facts.teams.0.team.name": "Indiana",
+    "facts.teams.1.team.name": "Ohio State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.2987,
+    "facts.teams.1.now": 0.7796,
+    "facts.teams.0.game_chance": 0.6161,
+    "facts.teams.1.game_chance": 0.8436,
+    "facts.teams.0.field_chance": 0.9353,
+    "facts.teams.1.field_chance": 0.9779,
+    "facts.teams.0.bye_chance": 0.2987,
+    "facts.teams.1.bye_chance": 0.7796,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Indiana and Ohio State: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "29.9%",
+     "78.0%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-notre-dame-utah-championship_game",
+   "params": {
+    "teams": [
+     "notre-dame",
+     "utah"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "notre-dame",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "Notre Dame",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": null,
+    "facts.teams.1.now": 0.609,
+    "facts.teams.0.game_chance": null,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.9815,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.6305,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": true,
+    "facts.teams.1.ind": false,
+    "facts.teams.1.cg.rec": {
+     "w": 4,
+     "l": 0
+    },
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.1.cg.minw": 1,
+    "facts.teams.1.cg.losses_allowed": 4,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Notre Dame and Utah: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "60.9%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-notre-dame-utah-playoff",
+   "params": {
+    "teams": [
+     "notre-dame",
+     "utah"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "notre-dame",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "Notre Dame",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.9815,
+    "facts.teams.1.now": 0.5354,
+    "facts.teams.0.game_chance": null,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.9815,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.6305,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": true,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 8,
+      "l": 4
+     },
+     "wins": 8,
+     "losses": 4
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Notre Dame and Utah: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "98.2%",
+     "53.5%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-notre-dame-utah-bye",
+   "params": {
+    "teams": [
+     "notre-dame",
+     "utah"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "notre-dame",
+    "facts.teams.1.team.slug": "utah",
+    "facts.teams.0.team.name": "Notre Dame",
+    "facts.teams.1.team.name": "Utah",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.6305,
+    "facts.teams.1.now": 0.1456,
+    "facts.teams.0.game_chance": null,
+    "facts.teams.1.game_chance": 0.609,
+    "facts.teams.0.field_chance": 0.9815,
+    "facts.teams.1.field_chance": 0.5354,
+    "facts.teams.0.bye_chance": 0.6305,
+    "facts.teams.1.bye_chance": 0.1456,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": true,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 12,
+      "l": 0
+     },
+     "wins": 12,
+     "losses": 0
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Notre Dame and Utah: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "63.0%",
+     "14.6%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-washington-state-toledo-championship_game",
+   "params": {
+    "teams": [
+     "washington-state",
+     "toledo"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "washington-state",
+    "facts.teams.1.team.slug": "toledo",
+    "facts.teams.0.team.name": "Washington State",
+    "facts.teams.1.team.name": "Toledo",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0,
+    "facts.teams.1.now": 0.5875,
+    "facts.teams.0.game_chance": 0.0,
+    "facts.teams.1.game_chance": 0.5875,
+    "facts.teams.0.field_chance": 0.0,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 3,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 0,
+     "l": 4
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 3,
+     "l": 1
+    },
+    "facts.teams.0.cg.left": 3,
+    "facts.teams.1.cg.left": 4,
+    "facts.teams.0.cg.status": "tie",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 3,
+    "facts.teams.1.cg.minw": 1,
+    "facts.teams.0.cg.losses_allowed": 0,
+    "facts.teams.1.cg.losses_allowed": 3,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Washington State and Toledo: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "under 0.05% chance (model)",
+     "58.8%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-washington-state-toledo-playoff",
+   "params": {
+    "teams": [
+     "washington-state",
+     "toledo"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "washington-state",
+    "facts.teams.1.team.slug": "toledo",
+    "facts.teams.0.team.name": "Washington State",
+    "facts.teams.1.team.name": "Toledo",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.0,
+    "facts.teams.1.game_chance": 0.5875,
+    "facts.teams.0.field_chance": 0.0,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 3,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": null,
+    "facts.teams.1.low_rec": null,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Washington State and Toledo: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "under 0.05% chance (model)",
+     "under 0.05% chance (model)"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-washington-state-toledo-bye",
+   "params": {
+    "teams": [
+     "washington-state",
+     "toledo"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "washington-state",
+    "facts.teams.1.team.slug": "toledo",
+    "facts.teams.0.team.name": "Washington State",
+    "facts.teams.1.team.name": "Toledo",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.0,
+    "facts.teams.1.game_chance": 0.5875,
+    "facts.teams.0.field_chance": 0.0,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 3,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": null,
+    "facts.teams.1.low_rec": null,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Washington State and Toledo: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "under 0.05% chance (model)",
+     "under 0.05% chance (model)"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-alabama-georgia-championship_game",
+   "params": {
+    "teams": [
+     "alabama",
+     "georgia"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "alabama",
+    "facts.teams.1.team.slug": "georgia",
+    "facts.teams.0.team.name": "Alabama",
+    "facts.teams.1.team.name": "Georgia",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.2519,
+    "facts.teams.1.now": 0.6775,
+    "facts.teams.0.game_chance": 0.2519,
+    "facts.teams.1.game_chance": 0.6775,
+    "facts.teams.0.field_chance": 0.7804,
+    "facts.teams.1.field_chance": 0.76,
+    "facts.teams.0.bye_chance": 0.1327,
+    "facts.teams.1.bye_chance": 0.3498,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 4,
+     "l": 2
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 4,
+     "l": 1
+    },
+    "facts.teams.0.cg.left": 3,
+    "facts.teams.1.cg.left": 4,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 1,
+    "facts.teams.1.cg.minw": 1,
+    "facts.teams.0.cg.losses_allowed": 2,
+    "facts.teams.1.cg.losses_allowed": 3,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Alabama and Georgia: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "25.2%",
+     "67.8%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-alabama-georgia-playoff",
+   "params": {
+    "teams": [
+     "alabama",
+     "georgia"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "alabama",
+    "facts.teams.1.team.slug": "georgia",
+    "facts.teams.0.team.name": "Alabama",
+    "facts.teams.1.team.name": "Georgia",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.7804,
+    "facts.teams.1.now": 0.76,
+    "facts.teams.0.game_chance": 0.2519,
+    "facts.teams.1.game_chance": 0.6775,
+    "facts.teams.0.field_chance": 0.7804,
+    "facts.teams.1.field_chance": 0.76,
+    "facts.teams.0.bye_chance": 0.1327,
+    "facts.teams.1.bye_chance": 0.3498,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Alabama and Georgia: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "78.0%",
+     "76.0%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-alabama-georgia-bye",
+   "params": {
+    "teams": [
+     "alabama",
+     "georgia"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "alabama",
+    "facts.teams.1.team.slug": "georgia",
+    "facts.teams.0.team.name": "Alabama",
+    "facts.teams.1.team.name": "Georgia",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.1327,
+    "facts.teams.1.now": 0.3498,
+    "facts.teams.0.game_chance": 0.2519,
+    "facts.teams.1.game_chance": 0.6775,
+    "facts.teams.0.field_chance": 0.7804,
+    "facts.teams.1.field_chance": 0.76,
+    "facts.teams.0.bye_chance": 0.1327,
+    "facts.teams.1.bye_chance": 0.3498,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Alabama and Georgia: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "13.3%",
+     "35.0%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-texas-tech-oklahoma-championship_game",
+   "params": {
+    "teams": [
+     "texas-tech",
+     "oklahoma"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "texas-tech",
+    "facts.teams.1.team.slug": "oklahoma",
+    "facts.teams.0.team.name": "Texas Tech",
+    "facts.teams.1.team.name": "Oklahoma",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.2798,
+    "facts.teams.1.now": 0.0792,
+    "facts.teams.0.game_chance": 0.2798,
+    "facts.teams.1.game_chance": 0.0792,
+    "facts.teams.0.field_chance": 0.2212,
+    "facts.teams.1.field_chance": 0.0548,
+    "facts.teams.0.bye_chance": 0.0245,
+    "facts.teams.1.bye_chance": 0.0013,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 3,
+     "l": 1
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 2,
+     "l": 2
+    },
+    "facts.teams.0.cg.left": 5,
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": null,
+    "facts.teams.1.cg.minw": 3,
+    "facts.teams.0.cg.losses_allowed": null,
+    "facts.teams.1.cg.losses_allowed": 2,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Texas Tech and Oklahoma: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "28.0%",
+     "7.9%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-texas-tech-oklahoma-playoff",
+   "params": {
+    "teams": [
+     "texas-tech",
+     "oklahoma"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "texas-tech",
+    "facts.teams.1.team.slug": "oklahoma",
+    "facts.teams.0.team.name": "Texas Tech",
+    "facts.teams.1.team.name": "Oklahoma",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.2212,
+    "facts.teams.1.now": 0.0548,
+    "facts.teams.0.game_chance": 0.2798,
+    "facts.teams.1.game_chance": 0.0792,
+    "facts.teams.0.field_chance": 0.2212,
+    "facts.teams.1.field_chance": 0.0548,
+    "facts.teams.0.bye_chance": 0.0245,
+    "facts.teams.1.bye_chance": 0.0013,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.cross": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 10,
+      "l": 2
+     },
+     "wins": 10,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": {
+     "rec": {
+      "w": 8,
+      "l": 4
+     },
+     "wins": 8,
+     "losses": 4
+    },
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Texas Tech and Oklahoma: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "22.1%",
+     "5.5%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-texas-tech-oklahoma-bye",
+   "params": {
+    "teams": [
+     "texas-tech",
+     "oklahoma"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "texas-tech",
+    "facts.teams.1.team.slug": "oklahoma",
+    "facts.teams.0.team.name": "Texas Tech",
+    "facts.teams.1.team.name": "Oklahoma",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0245,
+    "facts.teams.1.now": 0.0013,
+    "facts.teams.0.game_chance": 0.2798,
+    "facts.teams.1.game_chance": 0.0792,
+    "facts.teams.0.field_chance": 0.2212,
+    "facts.teams.1.field_chance": 0.0548,
+    "facts.teams.0.bye_chance": 0.0245,
+    "facts.teams.1.bye_chance": 0.0013,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 11,
+      "l": 1
+     },
+     "wins": 11,
+     "losses": 1
+    },
+    "facts.teams.1.low_rec": null,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Texas Tech and Oklahoma: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "2.5%",
+     "0.1%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-boise-state-utah-state-championship_game",
+   "params": {
+    "teams": [
+     "boise-state",
+     "utah-state"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "boise-state",
+    "facts.teams.1.team.slug": "utah-state",
+    "facts.teams.0.team.name": "Boise State",
+    "facts.teams.1.team.name": "Utah State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.9334,
+    "facts.teams.1.now": 0.0159,
+    "facts.teams.0.game_chance": 0.9334,
+    "facts.teams.1.game_chance": 0.0159,
+    "facts.teams.0.field_chance": 0.4133,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 3,
+     "l": 0
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 1,
+     "l": 2
+    },
+    "facts.teams.0.cg.left": 4,
+    "facts.teams.1.cg.left": 4,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 0,
+    "facts.teams.1.cg.minw": 2,
+    "facts.teams.0.cg.losses_allowed": 4,
+    "facts.teams.1.cg.losses_allowed": 2,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Boise State and Utah State: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "93.3%",
+     "1.6%"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-boise-state-utah-state-playoff",
+   "params": {
+    "teams": [
+     "boise-state",
+     "utah-state"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "boise-state",
+    "facts.teams.1.team.slug": "utah-state",
+    "facts.teams.0.team.name": "Boise State",
+    "facts.teams.1.team.name": "Utah State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.4133,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.9334,
+    "facts.teams.1.game_chance": 0.0159,
+    "facts.teams.0.field_chance": 0.4133,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": {
+     "rec": {
+      "w": 10,
+      "l": 1
+     },
+     "wins": 10,
+     "losses": 1
+    },
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 2
+     },
+     "wins": 9,
+     "losses": 2
+    },
+    "facts.teams.1.low_rec": null,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Boise State and Utah State: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "41.3%",
+     "under 0.05% chance (model)"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-boise-state-utah-state-bye",
+   "params": {
+    "teams": [
+     "boise-state",
+     "utah-state"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "boise-state",
+    "facts.teams.1.team.slug": "utah-state",
+    "facts.teams.0.team.name": "Boise State",
+    "facts.teams.1.team.name": "Utah State",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.9334,
+    "facts.teams.1.game_chance": 0.0159,
+    "facts.teams.0.field_chance": 0.4133,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 4,
+    "facts.teams.1.left": 4,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": null,
+    "facts.teams.1.low_rec": null,
+    "facts.meet": null
+   },
+   "render": {
+    "contains": [
+     "Boise State and Utah State: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "under 0.05% chance (model)",
+     "under 0.05% chance (model)"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-oregon-washington-championship_game",
+   "params": {
+    "teams": [
+     "oregon",
+     "washington"
+    ],
+    "goal": "championship_game"
+   },
+   "expect": {
+    "facts.goal": "championship_game",
+    "facts.teams.0.team.slug": "oregon",
+    "facts.teams.1.team.slug": "washington",
+    "facts.teams.0.team.name": "Oregon",
+    "facts.teams.1.team.name": "Washington",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.01,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.01,
+    "facts.teams.1.game_chance": 0.0,
+    "facts.teams.0.field_chance": 0.0059,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cg.rec": {
+     "w": 2,
+     "l": 2
+    },
+    "facts.teams.1.cg.rec": {
+     "w": 1,
+     "l": 3
+    },
+    "facts.teams.0.cg.left": 5,
+    "facts.teams.1.cg.left": 5,
+    "facts.teams.0.cg.status": "in",
+    "facts.teams.1.cg.status": "in",
+    "facts.teams.0.cg.minw": 3,
+    "facts.teams.1.cg.minw": 4,
+    "facts.teams.0.cg.losses_allowed": 2,
+    "facts.teams.1.cg.losses_allowed": 1,
+    "facts.meet": {
+     "id": "401858541",
+     "week": 13
+    }
+   },
+   "render": {
+    "contains": [
+     "Oregon and Washington: path to the conference championship game",
+     "Estimated chance to reach the conference championship game",
+     "Measure",
+     "1.0%",
+     "under 0.05% chance (model)",
+     "play each other in week 13"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-oregon-washington-playoff",
+   "params": {
+    "teams": [
+     "oregon",
+     "washington"
+    ],
+    "goal": "playoff"
+   },
+   "expect": {
+    "facts.goal": "playoff",
+    "facts.teams.0.team.slug": "oregon",
+    "facts.teams.1.team.slug": "washington",
+    "facts.teams.0.team.name": "Oregon",
+    "facts.teams.1.team.name": "Washington",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0059,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.01,
+    "facts.teams.1.game_chance": 0.0,
+    "facts.teams.0.field_chance": 0.0059,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": {
+     "rec": {
+      "w": 9,
+      "l": 3
+     },
+     "wins": 9,
+     "losses": 3
+    },
+    "facts.teams.1.low_rec": null,
+    "facts.meet": {
+     "id": "401858541",
+     "week": 13
+    }
+   },
+   "render": {
+    "contains": [
+     "Oregon and Washington: path to the 12-team playoff field",
+     "Estimated chance to make the playoff field",
+     "Measure",
+     "0.6%",
+     "under 0.05% chance (model)",
+     "play each other in week 13"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  },
+  {
+   "id": "PC-RUN-oregon-washington-bye",
+   "params": {
+    "teams": [
+     "oregon",
+     "washington"
+    ],
+    "goal": "bye"
+   },
+   "expect": {
+    "facts.goal": "bye",
+    "facts.teams.0.team.slug": "oregon",
+    "facts.teams.1.team.slug": "washington",
+    "facts.teams.0.team.name": "Oregon",
+    "facts.teams.1.team.name": "Washington",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT",
+    "facts.teams.0.now": 0.0,
+    "facts.teams.1.now": 0.0,
+    "facts.teams.0.game_chance": 0.01,
+    "facts.teams.1.game_chance": 0.0,
+    "facts.teams.0.field_chance": 0.0059,
+    "facts.teams.1.field_chance": 0.0,
+    "facts.teams.0.bye_chance": 0.0,
+    "facts.teams.1.bye_chance": 0.0,
+    "facts.teams.0.left": 5,
+    "facts.teams.1.left": 5,
+    "facts.teams.0.ind": false,
+    "facts.teams.1.ind": false,
+    "facts.teams.0.cross": null,
+    "facts.teams.1.cross": null,
+    "facts.teams.0.low_rec": null,
+    "facts.teams.1.low_rec": null,
+    "facts.meet": {
+     "id": "401858541",
+     "week": 13
+    }
+   },
+   "render": {
+    "contains": [
+     "Oregon and Washington: path to a first-round bye",
+     "Estimated chance to earn a first-round bye",
+     "Measure",
+     "under 0.05% chance (model)",
+     "under 0.05% chance (model)",
+     "play each other in week 13"
+    ],
+    "not_contains": [
+     " 0.0%",
+     " 100.0%",
+     "undefined"
+    ]
+   }
+  }
+ ],
+ "invalid": [
+  {
+   "id": "PC-INV-one",
+   "params": {
+    "teams": [
+     "utah"
+    ],
+    "goal": "bye"
+   },
+   "reason": "bad_param"
+  },
+  {
+   "id": "PC-INV-same",
+   "params": {
+    "teams": [
+     "utah",
+     "utah"
+    ],
+    "goal": "bye"
+   },
+   "reason": "bad_param"
+  },
+  {
+   "id": "PC-INV-nogoal",
+   "params": {
+    "teams": [
+     "utah",
+     "byu"
+    ]
+   },
+   "reason": "bad_param"
+  },
+  {
+   "id": "PC-INV-badgoal",
+   "params": {
+    "teams": [
+     "utah",
+     "byu"
+    ],
+    "goal": "conference"
+   },
+   "reason": "bad_param"
+  },
+  {
+   "id": "PC-INV-three",
+   "params": {
+    "teams": [
+     "utah",
+     "byu",
+     "arizona"
+    ],
+    "goal": "bye"
+   },
+   "reason": "bad_param"
+  },
+  {
+   "id": "PC-INV-fcs",
+   "params": {
+    "teams": [
+     "utah",
+     "montana-state"
+    ],
+    "goal": "bye"
+   },
+   "reason": "bad_param"
+  }
+ ],
+ "match": [
+  {
+   "id": "PC-M-br12",
+   "text": "Compare Utah's and Arizona's path to a bye.",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "utah",
+      "arizona"
+     ],
+     "goal": "bye"
+    }
+   }
+  },
+  {
+   "id": "PC-M-easier",
+   "text": "Who has the easier path to the conference championship game, BYU or Utah?",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "byu",
+      "utah"
+     ],
+     "goal": "championship_game"
+    }
+   }
+  },
+  {
+   "id": "PC-M-playoff",
+   "text": "Compare Indiana and Ohio State on the path to the playoff field.",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "indiana",
+      "ohio-state"
+     ],
+     "goal": "playoff"
+    }
+   }
+  },
+  {
+   "id": "PC-M-vs",
+   "text": "Utah vs BYU path to the conference championship game",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "utah",
+      "byu"
+     ],
+     "goal": "championship_game"
+    }
+   }
+  },
+  {
+   "id": "PC-M-nogoal",
+   "text": "Compare Utah's and BYU's path",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "utah",
+      "byu"
+     ]
+    }
+   }
+  },
+  {
+   "id": "PC-M-usu",
+   "text": "Compare Utah State's and Utah's path to the playoff",
+   "expect": {
+    "tool": "path_compare",
+    "params": {
+     "teams": [
+      "utah-state",
+      "utah"
+     ],
+     "goal": "playoff"
+    }
+   }
+  },
+  {
+   "id": "PC-M-near-need",
+   "text": "What do BYU and Utah need to make the playoff?",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-one",
+   "text": "What is Utah's path to a bye?",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-whatif",
+   "text": "What if Utah beats BYU, compare their path to the playoff",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-three",
+   "text": "Compare the paths of Utah, BYU and Arizona to the playoff",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-chances",
+   "text": "Compare Utah and BYU chances to make the playoff",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-sport",
+   "text": "Compare Utah's and BYU's path to the basketball tournament",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-title",
+   "text": "Compare Utah's and BYU's path to win the Big 12",
+   "expect": null
+  },
+  {
+   "id": "PC-M-near-bet",
+   "text": "Compare Utah and BYU, who is the safer bet for the playoff",
+   "expect": null
+  }
+ ]
+}

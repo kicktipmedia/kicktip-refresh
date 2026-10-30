@@ -1,0 +1,466 @@
+[
+ {
+  "q": "What are the CFP rankings?",
+  "was": {
+   "tool": "rankings_list",
+   "params": {
+    "list": "kicktip"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "Where did the committee rank Utah?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "utah",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "utah"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Committee top 12",
+  "was": {
+   "tool": "rankings_list",
+   "params": {
+    "list": "kicktip",
+    "n": 12
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "n": 12
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "if Utah wins the Big 12",
+  "was": null,
+  "now": {
+   "tool": "whatif_conference_outcome",
+   "params": {
+    "team": "utah",
+    "outcome": "wins_conf"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "what if Texas Tech wins the conference",
+  "was": null,
+  "now": {
+   "tool": "whatif_conference_outcome",
+   "params": {
+    "team": "texas-tech",
+    "outcome": "wins_conf"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "if Arizona wins the conference championship game",
+  "was": null,
+  "now": {
+   "tool": "whatif_conference_outcome",
+   "params": {
+    "team": "arizona",
+    "outcome": "wins_conf"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "BYU's all-time record vs Utah",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "team": "byu",
+    "opponent": "utah",
+    "view": "series"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "when did Indiana last make the playoff",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "team": "indiana",
+    "view": "last_cfp"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "How many points per game does BYU score?",
+  "was": null,
+  "now": {
+   "tool": "team_stats",
+   "params": {
+    "team": "byu",
+    "stat": "ppg"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "What is Utah's scoring offense?",
+  "was": null,
+  "now": {
+   "tool": "team_stats",
+   "params": {
+    "team": "utah",
+    "stat": "ppg"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Indiana points allowed per game",
+  "was": null,
+  "now": {
+   "tool": "team_stats",
+   "params": {
+    "team": "indiana",
+    "stat": "papg"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "What is Texas Tech yards per play?",
+  "was": null,
+  "now": {
+   "tool": "team_stats",
+   "params": {
+    "team": "texas-tech",
+    "stat": "ypp"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "How are my teams doing?",
+  "was": null,
+  "now": {
+   "tool": "my_teams_digest",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "Status of my saved teams",
+  "was": null,
+  "now": {
+   "tool": "my_teams_digest",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "update on my teams",
+  "was": null,
+  "now": {
+   "tool": "my_teams_digest",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "who wins Utah vs BYU",
+  "was": null,
+  "now": {
+   "tool": "game_win_chance",
+   "params": {
+    "teams": [
+     "utah",
+     "byu"
+    ]
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "if Texas Tech wins the conference",
+  "was": null,
+  "now": {
+   "tool": "whatif_conference_outcome",
+   "params": {
+    "team": "texas-tech",
+    "outcome": "wins_conf"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "if Kansas State wins the Big 12",
+  "was": null,
+  "now": {
+   "tool": "whatif_conference_outcome",
+   "params": {
+    "team": "kansas-state",
+    "outcome": "wins_conf"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Update on my teams",
+  "was": null,
+  "now": {
+   "tool": "my_teams_digest",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "My teams",
+  "was": null,
+  "now": {
+   "tool": "my_teams_digest",
+   "params": {},
+   "clarify": null
+  }
+ },
+ {
+  "q": "Committee top 5",
+  "was": {
+   "tool": "rankings_list",
+   "params": {
+    "list": "kicktip",
+    "n": 5
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "n": 5
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Did Indiana move up in the committee's rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "indiana",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "indiana"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Committee top 40",
+  "was": {
+   "tool": "rankings_list",
+   "params": {
+    "list": "kicktip",
+    "n": 25
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "n": 25
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Did Utah drop in the committee rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "utah",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "utah"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Did Ohio State fall in the CFP rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "ohio-state",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "ohio-state"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Has BYU moved in the committee rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "byu",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "byu"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Did Oregon climb in the college football playoff rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "oregon",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "oregon"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Will Utah beat BYU?",
+  "was": null,
+  "now": {
+   "tool": "game_win_chance",
+   "params": {
+    "teams": [
+     "utah",
+     "byu"
+    ]
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Will Indiana beat Ohio State?",
+  "was": null,
+  "now": {
+   "tool": "game_win_chance",
+   "params": {
+    "teams": [
+     "indiana",
+     "ohio-state"
+    ]
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "When did Utah last make the playoff?",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "team": "utah",
+    "view": "last_cfp"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Utah record by season",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "team": "utah",
+    "view": "record"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "BYU all-time vs Utah",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "team": "byu",
+    "opponent": "utah",
+    "view": "series"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Pac-12 champions",
+  "was": null,
+  "now": {
+   "tool": "team_history",
+   "params": {
+    "conference": "pac12",
+    "view": "conf_champ"
+   },
+   "clarify": null
+  }
+ },
+ {
+  "q": "Where is Indiana in the committee rankings?",
+  "was": {
+   "tool": "team_snapshot",
+   "params": {
+    "team": "indiana",
+    "focus": "rank"
+   },
+   "clarify": null
+  },
+  "now": {
+   "tool": "cfp_committee_rankings",
+   "params": {
+    "team": "indiana"
+   },
+   "clarify": null
+  }
+ }
+]

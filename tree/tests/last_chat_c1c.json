@@ -1,0 +1,252 @@
+{
+ "failures": [
+  "cache-bust: chat assets carry ?v=c1c, kt assets keep ?v=chip2 on a team page "
+ ],
+ "checks": [
+  [
+   "F4: no 'odds' in the copy of answer.js, scenario.js or chat.js",
+   true,
+   ""
+  ],
+  [
+   "F4: unsupported (national title) copy says 'chances'",
+   true,
+   ""
+  ],
+  [
+   "F5: .cx has flex:none, 44px x 44px",
+   true,
+   ""
+  ],
+  [
+   "F1: chat.js listens for worker 'error' and 'messageerror'",
+   true,
+   ""
+  ],
+  [
+   "cache-bust: chat assets carry ?v=c1c, kt assets keep ?v=chip2 on a team page",
+   false,
+   ""
+  ],
+  [
+   "F1 @320 worker file 404: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @320 worker file 404: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @320 worker file 404: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @320 worker file 404: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @320 worker script has a syntax error: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @320 worker script has a syntax error: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @320 worker script has a syntax error: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @320 worker script has a syntax error: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @320 worker crashes while running: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @320 worker crashes while running: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @320 worker crashes while running: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @320 worker crashes while running: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @390 worker file 404: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @390 worker file 404: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @390 worker file 404: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @390 worker file 404: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1: the error is also handled when typing a question (not only an example)",
+   true,
+   ""
+  ],
+  [
+   "F1 @390 worker script has a syntax error: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @390 worker script has a syntax error: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @390 worker script has a syntax error: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @390 worker script has a syntax error: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @390 worker crashes while running: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @390 worker crashes while running: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @390 worker crashes while running: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @390 worker crashes while running: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @1280 worker file 404: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @1280 worker file 404: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @1280 worker file 404: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @1280 worker file 404: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @1280 worker script has a syntax error: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @1280 worker script has a syntax error: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @1280 worker script has a syntax error: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @1280 worker script has a syntax error: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1 @1280 worker crashes while running: error state with a Try again button within 0.0s (not stuck on 'Running simulation')",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F1 @1280 worker crashes while running: the question is kept in the box and Send is enabled",
+   true,
+   "What if Utah Utes lose to Houston?"
+  ],
+  [
+   "F1 @1280 worker crashes while running: panel still open, close button works, focus back on the pill",
+   true,
+   ""
+  ],
+  [
+   "F1 @1280 worker crashes while running: after the worker is available again, Try again produces the answer",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "F1: worker already dead when the question is typed: error state with Try again (no hang)",
+   true,
+   "What if Utah Utes lose to Houston?!Couldn't load the dataSomething went wrong loading the data. Your question is still in the box below.Try again"
+  ],
+  [
+   "F3: KTAnswer.delta never prints '-0.0' or '+0.0' (values that round to 0.0 print '0.0 pts')",
+   true,
+   "['0.0 pts', '0.0 pts', '0.0 pts', '0.0 pts', '0.0 pts', '+0.1 pts', '-0.1 pts', '-0.1 pts', '+1.2 pts', '-1.2 pts', '0.0 pts', '0.0 pts']"
+  ],
+  [
+   "F3: no '-0.0', '\u22120.0' or '+0.0' in any rendered answer",
+   true,
+   ""
+  ],
+  [
+   "F4: the national-title refusal reads '...title chances are not part of this model.' and has no 'odds'",
+   true,
+   "What if Utah Utes win the national title??That one needs a changeI can run what-if scenarios for game results and conference, playoff or bye chances. National title chances are not part of this model.What if Utah Utes lose to Houston?What if Utah Utes win out?"
+  ],
+  [
+   "F5 @320: close button is exactly 44 x 44 px in the empty, answer and refusal views ([('empty', [44, 44]), ('answer', [44, 44]), ('info/refusal', [44, 44])])",
+   true,
+   "[]"
+  ],
+  [
+   "F5 @390: close button is exactly 44 x 44 px in the empty, answer and refusal views ([('empty', [44, 44]), ('answer', [44, 44]), ('info/refusal', [44, 44])])",
+   true,
+   "[]"
+  ],
+  [
+   "F5 @1280: close button is exactly 44 x 44 px in the empty, answer and refusal views ([('empty', [44, 44]), ('answer', [44, 44]), ('info/refusal', [44, 44])])",
+   true,
+   "[]"
+  ]
+ ]
+}

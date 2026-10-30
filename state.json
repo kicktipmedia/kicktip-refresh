@@ -1,0 +1,13 @@
+{
+ "live_id": "66ff21b6-de21-4779-93aa-9a045ab9a156",
+ "live_sha": "aaf7b7a547c84d83091d54e79368241d3f078624b5a814dea34fc702a3877883",
+ "zip_path": "base/kicktip-site.zip",
+ "as_of": "2026-10-29 22:13 MT",
+ "s0_pipeline_site": "base/s0/site",
+ "pipeline_tree": "tree",
+ "rollback_id": "43f40910-4013-4492-9405-798f7955a03b",
+ "results_fp": "849e94ab2ff7faa1",
+ "completed": 572,
+ "base_release_tag": "base",
+ "note": "base/kicktip-site.zip and base/s0/site come from the GitHub release 'base' (assets kicktip-site.zip, s0-site.tar.gz); sha checked against live_sha"
+}

@@ -1,0 +1,1 @@
+Team logos courtesy of ESPN. Pulled once from a.espncdn.com/i/teamlogos/ncaa/500/<espn id>.png on Oct 23, 2026 (MT). Unaltered. Cache only; not yet in any build. No ads, no OG/share images. Remove a school promptly on request. KickTip only.

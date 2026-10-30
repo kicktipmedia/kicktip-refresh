@@ -1,0 +1,22 @@
+# secrets and credentials: never commit
+*.env
+.env*
+private/
+.gh/
+*.pem
+*.key
+# large / regenerated
+base/
+runs/
+pipeline/
+wr/
+node_modules/
+__pycache__/
+tree/build/
+tree/data/out/
+tree/data/cache/summary/
+tree/data/cache/val/
+tree/data/cache/odds_ncaaf.json
+tree/crops/
+tree/testlogs/
+.auto_refresh.lock

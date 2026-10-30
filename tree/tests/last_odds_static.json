@@ -1,0 +1,117 @@
+[
+ [
+  "provider-name grep over build/site (html, json, js, css): named books, 'The Odds API', 'consensus'",
+  true,
+  "[]"
+ ],
+ [
+  "no generic provider words in any public JSON",
+  true,
+  "[]"
+ ],
+ [
+  "no provider/books keys in any JSON",
+  true,
+  "[]"
+ ],
+ [
+  "banned words absent from kt.js lines-UI strings",
+  true,
+  "set()"
+ ],
+ [
+  "banned words absent from the lines UI in static HTML (games page main; game cards and line note on team and conference pages; disclaimer wording excluded)",
+  true,
+  "{}"
+ ],
+ [
+  "exact Sources strip wording ('Market lines: ESPN, ...') on every page that carries the strip",
+  true,
+  "153"
+ ],
+ [
+  "old strip wording 'Market lines: public sources' gone everywhere",
+  true,
+  ""
+ ],
+ [
+  "method page line counts are generated and match the data",
+  true,
+  "(('58', '322'), 58, 322)"
+ ],
+ [
+  "method page no longer says 'We do not name'",
+  true,
+  ""
+ ],
+ [
+  "no 32-hex strings anywhere",
+  true,
+  ""
+ ],
+ [
+  "no pages.dev string",
+  true,
+  ""
+ ],
+ [
+  "pred-lines.json: only l (no version key, no provider or book fields)",
+  true,
+  ""
+ ],
+ [
+  "pred-lines.json: every entry is [number, int epoch, int epoch]",
+  true,
+  ""
+ ],
+ [
+  "no data/m/*/pred-lines.json (market data is model-independent)",
+  true,
+  ""
+ ],
+ [
+  "pred-games.json carries no market numbers (g = [win, line, raw])",
+  true,
+  ""
+ ],
+ [
+  "every html reference to a js/css asset carries ?v=<10 hex> (one token per file)",
+  true,
+  "{'kt.css': {'?v=1c13e8d36e'}, 'hdr.css': {'?v=806d1fc4d9'}, 'hdr.js': {'?v=8c7ce84860'}, 'myteams.css': {'?v=29c39c61d4'}, 'kt.js': {'?v=a6e88804e7'}, 'myteams.js': {'?v=698cf45edd'}, 'account.js': {'?v=058b7b57e4'}, 'lg.js': {'?v=4439eee477'}, 'chat.css': {'?v=80d590acc6'}, 'top25.css': {'?v=d1cf2ba679'}, 'top25.js': {'?v=763e244d77'}, 'chat.js': {'?v=2ae0ff06da'}, 'ccgsim.css': {'?v=79ade217cc'}, 'ccgsim.js': {'?v=dcd9298db8'}, 'ccgsim-ui.js': {'?v=79c833116e'}, 'bracket-fit.css': {'?v=92546115ea'}, 'bracket-fit.js': {'?v=6cbf8c63e9'}, 'rootables.css': {'?v=3fe862ebf9'}, 'rootables.js': {'?v=cd9fc1a4c3'}}"
+ ],
+ [
+  "assets/chat.js: inner references hashed",
+  true,
+  ""
+ ],
+ [
+  "assets/chat-worker.js: inner references hashed",
+  true,
+  ""
+ ],
+ [
+  "old hand-set tokens gone (?v=chip2, c1c, b9, gfx1, gate1)",
+  true,
+  ""
+ ],
+ [
+  "make_zip forbidden-string scan (23 strings, key value excluded by design) over every file in build/site",
+  true,
+  "[]"
+ ],
+ [
+  "no private/ path or nested zip in build/site",
+  true,
+  ""
+ ],
+ [
+  "method page market-line section: banned words absent",
+  true,
+  "[]"
+ ],
+ [
+  "no 'Last value' anywhere in build/site",
+  true,
+  ""
+ ]
+]

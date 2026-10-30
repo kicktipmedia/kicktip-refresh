@@ -1,0 +1,344 @@
+{
+"rows": [
+{
+"id": "T27-01",
+"grp": "routing",
+"text": "How are my teams doing?",
+"saved": [
+"utah",
+"byu",
+"indiana"
+],
+"expect": {
+"tool": "my_teams_digest",
+"params": {},
+"exact": true,
+"text": "Utah is in the race on our reading of the rules.",
+"off_tool": null
+}
+},
+{
+"id": "T27-02",
+"grp": "golden",
+"saved": [],
+"expect": {
+"run": {
+"tool": "my_teams_digest",
+"params": {}
+},
+"has": [
+"You have no saved teams yet. Tap the star by a team to save it."
+]
+}
+},
+{
+"id": "T27-03",
+"grp": "routing",
+"text": "How is Utah doing?",
+"expect": {
+"tool": "team_snapshot",
+"params": {
+"team": "utah"
+}
+}
+},
+{
+"id": "T27-04",
+"grp": "routing",
+"text": "Update on my teams",
+"saved": [
+"utah"
+],
+"expect": {
+"tool": "my_teams_digest",
+"params": {},
+"exact": true
+}
+},
+{
+"id": "T27-05",
+"grp": "routing",
+"text": "My teams",
+"saved": [
+"utah"
+],
+"expect": {
+"tool": "my_teams_digest",
+"params": {},
+"exact": true
+}
+},
+{
+"id": "T27-06",
+"grp": "golden",
+"saved": [
+"utah",
+"byu",
+"indiana",
+"ohio-state",
+"texas-tech",
+"miami",
+"notre-dame",
+"georgia",
+"oregon",
+"not-a-team"
+],
+"expect": {
+"run": {
+"tool": "my_teams_digest",
+"params": {}
+},
+"has": [
+"Showing your first 8 saved teams.",
+"on our reading of the rules.",
+"(model)"
+],
+"lacks": [
+"Oregon ("
+]
+}
+},
+{
+"id": "T27-07",
+"grp": "golden",
+"saved": [
+"notre-dame"
+],
+"expect": {
+"run": {
+"tool": "my_teams_digest",
+"params": {}
+},
+"has": [
+"Notre Dame ("
+],
+"lacks": [
+"Make conference championship"
+]
+}
+},
+{
+"id": "T27-08",
+"grp": "near_miss",
+"text": "How do I add a team to my teams?",
+"expect": {
+"not": [
+"my_teams_digest"
+]
+}
+},
+{
+"id": "T23-10",
+"grp": "routing",
+"text": "What are the CFP rankings?",
+"expect": {
+"tool": "cfp_committee_rankings",
+"params": {},
+"exact": true,
+"text": "KickTip does not have the College Football Playoff selection committee's rankings yet. They appear here once released.",
+"off_tool": "rankings_list"
+}
+},
+{
+"id": "T23-11",
+"grp": "routing",
+"text": "Where did the committee rank Utah?",
+"expect": {
+"tool": "cfp_committee_rankings",
+"params": {
+"team": "utah"
+},
+"exact": true,
+"off_tool": "team_snapshot"
+}
+},
+{
+"id": "T23-12",
+"grp": "unsupported",
+"text": "Is the committee biased?",
+"expect": {
+"not": [
+"cfp_committee_rankings",
+"rankings_list",
+"team_snapshot"
+]
+}
+},
+{
+"id": "T23-13",
+"grp": "routing",
+"text": "Committee top 5",
+"expect": {
+"tool": "cfp_committee_rankings",
+"params": {
+"n": 5
+},
+"exact": true
+}
+},
+{
+"id": "T23-14",
+"grp": "routing",
+"text": "AP top 25",
+"expect": {
+"tool": "rankings_list",
+"params": {
+"list": "ap",
+"n": 25
+}
+}
+},
+{
+"id": "T23-15",
+"grp": "routing",
+"text": "Who is in the playoff?",
+"expect": {
+"tool": "playoff_field",
+"params": {}
+}
+},
+{
+"id": "T23-16",
+"grp": "golden",
+"file": "fixtures/cfp-rankings-2025-w16.json",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {}
+},
+"rows": 12,
+"check": "fixture_match",
+"has": [
+"The College Football Playoff selection committee's rankings, top 12.",
+"Source: ESPN. The committee's order and KickTip's order are separate."
+]
+}
+},
+{
+"id": "T23-17",
+"grp": "golden",
+"file": "fixtures/cfp-rankings-2025-w16.json",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {
+"team": "indiana"
+}
+},
+"has": [
+"The committee ranked Indiana No. 1 (13-0). KickTip rank: No. ",
+"Last release: No. 2."
+]
+}
+},
+{
+"id": "T23-18",
+"grp": "golden",
+"file": "fixtures/cfp-rankings-2025-w16.json",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {
+"team": "kansas",
+"n": 25
+}
+},
+"has": [
+"is not in the committee's top 25. KickTip rank: No. "
+]
+}
+},
+{
+"id": "T23-19",
+"grp": "routing",
+"text": "Did Indiana move up in the committee's rankings?",
+"expect": {
+"tool": "cfp_committee_rankings",
+"params": {
+"team": "indiana"
+},
+"exact": true
+}
+},
+{
+"id": "T23-20",
+"grp": "routing",
+"text": "Committee top 40",
+"expect": {
+"tool": "cfp_committee_rankings",
+"params": {
+"n": 25
+},
+"exact": true
+}
+},
+{
+"id": "T23-21",
+"grp": "unsupported",
+"text": "Why did the committee drop Utah?",
+"expect": {
+"not": [
+"cfp_committee_rankings"
+]
+}
+},
+{
+"id": "T23-22",
+"grp": "near_miss",
+"text": "Who would the committee seed first?",
+"expect": {
+"not": [
+"cfp_committee_rankings"
+]
+}
+},
+{
+"id": "T23-23",
+"grp": "golden",
+"file": "fixtures/cfp-rankings-2025-w16.json",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {
+"n": 5
+}
+},
+"rows": 5
+}
+},
+{
+"id": "T23-24",
+"grp": "golden",
+"file": "fixtures/cfp-rankings-stale-w8.json",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {}
+},
+"rows": 12,
+"has": [
+"From the committee's week 8 release."
+]
+}
+},
+{
+"id": "T23-25",
+"grp": "golden",
+"expect": {
+"run": {
+"tool": "cfp_committee_rankings",
+"params": {
+"team": "utah"
+}
+},
+"has": [
+"KickTip does not have the College Football Playoff selection committee's rankings yet."
+],
+"lacks": [
+"Source: ESPN"
+],
+"rows": 0
+}
+}
+]
+}

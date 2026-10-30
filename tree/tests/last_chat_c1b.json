@@ -1,0 +1,378 @@
+{
+ "failures": [],
+ "checks": [
+  [
+   "fix 3: no 'proprietary' or third-party rating names in the chat copy (chat.js/css, worker, answer.js, scenario.js)",
+   true,
+   "{}"
+  ],
+  [
+   "fix 3: tiebreak footer sentence is the approved text",
+   true,
+   ""
+  ],
+  [
+   "fix 2: title-not-supported body is the approved text",
+   true,
+   ""
+  ],
+  [
+   "fix 3/5: the method page's Ask KickTip section has no proprietary/MSM wording",
+   true,
+   ""
+  ],
+  [
+   "fix 5: every page and script mentions MSM exactly as often as rev2b does (the build adds none; rev2b's own method/playoff sentences about the rating are untouched)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 5: the model control offers only blend, elo, eff: no 'msm' in kt.js and none of the chat's own files",
+   true,
+   ""
+  ],
+  [
+   "fix 5: no MSM chat data shipped (only blend, elo, eff bundles and shards)",
+   true,
+   ""
+  ],
+  [
+   "fix 1: example questions use plural verbs with plural full names ('What if Utah Utes lose to Houston?') and singular verbs otherwise: 4 pages, 3 plural / 0 singular names seen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 1: the Utah team page's one-game example reads 'What if Utah Utes lose to ...?'",
+   true,
+   "One gameWhat if Utah Utes lose to Houston?"
+  ],
+  [
+   "fix 2: title-not-supported state shows the approved body",
+   true,
+   "What if Utah Utes win the Big 12??Not supported yetConference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beats another in a regular-season game.What if Utah Utes lose to Houston?What if Utah Utes lose to Houston and Arizona beats Texas Tech?"
+  ],
+  [
+   "fix 3: answer footer has the approved tiebreak sentence",
+   true,
+   "wo (random sampling).Conference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.Games not in the scenario play out as simulated.Run again (new random sample)Calculated in your browser from public model data. Your question is not sent to any server.Full disclaimer \u00b7 Method"
+  ],
+  [
+   "fix 1: the chip reads 'Houston beats Utah Utes'-style, not a verb mismatch",
+   true,
+   "What if Utah Utes lose to Houston?Simulation analysis, not betting adviceHouston beats Utah (in progress)\u00d7+ Add another gameHoustonOutcomeBeforeAfterChangeReach conference title game40.1%68.4%\u25b2 +28.3 "
+  ],
+  [
+   "fix 4: when the run is cut to 4 chunks the answer says '4,000 simulated seasons' and never 10,000",
+   true,
+   "4,000 simulated seasons, as of"
+  ],
+  [
+   "fix 4: no 10,000 anywhere in the answer card",
+   true,
+   ""
+  ],
+  [
+   "fix 4: need answer: '4,000 simulated seasons for the chance right now, 6,000 for each game result in the table'",
+   true,
+   "ance of this outcome, largest swing first. Each number comes from rerunning the full model with that single game decided; other games play out as simulated.Run again (new random sample)Calculated in your browser from public model data. Your question is not sent to any server.Full disclaimer \u00b7 Method"
+  ],
+  [
+   "fix 4: normal run reports a whole number of 1,000-season chunks between 4,000 and 10,000 (got 10,000)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @320: scrolled to the bottom, the pill covers no footer link or line (pill top 504px, last footer line bottom 473px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @320: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @320: scrolled to the bottom, the pill covers no footer link or line (pill top 504px, last footer line bottom 473px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @320: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @320: scrolled to the bottom, the pill covers no footer link or line (pill top 504px, last footer line bottom 472px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @320: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @390: scrolled to the bottom, the pill covers no footer link or line (pill top 780px, last footer line bottom 749px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @390: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @390: scrolled to the bottom, the pill covers no footer link or line (pill top 780px, last footer line bottom 749px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @390: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @390: scrolled to the bottom, the pill covers no footer link or line (pill top 780px, last footer line bottom 748px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @390: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @1280: scrolled to the bottom, the pill covers no footer link or line (pill top 728px, last footer line bottom 696px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @1280: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @1280: scrolled to the bottom, the pill covers no footer link or line (pill top 728px, last footer line bottom 696px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @1280: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @1280: scrolled to the bottom, the pill covers no footer link or line (pill top 728px, last footer line bottom 696px)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @1280: the page is still scrollable to the very end (document bottom reached)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @320x568: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @320x568: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /team/utah/ @320x568: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /team/utah/ @320x640: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /team/utah/ @320x640: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /team/utah/ @320x640: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x568: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x568: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x568: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x640: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x640: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /conference/big-12/ @320x640: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /playoff/ @320x568: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @320x568: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /playoff/ @320x568: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /playoff/ @320x640: model controls present (4)",
+   true,
+   ""
+  ],
+  [
+   "fix 6: /playoff/ @320x640: pill never covers a model control when it is scrolled to the middle of the screen",
+   true,
+   "[]"
+  ],
+  [
+   "fix 6: /playoff/ @320x640: pill does not cover a model control at the top of the page (first screen)",
+   true,
+   "[]"
+  ],
+  [
+   "fix 7 @320: sheet open: pill aria-expanded=true and focus inside the sheet",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @320: Esc closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @320: the close button closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @320: Esc after an answer closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @320: reopening the sheet after an answer, then Tab, then Esc: focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @390: sheet open: pill aria-expanded=true and focus inside the sheet",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @390: Esc closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @390: the close button closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @390: Esc after an answer closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @390: reopening the sheet after an answer, then Tab, then Esc: focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @1280: sheet open: pill aria-expanded=true and focus inside the sheet",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @1280: Esc closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @1280: the close button closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @1280: Esc after an answer closes the sheet and focus is back on the pill",
+   true,
+   ""
+  ],
+  [
+   "fix 7 @1280: reopening the sheet after an answer, then Tab, then Esc: focus is back on the pill",
+   true,
+   ""
+  ]
+ ],
+ "model_overlap_at_top": [
+  [
+   "/team/utah/",
+   320,
+   568,
+   []
+  ],
+  [
+   "/team/utah/",
+   320,
+   640,
+   []
+  ],
+  [
+   "/conference/big-12/",
+   320,
+   568,
+   []
+  ],
+  [
+   "/conference/big-12/",
+   320,
+   640,
+   []
+  ],
+  [
+   "/playoff/",
+   320,
+   568,
+   []
+  ],
+  [
+   "/playoff/",
+   320,
+   640,
+   []
+  ]
+ ]
+}

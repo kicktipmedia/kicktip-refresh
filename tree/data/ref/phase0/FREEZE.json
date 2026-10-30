@@ -1,0 +1,22 @@
+{
+ "data/store/prior/games_2021.json": "1dc3cfcc3f433b76d1026a98dc8f1c46e913ed0455fa89a33d5903bc34043b98",
+ "data/store/prior/games_2022.json": "e9eba8615e70f8fff902c279ad6f13066639c6917142f665c8389658f772e51f",
+ "data/store/prior/games_2023.json": "0b5ab9805e616101a10b9d9527f5f3f2f45059d8368fcbc954ec71f52ef8395a",
+ "data/store/prior/games_2024.json": "17c7373769eec1ffe4eb0f73baca58e45f0b1c3baae057dda82cd8fc236f2c8b",
+ "data/store/prior/games_2025.json": "3fcbb0ecc5baf53344e7ee8c4bfeddf8a949d9ee7d5bb9f17c54910e39227af1",
+ "data/store/games_rated.json": "3b0dbec839993207a1dfadd2cb75dd3eaa45c37f38f8600ee762fcc977ef7472",
+ "data/store/schedule.json": "97ec7d6809b722235a55af20a094aea7fcd79db01e3bef380f8a987ed19b79fd",
+ "data/ref/conf_2026.json": "fb34527f6b650c1bb8ae3d61697c96ce600d4cd415e4bab4745a9cc04a3fbbff",
+ "src/ratings.py": "c4876524dbfc0d05e8c50c449331394e5c0d233e2513683149e7e9bef1aa28f5",
+ "data/store/prior/teams_2021.json": "935ba269f89d3bf6f416892e8dbfb6255effe426e30350294af4f330f6b1c096",
+ "data/store/prior/teams_2022.json": "54b7b45efec91d7717dc3128719051aa9c5d395562fb61a43517e0c32fcc981b",
+ "data/store/prior/teams_2023.json": "4002140427982503e7ff9368c3d9f7809bcc8002b107d18d890b3b01580f6e03",
+ "data/store/prior/teams_2024.json": "494cd8c385d2c7bbdc8dd3e7b98d7f058202161107b787b141b2f783c519179d",
+ "data/store/prior/teams_2025.json": "59fb9429e9ddcb81d5639f9c7bf89964d2feb00a95988b4d9e850baa9a8a1df1",
+ "data/store/prior/cfp_2021.json": "827164e93435634132605da5034a0c2952b36a7e9312a04cd8a27a84ae6b29db",
+ "data/store/prior/cfp_2022.json": "827164e93435634132605da5034a0c2952b36a7e9312a04cd8a27a84ae6b29db",
+ "data/store/prior/cfp_2023.json": "827164e93435634132605da5034a0c2952b36a7e9312a04cd8a27a84ae6b29db",
+ "data/store/prior/cfp_2024.json": "b0755bee060084c479f6558759525aa7cb03e07c963c3dcb042b6a0a2f61a42c",
+ "data/store/prior/cfp_2025.json": "9f1adba782c5e42bd46a13d310ce6bc6a7daae5c9f213ed87aa46f8ee71f3139",
+ "data/cache/prior/ (directory)": "8b90942d7e3d560a3a28443f45b6b3ec8558d70e0c5eb775c112cfe70b9c87bc"
+}

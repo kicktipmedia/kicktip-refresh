@@ -1,0 +1,830 @@
+{
+"UTSA Roadrunners": {
+"conf": "American",
+"loc": "UTSA",
+"sd": "UTSA",
+"id": "2636"
+},
+"Memphis Tigers": {
+"conf": "American",
+"loc": "Memphis",
+"sd": "Memphis",
+"id": "235"
+},
+"South Florida Bulls": {
+"conf": "American",
+"loc": "South Florida",
+"sd": "South Florida",
+"id": "58"
+},
+"North Texas Mean Green": {
+"conf": "American",
+"loc": "North Texas",
+"sd": "North Texas",
+"id": "249"
+},
+"Army Black Knights": {
+"conf": "American",
+"loc": "Army",
+"sd": "Army",
+"id": "349"
+},
+"Florida Atlantic Owls": {
+"conf": "American",
+"loc": "Florida Atlantic",
+"sd": "FAU",
+"id": "2226"
+},
+"UAB Blazers": {
+"conf": "American",
+"loc": "UAB",
+"sd": "UAB",
+"id": "5"
+},
+"Tulsa Golden Hurricane": {
+"conf": "American",
+"loc": "Tulsa",
+"sd": "Tulsa",
+"id": "202"
+},
+"Tulane Green Wave": {
+"conf": "American",
+"loc": "Tulane",
+"sd": "Tulane",
+"id": "2655"
+},
+"East Carolina Pirates": {
+"conf": "American",
+"loc": "East Carolina",
+"sd": "East Carolina",
+"id": "151"
+},
+"Navy Midshipmen": {
+"conf": "American",
+"loc": "Navy",
+"sd": "Navy",
+"id": "2426"
+},
+"Temple Owls": {
+"conf": "American",
+"loc": "Temple",
+"sd": "Temple",
+"id": "218"
+},
+"Charlotte 49ers": {
+"conf": "American",
+"loc": "Charlotte",
+"sd": "Charlotte",
+"id": "2429"
+},
+"Rice Owls": {
+"conf": "American",
+"loc": "Rice",
+"sd": "Rice",
+"id": "242"
+},
+"Miami Hurricanes": {
+"conf": "acc",
+"loc": "Miami",
+"sd": "Miami",
+"id": "2390"
+},
+"Wake Forest Demon Deacons": {
+"conf": "acc",
+"loc": "Wake Forest",
+"sd": "Wake Forest",
+"id": "154"
+},
+"SMU Mustangs": {
+"conf": "acc",
+"loc": "SMU",
+"sd": "SMU",
+"id": "2567"
+},
+"Pittsburgh Panthers": {
+"conf": "acc",
+"loc": "Pittsburgh",
+"sd": "Pitt",
+"id": "221"
+},
+"Virginia Tech Hokies": {
+"conf": "acc",
+"loc": "Virginia Tech",
+"sd": "Virginia Tech",
+"id": "259"
+},
+"Clemson Tigers": {
+"conf": "acc",
+"loc": "Clemson",
+"sd": "Clemson",
+"id": "228"
+},
+"North Carolina Tar Heels": {
+"conf": "acc",
+"loc": "North Carolina",
+"sd": "North Carolina",
+"id": "153"
+},
+"Duke Blue Devils": {
+"conf": "acc",
+"loc": "Duke",
+"sd": "Duke",
+"id": "150"
+},
+"Louisville Cardinals": {
+"conf": "acc",
+"loc": "Louisville",
+"sd": "Louisville",
+"id": "97"
+},
+"Virginia Cavaliers": {
+"conf": "acc",
+"loc": "Virginia",
+"sd": "Virginia",
+"id": "258"
+},
+"Boston College Eagles": {
+"conf": "acc",
+"loc": "Boston College",
+"sd": "Boston College",
+"id": "103"
+},
+"NC State Wolfpack": {
+"conf": "acc",
+"loc": "NC State",
+"sd": "NC State",
+"id": "152"
+},
+"California Golden Bears": {
+"conf": "acc",
+"loc": "California",
+"sd": "California",
+"id": "25"
+},
+"Florida State Seminoles": {
+"conf": "acc",
+"loc": "Florida State",
+"sd": "Florida St",
+"id": "52"
+},
+"Stanford Cardinal": {
+"conf": "acc",
+"loc": "Stanford",
+"sd": "Stanford",
+"id": "24"
+},
+"Georgia Tech Yellow Jackets": {
+"conf": "acc",
+"loc": "Georgia Tech",
+"sd": "Georgia Tech",
+"id": "59"
+},
+"Syracuse Orange": {
+"conf": "acc",
+"loc": "Syracuse",
+"sd": "Syracuse",
+"id": "183"
+},
+"BYU Cougars": {
+"conf": "big12",
+"loc": "BYU",
+"sd": "BYU",
+"id": "252"
+},
+"Texas Tech Red Raiders": {
+"conf": "big12",
+"loc": "Texas Tech",
+"sd": "Texas Tech",
+"id": "2641"
+},
+"Utah Utes": {
+"conf": "big12",
+"loc": "Utah",
+"sd": "Utah",
+"id": "254"
+},
+"Houston Cougars": {
+"conf": "big12",
+"loc": "Houston",
+"sd": "Houston",
+"id": "248"
+},
+"Arizona Wildcats": {
+"conf": "big12",
+"loc": "Arizona",
+"sd": "Arizona",
+"id": "12"
+},
+"Baylor Bears": {
+"conf": "big12",
+"loc": "Baylor",
+"sd": "Baylor",
+"id": "239"
+},
+"Oklahoma State Cowboys": {
+"conf": "big12",
+"loc": "Oklahoma State",
+"sd": "Oklahoma St",
+"id": "197"
+},
+"Cincinnati Bearcats": {
+"conf": "big12",
+"loc": "Cincinnati",
+"sd": "Cincinnati",
+"id": "2132"
+},
+"Kansas State Wildcats": {
+"conf": "big12",
+"loc": "Kansas State",
+"sd": "Kansas St",
+"id": "2306"
+},
+"West Virginia Mountaineers": {
+"conf": "big12",
+"loc": "West Virginia",
+"sd": "West Virginia",
+"id": "277"
+},
+"UCF Knights": {
+"conf": "big12",
+"loc": "UCF",
+"sd": "UCF",
+"id": "2116"
+},
+"Arizona State Sun Devils": {
+"conf": "big12",
+"loc": "Arizona State",
+"sd": "Arizona St",
+"id": "9"
+},
+"Iowa State Cyclones": {
+"conf": "big12",
+"loc": "Iowa State",
+"sd": "Iowa State",
+"id": "66"
+},
+"TCU Horned Frogs": {
+"conf": "big12",
+"loc": "TCU",
+"sd": "TCU",
+"id": "2628"
+},
+"Colorado Buffaloes": {
+"conf": "big12",
+"loc": "Colorado",
+"sd": "Colorado",
+"id": "38"
+},
+"Kansas Jayhawks": {
+"conf": "big12",
+"loc": "Kansas",
+"sd": "Kansas",
+"id": "2305"
+},
+"UCLA Bruins": {
+"conf": "big10",
+"loc": "UCLA",
+"sd": "UCLA",
+"id": "26"
+},
+"Ohio State Buckeyes": {
+"conf": "big10",
+"loc": "Ohio State",
+"sd": "Ohio State",
+"id": "194"
+},
+"Indiana Hoosiers": {
+"conf": "big10",
+"loc": "Indiana",
+"sd": "Indiana",
+"id": "84"
+},
+"USC Trojans": {
+"conf": "big10",
+"loc": "USC",
+"sd": "USC",
+"id": "30"
+},
+"Iowa Hawkeyes": {
+"conf": "big10",
+"loc": "Iowa",
+"sd": "Iowa",
+"id": "2294"
+},
+"Northwestern Wildcats": {
+"conf": "big10",
+"loc": "Northwestern",
+"sd": "Northwestern",
+"id": "77"
+},
+"Nebraska Cornhuskers": {
+"conf": "big10",
+"loc": "Nebraska",
+"sd": "Nebraska",
+"id": "158"
+},
+"Minnesota Golden Gophers": {
+"conf": "big10",
+"loc": "Minnesota",
+"sd": "Minnesota",
+"id": "135"
+},
+"Oregon Ducks": {
+"conf": "big10",
+"loc": "Oregon",
+"sd": "Oregon",
+"id": "2483"
+},
+"Wisconsin Badgers": {
+"conf": "big10",
+"loc": "Wisconsin",
+"sd": "Wisconsin",
+"id": "275"
+},
+"Michigan Wolverines": {
+"conf": "big10",
+"loc": "Michigan",
+"sd": "Michigan",
+"id": "130"
+},
+"Washington Huskies": {
+"conf": "big10",
+"loc": "Washington",
+"sd": "Washington",
+"id": "264"
+},
+"Illinois Fighting Illini": {
+"conf": "big10",
+"loc": "Illinois",
+"sd": "Illinois",
+"id": "356"
+},
+"Purdue Boilermakers": {
+"conf": "big10",
+"loc": "Purdue",
+"sd": "Purdue",
+"id": "2509"
+},
+"Penn State Nittany Lions": {
+"conf": "big10",
+"loc": "Penn State",
+"sd": "Penn State",
+"id": "213"
+},
+"Rutgers Scarlet Knights": {
+"conf": "big10",
+"loc": "Rutgers",
+"sd": "Rutgers",
+"id": "164"
+},
+"Maryland Terrapins": {
+"conf": "big10",
+"loc": "Maryland",
+"sd": "Maryland",
+"id": "120"
+},
+"Michigan State Spartans": {
+"conf": "big10",
+"loc": "Michigan State",
+"sd": "Michigan St",
+"id": "127"
+},
+"Liberty Flames": {
+"conf": "usa",
+"loc": "Liberty",
+"sd": "Liberty",
+"id": "2335"
+},
+"Jacksonville State Gamecocks": {
+"conf": "usa",
+"loc": "Jacksonville State",
+"sd": "Jax State",
+"id": "55"
+},
+"Middle Tennessee Blue Raiders": {
+"conf": "usa",
+"loc": "Middle Tennessee",
+"sd": "MTSU",
+"id": "2393"
+},
+"New Mexico State Aggies": {
+"conf": "usa",
+"loc": "New Mexico State",
+"sd": "New Mexico St",
+"id": "166"
+},
+"Western Kentucky Hilltoppers": {
+"conf": "usa",
+"loc": "Western Kentucky",
+"sd": "Western KY",
+"id": "98"
+},
+"Delaware Blue Hens": {
+"conf": "usa",
+"loc": "Delaware",
+"sd": "Delaware",
+"id": "48"
+},
+"Florida International Panthers": {
+"conf": "usa",
+"loc": "Florida International",
+"sd": "FIU",
+"id": "2229"
+},
+"Missouri State Bears": {
+"conf": "usa",
+"loc": "Missouri State",
+"sd": "Missouri St",
+"id": "2623"
+},
+"Kennesaw State Owls": {
+"conf": "usa",
+"loc": "Kennesaw State",
+"sd": "Kennesaw St",
+"id": "338"
+},
+"Sam Houston Bearkats": {
+"conf": "usa",
+"loc": "Sam Houston",
+"sd": "Sam Houston",
+"id": "2534"
+},
+"Notre Dame Fighting Irish": {
+"conf": "ind",
+"loc": "Notre Dame",
+"sd": "Notre Dame",
+"id": "87"
+},
+"UConn Huskies": {
+"conf": "ind",
+"loc": "UConn",
+"sd": "UConn",
+"id": "41"
+},
+"Ohio Bobcats": {
+"conf": "midam",
+"loc": "Ohio",
+"sd": "Ohio",
+"id": "195"
+},
+"Western Michigan Broncos": {
+"conf": "midam",
+"loc": "Western Michigan",
+"sd": "W Michigan",
+"id": "2711"
+},
+"Toledo Rockets": {
+"conf": "midam",
+"loc": "Toledo",
+"sd": "Toledo",
+"id": "2649"
+},
+"Buffalo Bulls": {
+"conf": "midam",
+"loc": "Buffalo",
+"sd": "Buffalo",
+"id": "2084"
+},
+"Miami (OH) RedHawks": {
+"conf": "midam",
+"loc": "Miami (OH)",
+"sd": "Miami OH",
+"id": "193"
+},
+"Massachusetts Minutemen": {
+"conf": "midam",
+"loc": "Massachusetts",
+"sd": "UMass",
+"id": "113"
+},
+"Eastern Michigan Eagles": {
+"conf": "midam",
+"loc": "Eastern Michigan",
+"sd": "E Michigan",
+"id": "2199"
+},
+"Central Michigan Chippewas": {
+"conf": "midam",
+"loc": "Central Michigan",
+"sd": "C Michigan",
+"id": "2117"
+},
+"Bowling Green Falcons": {
+"conf": "midam",
+"loc": "Bowling Green",
+"sd": "Bowling Green",
+"id": "189"
+},
+"Kent State Golden Flashes": {
+"conf": "midam",
+"loc": "Kent State",
+"sd": "Kent State",
+"id": "2309"
+},
+"Ball State Cardinals": {
+"conf": "midam",
+"loc": "Ball State",
+"sd": "Ball State",
+"id": "2050"
+},
+"Akron Zips": {
+"conf": "midam",
+"loc": "Akron",
+"sd": "Akron",
+"id": "2006"
+},
+"Sacramento State Hornets": {
+"conf": "midam",
+"loc": "Sacramento State",
+"sd": "Sacramento St",
+"id": "16"
+},
+"North Dakota State Bison": {
+"conf": "mwest",
+"loc": "North Dakota State",
+"sd": "N Dakota St",
+"id": "2449"
+},
+"New Mexico Lobos": {
+"conf": "mwest",
+"loc": "New Mexico",
+"sd": "New Mexico",
+"id": "167"
+},
+"Air Force Falcons": {
+"conf": "mwest",
+"loc": "Air Force",
+"sd": "Air Force",
+"id": "2005"
+},
+"Wyoming Cowboys": {
+"conf": "mwest",
+"loc": "Wyoming",
+"sd": "Wyoming",
+"id": "2751"
+},
+"San Jos\u00e9 State Spartans": {
+"conf": "mwest",
+"loc": "San Jos\u00e9 State",
+"sd": "San Jos\u00e9 St",
+"id": "23"
+},
+"UNLV Rebels": {
+"conf": "mwest",
+"loc": "UNLV",
+"sd": "UNLV",
+"id": "2439"
+},
+"Nevada Wolf Pack": {
+"conf": "mwest",
+"loc": "Nevada",
+"sd": "Nevada",
+"id": "2440"
+},
+"UTEP Miners": {
+"conf": "mwest",
+"loc": "UTEP",
+"sd": "UTEP",
+"id": "2638"
+},
+"Hawai'i Rainbow Warriors": {
+"conf": "mwest",
+"loc": "Hawai'i",
+"sd": "Hawai'i",
+"id": "62"
+},
+"Northern Illinois Huskies": {
+"conf": "mwest",
+"loc": "Northern Illinois",
+"sd": "N Illinois",
+"id": "2459"
+},
+"Boise State Broncos": {
+"conf": "pac12",
+"loc": "Boise State",
+"sd": "Boise St",
+"id": "68"
+},
+"Oregon State Beavers": {
+"conf": "pac12",
+"loc": "Oregon State",
+"sd": "Oregon St",
+"id": "204"
+},
+"Fresno State Bulldogs": {
+"conf": "pac12",
+"loc": "Fresno State",
+"sd": "Fresno St",
+"id": "278"
+},
+"Texas State Bobcats": {
+"conf": "pac12",
+"loc": "Texas State",
+"sd": "Texas St",
+"id": "326"
+},
+"San Diego State Aztecs": {
+"conf": "pac12",
+"loc": "San Diego State",
+"sd": "San Diego St",
+"id": "21"
+},
+"Utah State Aggies": {
+"conf": "pac12",
+"loc": "Utah State",
+"sd": "Utah State",
+"id": "328"
+},
+"Colorado State Rams": {
+"conf": "pac12",
+"loc": "Colorado State",
+"sd": "Colorado St",
+"id": "36"
+},
+"Washington State Cougars": {
+"conf": "pac12",
+"loc": "Washington State",
+"sd": "Washington St",
+"id": "265"
+},
+"Georgia Bulldogs": {
+"conf": "sec",
+"loc": "Georgia",
+"sd": "Georgia",
+"id": "61"
+},
+"Kentucky Wildcats": {
+"conf": "sec",
+"loc": "Kentucky",
+"sd": "Kentucky",
+"id": "96"
+},
+"Tennessee Volunteers": {
+"conf": "sec",
+"loc": "Tennessee",
+"sd": "Tennessee",
+"id": "2633"
+},
+"Ole Miss Rebels": {
+"conf": "sec",
+"loc": "Ole Miss",
+"sd": "Ole Miss",
+"id": "145"
+},
+"Alabama Crimson Tide": {
+"conf": "sec",
+"loc": "Alabama",
+"sd": "Alabama",
+"id": "333"
+},
+"Florida Gators": {
+"conf": "sec",
+"loc": "Florida",
+"sd": "Florida",
+"id": "57"
+},
+"LSU Tigers": {
+"conf": "sec",
+"loc": "LSU",
+"sd": "LSU",
+"id": "99"
+},
+"Missouri Tigers": {
+"conf": "sec",
+"loc": "Missouri",
+"sd": "Missouri",
+"id": "142"
+},
+"Mississippi State Bulldogs": {
+"conf": "sec",
+"loc": "Mississippi State",
+"sd": "Mississippi St",
+"id": "344"
+},
+"Auburn Tigers": {
+"conf": "sec",
+"loc": "Auburn",
+"sd": "Auburn",
+"id": "2"
+},
+"Texas Longhorns": {
+"conf": "sec",
+"loc": "Texas",
+"sd": "Texas",
+"id": "251"
+},
+"Texas A&M Aggies": {
+"conf": "sec",
+"loc": "Texas A&M",
+"sd": "Texas A&M",
+"id": "245"
+},
+"Oklahoma Sooners": {
+"conf": "sec",
+"loc": "Oklahoma",
+"sd": "Oklahoma",
+"id": "201"
+},
+"South Carolina Gamecocks": {
+"conf": "sec",
+"loc": "South Carolina",
+"sd": "South Carolina",
+"id": "2579"
+},
+"Arkansas Razorbacks": {
+"conf": "sec",
+"loc": "Arkansas",
+"sd": "Arkansas",
+"id": "8"
+},
+"Vanderbilt Commodores": {
+"conf": "sec",
+"loc": "Vanderbilt",
+"sd": "Vanderbilt",
+"id": "238"
+},
+"James Madison Dukes": {
+"conf": "belt",
+"loc": "James Madison",
+"sd": "James Madison",
+"id": "256"
+},
+"App State Mountaineers": {
+"conf": "belt",
+"loc": "App State",
+"sd": "App State",
+"id": "2026"
+},
+"Georgia State Panthers": {
+"conf": "belt",
+"loc": "Georgia State",
+"sd": "Georgia St",
+"id": "2247"
+},
+"Marshall Thundering Herd": {
+"conf": "belt",
+"loc": "Marshall",
+"sd": "Marshall",
+"id": "276"
+},
+"Georgia Southern Eagles": {
+"conf": "belt",
+"loc": "Georgia Southern",
+"sd": "GA Southern",
+"id": "290"
+},
+"Coastal Carolina Chanticleers": {
+"conf": "belt",
+"loc": "Coastal Carolina",
+"sd": "Coastal",
+"id": "324"
+},
+"Old Dominion Monarchs": {
+"conf": "belt",
+"loc": "Old Dominion",
+"sd": "Old Dominion",
+"id": "295"
+},
+"Louisiana Ragin' Cajuns": {
+"conf": "belt",
+"loc": "Louisiana",
+"sd": "Louisiana",
+"id": "309"
+},
+"Louisiana Tech Bulldogs": {
+"conf": "belt",
+"loc": "Louisiana Tech",
+"sd": "Louisiana Tech",
+"id": "2348"
+},
+"South Alabama Jaguars": {
+"conf": "belt",
+"loc": "South Alabama",
+"sd": "South Alabama",
+"id": "6"
+},
+"Troy Trojans": {
+"conf": "belt",
+"loc": "Troy",
+"sd": "Troy",
+"id": "2653"
+},
+"Arkansas State Red Wolves": {
+"conf": "belt",
+"loc": "Arkansas State",
+"sd": "Arkansas St",
+"id": "2032"
+},
+"Southern Miss Golden Eagles": {
+"conf": "belt",
+"loc": "Southern Miss",
+"sd": "Southern Miss",
+"id": "2572"
+},
+"UL Monroe Warhawks": {
+"conf": "belt",
+"loc": "UL Monroe",
+"sd": "UL Monroe",
+"id": "2433"
+}
+}

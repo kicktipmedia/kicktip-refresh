@@ -1,0 +1,10 @@
+{
+ "note": "Frozen Phase 0 tuning (PROTOCOL.md sha12 23e29453bcd3, tuning.json sha12 d182828bfe3f; tuned on dev season 2022 only). Used by src/calibrate.py.",
+ "elo": {
+  "K": 0.03,
+  "hfa": 0.25,
+  "rho": 0.6,
+  "mov": true
+ },
+ "alpha": 30
+}

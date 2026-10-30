@@ -1,0 +1,640 @@
+{
+ "failures": [],
+ "checks": [
+  [
+   "home: no gate/overlay/modal in the DOM",
+   true,
+   ""
+  ],
+  [
+   "home: no visible dialog on arrival",
+   true,
+   ""
+  ],
+  [
+   "home: pred data fetched on arrival (no click)",
+   true,
+   "['pred-teams.json']"
+  ],
+  [
+   "home: numbers visible on arrival",
+   true,
+   ""
+  ],
+  [
+   "home: no 'Locked'/'unlock'/'accept the disclaimer' text anywhere visible",
+   true,
+   ""
+  ],
+  [
+   "home: no data-gate / data-gated attribute",
+   true,
+   ""
+  ],
+  [
+   "home: banner is the first thing in <body> after the skip link, above the header",
+   true,
+   ""
+  ],
+  [
+   "home: simulator, chat worker, sim-bundle, what-if shards and Google script NOT fetched on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "home: banner text equals src/terms_copy.py BANNER_TEXT",
+   true,
+   "KickTip is not a betting site. Information only; make no decision based on this material."
+  ],
+  [
+   "home: no storage writes on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "home: no console errors",
+   true,
+   "[]"
+  ],
+  [
+   "home: no off-origin requests",
+   true,
+   "[]"
+  ],
+  [
+   "home: no 4xx/5xx",
+   true,
+   "[]"
+  ],
+  [
+   "home: reload shows numbers again, still no dialog",
+   true,
+   ""
+  ],
+  [
+   "conference: no gate/overlay/modal in the DOM",
+   true,
+   ""
+  ],
+  [
+   "conference: no visible dialog on arrival",
+   true,
+   ""
+  ],
+  [
+   "conference: pred data fetched on arrival (no click)",
+   true,
+   "['pred-teams.json', 'pred-games.json', 'pred-lines.json']"
+  ],
+  [
+   "conference: numbers visible on arrival",
+   true,
+   ""
+  ],
+  [
+   "conference: no 'Locked'/'unlock'/'accept the disclaimer' text anywhere visible",
+   true,
+   ""
+  ],
+  [
+   "conference: no data-gate / data-gated attribute",
+   true,
+   ""
+  ],
+  [
+   "conference: banner is the first thing in <body> after the skip link, above the header",
+   true,
+   ""
+  ],
+  [
+   "conference: simulator, chat worker, sim-bundle, what-if shards and Google script NOT fetched on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "conference: banner text equals src/terms_copy.py BANNER_TEXT",
+   true,
+   "KickTip is not a betting site. Information only; make no decision based on this material."
+  ],
+  [
+   "conference: no storage writes on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "conference: no console errors",
+   true,
+   "[]"
+  ],
+  [
+   "conference: no off-origin requests",
+   true,
+   "[]"
+  ],
+  [
+   "conference: no 4xx/5xx",
+   true,
+   "[]"
+  ],
+  [
+   "conference: reload shows numbers again, still no dialog",
+   true,
+   ""
+  ],
+  [
+   "team: no gate/overlay/modal in the DOM",
+   true,
+   ""
+  ],
+  [
+   "team: no visible dialog on arrival",
+   true,
+   ""
+  ],
+  [
+   "team: pred data fetched on arrival (no click)",
+   true,
+   "['pred-teams.json', 'pred-games.json', 'pred-paths.json', 'pred-lines.json']"
+  ],
+  [
+   "team: numbers visible on arrival",
+   true,
+   ""
+  ],
+  [
+   "team: no 'Locked'/'unlock'/'accept the disclaimer' text anywhere visible",
+   true,
+   ""
+  ],
+  [
+   "team: no data-gate / data-gated attribute",
+   true,
+   ""
+  ],
+  [
+   "team: banner is the first thing in <body> after the skip link, above the header",
+   true,
+   ""
+  ],
+  [
+   "team: simulator, chat worker, sim-bundle, what-if shards and Google script NOT fetched on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "team: banner text equals src/terms_copy.py BANNER_TEXT",
+   true,
+   "KickTip is not a betting site. Information only; make no decision based on this material."
+  ],
+  [
+   "team: no storage writes on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "team: no console errors",
+   true,
+   "[]"
+  ],
+  [
+   "team: no off-origin requests",
+   true,
+   "[]"
+  ],
+  [
+   "team: no 4xx/5xx",
+   true,
+   "[]"
+  ],
+  [
+   "team: reload shows numbers again, still no dialog",
+   true,
+   ""
+  ],
+  [
+   "playoff: no gate/overlay/modal in the DOM",
+   true,
+   ""
+  ],
+  [
+   "playoff: no visible dialog on arrival",
+   true,
+   ""
+  ],
+  [
+   "playoff: pred data fetched on arrival (no click)",
+   true,
+   "['pred-teams.json']"
+  ],
+  [
+   "playoff: numbers visible on arrival",
+   true,
+   ""
+  ],
+  [
+   "playoff: no 'Locked'/'unlock'/'accept the disclaimer' text anywhere visible",
+   true,
+   ""
+  ],
+  [
+   "playoff: no data-gate / data-gated attribute",
+   true,
+   ""
+  ],
+  [
+   "playoff: banner is the first thing in <body> after the skip link, above the header",
+   true,
+   ""
+  ],
+  [
+   "playoff: simulator, chat worker, sim-bundle, what-if shards and Google script NOT fetched on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "playoff: banner text equals src/terms_copy.py BANNER_TEXT",
+   true,
+   "KickTip is not a betting site. Information only; make no decision based on this material."
+  ],
+  [
+   "playoff: no storage writes on arrival",
+   true,
+   "[]"
+  ],
+  [
+   "playoff: no console errors",
+   true,
+   "[]"
+  ],
+  [
+   "playoff: no off-origin requests",
+   true,
+   "[]"
+  ],
+  [
+   "playoff: no 4xx/5xx",
+   true,
+   "[]"
+  ],
+  [
+   "playoff: reload shows numbers again, still no dialog",
+   true,
+   ""
+  ],
+  [
+   "old kicktip_gate keys present: no overlay, numbers shown, keys untouched, no writes",
+   true,
+   "[]"
+  ],
+  [
+   "Rootables card: button is 'Run Rootables', FULL line is its next sibling (exact text), Full terms links to /disclaimer/",
+   true,
+   "{'lbl': 'Run Rootables', 'ok': True, 'txt': 'By tapping Run, you accept the terms: KickTip is information only, not a betting site, and no decision should be made based on this material. Full terms', 'href': '/disclaimer/', 'rows': 0, 'st': 'idle'}"
+  ],
+  [
+   "Rootables renders nothing before the tap (no rows) and fetches no what-if/sim-bundle/week shard",
+   true,
+   "{'lbl': 'Run Rootables', 'ok': True, 'txt': 'By tapping Run, you accept the terms: KickTip is information only, not a betting site, and no decision should be made based on this material. Full terms', 'href': '/disclaimer/', 'rows': 0, 'st': 'idle'}"
+  ],
+  [
+   "Ask panel open fetches nothing (no simulator, worker, bundle or shards)",
+   true,
+   "[]"
+  ],
+  [
+   "Ask composer: button 'Run' (aria-label Run), ONE FULL line as last child of .cmp under the form, none repeated in the panel",
+   true,
+   "{'ok': True, 'txt': 'By tapping Run, you accept the terms: KickTip is information only, not a betting site, and no decision should be made based on this material. Full terms', 'btn': 'Run', 'al': 'Run', 'n_rn': 1}"
+  ],
+  [
+   "Ask KickTip opens with no gate view, no storage writes",
+   true,
+   "[]"
+  ],
+  [
+   "example card fills the box and focuses it, runs nothing",
+   true,
+   ""
+  ],
+  [
+   "home: no-JS shows no prediction numbers",
+   true,
+   ""
+  ],
+  [
+   "home: no-JS shows the 'turn on JavaScript' note and the banner is in the HTML",
+   true,
+   ""
+  ],
+  [
+   "home: no-JS did not request pred data",
+   true,
+   ""
+  ],
+  [
+   "conference: no-JS shows no prediction numbers",
+   true,
+   ""
+  ],
+  [
+   "conference: no-JS shows the 'turn on JavaScript' note and the banner is in the HTML",
+   true,
+   ""
+  ],
+  [
+   "conference: no-JS did not request pred data",
+   true,
+   ""
+  ],
+  [
+   "team: no-JS shows no prediction numbers",
+   true,
+   ""
+  ],
+  [
+   "team: no-JS shows the 'turn on JavaScript' note and the banner is in the HTML",
+   true,
+   ""
+  ],
+  [
+   "team: no-JS did not request pred data",
+   true,
+   ""
+  ],
+  [
+   "playoff: no-JS shows no prediction numbers",
+   true,
+   ""
+  ],
+  [
+   "playoff: no-JS shows the 'turn on JavaScript' note and the banner is in the HTML",
+   true,
+   ""
+  ],
+  [
+   "playoff: no-JS did not request pred data",
+   true,
+   ""
+  ],
+  [
+   "raw HTML: no prediction numbers in any gated page main",
+   true,
+   "[]"
+  ],
+  [
+   "team page shows a Final label with the score",
+   true,
+   ""
+  ],
+  [
+   "method page has no 'Unverified items' box and no 'prior-year text'",
+   true,
+   ""
+  ],
+  [
+   "no duplicate class attributes",
+   true,
+   ""
+  ],
+  [
+   "no Pick'em / '(1 books)' text in site",
+   true,
+   ""
+  ],
+  [
+   "method page banner does not link to /method/ (no self-link)",
+   true,
+   ""
+  ],
+  [
+   "/data/* answers X-Robots-Tag noindex, nofollow",
+   true,
+   "noindex, nofollow"
+  ],
+  [
+   "method market-line count equals the shipped pred-lines.json (games still to be played that have a line)",
+   true,
+   "Right now that is 58 of the 322 games vs 58/322"
+  ],
+  [
+   "method and disclaimer: no 'gate' or 'must accept first' language; use of the site is acceptance",
+   true,
+   ""
+  ],
+  [
+   "no claim that data files are locked/private",
+   true,
+   ""
+  ],
+  [
+   "Big Ten source carries the automated-readers note",
+   true,
+   ""
+  ],
+  [
+   "no ISO dates in visible text of conference/team/method pages",
+   true,
+   ""
+  ],
+  [
+   "kt.css has no build-tag comments",
+   true,
+   ""
+  ],
+  [
+   "playoff page cites Aug 6 announcement and NCAA.com",
+   true,
+   ""
+  ],
+  [
+   "X-Robots-Tag is a single header on /data/* (value exactly 'noindex, nofollow', one line in _headers)",
+   true,
+   "'noindex, nofollow' / 1 lines"
+  ],
+  [
+   "robots.txt and sitemap.xml carry no internal go-live/launch wording",
+   true,
+   ""
+  ],
+  [
+   "method 'The simulation' count breakdown is consistent: remaining = not yet started + in progress",
+   true,
+   "remaining 322 games (322 not yet started) "
+  ],
+  [
+   "method simulation 'not yet started' equals the market-line denominator and pred-games.json",
+   true,
+   "322 / 322 / 322"
+  ],
+  [
+   "method remaining-games total equals run_meta.remaining_games",
+   true,
+   "322 vs 322"
+  ],
+  [
+   "no page carries a robots meta or the word noindex",
+   true,
+   ""
+  ],
+  [
+   "_headers: exactly one X-Robots-Tag line, and it sits under /data/*",
+   true,
+   ""
+  ],
+  [
+   "pages, assets, robots.txt and sitemap.xml answer no X-Robots-Tag",
+   true,
+   ""
+  ],
+  [
+   "/data/* files answer one X-Robots-Tag 'noindex, nofollow'",
+   true,
+   ""
+  ],
+  [
+   "robots.txt is exactly Allow / + Disallow /data/ + Disallow /api/ + Sitemap line",
+   true,
+   "'User-agent: *\\nAllow: /\\nDisallow: /data/\\nDisallow: /api/\\n\\nSitemap: https://kicktipmedia.com/sitemap.xml\\n'"
+  ],
+  [
+   "sitemap: 166 unique absolute kicktipmedia.com URLs, none under /data/ or /404",
+   true,
+   ""
+  ],
+  [
+   "sitemap: every URL resolves to a built page and every built page except 404 is listed",
+   true,
+   ""
+  ],
+  [
+   "every page: canonical and og:url equal its own sitemap URL; 404 has neither",
+   true,
+   ""
+  ],
+  [
+   "sitemap and robots pass a 200 over HTTP",
+   true,
+   ""
+  ],
+  [
+   "no X/Twitter handle or link, no email address or mailto (except the one approved support@ link on /privacy/), no 'contact' prompt in any shipped text file",
+   true,
+   "[]"
+  ],
+  [
+   "V2 brand files in the build are byte-identical to the package (header, lockup, favicon.ico, all icon/ and social/)",
+   true,
+   "15 files"
+  ],
+  [
+   "no Tag Badge files, no brand guide/manifest/readme/proofs/JARED/-source.jpg in the build",
+   true,
+   ""
+  ],
+  [
+   "no 'Tag Badge' text and no old logo paths in any page",
+   true,
+   ""
+  ],
+  [
+   "header uses the no-MEDIA logo (alt 'KickTip Media'); the MEDIA lockup appears only in the footer, once per page; no lockup in header or hero",
+   true,
+   ""
+  ],
+  [
+   "header logo 40px tall at 1280, native 869x383 (no upscale), link >= 44px, on graphite; footer lockup >= 200px wide on ink",
+   true,
+   "{'ih': 40, 'iw': 90.75, 'ah': 44, 'aw': 90.75, 'nat': [869, 383], 'fw': 220, 'bg': 'rgb(38, 43, 49)', 'fbg': 'rgb(18, 21, 25)'}"
+  ],
+  [
+   "header logo 34px tall at 390, native 869x383 (no upscale), link >= 44px, on graphite; footer lockup >= 200px wide on ink",
+   true,
+   "{'ih': 34, 'iw': 77.140625, 'ah': 44, 'aw': 77.140625, 'nat': [869, 383], 'fw': 220, 'bg': 'rgb(38, 43, 49)', 'fbg': 'rgb(18, 21, 25)'}"
+  ],
+  [
+   "web manifest lists icon-192/512 that exist; head leads with the 32px icon, then favicon.ico; apple-touch 180; OG = V2 social image only",
+   true,
+   ""
+  ],
+  [
+   "OG image is 1200x630 and byte-identical to the package",
+   true,
+   ""
+  ],
+  [
+   "favicon.ico is byte-identical to the package and the root /favicon.ico serves",
+   true,
+   ""
+  ],
+  [
+   "logo lists are generated from the cache index: 138 team ids, 11 conference files, 1 league icon; none missing from the build",
+   true,
+   ""
+  ],
+  [
+   "every 500px logo is a byte-identical copy of the cached ESPN file (138 teams, 11 conferences, league icon)",
+   true,
+   ""
+  ],
+  [
+   "logo files equal Creative's v5c package byte-for-byte where the package has them (90 team files, 35 conf/league files compared)",
+   true,
+   ""
+  ],
+  [
+   "only size changes: 32/ and 64/ folders hold 32x32 / 64x64, 500/ folders hold the untouched 500x500",
+   true,
+   ""
+  ],
+  [
+   "32/64 files are plain LANCZOS downscales of the 500px art (re-derived and compared)",
+   true,
+   ""
+  ],
+  [
+   "no used.json / header-icon.svg shipped; no mockup strings (DO NOT SHIP / MOCKUP / EXAMPLE) in any page, js or css",
+   true,
+   ""
+  ],
+  [
+   "ESPN credit line on EVERY page (footer), including Utah, 404 and disclaimer; logo pages also carry the near-table line (simulator pages show no logos: footer line only)",
+   true,
+   ""
+  ],
+  [
+   "no hotlinking: every img src is same-origin or data:, nothing points at espn.com / a CDN",
+   true,
+   ""
+  ],
+  [
+   "no logos in OG/share/brand files: og:image only points at assets/brand/social; logos folder never referenced by meta/manifest",
+   true,
+   ""
+  ],
+  [
+   "logo tile style: white square, 1px #7A848E border, object-fit contain, alt='' and aria-hidden on every tile",
+   true,
+   "{'bg': 'rgb(255, 255, 255)', 'bw': '1px', 'bc': 'rgb(122, 132, 142)', 'of': 'contain', 'alt': '', 'ah': 'true', 'n': 6, 'noalt': 0, 'nonah': 0}"
+  ],
+  [
+   "when a logo fails to load every tile falls back to its initials (no broken image)",
+   true,
+   "{'n': 106, 'nf': 106, 'vis': True}"
+  ],
+  [
+   "no lock bar / gate note / gate dialog strings in any page",
+   true,
+   ""
+  ],
+  [
+   "no horizontal overflow at 320/390/430/1280 (9 pages x 4)",
+   true,
+   "[]"
+  ],
+  [
+   "tap targets >= 44x44 on every a/button/input/label/summary (inline links inside running text exempt per QA ruling)",
+   true,
+   "[]"
+  ]
+ ]
+}

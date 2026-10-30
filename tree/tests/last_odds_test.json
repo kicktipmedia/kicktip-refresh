@@ -1,0 +1,192 @@
+[
+ [
+  "arrival /games/: pred-lines fetched exactly once",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /games/: only precomputed pred-*.json fetched from /data/",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /games/: no whatif / sim-bundle / chat-worker / google request",
+  true,
+  ""
+ ],
+ [
+  "arrival /games/: no storage or cookie written",
+  true,
+  "[0, 0, '']"
+ ],
+ [
+  "arrival /games/: no 'Shown after you accept' / 'Locked' placeholder left",
+  true,
+  ""
+ ],
+ [
+  "arrival /team/georgia/: pred-lines fetched exactly once",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-paths.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /team/georgia/: only precomputed pred-*.json fetched from /data/",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-paths.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /team/georgia/: no whatif / sim-bundle / chat-worker / google request",
+  true,
+  ""
+ ],
+ [
+  "arrival /team/georgia/: no storage or cookie written",
+  true,
+  "[0, 0, '']"
+ ],
+ [
+  "arrival /team/georgia/: no 'Shown after you accept' / 'Locked' placeholder left",
+  true,
+  ""
+ ],
+ [
+  "arrival /conference/big-12/: pred-lines fetched exactly once",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /conference/big-12/: only precomputed pred-*.json fetched from /data/",
+  true,
+  "['http://127.0.0.1:32781/data/pred-teams.json', 'http://127.0.0.1:32781/data/pred-games.json', 'http://127.0.0.1:32781/data/pred-lines.json']"
+ ],
+ [
+  "arrival /conference/big-12/: no whatif / sim-bundle / chat-worker / google request",
+  true,
+  ""
+ ],
+ [
+  "arrival /conference/big-12/: no storage or cookie written",
+  true,
+  "[0, 0, '']"
+ ],
+ [
+  "arrival /conference/big-12/: no 'Shown after you accept' / 'Locked' placeholder left",
+  true,
+  ""
+ ],
+ [
+  "pred-lines fetched once",
+  true,
+  ""
+ ],
+ [
+  "open: Market line row",
+  true,
+  ""
+ ],
+ [
+  "open: read time in MT",
+  true,
+  "Sat Oct 31, 1:30 PM MT\nFlorida\nNeutral site, conference game\nKickTip win chance\nFlorida 17%\nGeorgia 83%\nLINES\nMarket line\nOct 25, 1:47 PM MT\nGeorgia \u221210.5\nGeorgia minus 10.5\nKickTip line\nGeorgia \u221216.5\nGeorgia minus 16.5\nGap\n6.0 points"
+ ],
+ [
+  "open: KickTip line Georgia \u221216.5",
+  true,
+  ""
+ ],
+ [
+  "open: Gap 6.0 points (rounded KickTip line, raw not stored yet)",
+  true,
+  ""
+ ],
+ [
+  "open: no banned word",
+  true,
+  "[]"
+ ],
+ [
+  "gap not coloured (same as ordinary text colour of the block)",
+  true,
+  "['rgb(18, 21, 25)', 'rgb(18, 21, 25)', 'rgb(18, 21, 25)']"
+ ],
+ [
+  "gap uses unrounded -16.26: |-10.5+16.26| = 5.76 -> 5.8 (the rounded line would give 6.0)",
+  true,
+  "Sat Oct 31, 1:30 PM MT\nFlorida\nNeutral site, conference game\nKickTip win chance\nFlorida 17%\nGeorgia 83%\nLINES\nMarket line\nOct 25, 1:47 PM MT\nGeorgia \u221210.5\nGeorgia minus 10.5\nKickTip line\nGeorgia \u221216.5\nGeorgia minus 16.5\nGap\n5.8 points"
+ ],
+ [
+  "none: 'Market line not posted yet.' + quieter line",
+  true,
+  ""
+ ],
+ [
+  "none: no Gap shown",
+  true,
+  ""
+ ],
+ [
+  "none: KickTip line still shown",
+  true,
+  ""
+ ],
+ [
+  "none: second line colour #4C5560",
+  true,
+  ""
+ ],
+ [
+  "none: no banned word",
+  true,
+  "[]"
+ ],
+ [
+  "closed: 'Line closed' with last line and time",
+  true,
+  "Sat Oct 31, 1:30 PM MT\nFlorida\nNeutral site, conference game\nKickTip win chance\nFlorida 17%\nGeorgia 83%\nLINES\nMarket line\nLast line: Georgia \u221210.5, Oct 25, 1:47 PM MT\nLine closed\nKickTip line\nGeorgia \u221216.5\nGeorgia minus 16.5"
+ ],
+ [
+  "closed: no Gap",
+  true,
+  ""
+ ],
+ [
+  "started (<24 h old line): Line closed",
+  true,
+  "Sat Oct 31, 1:30 PM MT\nFlorida\nNeutral site, conference game\nKickTip win chance\nFlorida 17%\nGeorgia 83%\nLINES\nMarket line\nLast line: Georgia \u221210.5, Oct 31, 12:30 PM MT\nLine closed\nKickTip line\nGeorgia \u221216.5\nGeorgia minus 16.5"
+ ],
+ [
+  "slate: default sort is by date",
+  true,
+  "[1793142000, 1793145600, 1793228400, 1793232000, 1793316600]"
+ ],
+ [
+  "slate: select defaults to date",
+  true,
+  ""
+ ],
+ [
+  "slate: no banned word (disclaimer wording excluded)",
+  true,
+  "[]"
+ ],
+ [
+  "slate: no provider/book words",
+  true,
+  ""
+ ],
+ [
+  "slate: gap sort ascending when asked, games without a gap last",
+  true,
+  "['0.0 points', '0.0 points', '1.0 points', '1.0 points', '1.0 points', '1.0 points']"
+ ],
+ [
+  "slate: conference filter",
+  true,
+  "7"
+ ],
+ [
+  "lines unavailable: honest message, no Gap",
+  true,
+  "Sat Oct 31, 1:30 PM MT\nFlorida\nNeutral site, conference game\nKickTip win chance\nFlorida 17%\nGeorgia 83%\nLINES\nMarket line\nMarket line not available right now.\nKickTip line\nGeorgia \u221216.5\nGeorgia minus 16.5"
+ ]
+]

@@ -1,0 +1,87 @@
+/* ===== KickTip sticky slim header (Creative FINAL spec /workspace/hub/kicktip-header/sticky-1025/SPEC.md, sha 0b33878670d0). Loaded right after kt.css. Source of truth: src/header-kit/hdr.css.
+   Class prefix .kh*: chat.css already owns .hdp/.hd* names inside the Ask panel, so nothing here reuses them.
+   Everything that changes layout is gated on html.hdjs (set synchronously by hdr.js in <head>): with JS off the old static header shows unchanged. CSP style-src 'self': no inline styles anywhere; JS only toggles classes + sets one CSS variable (CSSOM).
+   Option P is the default (56px row: logo, pill, Menu). Option Q (shield + one scrolling strip) is the same file: apply with `--variant q` (see README). ===== */
+:root{--hh:56px;--kh-safe:env(safe-area-inset-top,0px);--kt-bar-h:0px}
+/* --hh = header row height (56 phone/tablet, 52 for Q, 64 at 1101+). --kt-bar-h = height of the pinned bar WITHOUT the safe-area inset (0 when the bar is not sticky): other fixed/sticky elements use top:calc(var(--kt-bar-h,0px) + env(safe-area-inset-top,0px)), e.g. the simulator's scrolled bar. */
+@supports (overflow-x:clip){
+html,body{overflow-x:clip}   /* kt.css set overflow-x:hidden on html and body, which silently disables position:sticky. clip keeps "no sideways scroll". Browsers without clip keep hidden: the bar just does not stick. */
+html.hdjs{--kt-bar-h:var(--hh)}
+.hdjs main[id],.hdjs main [id],.hdjs footer [id],.hdjs .src [id]{scroll-margin-top:calc(var(--hh) + var(--kh-safe) + 12px)}   /* anchors/skip-link/focus scrolling land below the pinned bar + 12px air. Deliberately NOT html{scroll-padding-top}: scroll-padding makes the browser scroll the page when a control inside the sticky bar itself gets focus. */
+}
+/* base (no JS / any width): the extra controls stay hidden so the old header is untouched */
+.hd .khb,.hd .khn,.hd .khs{display:none}
+.hd .kht,.hd .khp{display:contents}   /* wrappers are layout-neutral, so with JS off the nav still sits in the old flex row */
+.hdjs .hd{position:sticky;top:var(--kh-safe);z-index:7;background:#262B31;color:#fff;border-bottom:1px solid rgba(255,255,255,.16);transition:box-shadow .18s ease-out}   /* 7 < Ask pill 8 < Ask scrim 9 < Ask panel 10 < skip link 20 */
+.hdjs .hd.kh-stuck{box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.hdjs .hd.kh-stuck::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:var(--kh-safe);background:#262B31}   /* fills the notch area above the pinned bar */
+.hdjs .hd .khw{display:flex;align-items:center;flex-wrap:nowrap;gap:8px;height:calc(var(--hh) - 1px);padding:0 max(10px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px));max-width:none}
+.hdjs .hd .brand{min-height:44px;flex:none}.hdjs .hd .brand img{display:block;height:34px;width:auto}
+.hdjs .hd .tog{flex:none;border-width:2px}.hdjs .hd .tog span{padding:0 10px;font:700 13px/30px 'Source Sans 3',Arial,sans-serif;white-space:nowrap}
+.hdjs .hd .soon{font-size:11px;padding:1px 6px;margin-left:5px;vertical-align:1px;line-height:1.35}
+.hdjs .hd a:focus-visible,.hdjs .hd button:focus-visible{outline:3px solid var(--l);outline-offset:2px}
+/* helper for any future sticky-top element (table header rows that are NOT inside their own overflow scroller, sticky sub-bars): class="kt-below-bar" or top:calc(var(--kt-bar-h,0px) + env(safe-area-inset-top,0px)). Nothing in the current site needs it: the only sticky cells are left-sticky columns inside .tw scrollers. */
+.hdjs .kt-below-bar{position:sticky;top:calc(var(--kt-bar-h,0px) + var(--kh-safe))}
+html.kh-lock{overflow:hidden}   /* html only: also hiding body would turn body into a scroll container and un-stick the bar */
+@media(prefers-reduced-motion:reduce){.hdjs .hd{transition:none}.hdjs .hd .khp{animation:none!important}}
+
+/* ---- 760px and up: links inline in the row, no Menu ---- */
+@media(min-width:760px){
+.hdjs .hd .khw{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.hdjs .hd .nav{display:flex;margin-left:auto;gap:4px 12px;flex-wrap:nowrap;width:auto}
+.hdjs .hd .nav a{font-size:16px;padding:0 6px;white-space:nowrap}
+.hdjs .hd .nav a.on,.hdjs .hd .nav a[aria-current=page]{color:var(--l);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+}
+/* ---- 1101px and up: 64px bar, 40px logo, 14px pill, aligned with the page (1180 max) ---- */
+@media(min-width:1101px){
+:root{--hh:64px}
+.hdjs .hd .khw{max-width:1180px}
+.hdjs .hd .brand img{height:40px}.hdjs .hd .tog span{font-size:14px;padding:0 14px;line-height:32px}
+}
+/* ---- below 760px, option P: Menu button + panel ---- */
+@media(max-width:759px){
+.hdjs .hd .khb{order:2;margin-left:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex:none;min-width:48px;height:48px;padding:0 4px;background:transparent;color:#fff;border:2px solid transparent;border-radius:10px;font:700 12px/1 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.hdjs .hd .khb svg{width:22px;height:22px;display:block}
+.hdjs .hd .khb .x,.hdjs .hd .khb .tc,.hdjs .hd .khb[aria-expanded=true] .b,.hdjs .hd .khb[aria-expanded=true] .tm{display:none}
+.hdjs .hd .khb[aria-expanded=true] .x{display:block}.hdjs .hd .khb[aria-expanded=true] .tc{display:inline}
+.hdjs .hd .khb[aria-expanded=true]{border-color:var(--l)}
+.hdjs .hd:not(.hd--q) .khp{display:none;position:absolute;left:0;right:0;top:100%;z-index:2;background:#262B31;border-bottom:1px solid rgba(255,255,255,.16);box-shadow:0 10px 24px rgba(0,0,0,.4);padding:4px max(14px,env(safe-area-inset-right,0px)) 14px max(14px,env(safe-area-inset-left,0px));max-height:var(--kh-max,calc(100vh - var(--hh) - var(--kh-safe)));max-height:var(--kh-max,calc(100dvh - var(--hh) - var(--kh-safe)));overflow:auto;overscroll-behavior:contain}
+.hdjs .hd--open:not(.hd--q) .khp{display:block}
+.hdjs .hd:not(.hd--q) .nav{display:block;width:auto;margin:0}
+.hdjs .hd:not(.hd--q) .nav a{position:relative;display:flex;align-items:center;justify-content:flex-start;min-height:52px;padding:0;color:#fff;font:600 18px 'Source Sans 3',Arial,sans-serif;text-decoration:none;border-top:1px solid rgba(255,255,255,.14)}
+.hdjs .hd:not(.hd--q) .nav a:first-child{border-top:0}
+.hdjs .hd:not(.hd--q) .nav a[aria-current=page]{text-decoration:none}
+.hdjs .hd:not(.hd--q) .nav a[aria-current=page] span{color:var(--l);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-skip-ink:none}
+.hdjs .hd:not(.hd--q) .nav a[aria-current=page]::after{content:"Current page";position:absolute;right:0;top:50%;transform:translateY(-50%);font:600 13px 'Source Sans 3',Arial,sans-serif;color:#D5DBE0}
+.hdjs .hd:not(.hd--q) .khn{display:block;margin:6px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);color:#D5DBE0;font-size:14px;line-height:1.4}
+.hdjs .hd .khn b{color:#fff}.hdjs .hd .khn a{display:flex;width:max-content;align-items:center;min-height:44px;color:#fff;text-decoration:underline}
+.hdjs .hd--open:not(.hd--q) .khs{display:block;position:absolute;top:100%;left:0;width:100%;height:100vh;z-index:1;background:rgba(18,21,25,.62)}
+@media(prefers-reduced-motion:no-preference){.hdjs .hd .khp{animation:khin .16s ease-out}@keyframes khin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}}
+}
+@media(max-width:379px) and (min-width:360px){   /* 360-379: the full logo + pill need the 359px pill metrics to leave the Menu button on screen */
+.hdjs .hd .khw{gap:6px}
+.hdjs .hd .tog span{padding:0 8px;font-size:12.5px}.hdjs .hd .soon{margin-left:4px;padding:1px 5px}
+}
+@media(max-width:359px){   /* shield icon only (the <picture> swaps it in), 32px tall */
+.hdjs .hd .khw{gap:6px;padding-left:env(safe-area-inset-left,0px)}
+.hdjs .hd .brand img{height:32px}
+.hdjs .hd .brand{padding:0 9px 0 max(10px,env(safe-area-inset-left,0px))}   /* shield is ~25px wide: 10 + 25 + 9 = a 44px-wide hit area that does not overlap the pill; icon sits at x=10 as specified */
+.hdjs .hd .tog span{padding:0 8px;font-size:12.5px}.hdjs .hd .soon{margin-left:4px;padding:1px 5px}
+}
+@media(max-width:299px){.hdjs .hd .tog span.off{display:none}.hdjs .hd .tog span{padding:0 8px}}   /* 200% zoom on a 320 phone (viewport ~160-297px): drop the Basketball half of the pill so the Menu button stays on screen */
+@media(max-width:219px){.hdjs .hd .tog{display:none}}   /* narrower still: logo + Menu only */
+@media(max-width:239px){.hdjs .hd:not(.hd--q) .nav a[aria-current=page]::after{display:none}}   /* the 'Current page' tag would touch the label; the underline still marks the page */
+/* ---- Option Q (apply with --variant q): 52px row, shield icon + one scrollable strip (pill + links), no Menu ---- */
+@media(max-width:759px){
+:root:has(.hd--q){--hh:52px}
+.hdjs .hd--q .brand img{height:32px}
+.hdjs .hd--q .kht{display:flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-right:28px}
+.hdjs .hd--q .kht::-webkit-scrollbar{display:none}
+.hdjs .hd--q .nav{display:flex;flex:none;margin:0;gap:0;width:auto}
+.hdjs .hd--q .tog,.hdjs .hd--q .nav a{scroll-snap-align:start}
+.hdjs .hd--q .nav a{flex:none;font-size:16px;font-weight:600;padding:0 10px}
+.hdjs .hd--q .nav a.on,.hdjs .hd--q .nav a[aria-current=page]{color:var(--l);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.hdjs .hd--q .kht.kh-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+.hdjs .hd--q .kht.kh-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px);mask-image:linear-gradient(90deg,transparent,#000 36px)}
+.hdjs .hd--q .kht.kh-l.kh-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent)}
+}

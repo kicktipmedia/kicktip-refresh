@@ -1,0 +1,29 @@
+// set3a: Production answers identical to final3; Preview (KT_ENV=preview, not the live host) adds exactly the two set3 ids. usage: node worker_set3a.mjs FINAL3_TREE SET3A_TREE
+import path from 'node:path'; import assert from 'node:assert/strict';
+import { loadWorker, makeEnv, installFetch } from '/workspace/kicktip-set3a/qa/tests/browser/mock.mjs';
+const [BASE, NEW] = process.argv.slice(2).map((p) => path.resolve(p));
+const W0 = await loadWorker(BASE), W1 = await loadWorker(NEW);
+let n = 0, bad = 0; const chk = async (k, f) => { n++; try { await f(); console.log('PASS ' + k); } catch (e) { bad++; console.log('FAIL ' + k + ' :: ' + String(e.message).slice(0, 300)); } };
+import { createRequire } from 'node:module'; const V1 = createRequire(import.meta.url)('../lib/vis1_expect.cjs');
+/* set3m: base = vis1c (21 live ids). Production differs ONLY by the 22nd live id game_win_chance (#28) in the tb list; Preview adds the 5 Set 3 ids (#23-#27). */
+const SET3 = V1.SET3; const J21 = '"tb":' + JSON.stringify(V1.ALL21), J22 = '"tb":' + JSON.stringify(V1.ALL22.concat(SET3));   /* set3m3: Production tb list = the 27 ids */
+const lift = (x) => { if (x.b.indexOf('"tb":') < 0) return x; assert.equal(x.b.split(J21).length, 2, 'base tb list is exactly the 21 vis1c ids'); const b = x.b.replace(J21, J22); return Object.assign({}, x, { b, h: x.h.map(([k, v]) => k === 'content-length' ? [k, String(Buffer.byteLength(b))] : [k, v]) }); };
+async function hit(W, host, envO, req) {
+  const E = makeEnv(W, envO); installFetch(E.st);
+  const h = { 'CF-Connecting-IP': '203.0.113.9', Origin: host, 'Sec-Fetch-Site': 'same-origin' };
+  const r = req.m === 'GET' ? await W.fetch(new Request(host + req.p, { headers: h }), E.env) : await W.fetch(new Request(host + req.p, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, h), body: JSON.stringify(req.b) }), E.env);
+  return { s: r.status, h: [...r.headers].filter(([k]) => k !== 'date').sort(), b: await r.text(), d1: E.env.DB.log.map(x => x.k + ':' + JSON.stringify(x.a)) };
+}
+const REQS = [{ m: 'GET', p: '/api/ask-config' }, { m: 'GET', p: '/api/ask' }, { m: 'GET', p: '/api/ask-env' }].concat(
+  ['cfp_committee_rankings', 'my_teams_digest', 'team_history', 'team_stats', 'whatif_conference_outcome', 'team_snapshot', 'rankings_list', 'nope_tool'].flatMap(t => [{ m: 'POST', p: '/api/tb-count', b: { e: [['matched', t]] } }, { m: 'POST', p: '/api/tb-count', b: { e: [['routed', t]] } }]));
+const PROD = [['https://kicktipmedia.com', { KT_ENV: undefined }], ['https://kicktip.pages.dev', { KT_ENV: undefined }], ['https://kicktipmedia.com', { KT_ENV: 'preview' }], ['https://www.kicktipmedia.com', { KT_ENV: 'preview', AI_ROUTER: 'on' }], ['https://kicktipmedia.com', { KT_ENV: undefined, AI_ROUTER: 'on', AI_SCN: 'on' }], ['https://kicktip.pages.dev', { KT_ENV: 'production', AI_ROUTER: 'on' }]];
+for (const [host, envO] of PROD) for (const rq of REQS.filter(q => !(q.b && SET3.includes(q.b.e[0][1])))) await chk('prod identical ' + host + ' ' + JSON.stringify(envO) + ' ' + rq.m + ' ' + rq.p + ' ' + JSON.stringify(rq.b || ''), async () => assert.deepEqual(await hit(W1, host, envO, rq), lift(await hit(W0, host, envO, rq))));
+for (const [host, envO] of PROD) for (const t of SET3) for (const kind of ['matched', 'routed']) await chk('prod tb-count (set3m3, Set 3 visible) ' + kind + ' ' + t + ' ' + host + ' ' + JSON.stringify(envO) + ': as game_win_chance (base 400 -> 200, one D1 write), or the same refusal', async () => { const rq = { m: 'POST', p: '/api/tb-count', b: { e: [[kind, t]] } }, g = { m: 'POST', p: '/api/tb-count', b: { e: [[kind, 'game_win_chance']] } }; const r = await hit(W1, host, envO, rq), rg = await hit(W1, host, envO, g); assert.equal(r.s, rg.s); assert.equal(r.b, rg.b); assert.equal(r.d1.length, rg.d1.length); });
+for (const [host, envO] of PROD) await chk('prod tb-count accepts game_win_chance (live #28; base 400) ' + host + ' ' + JSON.stringify(envO), async () => { const rq = { m: 'POST', p: '/api/tb-count', b: { e: [['matched', 'game_win_chance']] } }; const r = await hit(W1, host, envO, rq), r0 = await hit(W0, host, envO, rq); if (r0.s === 403) { assert.deepEqual(r, r0); return; } /* origin refused on pages.dev in production: identical 403 in both */ assert.equal(r.s, 200); assert.equal(r.d1.length, 1); assert.equal(r0.s, 400); });
+for (const envO of [{}, { AI_ROUTER: 'on', AI_SCN: 'on' }]) {
+  const host = 'https://set3a.kicktip.pages.dev';
+  await chk('preview ask-config = vis1c + game_win_chance + the 5 Set 3 ids ' + JSON.stringify(envO), async () => { const a = JSON.parse((await hit(W0, host, envO, REQS[0])).b), b = JSON.parse((await hit(W1, host, envO, REQS[0])).b); assert.deepEqual(a.tb, V1.ALL21); assert.deepEqual(b.tb, V1.ALL22.concat(SET3)); delete a.tb; delete b.tb; assert.deepEqual(b, a); });
+  for (const t of SET3) await chk('preview tb-count accepts ' + t + ' ' + JSON.stringify(envO), async () => { const r = await hit(W1, host, envO, { m: 'POST', p: '/api/tb-count', b: { e: [['matched', t]] } }); assert.equal(r.s, 200); assert.equal(r.d1.length, 1); });
+  await chk('preview tb-count still rejects unknown ' + JSON.stringify(envO), async () => assert.equal((await hit(W1, host, envO, { m: 'POST', p: '/api/tb-count', b: { e: [['matched', 'nope_tool']] } })).s, 400));
+}
+console.log(n + ' checks, ' + bad + ' failed'); process.exit(bad ? 1 : 0);

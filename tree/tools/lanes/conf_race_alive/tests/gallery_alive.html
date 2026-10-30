@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>conf_race_alive gallery (real cards)</title>
+<link rel="stylesheet" href="/assets/kt.css"><link rel="stylesheet" href="/assets/chat.css"><link rel="stylesheet" href="/assets/ai-box.css"><link rel="stylesheet" href="/assets/tb/tb.css">
+<style>.pnl{position:static;height:auto;width:auto;max-width:none;display:block;border:0;border-radius:0;box-shadow:none;padding:0}.pnl .bd{overflow:visible}*{animation-duration:0s!important;animation-delay:0s!important;transition:none!important}</style></head><body><div class="pnl"><div class="bd" id="out"></div></div>
+<script src="/assets/ks/parse.js"></script><script src="/assets/tb/registry.js"></script><script src="/assets/tb/core.js"></script><script src="/assets/tb/card.js"></script><script src="/assets/tb/matcher.js"></script><script src="/assets/tb/plan.js"></script>
+<script src="/assets/tb/conf_race_alive.js"></script>
+<script>
+/* Real conf_race_alive cards from the built tree's real data (data/tb/ccg-alive.json, data/pred-teams.json), rendered by the page's own KTTB.run + KTTB.render. */
+(async function () {
+  var out = document.getElementById("out"), res = { texts: {}, errors: [], ids: [] };
+  var CASES = [["sec-all", { conference: "sec" }], ["big10-out", { conference: "big10", status: "out" }], ["big12-in", { conference: "big12", status: "in" }], ["midam-all", { conference: "midam" }],
+    ["team-out-michigan-state", { conference: "big10", team: "michigan-state" }], ["team-out-sacramento-state", { conference: "midam", team: "sacramento-state" }], ["team-tie-akron", { team: "akron" }],
+    ["team-in-penn-state", { conference: "big10", team: "penn-state" }], ["indep-notre-dame", { team: "notre-dame" }], ["acc-out-empty", { conference: "acc", status: "out" }]];
+  try {
+    for (var i = 0; i < CASES.length; i++) {
+      var r = await KTTB.run("conf_race_alive", CASES[i][1]); if (!r.ok) { res.errors.push(CASES[i][0] + ": run failed " + JSON.stringify(r)); continue; }
+      var c = KTTB.render("conf_race_alive", r); if (c.errors && c.errors.length) res.errors.push(CASES[i][0] + ": " + c.errors.join("; "));
+      out.insertAdjacentHTML("beforeend", c.html); res.texts[CASES[i][0]] = c.text; res.ids.push(CASES[i][0]);
+    }
+  } catch (err) { res.errors.push(String(err && err.stack || err)); }
+  window.__TB = res; document.documentElement.setAttribute("data-done", "1");
+})();
+</script></body></html>

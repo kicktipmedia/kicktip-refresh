@@ -1,0 +1,445 @@
+{
+ "about": "scn_b: shared-game branches (limits 3 teams, 1 conference, 4 branches). expectations recorded from the B tree and, for branched rows, every live branch checked against brute-force enumeration (tests/lib/brute.js). Replay: node tests/qbank_scn_b_check.js TREE",
+ "rows": [
+  {
+   "id": "sb01",
+   "note": "exact one-loss question",
+   "text": "What if BYU, Utah and Texas Tech all end with just one loss?",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU, Utah and Texas Tech",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah",
+     "Texas Tech"
+    ],
+    "status": "settled",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": "BYU would end with more losses than your scenario allows.",
+      "fam": 0
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     1,
+     null
+    ]
+   }
+  },
+  {
+   "id": "sb02",
+   "note": "same, no question mark",
+   "text": "What if BYU, Utah and Texas Tech all end with one loss",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU, Utah and Texas Tech",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah",
+     "Texas Tech"
+    ],
+    "status": "settled",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": "BYU would end with more losses than your scenario allows.",
+      "fam": 0
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     1,
+     null
+    ]
+   }
+  },
+  {
+   "id": "sb03",
+   "note": "same, lowercase tech, oxford comma",
+   "text": "What if BYU, Utah, and Texas tech all end with just one loss?",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU, Utah and Texas Tech",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah",
+     "Texas Tech"
+    ],
+    "status": "settled",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": "BYU would end with more losses than your scenario allows.",
+      "fam": 0
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     1,
+     null
+    ]
+   }
+  },
+  {
+   "id": "sb04",
+   "note": "two teams, shared game, both directions live",
+   "text": "What if BYU and Utah each end with 3 losses",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU and Utah",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah"
+    ],
+    "status": "partial",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": null,
+      "fam": 1
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     36,
+     16
+    ]
+   }
+  },
+  {
+   "id": "sb05",
+   "note": "two teams, 2 losses",
+   "text": "What if BYU and Utah each end with 2 losses",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU and Utah",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah"
+    ],
+    "status": "partial",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": null,
+      "fam": 1
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     16,
+     6
+    ]
+   }
+  },
+  {
+   "id": "sb06",
+   "note": "two teams, one loss: one branch impossible",
+   "text": "What if BYU and Utah both end with just one loss",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU and Utah",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah"
+    ],
+    "status": "partial",
+    "gb": [
+     {
+      "label": "If BYU beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU",
+      "imp": "BYU would end with more losses than your scenario allows.",
+      "fam": 0
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     1,
+     null
+    ]
+   }
+  },
+  {
+   "id": "sb07",
+   "note": "two teams, 1 of remaining",
+   "text": "What if Utah and Arizona both lose 1 of the remaining games",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for Utah and Arizona",
+    "conference": "Big 12",
+    "teams": [
+     "Utah",
+     "Arizona"
+    ],
+    "status": "partial",
+    "gb": [
+     {
+      "label": "If Utah beats Arizona",
+      "imp": null,
+      "fam": 2
+     },
+     {
+      "label": "If Arizona beats Utah",
+      "imp": null,
+      "fam": 2
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     4,
+     4
+    ]
+   }
+  },
+  {
+   "id": "sb08",
+   "note": "two shared games, 4 branches",
+   "text": "What if BYU, Utah and Arizona all end with 3 losses",
+   "kind": "branched",
+   "expect": {
+    "title": "What this means for BYU, Utah and Arizona",
+    "conference": "Big 12",
+    "teams": [
+     "BYU",
+     "Utah",
+     "Arizona"
+    ],
+    "status": "partial",
+    "gb": [
+     {
+      "label": "If BYU beats Utah and Utah beats Arizona",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU and Utah beats Arizona",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If BYU beats Utah and Arizona beats Utah",
+      "imp": null,
+      "fam": 1
+     },
+     {
+      "label": "If Utah beats BYU and Arizona beats Utah",
+      "imp": null,
+      "fam": 1
+     }
+    ],
+    "ascii": true,
+    "ways": [
+     72,
+     16,
+     108,
+     72
+    ]
+   }
+  },
+  {
+   "id": "sb09",
+   "note": "3 shared games stays the old clarify",
+   "text": "What if Arizona, TCU and Utah all lose 1 of the remaining games",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "sb10",
+   "note": "4 teams sharing games stays the old clarify",
+   "text": "What if Arizona, TCU, Utah and BYU all lose 1 of the remaining games",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "sb11",
+   "note": "four teams, 3 team cap",
+   "text": "What if BYU, Utah, Arizona and Texas Tech all end with 3 losses",
+   "kind": "clarify",
+   "expect": {
+    "reason": "shared_game"
+   }
+  },
+  {
+   "id": "sb12",
+   "note": "all branches impossible",
+   "text": "What if Utah and Arizona both end with 8 losses",
+   "kind": "clarify",
+   "expect": {
+    "reason": "too_many_games"
+   }
+  },
+  {
+   "id": "sb13",
+   "note": "control: one team, no shared game",
+   "text": "What if BYU wins out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU",
+    "status": "partial",
+    "branches": 1,
+    "game_branches": true
+   }
+  },
+  {
+   "id": "sb14",
+   "note": "control: BYU and Texas Tech (no shared game)",
+   "text": "What if BYU and Texas Tech both end with just one loss",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for BYU and Texas Tech",
+    "status": "partial",
+    "branches": 1,
+    "game_branches": true
+   }
+  },
+  {
+   "id": "sb15",
+   "note": "control: a pinned shared game is not a branch",
+   "text": "What if BYU beats Utah",
+   "kind": "nocard",
+   "expect": {
+    "reason": "nothing_final"
+   }
+  },
+  {
+   "id": "sb16",
+   "note": "control: pinned game plus constraint",
+   "text": "What if BYU beats Utah and Utah ends with 3 losses",
+   "kind": "clarify",
+   "expect": {
+    "reason": "conflict"
+   }
+  },
+  {
+   "id": "sb17",
+   "note": "control: Utah beats Arizona",
+   "text": "What if Utah beats Arizona",
+   "kind": "nocard",
+   "expect": {
+    "reason": "nothing_final"
+   }
+  },
+  {
+   "id": "sb18",
+   "note": "control: both win out (forced conflict stays)",
+   "text": "What if BYU and Utah both win out",
+   "kind": "clarify",
+   "expect": {
+    "reason": "conflict"
+   }
+  },
+  {
+   "id": "sb19",
+   "note": "control: Utah and Texas Tech win out",
+   "text": "what if Utah and Texas Tech win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Utah and Texas Tech",
+    "status": "settled",
+    "branches": 1,
+    "game_branches": true
+   }
+  },
+  {
+   "id": "sb20",
+   "note": "control: other conference",
+   "text": "what if New Mexico State and Western Kentucky win out",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for New Mexico State and Western Kentucky",
+    "status": "settled",
+    "branches": 1,
+    "game_branches": true
+   }
+  },
+  {
+   "id": "sb21",
+   "note": "control: wins 2 of the next 3",
+   "text": "What if BYU wins 2 of the next 3",
+   "kind": "nocard",
+   "expect": {
+    "reason": "nothing_final"
+   }
+  },
+  {
+   "id": "sb22",
+   "note": "control: Kansas and Utah lose 1",
+   "text": "What if Utah and Kansas each lose 1 of the remaining games",
+   "kind": "card",
+   "expect": {
+    "title": "What this means for Utah and Kansas",
+    "status": "partial",
+    "branches": 2,
+    "game_branches": true
+   }
+  },
+  {
+   "id": "sb23",
+   "note": "control: invalid total",
+   "text": "What if BYU finishes with no losses?",
+   "kind": "clarify",
+   "expect": {
+    "reason": "invalid_loss_count"
+   }
+  },
+  {
+   "id": "sb24",
+   "note": "control: unrelated",
+   "text": "what if the sun explodes",
+   "kind": "parse_clarify",
+   "expect": {
+    "reason": "no_team"
+   }
+  },
+  {
+   "id": "sb25",
+   "note": "control: Utah State alias is not Utah",
+   "text": "What if Utah State and Utah both end with one loss",
+   "kind": "clarify",
+   "expect": {
+    "reason": "invalid_loss_count"
+   }
+  }
+ ]
+}

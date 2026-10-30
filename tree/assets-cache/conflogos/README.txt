@@ -1,0 +1,1 @@
+Conference logos courtesy of ESPN. Pulled once from a.espncdn.com/i/teamlogos/ncaa_conf/500/<espn conf id>.png on Oct 23, 2026 (MT). Unaltered. Cache only; not in any build. KickTip only. No ads, no OG/share images. Remove on request. File name = <KickTip conf key>_<espn id>.png

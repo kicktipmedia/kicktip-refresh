@@ -1,0 +1,560 @@
+{
+"note": "INTERNAL: make-12 chance under the original unscaled MSM percentages vs the shipped default, same data/seed. Not shipped as data.",
+"as_of": "2026-10-29 22:51 MT",
+"seasons": 10000,
+"seed": 2026,
+"teams": {
+"Air Force Falcons": [
+0.0,
+0.0
+],
+"Akron Zips": [
+0.0,
+0.0
+],
+"Alabama Crimson Tide": [
+0.7283,
+0.8102
+],
+"App State Mountaineers": [
+0.0,
+0.0
+],
+"Arizona State Sun Devils": [
+0.0,
+0.0004
+],
+"Arizona Wildcats": [
+0.1854,
+0.1789
+],
+"Arkansas Razorbacks": [
+0.0,
+0.0
+],
+"Arkansas State Red Wolves": [
+0.0,
+0.0
+],
+"Army Black Knights": [
+0.0,
+0.0001
+],
+"Auburn Tigers": [
+0.0003,
+0.0032
+],
+"BYU Cougars": [
+0.8202,
+0.6439
+],
+"Ball State Cardinals": [
+0.0,
+0.0
+],
+"Baylor Bears": [
+0.0002,
+0.0012
+],
+"Boise State Broncos": [
+0.4867,
+0.5036
+],
+"Boston College Eagles": [
+0.0,
+0.0001
+],
+"Bowling Green Falcons": [
+0.0,
+0.0
+],
+"Buffalo Bulls": [
+0.0,
+0.0
+],
+"California Golden Bears": [
+0.0,
+0.0
+],
+"Central Michigan Chippewas": [
+0.0,
+0.0
+],
+"Charlotte 49ers": [
+0.0,
+0.0
+],
+"Cincinnati Bearcats": [
+0.0002,
+0.0016
+],
+"Clemson Tigers": [
+0.0,
+0.0
+],
+"Coastal Carolina Chanticleers": [
+0.0,
+0.0
+],
+"Colorado Buffaloes": [
+0.0,
+0.0
+],
+"Colorado State Rams": [
+0.0,
+0.0
+],
+"Delaware Blue Hens": [
+0.0,
+0.0
+],
+"Duke Blue Devils": [
+0.0,
+0.0012
+],
+"East Carolina Pirates": [
+0.0,
+0.0
+],
+"Eastern Michigan Eagles": [
+0.0,
+0.0
+],
+"Florida Atlantic Owls": [
+0.0,
+0.0
+],
+"Florida Gators": [
+0.0458,
+0.0464
+],
+"Florida International Panthers": [
+0.0,
+0.0
+],
+"Florida State Seminoles": [
+0.0,
+0.0
+],
+"Fresno State Bulldogs": [
+0.0,
+0.0
+],
+"Georgia Bulldogs": [
+0.5162,
+0.7574
+],
+"Georgia Southern Eagles": [
+0.0,
+0.0
+],
+"Georgia State Panthers": [
+0.0,
+0.0
+],
+"Georgia Tech Yellow Jackets": [
+0.0,
+0.0
+],
+"Hawai'i Rainbow Warriors": [
+0.0,
+0.0
+],
+"Houston Cougars": [
+0.5218,
+0.3176
+],
+"Illinois Fighting Illini": [
+0.0,
+0.0001
+],
+"Indiana Hoosiers": [
+0.9005,
+0.9146
+],
+"Iowa Hawkeyes": [
+0.0,
+0.0005
+],
+"Iowa State Cyclones": [
+0.0,
+0.0
+],
+"Jacksonville State Gamecocks": [
+0.0,
+0.0
+],
+"James Madison Dukes": [
+0.0,
+0.0064
+],
+"Kansas Jayhawks": [
+0.0,
+0.0
+],
+"Kansas State Wildcats": [
+0.0,
+0.0
+],
+"Kennesaw State Owls": [
+0.0,
+0.0
+],
+"Kent State Golden Flashes": [
+0.0,
+0.0
+],
+"Kentucky Wildcats": [
+0.3207,
+0.3876
+],
+"LSU Tigers": [
+0.8293,
+0.7531
+],
+"Liberty Flames": [
+0.0122,
+0.0389
+],
+"Louisiana Ragin' Cajuns": [
+0.0,
+0.0
+],
+"Louisiana Tech Bulldogs": [
+0.0017,
+0.0056
+],
+"Louisville Cardinals": [
+0.0011,
+0.0128
+],
+"Marshall Thundering Herd": [
+0.0,
+0.0
+],
+"Maryland Terrapins": [
+0.0,
+0.0
+],
+"Massachusetts Minutemen": [
+0.0,
+0.0
+],
+"Memphis Tigers": [
+0.0,
+0.0005
+],
+"Miami (OH) RedHawks": [
+0.0,
+0.0
+],
+"Miami Hurricanes": [
+0.9976,
+0.9904
+],
+"Michigan State Spartans": [
+0.0,
+0.0
+],
+"Michigan Wolverines": [
+0.0,
+0.0
+],
+"Middle Tennessee Blue Raiders": [
+0.0,
+0.0
+],
+"Minnesota Golden Gophers": [
+0.0,
+0.0005
+],
+"Mississippi State Bulldogs": [
+0.0,
+0.0002
+],
+"Missouri State Bears": [
+0.0,
+0.0
+],
+"Missouri Tigers": [
+0.0283,
+0.0337
+],
+"NC State Wolfpack": [
+0.0,
+0.0
+],
+"Navy Midshipmen": [
+0.0,
+0.0
+],
+"Nebraska Cornhuskers": [
+0.0001,
+0.001
+],
+"Nevada Wolf Pack": [
+0.0,
+0.0
+],
+"New Mexico Lobos": [
+0.1839,
+0.1505
+],
+"New Mexico State Aggies": [
+0.0,
+0.0
+],
+"North Carolina Tar Heels": [
+0.0006,
+0.0008
+],
+"North Dakota State Bison": [
+0.0,
+0.0018
+],
+"North Texas Mean Green": [
+0.0626,
+0.0965
+],
+"Northern Illinois Huskies": [
+0.0,
+0.0
+],
+"Northwestern Wildcats": [
+0.0054,
+0.0065
+],
+"Notre Dame Fighting Irish": [
+0.9955,
+0.98
+],
+"Ohio Bobcats": [
+0.0,
+0.0
+],
+"Ohio State Buckeyes": [
+0.9943,
+0.9763
+],
+"Oklahoma Sooners": [
+0.0113,
+0.0494
+],
+"Oklahoma State Cowboys": [
+0.0961,
+0.0219
+],
+"Old Dominion Monarchs": [
+0.0,
+0.0
+],
+"Ole Miss Rebels": [
+0.4866,
+0.4766
+],
+"Oregon Ducks": [
+0.0001,
+0.007
+],
+"Oregon State Beavers": [
+0.1796,
+0.1079
+],
+"Penn State Nittany Lions": [
+0.0,
+0.0
+],
+"Pittsburgh Panthers": [
+0.0,
+0.0002
+],
+"Purdue Boilermakers": [
+0.0,
+0.0
+],
+"Rice Owls": [
+0.0,
+0.0
+],
+"Rutgers Scarlet Knights": [
+0.0,
+0.0
+],
+"SMU Mustangs": [
+0.0177,
+0.0972
+],
+"Sacramento State Hornets": [
+0.0,
+0.0
+],
+"Sam Houston Bearkats": [
+0.0,
+0.0
+],
+"San Diego State Aztecs": [
+0.0,
+0.0
+],
+"San Jos\u00e9 State Spartans": [
+0.0,
+0.0
+],
+"South Alabama Jaguars": [
+0.0,
+0.0
+],
+"South Carolina Gamecocks": [
+0.0013,
+0.0018
+],
+"South Florida Bulls": [
+0.0,
+0.0
+],
+"Southern Miss Golden Eagles": [
+0.0,
+0.0
+],
+"Stanford Cardinal": [
+0.0,
+0.0
+],
+"Syracuse Orange": [
+0.0,
+0.0
+],
+"TCU Horned Frogs": [
+0.0,
+0.0003
+],
+"Temple Owls": [
+0.0,
+0.0
+],
+"Tennessee Volunteers": [
+0.1167,
+0.1049
+],
+"Texas A&M Aggies": [
+0.0,
+0.0
+],
+"Texas Longhorns": [
+0.6487,
+0.7594
+],
+"Texas State Bobcats": [
+0.0,
+0.0017
+],
+"Texas Tech Red Raiders": [
+0.0319,
+0.185
+],
+"Toledo Rockets": [
+0.0,
+0.0
+],
+"Troy Trojans": [
+0.0,
+0.0
+],
+"Tulane Green Wave": [
+0.0,
+0.0
+],
+"Tulsa Golden Hurricane": [
+0.0,
+0.0
+],
+"UAB Blazers": [
+0.0,
+0.0
+],
+"UCF Knights": [
+0.0098,
+0.0067
+],
+"UCLA Bruins": [
+0.7908,
+0.4643
+],
+"UConn Huskies": [
+0.0,
+0.0
+],
+"UL Monroe Warhawks": [
+0.0,
+0.0
+],
+"UNLV Rebels": [
+0.0,
+0.0
+],
+"USC Trojans": [
+0.0001,
+0.0032
+],
+"UTEP Miners": [
+0.0,
+0.0
+],
+"UTSA Roadrunners": [
+0.0733,
+0.0865
+],
+"Utah State Aggies": [
+0.0,
+0.0
+],
+"Utah Utes": [
+0.2688,
+0.5348
+],
+"Vanderbilt Commodores": [
+0.0,
+0.0
+],
+"Virginia Cavaliers": [
+0.0,
+0.0
+],
+"Virginia Tech Hokies": [
+0.0001,
+0.0004
+],
+"Wake Forest Demon Deacons": [
+0.6232,
+0.4492
+],
+"Washington Huskies": [
+0.0,
+0.0
+],
+"Washington State Cougars": [
+0.0,
+0.0
+],
+"West Virginia Mountaineers": [
+0.0,
+0.0001
+],
+"Western Kentucky Hilltoppers": [
+0.0,
+0.0
+],
+"Western Michigan Broncos": [
+0.0,
+0.0
+],
+"Wisconsin Badgers": [
+0.005,
+0.0174
+],
+"Wyoming Cowboys": [
+0.0,
+0.0
+]
+}
+}

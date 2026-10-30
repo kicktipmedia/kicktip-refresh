@@ -1,0 +1,99 @@
+name: refresh
+# KickTip data refresh on GitHub's runners. tools/auto_refresh.sh skips (exit 0) when no final/score/kickoff changed.
+# Guard: Production deploy only if Cloudflare's canonical deployment == state.json live_id (feature builds deploy from the box
+# and must run tools/publish_base.sh afterwards). FREEZE file in the repo root stops all deploys.
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: "production | preview (branch refresh-gh, no Production) | none (dry run)"
+        type: choice
+        options: [production, preview, none]
+        default: production
+      force:
+        description: "run even if no result changed"
+        type: boolean
+        default: false
+  schedule:
+    # UTC. Saturday game window (about 10 AM to 1 AM MT): every 15 min
+    - cron: "*/15 16-23 * * 6"
+    - cron: "*/15 0-7 * * 0"
+    # rest of the week: hourly
+    - cron: "7 8-23 * * 0"
+    - cron: "7 * * * 1-5"
+    - cron: "7 0-15 * * 6"
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      GH_TOKEN: ${{ github.token }}
+      KT_ROOT: ${{ github.workspace }}
+      KT_RELATIVE: "1"
+      KT_PREVIEW_BRANCH: refresh-gh
+      KT_WRANGLER: ${{ runner.temp }}/wr/node_modules/.bin/wrangler
+      KT_WRANGLER_DIR: ${{ runner.temp }}/wr
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TZ: America/Toronto
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stop if frozen
+        run: if [ -e FREEZE ]; then echo "FREEZE present:"; cat FREEZE; exit 1; fi
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip, cache-dependency-path: tools/requirements.txt }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20.19.2" }
+      - name: Fetch base (live zip + S0) and check sha
+        run: tools/fetch_base.sh
+      - name: Pull ESPN and decide (cheap gate)
+        id: gate
+        run: |
+          python3 -m pip install -q numpy==2.5.4
+          cd tree && python3 src/refresh.py > /tmp/refresh.json && cd ..
+          FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")
+          echo "fp $OLD -> $FP"
+          if [ "$FP" = "$OLD" ] && [ "${{ inputs.force }}" != "true" ]; then echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff: skip." >> $GITHUB_STEP_SUMMARY; else echo "changed=1" >> $GITHUB_OUTPUT; fi
+          git checkout -- tree/data/store
+      - name: Install tools (pinned)
+        if: steps.gate.outputs.changed == '1'
+        run: |
+          python3 -m pip install -q -r tools/requirements.txt
+          python3 -m playwright install --with-deps chromium > /dev/null
+          mkdir -p $KT_WRANGLER_DIR && cd $KT_WRANGLER_DIR && echo '{}' > package.json && npm i -s --no-audit --no-fund wrangler@3.114.17
+      - name: Refresh
+        if: steps.gate.outputs.changed == '1'
+        run: |
+          A=""; case "${{ inputs.deploy_target || 'production' }}" in preview) A="--preview-only";; none) A="--no-deploy";; esac
+          [ "${{ inputs.force }}" = "true" ] && A="$A --force"
+          tools/auto_refresh.sh $A
+      - name: Record new live base
+        if: steps.gate.outputs.changed == '1' && (inputs.deploy_target || 'production') == 'production'
+        run: |
+          R=$(ls -d runs/* | tail -n 1)/result.json; cat $R
+          if python3 -c "import json,sys;sys.exit(0 if 'live_id' in json.load(open('$R')) else 1)"; then
+            git checkout -- state.json
+            eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('ZIP=%s ID=%s S0=%s ASOF=%s FP=%s DONE=%s'%tuple(shlex.quote(str(r[k])) for k in ('zip','live_id','s0','as_of','fp','completed')))")"
+            tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE"
+          fi
+      - name: Commit FREEZE if a post-deploy check failed
+        if: failure()
+        run: |
+          if [ -e FREEZE ] && ! git ls-files --error-unmatch FREEZE >/dev/null 2>&1; then
+            git add FREEZE && git -c user.name=kicktipmedia -c user.email=kicktipmedia@users.noreply.github.com commit -m "FREEZE after failed post-deploy check" && git pull --rebase && git push; fi
+      - name: Keep run logs
+        if: always() && steps.gate.outputs.changed == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-${{ github.run_id }}
+          retention-days: 14
+          path: |
+            runs/*/*.log
+            runs/*/*.txt
+            runs/*/*.json
+            runs/*/crops-*/*-top.png

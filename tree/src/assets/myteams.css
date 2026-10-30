@@ -1,0 +1,157 @@
+/* KickTip My teams (phase 1). Follows Creative's mockups B1/B2 and the live KickTip tokens (kt.css): graphite #262B31, ink #121519, cyan only on dark, paper #F1F3F4, secondary #4C5560.
+   Every control is at least 44x44. No inline styles are used anywhere (strict CSP); widths of bars are set through the CSSOM by myteams.js. */
+.nav a .mt-nb{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;margin-left:6px;padding:0 6px;border-radius:99px;background:var(--l);color:var(--ink);font:700 12px/1 'Source Sans 3',Arial,sans-serif}
+.nav a .mt-nb[hidden]{display:none}
+#my-teams[hidden]{display:none}
+.mt-wrap,.mt-ed{color:var(--ink)}
+.mt-card{background:var(--w);border:1px solid var(--s);border-radius:12px;padding:16px}
+.mt-card h2,.mt-hd h2{font-size:26px;margin:0}
+.mt-card h2:focus,.mt-hd h2:focus{outline:none}
+.mt-card h2:focus-visible,.mt-hd h2:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.mt-rule{font:600 16px/1.35 'Source Sans 3',Arial,sans-serif;margin:6px 0 0}
+.mt-d{font:400 15px/1.4 'Source Sans 3',Arial,sans-serif;margin:6px 0 12px;color:var(--f)}
+.mt-tag{font:700 11px/1.2 'Source Sans 3',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--s);margin:0 0 6px;display:block}
+.mt-sel{display:block;width:100%;max-width:340px;min-height:48px;padding:0 12px;border:1.5px solid var(--f);border-radius:12px;background:var(--w);color:var(--ink);font:600 16px 'Source Sans 3',Arial,sans-serif}
+.mt-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.mt-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 12px;border:1.5px solid var(--f);border-radius:99px;background:var(--w);color:var(--ink);font:600 15px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.mt-chip[aria-pressed=true]{background:var(--f);color:var(--w)}
+.mt-chip[aria-pressed=true]::before{content:'';flex:none;width:5px;height:10px;margin:-2px 0 0;border:solid currentColor;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.mt-chip[aria-disabled=true]{border-style:dashed;color:var(--s)}
+.mt-more{border-style:dashed;color:var(--f)}
+.mt-chip .lg{flex:none}
+.mt-count{font:600 14px/1.4 'Source Sans 3',Arial,sans-serif;color:var(--s);margin:8px 0 0}
+.mt-count a,.mt-msg a{color:inherit}
+.mt-h3{font-size:20px;text-transform:uppercase;margin:14px 0 4px}
+.mt-yl{list-style:none;margin:0;padding:0}
+.mt-yl li{display:grid;grid-template-columns:1fr auto;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px solid var(--ban)}
+.mt-yn{display:flex;align-items:center;gap:8px;grid-column:1/3;min-width:0}.mt-yn b{font:700 21px/1.1 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase}
+.mt-ls2{max-width:none;min-width:0;width:100%}
+.mt-rm{min-width:44px;min-height:44px;border:1.5px solid var(--f);border-radius:12px;background:var(--w);color:var(--ink);font:700 24px/1 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.mt-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.mt-save{min-height:48px;min-width:120px;padding:0 24px;border:1.5px solid var(--f);border-radius:12px;background:var(--f);color:var(--w);font:700 18px 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.mt-save[aria-disabled=true]{background:var(--ban);border-color:var(--ban);color:var(--s);cursor:default}
+.mt-cancel,.mt-pb{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1.5px solid var(--f);border-radius:99px;background:var(--w);color:var(--ink);font:700 16px 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.mt-cancel{min-height:48px;border-radius:12px}
+.mt-danger{background:#a3262a;border-color:#a3262a;color:#fff}
+.mt-card .rn{margin-top:10px}
+.mt-warn{margin:10px 0 0;padding:8px 12px;border:1.5px solid #a3262a;border-radius:10px;font:600 14px/1.35 'Source Sans 3',Arial,sans-serif;color:var(--ink)}
+.mt-hd{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.mt-ac{display:flex;align-items:center;gap:4px}
+.mt-lkb{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 8px;border:0;background:none;color:var(--ink);font:600 15px 'Source Sans 3',Arial,sans-serif;text-decoration:underline;cursor:pointer}
+.mt-sub{font:400 13px/1.4 'Source Sans 3',Arial,sans-serif;color:var(--s);margin:0 0 6px}
+.mt-ask{border:1.5px solid #a3262a;border-radius:12px;background:var(--w);padding:10px 14px;margin:8px 0}.mt-ask p{margin:0;font:600 15px/1.35 'Source Sans 3',Arial,sans-serif}.mt-ask .mt-act{margin-top:8px}
+.mt-scr{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:max(20px,env(safe-area-inset-left,0px));margin:0 calc(0px - max(20px,env(safe-area-inset-right,0px))) 0 calc(0px - max(20px,env(safe-area-inset-left,0px)));padding:2px max(20px,env(safe-area-inset-right,0px)) 8px max(20px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch}
+.mt-c{flex:0 0 calc(100vw - 80px);min-width:240px;scroll-snap-align:start;background:var(--w);border:1px solid var(--s);border-radius:12px;padding:12px;display:flex;flex-direction:column}
+.mt-ch{display:flex;align-items:center;gap:10px}.mt-ch h3{font-size:26px;text-transform:uppercase;line-height:1.05;min-width:0;overflow-wrap:anywhere}
+.mt-lt{margin:8px 0 0}
+.mt-n{font:700 56px/1 'Barlow Condensed',Arial,sans-serif;margin:2px 0 0;color:var(--ink)}
+.mt-x{background:var(--p);border-radius:10px;padding:10px 12px;margin:10px 0 12px;flex:1}
+.mt-x p{margin:0}.mt-dt{font:600 15px/1.35 'Source Sans 3',Arial,sans-serif;color:var(--ink)}
+.mt-op{display:flex;align-items:center;gap:8px;font:700 21px/1.15 'Barlow Condensed',Arial,sans-serif;margin-top:4px!important}
+.mt-kv{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-top:8px!important;font:600 13px/1.3 'Source Sans 3',Arial,sans-serif;color:var(--f)}
+.mt-kv b{font:700 19px/1.1 'Barlow Condensed',Arial,sans-serif;color:var(--ink);text-align:right}.mt-kv b.mt-no{font:600 14px 'Source Sans 3',Arial,sans-serif;color:var(--f)}
+.mt-bar{display:block;height:8px;border-radius:4px;background:var(--ban);margin-top:4px;overflow:hidden}.mt-bar i{display:block;height:100%;background:var(--ink)}
+.mt-lk{display:flex;flex-direction:column;gap:8px}
+.mt-b{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1.5px solid var(--f);border-radius:99px;background:var(--f);color:var(--w);font:700 16px 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;text-decoration:none}
+.mt-b2{background:var(--w);color:var(--ink)}
+.mt-b:focus-visible{outline-offset:2px}
+/* Save control on a team page (inside the dark hero) */
+.mt-svw{margin:14px 0 0}
+.mt-svw[hidden]{display:none}
+.mt-sv{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px 0 14px;border:2px solid var(--l);border-radius:99px;background:transparent;color:var(--w);font:700 17px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.mt-sv i{font-style:normal;font-size:22px;line-height:1;color:var(--l)}
+.mt-sv[aria-pressed=true]{background:var(--l);color:var(--ink)}.mt-sv[aria-pressed=true] i{color:var(--ink)}
+.hero .mt-sv:focus-visible{outline-color:var(--w)}
+.mt-msg{margin:8px 0 0;font:600 14px/1.4 'Source Sans 3',Arial,sans-serif;color:var(--w)}.mt-msg:empty{display:none}.mt-msg a{color:var(--l)}
+.mt-svw .rn{margin-top:8px}
+/* stars in lists */
+.mt-ls{flex:none;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin:0 -6px 0 -2px;padding:0;border:0;background:none;color:var(--ink);cursor:pointer;border-radius:50%}
+.mt-ls i{font-style:normal;font-size:24px;line-height:1}
+.mt-ls[aria-pressed=true]{color:var(--ink)}
+.mt-ls:focus-visible{outline-offset:-3px}
+.mt-ln{margin:8px 0 4px}
+@media(min-width:768px){
+  .mt-scr{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));overflow:visible;margin:0;padding:2px 0 8px}
+  .mt-c{flex:none;min-width:0}
+  .mt-ed{max-width:760px}
+  .mt-yl li{grid-template-columns:1fr minmax(180px,240px) auto}.mt-yn{grid-column:auto}
+}
+@media(prefers-reduced-motion:reduce){.mt-scr{scroll-behavior:auto}}
+/* the pinned team column grows by the width of the star so names keep their room (phone widths, where columns 1 and 2 are pinned) */
+.tw.tk-n[data-mtln] td:nth-child(2),.tw.tk-n[data-mtln] th:nth-child(2){width:184px;min-width:184px;max-width:184px}
+.mt-svw .mt-msg{margin-top:10px}
+.tnm .mt-ls{margin-left:auto}
+.mt-scr,.mt-c,.mt-wrap{position:relative}
+/* ---- phase 2: account surfaces (header link/chip, sheet, menu). Everything 44px+, contrast >= 4.5 ---- */
+.ac-hd{display:inline-flex;align-items:center;position:relative}
+.ac-si{min-height:44px;min-width:44px;padding:0 2px;border:0;background:none;color:var(--w);font:600 16px 'Source Sans 3',Arial,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.ac-chip{width:44px;height:44px;border-radius:50%;border:2px solid var(--l);background:var(--l);color:var(--ink);font:700 18px 'Barlow Condensed',Arial,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ac-si:focus-visible,.ac-chip:focus-visible,.ac-x:focus-visible,.ac-g:focus-visible,.ac-nn:focus-visible,.ac-pri:focus-visible,.ac-it:focus-visible{outline:3px solid var(--l);outline-offset:2px;box-shadow:0 0 0 5px var(--ink)}
+.ac-menu{position:fixed;z-index:60;background:var(--w);color:var(--ink);border:1px solid #AEB6BD;border-radius:12px;box-shadow:0 8px 28px rgba(18,21,25,.35);padding:12px 12px 8px;font:400 15px/1.4 'Source Sans 3',Arial,sans-serif}
+.ac-k{margin:0;font-size:13px;color:var(--s)}.ac-em{margin:0 0 8px;font-weight:700;overflow-wrap:anywhere}
+.ac-row{display:flex;justify-content:space-between;gap:12px;margin:0 0 6px;padding:8px 0;border-top:1px solid #DDE3E6;border-bottom:1px solid #DDE3E6}
+.ac-it{display:flex;align-items:center;width:100%;min-height:44px;padding:0 4px;border:0;background:none;color:var(--ink);font:600 16px 'Source Sans 3',Arial,sans-serif;text-align:left;text-decoration:none;cursor:pointer;border-radius:8px}
+.ac-it:hover{background:var(--p)}.ac-dng{color:#8F1D1D}
+.ac-lock{overflow:hidden}
+.ac-ov{position:fixed;inset:0;z-index:80;background:rgba(18,21,25,.62);display:flex;flex-direction:column;overflow-y:auto}
+.ac-ov[hidden]{display:none}
+.ac-bn{background:#262B31;color:#D5DBE0;padding:8px 16px;padding-top:calc(8px + env(safe-area-inset-top,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font:400 14px/1.35 'Source Sans 3',Arial,sans-serif;border-bottom:1px solid rgba(255,255,255,.12)}
+.ac-sheet{display:flex;flex-direction:column;min-height:100%}
+.ac-card{position:relative;background:var(--w);color:var(--ink);margin:auto auto 0;width:100%;max-width:460px;border-radius:16px 16px 0 0;padding:24px 20px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));font:400 16px/1.45 'Source Sans 3',Arial,sans-serif}
+@media(min-width:700px){.ac-card{margin:auto;border-radius:16px;padding-bottom:24px}.ac-sheet{justify-content:center}}
+.ac-card h2{font:700 24px/1.15 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;margin:0 44px 10px 0;letter-spacing:.01em}
+.ac-x{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;border-radius:50%;background:var(--p);color:var(--ink);font:400 28px/1 Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.ac-p{margin:0 0 14px}
+.ac-g{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding:0 16px;border:1px solid #747775;border-radius:4px;background:#fff;color:#1F1F1F;font:500 14px/20px Roboto,Arial,sans-serif;text-decoration:none}
+.ac-g:hover{background:#F6F8FA}
+.ac-gw .rn{margin-top:8px}
+.ac-nn{display:flex;align-items:center;justify-content:center;min-height:44px;width:100%;margin-top:14px;padding:0 14px;border:1.5px solid var(--f);border-radius:99px;background:none;color:var(--ink);font:700 16px 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.ac-pri{display:flex;align-items:center;justify-content:center;min-height:44px;width:100%;padding:0 14px;border:1.5px solid var(--f);border-radius:99px;background:var(--f);color:var(--w);font:700 16px 'Barlow Condensed',Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.ac-pri[aria-disabled=true]{opacity:.7;pointer-events:none}
+.ac-danger{background:#8F1D1D;border-color:#8F1D1D}
+.ac-act{display:flex;flex-direction:column}
+.ac-cap{margin:8px 0 0;font-size:14px;color:var(--s)}
+.ac-fine{margin-top:14px}
+.ac-err{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;padding:10px 12px;border-radius:8px;border:1px solid #8F1D1D;background:#FBEDED;color:#5E1111;font-weight:600}
+.ac-err span{flex:none;width:22px;height:22px;border-radius:50%;background:#8F1D1D;color:#fff;font:700 15px/22px Arial,sans-serif;text-align:center}
+.ac-soon{margin:0;padding:12px;border-radius:8px;background:var(--p);color:var(--ink)}
+.ac-ul{margin:0 0 14px;padding-left:20px;max-height:34vh;overflow:auto}
+.ac-msg{margin:10px 0 0;color:#5E1111;font-weight:600}
+.mt-inl{display:inline;min-height:44px;padding:0 4px}
+.mt-acl .mt-lkb{font-size:14px}
+.mt-pv{margin:14px 0 0}
+
+/* /privacy/ storage + cookie tables (privacy_copy.py). Wide: ordinary table. Under 720px each row becomes a labelled block, so nothing scrolls sideways at 320. */
+.pvw{margin:10px 0 14px}
+.pvt{font-size:15px;line-height:1.4}
+.pvt th,.pvt td{vertical-align:top;white-space:normal;overflow-wrap:anywhere}
+.pvt tbody th{background:transparent;color:var(--ink);text-transform:none;letter-spacing:0;font:700 15px/1.4 'Source Sans 3',Arial,sans-serif;border-top:1px solid var(--s);padding:6px 10px;width:20%}
+.pvt tbody tr:nth-child(even) th{background:var(--p)}
+@media(max-width:719px){
+.pvt thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pvt,.pvt tbody,.pvt tr,.pvt th,.pvt td{display:block;width:auto}
+.pvt tbody tr{border-top:2px solid var(--f);padding:6px 0}.pvt tbody tr:first-child{border-top:0}
+.pvt tbody th{border-top:0;padding:4px 10px 0;width:auto;font-size:16px;background:transparent!important}
+.pvt td{border-top:0;padding:3px 10px;background:transparent!important}
+.pvt td[data-l]::before{content:attr(data-l);display:block;font:700 12px/1.3 'Source Sans 3',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--s)}
+}
+
+/* ---- sticky header coexistence (src/header-kit): the Sign in button / account chip sit at the end of .nav. 760px and up: inline in the 56px row, nothing else changes. Below 760: the last row of the Menu panel (the bar itself is untouched, so it stays exactly 56px). ---- */
+.ac-chip .ac-cl{display:none}
+@media(min-width:760px){.hdjs .hd .nav .ac-hd{margin-left:2px;flex:none}.hdjs .hd .nav .ac-si{color:#fff;white-space:nowrap}}
+@media(max-width:759px){
+.hdjs .hd:not(.hd--q) .nav .ac-hd{display:flex;width:100%;border-top:1px solid rgba(255,255,255,.14)}
+.hdjs .hd:not(.hd--q) .nav .ac-si{display:flex;align-items:center;width:100%;min-height:52px;padding:0;color:#fff;text-decoration:none;text-align:left;font:600 18px 'Source Sans 3',Arial,sans-serif}
+.hdjs .hd:not(.hd--q) .nav .ac-chip{width:100%;height:auto;min-height:52px;border:0;border-radius:0;background:none;color:#fff;justify-content:flex-start;gap:12px;font:600 18px 'Source Sans 3',Arial,sans-serif}
+.hdjs .hd:not(.hd--q) .nav .ac-chip .ac-in{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--l);color:var(--ink);font:700 18px 'Barlow Condensed',Arial,sans-serif}
+.hdjs .hd:not(.hd--q) .nav .ac-chip .ac-cl{display:inline}
+.hdjs .hd:not(.hd--q) .nav .ac-chip[aria-expanded=true] .ac-cl{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+}
+/* 760-959px (tablet portrait and small laptop windows): five links + Sign in do not fit the approved inline spacing, so tighten the row (padding, gaps) instead of moving the Menu breakpoint. Still 44px-tall targets, no sideways scroll. */
+@media(min-width:760px) and (max-width:959px){
+.hdjs .hd .khw{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.hdjs .hd .nav{gap:4px 2px}
+.hdjs .hd .nav a{padding:0 3px;font-size:15px}
+.hdjs .hd .nav .ac-si{padding:0 4px;font-size:15px}
+.hdjs .hd .nav a .mt-nb{margin-left:4px;padding:0 5px;min-width:18px}
+}

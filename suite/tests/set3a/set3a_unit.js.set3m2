@@ -1,0 +1,76 @@
+/* set3a unit + bank: my_teams_digest (#27) and cfp_committee_rankings (#23). usage: node tests/set3a_unit.js <tree> */
+"use strict";
+const fs = require("fs"), path = require("path");
+const tree = path.resolve(process.argv[2] || path.join(__dirname, "..", "work", "out"));
+const Q = require("/workspace/kicktip-scn-b3/tests/lib/tbq.js"), q = Q(tree), TB = q.TB;
+const W = fs.readFileSync(path.join(tree, "_worker.js"), "utf8");
+const LIVE = eval(/const TB_LIVE_TOOLS = (\[[^\]]*\]);/.exec(W)[1]), SET3 = eval(/const TB_SET3_IDS = (\[[^\]]*\]);/.exec(W)[1]);
+const bank = JSON.parse(fs.readFileSync(path.join(__dirname, "bank_set3a.json"), "utf8")).rows;
+const BANNED = /\b(bets?|betting|wagers?|spreads?|parlays?|ccg|title game|sportsbook|vegas|money|lines?|markets?|picks?|difference|differ|agree|seeds?|seeded|seeding)\b|\bthe 12\b(?!-team)|\bin the field\b|\bwho is in\b/i;
+const DATEW = /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\.?\s*\d|\b20\d\d\b|\b\d{1,2}\/\d{1,2}\b/i;
+let pass = 0, fail = 0, model = 0;
+const ok = (id, c, m) => { if (c) pass++; else { fail++; console.log("FAIL " + id + ": " + m); } };
+const stub = () => { model++; return Promise.reject(new Error("no model")); };
+const tool = c => (/data-tool="([a-z_]+)"/.exec(c && c.html || "") || [])[1] || null;
+let SAVED = []; globalThis.KTMyTeams = { get: () => ({ teams: SAVED.slice(), lead: {} }) };
+function cardOk(id, c) {
+  const e = [];
+  if (!c || (c.errors && c.errors.length)) e.push("errors " + JSON.stringify(c && c.errors));
+  const t = c.text || "", asof = (/As of ([^.]+?)\./.exec(t) || [])[1] || "", scan = t.split(asof).join(" ");
+  if (!asof) e.push("no as-of"); if (!/\bestimate/i.test(t)) e.push("no estimate");
+  const b = BANNED.exec(scan.replace(/odds|chances?/gi, "")); if (b) e.push("banned " + b[0]);
+  if (DATEW.test(scan)) e.push("date " + DATEW.exec(scan)[0]);
+  if (/https?:/.test(c.html)) e.push("outside link");
+  const dp = TB.card.digitProblems(c, ""); if (dp.length) e.push("digits " + dp.join(";"));
+  ok(id, !e.length, e.join(" | "));
+}
+async function rq(text, on, page) { if (on) TB.setLive(LIVE.concat(SET3)); else TB.setLive(LIVE); const m = await q.match(text, { page: page || { mode: "home" } }); return m; }
+async function disp(text, on) { TB.setLive(on ? LIVE.concat(SET3) : LIVE); const b = model; const r = await TB.dispatch(text, { mode: "home" }, { model: stub }); return { r, calls: model - b }; }
+function setCfp(file) { q.DATA["tb/cfp-rankings"] = file ? JSON.parse(fs.readFileSync(file, "utf8")) : JSON.parse(fs.readFileSync(path.join(tree, "data/tb/cfp-rankings.json"), "utf8")); TB.clearData(); }
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+(async () => {
+  /* static: lint and registration */
+  for (const id of SET3) { const t = TB.get(id); ok(id + "/reg", t && t.set === 3 && t.live === false, "registered dark set 3"); ok(id + "/lint", TB.card.lintCopy(t).length === 0, TB.card.lintCopy(t).join(";")); ok(id + "/ascii", Object.values(t.copy).every(v => /^[\x20-\x7e]*$/.test(typeof v === "string" ? v : v.t)), "non-ASCII copy"); }
+  ok("worker/prod", /cfg\.tb = TB_ON\.concat\(tbSet3\(env, url\)\)/.test(W) && /const tbSet3 = \(env, url\) => TB_SET3_VISIBLE \|\| askPreviewOnly\(env, url\) \? TB_SET3_IDS : \[\];/.test(W) && /^const TB_SET3_VISIBLE = false;/m.test(W), "flag wiring (set3m: TB_SET3_VISIBLE switch, false)");
+  ok("worker/notlive", !LIVE.some(x => SET3.includes(x)), "set3 ids must not be in TB_LIVE_TOOLS");
+  ok("worker/router", !/my_teams_digest|cfp_committee_rankings/.test(W.replace(/const TB_SET3_IDS[^\n]*\n/, "")), "no router lines for set3 tools");
+  ok("cfp/file", eq(JSON.parse(fs.readFileSync(path.join(tree, "data/tb/cfp-rankings.json"))), { asof: JSON.parse(fs.readFileSync(path.join(tree, "data/sim-bundle.json"))).as_of, released: false, teams: [] }), "cfp-rankings.json not-released shape");
+  /* bank */
+  setCfp(null);
+  for (const row of bank) {
+    const e = row.expect, id = row.id; SAVED = row.saved || [];
+    if (row.grp === "routing") {
+      const m = await rq(row.text, true, row.page);
+      const good = m && !m.clarify && m.tool === e.tool && Object.keys(e.params || {}).every(k => eq(m.params[k], e.params[k])) && (!e.exact || eq(m.params, e.params));
+      const { r, calls } = await disp(row.text, true);
+      ok(id, good && calls === 0 && r.cards.length && tool(r.cards[0]) === e.tool, row.text + " -> " + JSON.stringify(m) + " calls " + calls + " card " + (r.cards[0] && tool(r.cards[0])));
+      if (r.cards[0] && tool(r.cards[0]) === e.tool && SET3.includes(e.tool)) { cardOk(id + "/card", r.cards[0]); if (e.text) ok(id + "/text", r.cards[0].text.indexOf(e.text) >= 0, "card text lacks: " + e.text + " | " + r.cards[0].text.slice(0, 300)); }
+      if (e.off_tool !== undefined) { const m0 = await rq(row.text, false, row.page); ok(id + "/off", (m0 && m0.tool) === e.off_tool, "flag off routes to " + JSON.stringify(m0)); }
+    } else if (row.grp === "near_miss" || row.grp === "unsupported") {
+      const m = await rq(row.text, true);
+      ok(id, !m || (e.not ? !e.not.includes(m.tool) : m.tool === e.tool), row.text + " -> " + JSON.stringify(m));
+    } else if (row.grp === "golden") {
+      if (row.file) setCfp(path.join(__dirname, "..", row.file));
+      const res = await TB.run(e.run.tool, e.run.params); ok(id + "/run", res.ok, "run " + res.reason);
+      if (res.ok) { const c = TB.render(e.run.tool, res); ok(id + "/tool", tool(c) === e.run.tool, "tool"); cardOk(id, c);
+        if (e.rows !== undefined) ok(id + "/rows", (c.html.match(/<tr data-src/g) || []).length === e.rows, "rows " + (c.html.match(/<tr data-src/g) || []).length);
+        (e.has || []).forEach((s, i) => ok(id + "/has" + i, c.text.indexOf(s) >= 0, "missing: " + s + " | " + c.text.slice(0, 400)));
+        (e.lacks || []).forEach((s, i) => ok(id + "/lacks" + i, c.text.indexOf(s) < 0, "has: " + s));
+        if (e.check === "fixture_match") {   /* every row equals the source payload; KickTip rank from the bundle */
+          const src = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "fixtures/espn-cfp-2025-w16-rankings21.json"))), B = q.raw("sim-bundle"), RT = B.model.rating.slice(0, B.fcs);
+          res.facts.rows.forEach((r, i) => { const s = src.ranks[i]; ok(id + "/src" + i, r.rank === s.current && r.record === s.record.summary && (r.prev || 0) === (s.previous || 0), "row " + i); const ix = B.teams.findIndex(t => t.g === r.slug); ok(id + "/kt" + i, r.kt === 1 + RT.filter(x => x > RT[ix]).length, "kt " + r.slug); });
+        }
+      }
+      setCfp(null);
+    }
+  }
+  /* privacy: the tool takes no params, and the saved list never appears in a request body the hook builds (tb-count carries ids only) */
+  ok("mt/noparams", Object.keys(TB.get("my_teams_digest").params).length === 0, "params must be empty");
+  const H = fs.readFileSync(path.join(tree, "assets/tb/hook.js"), "utf8");
+  ok("mt/hookchip", /data-mt-digest/.test(H) && /indexOf\("my_teams_digest"\) >= 0\) mtChip\(\)/.test(H) && !/KTMyTeams/.test(H.split("function mtChip")[1].split("H.init")[0]), "chip wiring / no list access in chip");
+  /* storage blocked */
+  globalThis.KTMyTeams = { get: () => { throw new Error("blocked"); } }; const rb = await TB.run("my_teams_digest", {}); ok("mt/blocked", rb.ok && rb.facts.rows.length === 0, "blocked storage = empty");
+  delete globalThis.KTMyTeams; const rn = await TB.run("my_teams_digest", {}); ok("mt/nomodule", rn.ok && rn.facts.rows.length === 0, "no module = empty");
+  console.log("set3a unit+bank: pass " + pass + " fail " + fail + " model calls " + model);
+  process.exit(fail ? 1 : 0);
+})().catch(e => { console.error(e); process.exit(2); });

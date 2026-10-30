@@ -1,0 +1,65 @@
+/* Rootables panel (section.card.rb#rootables on team pages). Creative's mockup CSS, shipped parts only. Loaded after kt.css (tokens --f --ink --p --s --ban come from kt.css). */
+:root{--gu:#0b6b2a;--ru:#a3262a;--soft:#D5DBE0}
+.rb .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rb{padding:14px}
+.rb h2{font-size:30px;line-height:1.02}
+.rb-sub{margin:6px 0 12px;font-size:16px;line-height:1.4;color:var(--f)}
+.rb-seg{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
+.rb-seg .mb{flex:1 1 140px;font-size:15px}
+.rb-seg .mb .lo{display:none}
+@media(min-width:480px){.rb-seg .mb{flex:0 1 auto;padding:0 16px}.rb-seg .mb .lo{display:inline}.rb-seg .mb .sh{display:none}}
+.rb-list{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid var(--ban)}
+.rb-row{padding:14px 0;border-bottom:1px solid var(--ban);display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.rb-when{font:700 11px/1.2 'Source Sans 3',Arial;letter-spacing:.08em;text-transform:uppercase;color:var(--s)}
+.rb-match{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font:600 16px/1.2 'Source Sans 3',Arial;color:var(--s)}
+.rb-match .t{display:inline-flex;align-items:center;gap:6px}
+.rb-match .t.r{color:var(--ink);font-weight:700}
+.rb-match .vs{font-weight:400;font-size:14px}
+.rb-match img{width:28px;height:28px;object-fit:contain;background:#fff;border:1px solid #7A848E;border-radius:6px;padding:2px;flex:none}
+.rb-root{font:700 26px/1.02 'Barlow Condensed',Arial;text-transform:uppercase;letter-spacing:.01em;color:var(--ink);margin:0}
+.rb-imp{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 8px;color:var(--ink)}
+.rb-imp .n{font:700 32px/1 'Barlow Condensed',Arial;color:var(--gu);white-space:nowrap}
+.rb-imp .n s{text-decoration:none;font-size:17px;margin-right:4px}
+.rb-imp .u{font:600 15px 'Source Sans 3',Arial;color:var(--f)}
+.rb-imp .w{flex:1 1 100%;font-size:13px;line-height:1.35;color:var(--s)}
+.rb-nums{margin:0;font-size:14px;line-height:1.4;color:var(--f)}
+.rb-nums b{font-weight:700;color:var(--ink)}
+.rb-own{display:inline-block;margin-left:8px;border:1px solid var(--s);border-radius:99px;padding:1px 8px;font:700 11px 'Source Sans 3',Arial;letter-spacing:.06em;text-transform:uppercase;color:var(--f);background:#fff;vertical-align:middle}
+@media(min-width:768px){
+ .rb{padding:20px 22px}
+ .rb-row{grid-template-columns:minmax(0,1fr) 250px;column-gap:24px;row-gap:6px;padding:16px 0;align-items:start}
+ .rb-row .rb-when,.rb-row .rb-match,.rb-row .rb-root,.rb-row .rb-nums{grid-column:1}
+ .rb-row .rb-imp{grid-column:2;grid-row:1 / span 4;display:block;text-align:right}
+ .rb-row .rb-imp .n{font-size:40px;display:block}
+ .rb-row .rb-imp .w{display:block}
+ .rb-root{font-size:30px}
+}
+.rb-after{margin:14px 0 0}
+.rb-hid{margin:0 0 6px;font-size:15px;line-height:1.4;color:var(--f)}
+.rb-simn{margin:0 0 4px;font-size:14px;line-height:1.4;color:var(--s)}
+.rb-simn b{color:var(--ink)}
+.rb-how{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;margin:4px 0 0 -4px;font:600 15px 'Source Sans 3',Arial;color:var(--ink);text-decoration:underline;background:none;border:0;cursor:pointer}
+.rb-how .chv{flex:none;width:7px;height:7px;margin:-3px 0 0 9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.rb-how[aria-expanded=true] .chv{margin-top:3px;transform:rotate(225deg)}
+.rb-how:focus-visible,.mb:focus-visible,.btn:focus-visible,.rb-link:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.rb-hw{margin:6px 0 0;padding:12px 14px;background:var(--p);border:1px solid var(--s);border-radius:10px;font-size:15px;line-height:1.5;color:var(--f)}
+.rb-hw p{margin:0 0 8px}.rb-hw p:last-child{margin:0}
+.rb-hw ul{margin:0 0 8px;padding-left:20px}
+.rb-hw b{color:var(--ink)}
+.rb-end{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--ban);font-size:13px;line-height:1.4;color:var(--s)}
+.rb-msg{margin:12px 0 0;padding:14px;border:1px solid var(--s);border-radius:10px;background:#fff;font-size:16px;line-height:1.4;color:var(--ink)}
+.rb-msg.none{background:var(--p)}
+.rb-err{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--ru);border-radius:10px;padding:12px;margin:12px 0 10px;background:#fff;color:var(--ink)}
+.rb-err i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ru);color:#fff;font:700 15px/24px 'Source Sans 3';text-align:center;font-style:normal;margin-top:1px}
+.rb-err b{display:block;font:700 16px 'Source Sans 3',Arial}
+.rb-err span{font-size:14px;color:var(--f)}
+.rb-try{min-height:48px;padding:0 22px;border-radius:10px;font:700 16px 'Source Sans 3',Arial;background:var(--f);color:#fff;border:1.5px solid var(--f);cursor:pointer}
+.rb-sk{margin:12px 0 0}
+.rb-sk i{display:block;height:14px;border-radius:7px;background:var(--ban);margin:0 0 12px}
+.rb-sk i.l{width:70%}.rb-sk i.s{width:45%}
+.rb-load{margin:12px 0 0;font:600 15px 'Source Sans 3',Arial;color:var(--f)}
+.rb-row{position:relative}
+.sec.rbs{padding-top:0}
+.rb-simn .bl{display:block}
+.rb-msg.none{margin-top:12px}
+.rb-run{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;background:var(--f);color:#fff;border:2px solid var(--f);border-radius:10px;font:700 17px/1 'Source Sans 3',Arial,sans-serif;cursor:pointer}

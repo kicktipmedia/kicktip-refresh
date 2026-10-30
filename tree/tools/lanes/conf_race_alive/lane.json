@@ -1,0 +1,3 @@
+{"lane": "B", "owner": "Lane B (conf_race_alive)", "tools": ["conf_race_alive"], "matcher": {"conf_race_alive": true}, "new_data_files": ["data/tb/ccg-alive.json (generated into the tree by build_lane.py or by the refresh hook; not stored in the lane)"],
+ "patches_existing_files": [], "patches_outside_tree": ["kicktip-sim6/src/build.py: one opt-in line after the data/ccg-rules.json write, applied only with patch_sim_build.py --apply or KT_SIM_BUILD_PY (see README)"],
+ "needs_core": []}

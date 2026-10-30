@@ -1,0 +1,11 @@
+/* replays tests/qbank_scn_a1.json on a tree and compares to the recorded expectation. usage: node tests/qbank_scn_a1_check.js TREE */
+const path = require("path"), H = require("./lib/scn_harness.js")(path.resolve(process.argv[2])), EX = H.EX, rows = require("./qbank_scn_a1.json").rows;
+let n = 0, bad = 0; const ck = (ok, w, x) => { n++; if (!ok) { bad++; console.log("FAIL " + w + (x ? " :: " + JSON.stringify(x).slice(0, 300) : "")); } else console.log("PASS " + w); };
+for (const r of rows) { const o = H.run(r.text); let kind, got = {};
+  if (o.stage === "build" && o.f.ok !== false) { kind = "card"; const f = o.f; got = { title: EX.title(f), status: f.status, branches: f.branches.length, conference: f.conference.name, lead: EX.lead(f)[0], teams: f.scenario.teams, pair: f.branches.length === 1 ? f.branches[0].pair : undefined, tie_steps: f.branches.map(b => b.tie.length ? b.tie[0].steps.filter(s => s.kind === "decisive").map(s => s.n) : []), if_tied_steps: f.branches.map(b => b.if_tied ? b.if_tied.steps.length : 0) };
+    const t = EX.lines(f).join("\n"); ck(!/[^\x00-\x7f]/.test(t) && !/\bCCG\b|title game|\bbets?\b|wager|spread|parlay|the 12(?!-)\b|\bclinch|eliminated/i.test(t), r.id + " text ASCII, no banned word"); }
+  else if (o.stage === "build") { kind = "nocard"; got = { reason: o.f.reason }; } else if (o.stage === "resolve") { kind = "clarify"; got = { reason: o.clarify.reason }; } else { kind = "unchanged"; got = { note: r.expect.note }; }
+  const DS = ["status", "branches", "lead", "pair", "tie_steps", "if_tied_steps"], strip = (x) => { const y = Object.assign({}, x); DS.forEach(k => delete y[k]); return y; };
+  if (kind === "card" && r.kind === "card") ck(["settled", "partial", "impossible", "open"].includes(got.status) && got.branches >= 1 && typeof got.lead === "string" && got.lead.length > 10 && got.tie_steps.length === got.branches && got.if_tied_steps.length === got.branches && (got.status !== "settled" || got.branches === 1), r.id + " data fields consistent (status/branches/lead follow live results)", got);
+  ck(kind === r.kind && JSON.stringify(kind === "card" ? strip(got) : got) === JSON.stringify(kind === "card" ? strip(r.expect) : r.expect), r.id + " " + r.kind + ": " + r.text, [kind, got]); }
+console.log(n + " checks, " + bad + " failed"); process.exit(bad ? 1 : 0);

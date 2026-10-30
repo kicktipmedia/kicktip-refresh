@@ -1,0 +1,61 @@
+{
+ "A:Aug. 6, 2026 announcement": [
+  "playoff@1280:165x20",
+  "playoff@320:161x41",
+  "playoff@390:309x41",
+  "playoff@430:291x41"
+ ],
+ "A:Full disclaimer": [
+  "privacy@1280:98x22",
+  "privacy@320:98x22",
+  "privacy@390:98x22",
+  "privacy@430:98x22"
+ ],
+ "A:How we make the numbers": [
+  "privacy@1280:183x22",
+  "privacy@430:183x22"
+ ],
+ "A:NCAA.com's explainer": [
+  "playoff@1280:128x20",
+  "playoff@320:192x41",
+  "playoff@390:128x20",
+  "playoff@430:128x20"
+ ],
+ "A:big12sports.com": [
+  "conference@1280:113x22",
+  "conference@320:113x22",
+  "conference@390:113x22",
+  "conference@430:113x22"
+ ],
+ "A:full terms and disclaimer": [
+  "method@320:166x22",
+  "method@390:166x22",
+  "method@430:165x22",
+  "method@430:166x22"
+ ],
+ "A:home page": [
+  "404@1280:75x22",
+  "404@390:75x22",
+  "404@430:75x22"
+ ],
+ "A:how the numbers are made": [
+  "disclaimer@1280:185x22",
+  "disclaimer@390:185x22",
+  "disclaimer@430:185x22"
+ ],
+ "A:privacy": [
+  "disclaimer@1280:48x22",
+  "disclaimer@320:48x22",
+  "disclaimer@390:48x22",
+  "disclaimer@430:48x22"
+ ],
+ "A:privacy page": [
+  "method@1280:84x22"
+ ],
+ "A:support@kicktipmedia.com": [
+  "privacy@1280:188x22",
+  "privacy@320:188x22",
+  "privacy@390:188x22",
+  "privacy@430:188x22"
+ ]
+}

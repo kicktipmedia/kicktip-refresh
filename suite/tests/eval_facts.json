@@ -1,0 +1,4768 @@
+{
+ "about": "scn_a2 eval fixtures: real scenario fact objects (full = for the validator, compact = what the Worker receives).",
+ "tree": "outscna2",
+ "items": [
+  {
+   "id": "f01",
+   "q": "If BYU wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "BYU"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "BYU wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "BYU",
+        "slug": "byu",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona",
+         "best": "8-1"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        },
+        {
+         "team": "Utah",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "BYU",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "BYU wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "BYU",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Arizona",
+        "Oklahoma State",
+        "Texas Tech",
+        "Utah"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "BYU",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f02",
+   "q": "What if Arizona loses out?",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Arizona"
+     ],
+     "items": [
+      {
+       "rule": "lose_out",
+       "text": "Arizona loses out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Arizona",
+        "slug": "arizona",
+        "conf": {
+         "w": 3,
+         "l": 6,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 6,
+         "l": 6
+        },
+        "spot": "out_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "3-6",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona State",
+         "best": "7-2"
+        },
+        {
+         "team": "BYU",
+         "best": "8-1"
+        },
+        {
+         "team": "Baylor",
+         "best": "7-2"
+        },
+        {
+         "team": "Cincinnati",
+         "best": "7-2"
+        },
+        {
+         "team": "Colorado",
+         "best": "5-4"
+        },
+        {
+         "team": "Houston",
+         "best": "7-2"
+        },
+        {
+         "team": "Iowa State",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas State",
+         "best": "6-3"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "TCU",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        },
+        {
+         "team": "UCF",
+         "best": "7-2"
+        },
+        {
+         "team": "Utah",
+         "best": "9-0"
+        },
+        {
+         "team": "West Virginia",
+         "best": "6-3"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Arizona loses out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Arizona",
+        "conference_record": "3-6",
+        "final": true,
+        "games_left": 0,
+        "outcome": "out on records alone",
+        "overall_record": "6-6"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "3-6",
+       "teams": [
+        "Arizona State",
+        "BYU",
+        "Baylor",
+        "Cincinnati",
+        "Colorado",
+        "Houston"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f03",
+   "q": "what if Texas Tech loses out and Arizona wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Texas Tech",
+      "Arizona"
+     ],
+     "items": [
+      {
+       "rule": "lose_out",
+       "text": "Texas Tech loses out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Arizona wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Texas Tech",
+        "slug": "texas-tech",
+        "conf": {
+         "w": 3,
+         "l": 6,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 6,
+         "l": 6
+        },
+        "spot": "out_records"
+       },
+       {
+        "team": "Arizona",
+        "slug": "arizona",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "BYU",
+         "best": "8-1"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "Utah",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Texas Tech loses out",
+     "Arizona wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Texas Tech",
+        "conference_record": "3-6",
+        "final": true,
+        "games_left": 0,
+        "outcome": "out on records alone",
+        "overall_record": "6-6"
+       },
+       {
+        "team": "Arizona",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "BYU",
+        "Oklahoma State",
+        "Utah"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f04",
+   "q": "Colorado wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Colorado"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Colorado wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Colorado",
+        "slug": "colorado",
+        "conf": {
+         "w": 5,
+         "l": 4,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 7,
+         "l": 5
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "5-4",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona",
+         "best": "8-1"
+        },
+        {
+         "team": "Arizona State",
+         "best": "6-3"
+        },
+        {
+         "team": "BYU",
+         "best": "8-1"
+        },
+        {
+         "team": "Baylor",
+         "best": "7-2"
+        },
+        {
+         "team": "Cincinnati",
+         "best": "6-3"
+        },
+        {
+         "team": "Houston",
+         "best": "6-3"
+        },
+        {
+         "team": "Iowa State",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas State",
+         "best": "5-4"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "TCU",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        },
+        {
+         "team": "UCF",
+         "best": "6-3"
+        },
+        {
+         "team": "Utah",
+         "best": "9-0"
+        },
+        {
+         "team": "West Virginia",
+         "best": "6-3"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "Colorado",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Colorado wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Colorado",
+        "conference_record": "5-4",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "7-5"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "5-4",
+       "teams": [
+        "Arizona",
+        "Arizona State",
+        "BYU",
+        "Baylor",
+        "Cincinnati",
+        "Houston"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "Colorado",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f05",
+   "q": "Tennessee wins 3 of their remaining 4",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "sec",
+     "name": "SEC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Tennessee"
+     ],
+     "items": [
+      {
+       "rule": "wins_n_of_m",
+       "text": "Tennessee wins 3 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Tennessee",
+        "slug": "tennessee",
+        "conf": {
+         "w": 6,
+         "l": 3,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 3
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "6-3",
+       "division": null,
+       "teams": [
+        {
+         "team": "Alabama",
+         "best": "7-2"
+        },
+        {
+         "team": "Arkansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Auburn",
+         "best": "6-3"
+        },
+        {
+         "team": "Florida",
+         "best": "7-2"
+        },
+        {
+         "team": "Georgia",
+         "best": "8-1"
+        },
+        {
+         "team": "Kentucky",
+         "best": "7-2"
+        },
+        {
+         "team": "LSU",
+         "best": "6-3"
+        },
+        {
+         "team": "Mississippi State",
+         "best": "6-3"
+        },
+        {
+         "team": "Missouri",
+         "best": "7-2"
+        },
+        {
+         "team": "Oklahoma",
+         "best": "7-2"
+        },
+        {
+         "team": "Ole Miss",
+         "best": "7-2"
+        },
+        {
+         "team": "South Carolina",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas",
+         "best": "7-2"
+        }
+       ]
+      },
+      "ways": 4,
+      "of": 4
+     }
+    ],
+    "single_path": false,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25",
+     "url": "https://www.secsports.com/fbtiebreaker"
+    },
+    "checks": {
+     "ways": 4,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "SEC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Tennessee wins 3 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 4,
+      "of": 4,
+      "teams": [
+       {
+        "team": "Tennessee",
+        "conference_record": "6-3",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "9-3"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "6-3",
+       "teams": [
+        "Alabama",
+        "Arkansas",
+        "Auburn",
+        "Florida",
+        "Georgia",
+        "Kentucky"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f06",
+   "q": "Texas A&M wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "sec",
+     "name": "SEC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Texas A&M"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Texas A&M wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Texas A&M",
+        "slug": "texas-a-m",
+        "conf": {
+         "w": 5,
+         "l": 4,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 8,
+         "l": 4
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "5-4",
+       "division": null,
+       "teams": [
+        {
+         "team": "Alabama",
+         "best": "7-2"
+        },
+        {
+         "team": "Arkansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Auburn",
+         "best": "6-3"
+        },
+        {
+         "team": "Florida",
+         "best": "7-2"
+        },
+        {
+         "team": "Georgia",
+         "best": "8-1"
+        },
+        {
+         "team": "Kentucky",
+         "best": "8-1"
+        },
+        {
+         "team": "LSU",
+         "best": "7-2"
+        },
+        {
+         "team": "Mississippi State",
+         "best": "6-3"
+        },
+        {
+         "team": "Missouri",
+         "best": "7-2"
+        },
+        {
+         "team": "Oklahoma",
+         "best": "6-3"
+        },
+        {
+         "team": "Ole Miss",
+         "best": "7-2"
+        },
+        {
+         "team": "South Carolina",
+         "best": "5-4"
+        },
+        {
+         "team": "Tennessee",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas",
+         "best": "6-3"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25",
+     "url": "https://www.secsports.com/fbtiebreaker"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "SEC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Texas A&M wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Texas A&M",
+        "conference_record": "5-4",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "8-4"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "5-4",
+       "teams": [
+        "Alabama",
+        "Arkansas",
+        "Auburn",
+        "Florida",
+        "Georgia",
+        "Kentucky"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f07",
+   "q": "What if BYU and Texas Tech both end with just one loss?",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "BYU",
+      "Texas Tech"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "BYU wins out"
+      },
+      {
+       "rule": "lose_n_total",
+       "text": "Texas Tech wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "BYU",
+        "slug": "byu",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       },
+       {
+        "team": "Texas Tech",
+        "slug": "texas-tech",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Utah",
+         "best": "8-1"
+        }
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "BYU",
+        "Texas Tech"
+       ],
+       "rec": "8-1",
+       "steps": [
+        {
+         "n": 1,
+         "kind": "h2h",
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "n": 2,
+         "kind": "common_pct",
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "n": 3,
+         "kind": "common_ordered",
+         "text": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+        },
+        {
+         "n": 4,
+         "kind": "opp_conf_pct",
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "n": 5,
+         "kind": "wins12",
+         "text": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+        },
+        {
+         "n": 6,
+         "kind": "external",
+         "text": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute this."
+        },
+        {
+         "n": 7,
+         "kind": "random",
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "BYU",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "BYU wins out",
+     "Texas Tech wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "BYU",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       },
+       {
+        "team": "Texas Tech",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Utah"
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "BYU",
+        "Texas Tech"
+       ],
+       "record": "8-1",
+       "steps": [
+        {
+         "step": 1,
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "step": 2,
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "step": 3,
+         "text": "Win percentage against the best-placed common opponent in the conference standings, then the next one down."
+        },
+        {
+         "step": 4,
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "step": 5,
+         "text": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+        },
+        {
+         "step": 6,
+         "text": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute."
+        },
+        {
+         "step": 7,
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "BYU",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f08",
+   "q": "what if BYU wins out and Texas Tech loses to Arizona",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "BYU",
+      "Arizona",
+      "Texas Tech"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "BYU wins out"
+      },
+      {
+       "rule": "beats",
+       "text": "Arizona beats Texas Tech"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "BYU",
+        "slug": "byu",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       },
+       {
+        "team": "Arizona",
+        "slug": "arizona",
+        "conf": {
+         "w": 4,
+         "l": 1,
+         "left": 4,
+         "final": false,
+         "best": {
+          "w": 8,
+          "l": 1
+         }
+        },
+        "overall": null,
+        "spot": "open"
+       },
+       {
+        "team": "Texas Tech",
+        "slug": "texas-tech",
+        "conf": {
+         "w": 3,
+         "l": 2,
+         "left": 4,
+         "final": false,
+         "best": {
+          "w": 7,
+          "l": 2
+         }
+        },
+        "overall": null,
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "Utah",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "BYU wins out",
+     "Arizona beats Texas Tech"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "BYU",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       },
+       {
+        "team": "Arizona",
+        "conference_record": "4-1",
+        "final": false,
+        "games_left": 4,
+        "outcome": "not decided by the scenario"
+       },
+       {
+        "team": "Texas Tech",
+        "conference_record": "3-2",
+        "final": false,
+        "games_left": 4,
+        "outcome": "not decided by the scenario"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Oklahoma State",
+        "Utah"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f09",
+   "q": "What if BYU ends with 3 losses?",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "BYU"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "BYU loses 2 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "BYU",
+        "slug": "byu",
+        "conf": {
+         "w": 6,
+         "l": 3,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 3
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "6-3",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona",
+         "best": "8-1"
+        },
+        {
+         "team": "Arizona State",
+         "best": "6-3"
+        },
+        {
+         "team": "Baylor",
+         "best": "6-3"
+        },
+        {
+         "team": "Cincinnati",
+         "best": "7-2"
+        },
+        {
+         "team": "Houston",
+         "best": "7-2"
+        },
+        {
+         "team": "Iowa State",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Kansas State",
+         "best": "6-3"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "TCU",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        },
+        {
+         "team": "UCF",
+         "best": "7-2"
+        },
+        {
+         "team": "Utah",
+         "best": "8-1"
+        },
+        {
+         "team": "West Virginia",
+         "best": "6-3"
+        }
+       ]
+      },
+      "ways": 10,
+      "of": 10
+     }
+    ],
+    "single_path": false,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 10,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "BYU loses 2 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 10,
+      "of": 10,
+      "teams": [
+       {
+        "team": "BYU",
+        "conference_record": "6-3",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "9-3"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "6-3",
+       "teams": [
+        "Arizona",
+        "Arizona State",
+        "Baylor",
+        "Cincinnati",
+        "Houston",
+        "Iowa State"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f10",
+   "q": "What if Utah finishes with no losses?",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Utah"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "Utah wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Utah",
+        "slug": "utah",
+        "conf": {
+         "w": 9,
+         "l": 0,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 12,
+         "l": 0
+        },
+        "spot": "in_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "9-0",
+       "division": null,
+       "teams": []
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "Utah",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Utah wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Utah",
+        "conference_record": "9-0",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "12-0"
+       }
+      ]
+     }
+    ],
+    "sim": [
+     {
+      "team": "Utah",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f11",
+   "q": "what if Utah and Texas Tech win out",
+   "status": "settled",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Utah",
+      "Texas Tech"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Utah wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Texas Tech wins out"
+      }
+     ]
+    },
+    "status": "settled",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Utah",
+        "slug": "utah",
+        "conf": {
+         "w": 9,
+         "l": 0,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 12,
+         "l": 0
+        },
+        "spot": "in"
+       },
+       {
+        "team": "Texas Tech",
+        "slug": "texas-tech",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "in"
+       }
+      ],
+      "settled": true,
+      "pair": [
+       "Utah",
+       "Texas Tech"
+      ],
+      "order_known": true,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "9-0",
+       "division": null,
+       "teams": []
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "settled",
+    "scenario": [
+     "Utah wins out",
+     "Texas Tech wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Utah",
+        "conference_record": "9-0",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "12-0"
+       },
+       {
+        "team": "Texas Tech",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "11-1"
+       }
+      ],
+      "reach_the_game": [
+       "Utah",
+       "Texas Tech"
+      ]
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f12",
+   "q": "what if Arizona State and Houston win out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Arizona State",
+      "Houston"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Arizona State wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Houston wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Arizona State",
+        "slug": "arizona-state",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 3
+        },
+        "spot": "open"
+       },
+       {
+        "team": "Houston",
+        "slug": "houston",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-2",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona",
+         "best": "7-2"
+        },
+        {
+         "team": "BYU",
+         "best": "7-2"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "7-2"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        },
+        {
+         "team": "Utah",
+         "best": "9-0"
+        }
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "Arizona State",
+        "Houston"
+       ],
+       "rec": "7-2",
+       "steps": [
+        {
+         "n": 1,
+         "kind": "h2h",
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "n": 2,
+         "kind": "common_pct",
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "n": 3,
+         "kind": "common_ordered",
+         "text": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+        },
+        {
+         "n": 4,
+         "kind": "opp_conf_pct",
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "n": 5,
+         "kind": "wins12",
+         "text": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+        },
+        {
+         "n": 6,
+         "kind": "external",
+         "text": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute this."
+        },
+        {
+         "n": 7,
+         "kind": "random",
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Arizona State wins out",
+     "Houston wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Arizona State",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "9-3"
+       },
+       {
+        "team": "Houston",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "7-2",
+       "teams": [
+        "Arizona",
+        "BYU",
+        "Oklahoma State",
+        "Texas Tech",
+        "Utah"
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "Arizona State",
+        "Houston"
+       ],
+       "record": "7-2",
+       "steps": [
+        {
+         "step": 1,
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "step": 2,
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "step": 3,
+         "text": "Win percentage against the best-placed common opponent in the conference standings, then the next one down."
+        },
+        {
+         "step": 4,
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "step": 5,
+         "text": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+        },
+        {
+         "step": 6,
+         "text": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute."
+        },
+        {
+         "step": 7,
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f13",
+   "q": "what if New Mexico State and Western Kentucky win out",
+   "status": "settled",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "usa",
+     "name": "Conference USA",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "New Mexico State",
+      "Western Kentucky"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "New Mexico State wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Western Kentucky wins out"
+      }
+     ]
+    },
+    "status": "settled",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "New Mexico State",
+        "slug": "new-mexico-state",
+        "conf": {
+         "w": 7,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 8,
+         "l": 4
+        },
+        "spot": "in"
+       },
+       {
+        "team": "Western Kentucky",
+        "slug": "western-kentucky",
+        "conf": {
+         "w": 7,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 8,
+         "l": 4
+        },
+        "spot": "in"
+       }
+      ],
+      "settled": true,
+      "pair": [
+       "New Mexico State",
+       "Western Kentucky"
+      ],
+      "order_known": true,
+      "outcomes": [],
+      "tie": [
+       {
+        "teams": [
+         "New Mexico State",
+         "Western Kentucky"
+        ],
+        "rec": "7-1",
+        "desc": " at 7-1",
+        "what": "first place",
+        "unresolved": false,
+        "steps": [
+         {
+          "n": null,
+          "label": null,
+          "kind": "result",
+          "text": "Both are in. To order the two (seeding and host), the two-team steps apply:"
+         },
+         {
+          "n": 1,
+          "label": "head-to-head",
+          "kind": "decisive",
+          "text": "Step 1, head-to-head: New Mexico State beat Western Kentucky."
+         },
+         {
+          "n": null,
+          "label": null,
+          "kind": "result",
+          "text": "New Mexico State is in."
+         }
+        ]
+       }
+      ],
+      "rivals": {
+       "rec": "7-1",
+       "division": null,
+       "teams": []
+      },
+      "if_tied": {
+       "teams": [
+        "New Mexico State",
+        "Western Kentucky"
+       ],
+       "rec": "7-1",
+       "steps": [
+        {
+         "n": 1,
+         "kind": "h2h",
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "n": 2,
+         "kind": "common_pct",
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "n": 3,
+         "kind": "common_ordered",
+         "text": "Win percentage against the common opponent(s) with the best conference record, then down the standings until the tie is broken. A group of tied opponents counts as one group; it is skipped if the teams played it an unequal number of times or have the same record against it."
+        },
+        {
+         "n": 4,
+         "kind": "external",
+         "text": "Average of the conference's named rating systems. The tool cannot compute this."
+        },
+        {
+         "n": 5,
+         "kind": "opp_conf_pct",
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "n": 6,
+         "kind": "random",
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "New Mexico State",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Conference USA Football Regulations, Championship Game Tiebreaker Procedure",
+     "version": "2024 policy (the one posted on conferenceusa.com)",
+     "checked": "2026-10-25",
+     "url": "https://s3.amazonaws.com/sidearm.sites/conferenceusa.com/documents/2024/9/19/CUSA_FB_Championship_Game_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Conference USA",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "settled",
+    "scenario": [
+     "New Mexico State wins out",
+     "Western Kentucky wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "New Mexico State",
+        "conference_record": "7-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "8-4"
+       },
+       {
+        "team": "Western Kentucky",
+        "conference_record": "7-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "8-4"
+       }
+      ],
+      "reach_the_game": [
+       "New Mexico State",
+       "Western Kentucky"
+      ],
+      "ties": [
+       {
+        "teams": [
+         "New Mexico State",
+         "Western Kentucky"
+        ],
+        "record": "7-1",
+        "unresolved": false,
+        "steps": [
+         {
+          "text": "Both are in. To order the two (seeding and host), the two-team steps apply:"
+         },
+         {
+          "text": "Step 1, head-to-head: New Mexico State beat Western Kentucky.",
+          "step": 1,
+          "name": "head-to-head"
+         },
+         {
+          "text": "New Mexico State is in."
+         }
+        ]
+       }
+      ],
+      "if_tied": {
+       "teams": [
+        "New Mexico State",
+        "Western Kentucky"
+       ],
+       "record": "7-1",
+       "steps": [
+        {
+         "step": 1,
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "step": 2,
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "step": 3,
+         "text": "Win percentage against the common opponent(s) with the best conference record, then down the standings until."
+        },
+        {
+         "step": 4,
+         "text": "Average of the conference's named rating systems. The tool cannot compute this."
+        },
+        {
+         "step": 5,
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "step": 6,
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "New Mexico State",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Conference USA Football Regulations, Championship Game Tiebreaker Procedure",
+     "version": "2024 policy (the one posted on conferenceusa.com)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f14",
+   "q": "what if Miami (OH) and Toledo win out",
+   "status": "settled",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "midam",
+     "name": "MAC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Miami (OH)",
+      "Toledo"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Miami (OH) wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Toledo wins out"
+      }
+     ]
+    },
+    "status": "settled",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Miami (OH)",
+        "slug": "miami-oh",
+        "conf": {
+         "w": 7,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 3
+        },
+        "spot": "in"
+       },
+       {
+        "team": "Toledo",
+        "slug": "toledo",
+        "conf": {
+         "w": 7,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "in"
+       }
+      ],
+      "settled": true,
+      "pair": [
+       "Miami (OH)",
+       "Toledo"
+      ],
+      "order_known": true,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-1",
+       "division": null,
+       "teams": []
+      },
+      "if_tied": {
+       "teams": [
+        "Miami (OH)",
+        "Toledo"
+       ],
+       "rec": "7-1",
+       "steps": [
+        {
+         "n": 1,
+         "kind": "h2h",
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "n": 2,
+         "kind": "common_pct",
+         "text": "Win percentage against all common opponents."
+        },
+        {
+         "n": 3,
+         "kind": "external",
+         "text": "The tied team with the higher conference-specified analytics rating."
+        },
+        {
+         "n": 4,
+         "kind": "common_ordered",
+         "text": "Win percentage against common opponents in order of finish, best finisher first."
+        },
+        {
+         "n": 5,
+         "kind": "opp_conf_pct",
+         "text": "Combined conference win percentage of all conference opponents."
+        },
+        {
+         "n": 6,
+         "kind": "random",
+         "text": "Draw by the Commissioner or designee. The tool cannot compute this."
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "MAC Football Championship Game Tiebreaker",
+     "version": "posted Nov. 12, 2025 (live page, footer 2026; no 2026 revision found)",
+     "checked": "2026-10-25",
+     "url": "https://getsomemaction.com/sports/2025/11/12/FB_1112255434.aspx"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "MAC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "settled",
+    "scenario": [
+     "Miami (OH) wins out",
+     "Toledo wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Miami (OH)",
+        "conference_record": "7-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "9-3"
+       },
+       {
+        "team": "Toledo",
+        "conference_record": "7-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "reaches the game",
+        "overall_record": "10-2"
+       }
+      ],
+      "reach_the_game": [
+       "Miami (OH)",
+       "Toledo"
+      ],
+      "if_tied": {
+       "teams": [
+        "Miami (OH)",
+        "Toledo"
+       ],
+       "record": "7-1",
+       "steps": [
+        {
+         "step": 1,
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "step": 2,
+         "text": "Win percentage against all common opponents."
+        },
+        {
+         "step": 3,
+         "text": "The tied team with the higher conference-specified analytics rating."
+        },
+        {
+         "step": 4,
+         "text": "Win percentage against common opponents in order of finish, best finisher first."
+        },
+        {
+         "step": 5,
+         "text": "Combined conference win percentage of all conference opponents."
+        },
+        {
+         "step": 6,
+         "text": "Draw by the Commissioner or designee. The tool cannot compute this."
+        }
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "MAC Football Championship Game Tiebreaker",
+     "version": "posted Nov. 12, 2025 (live page, footer 2026; no 2026 revision found)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f15",
+   "q": "what if Ohio State and Indiana both win out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big10",
+     "name": "Big Ten",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Ohio State",
+      "Indiana"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Ohio State wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Indiana wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Ohio State",
+        "slug": "ohio-state",
+        "conf": {
+         "w": 9,
+         "l": 0,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "in_records"
+       },
+       {
+        "team": "Indiana",
+        "slug": "indiana",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "9-0",
+       "division": null,
+       "teams": [
+        {
+         "team": "UCLA",
+         "best": "9-0"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "2024 Big Ten Football Championship Game Tiebreaker",
+     "version": "Aug. 26, 2024 (the latest edition we found)",
+     "checked": "2026-10-25",
+     "url": "https://bigten.org/fb/article/blt6104802d94ebe1ab/"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big Ten",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Ohio State wins out",
+     "Indiana wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Ohio State",
+        "conference_record": "9-0",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "11-1"
+       },
+       {
+        "team": "Indiana",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "9-0",
+       "teams": [
+        "UCLA"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "2024 Big Ten Football Championship Game Tiebreaker",
+     "version": "Aug. 26, 2024 (the latest edition we found)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f16",
+   "q": "what if Ohio State ends with 2 losses",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big10",
+     "name": "Big Ten",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Ohio State"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "Ohio State loses 1 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Ohio State",
+        "slug": "ohio-state",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Indiana",
+         "best": "8-1"
+        },
+        {
+         "team": "Minnesota",
+         "best": "8-1"
+        },
+        {
+         "team": "Northwestern",
+         "best": "8-1"
+        },
+        {
+         "team": "UCLA",
+         "best": "9-0"
+        },
+        {
+         "team": "Wisconsin",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 5,
+      "of": 5
+     }
+    ],
+    "single_path": false,
+    "sim": [
+     {
+      "team": "Ohio State",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "2024 Big Ten Football Championship Game Tiebreaker",
+     "version": "Aug. 26, 2024 (the latest edition we found)",
+     "checked": "2026-10-25",
+     "url": "https://bigten.org/fb/article/blt6104802d94ebe1ab/"
+    },
+    "checks": {
+     "ways": 5,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big Ten",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Ohio State loses 1 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 5,
+      "of": 5,
+      "teams": [
+       {
+        "team": "Ohio State",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Indiana",
+        "Minnesota",
+        "Northwestern",
+        "UCLA",
+        "Wisconsin"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "Ohio State",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "2024 Big Ten Football Championship Game Tiebreaker",
+     "version": "Aug. 26, 2024 (the latest edition we found)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f17",
+   "q": "what if Alabama and Ole Miss win out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "sec",
+     "name": "SEC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Alabama",
+      "Ole Miss"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Alabama wins out"
+      },
+      {
+       "rule": "win_out",
+       "text": "Ole Miss wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Alabama",
+        "slug": "alabama",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       },
+       {
+        "team": "Ole Miss",
+        "slug": "ole-miss",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-2",
+       "division": null,
+       "teams": [
+        {
+         "team": "Florida",
+         "best": "7-2"
+        },
+        {
+         "team": "Georgia",
+         "best": "7-2"
+        },
+        {
+         "team": "Kentucky",
+         "best": "8-1"
+        },
+        {
+         "team": "Missouri",
+         "best": "7-2"
+        },
+        {
+         "team": "Tennessee",
+         "best": "7-2"
+        },
+        {
+         "team": "Texas",
+         "best": "7-2"
+        }
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "Alabama",
+        "Ole Miss"
+       ],
+       "rec": "7-2",
+       "steps": [
+        {
+         "n": 1,
+         "kind": "h2h",
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "n": 2,
+         "kind": "common_pct",
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "n": 3,
+         "kind": "common_ordered",
+         "text": "Record against the best-placed common opponent, then the next one down. If several common opponents are tied in the standings, they are split by their own head-to-head results first; if that does not separate them, their records are combined."
+        },
+        {
+         "n": 4,
+         "kind": "opp_conf_pct",
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "n": 5,
+         "kind": "external",
+         "text": "A conference-specified analytics rating (capped scoring margin against all conference opponents). The tool cannot compute this."
+        },
+        {
+         "n": 6,
+         "kind": "random",
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25",
+     "url": "https://www.secsports.com/fbtiebreaker"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "SEC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Alabama wins out",
+     "Ole Miss wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Alabama",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       },
+       {
+        "team": "Ole Miss",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "7-2",
+       "teams": [
+        "Florida",
+        "Georgia",
+        "Kentucky",
+        "Missouri",
+        "Tennessee",
+        "Texas"
+       ]
+      },
+      "if_tied": {
+       "teams": [
+        "Alabama",
+        "Ole Miss"
+       ],
+       "record": "7-2",
+       "steps": [
+        {
+         "step": 1,
+         "text": "Head-to-head: the winner of the game between the two teams."
+        },
+        {
+         "step": 2,
+         "text": "Win percentage against all common conference opponents (opponents every tied team played)."
+        },
+        {
+         "step": 3,
+         "text": "Record against the best-placed common opponent, then the next one down. If several common opponents are tied."
+        },
+        {
+         "step": 4,
+         "text": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+        },
+        {
+         "step": 5,
+         "text": "A conference-specified analytics rating (capped scoring margin against all conference opponents). The tool."
+        },
+        {
+         "step": 6,
+         "text": "Coin toss (or random draw) run by the conference office."
+        }
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f18",
+   "q": "what if Vanderbilt wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "sec",
+     "name": "SEC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Vanderbilt"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Vanderbilt wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Vanderbilt",
+        "slug": "vanderbilt",
+        "conf": {
+         "w": 4,
+         "l": 5,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 7,
+         "l": 5
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "4-5",
+       "division": null,
+       "teams": [
+        {
+         "team": "Alabama",
+         "best": "6-3"
+        },
+        {
+         "team": "Arkansas",
+         "best": "6-3"
+        },
+        {
+         "team": "Auburn",
+         "best": "6-3"
+        },
+        {
+         "team": "Florida",
+         "best": "6-3"
+        },
+        {
+         "team": "Georgia",
+         "best": "8-1"
+        },
+        {
+         "team": "Kentucky",
+         "best": "8-1"
+        },
+        {
+         "team": "LSU",
+         "best": "7-2"
+        },
+        {
+         "team": "Mississippi State",
+         "best": "5-4"
+        },
+        {
+         "team": "Missouri",
+         "best": "7-2"
+        },
+        {
+         "team": "Oklahoma",
+         "best": "7-2"
+        },
+        {
+         "team": "Ole Miss",
+         "best": "7-2"
+        },
+        {
+         "team": "South Carolina",
+         "best": "6-3"
+        },
+        {
+         "team": "Tennessee",
+         "best": "6-3"
+        },
+        {
+         "team": "Texas",
+         "best": "7-2"
+        },
+        {
+         "team": "Texas A&M",
+         "best": "5-4"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25",
+     "url": "https://www.secsports.com/fbtiebreaker"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "SEC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Vanderbilt wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Vanderbilt",
+        "conference_record": "4-5",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "7-5"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "4-5",
+       "teams": [
+        "Alabama",
+        "Arkansas",
+        "Auburn",
+        "Florida",
+        "Georgia",
+        "Kentucky"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f19",
+   "q": "what if Wake Forest ends with 2 losses",
+   "status": "partial",
+   "branches": 2,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "acc",
+     "name": "ACC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Wake Forest"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "Wake Forest loses 1 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Wake Forest",
+        "slug": "wake-forest",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-2",
+       "division": null,
+       "teams": [
+        {
+         "team": "Duke",
+         "best": "7-2"
+        },
+        {
+         "team": "Louisville",
+         "best": "7-2"
+        },
+        {
+         "team": "Miami",
+         "best": "9-0"
+        },
+        {
+         "team": "SMU",
+         "best": "7-2"
+        },
+        {
+         "team": "Virginia Tech",
+         "best": "7-2"
+        }
+       ]
+      },
+      "ways": 4,
+      "of": 5
+     },
+     {
+      "teams": [
+       {
+        "team": "Wake Forest",
+        "slug": "wake-forest",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "in_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Miami",
+         "best": "9-0"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 5
+     }
+    ],
+    "single_path": false,
+    "sim": [
+     {
+      "team": "Wake Forest",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25",
+     "url": "https://theacc.com/documents/2026/7/15/ACC_Football_Tiebreaker_Policy_Jully_2026.pdf"
+    },
+    "checks": {
+     "ways": 5,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "ACC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Wake Forest loses 1 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 4,
+      "of": 5,
+      "teams": [
+       {
+        "team": "Wake Forest",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "7-2",
+       "teams": [
+        "Duke",
+        "Louisville",
+        "Miami",
+        "SMU",
+        "Virginia Tech"
+       ]
+      }
+     },
+     {
+      "ways": 1,
+      "of": 5,
+      "teams": [
+       {
+        "team": "Wake Forest",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Miami"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "Wake Forest",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f20",
+   "q": "what if SMU ends with 2 losses",
+   "status": "partial",
+   "branches": 2,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "acc",
+     "name": "ACC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "SMU"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "SMU loses 1 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "SMU",
+        "slug": "smu",
+        "conf": {
+         "w": 7,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-2",
+       "division": null,
+       "teams": [
+        {
+         "team": "Duke",
+         "best": "7-2"
+        },
+        {
+         "team": "Louisville",
+         "best": "7-2"
+        },
+        {
+         "team": "Miami",
+         "best": "9-0"
+        },
+        {
+         "team": "Virginia Tech",
+         "best": "7-2"
+        },
+        {
+         "team": "Wake Forest",
+         "best": "7-2"
+        }
+       ]
+      },
+      "ways": 4,
+      "of": 5
+     },
+     {
+      "teams": [
+       {
+        "team": "SMU",
+        "slug": "smu",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "in_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Miami",
+         "best": "9-0"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 5
+     }
+    ],
+    "single_path": false,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25",
+     "url": "https://theacc.com/documents/2026/7/15/ACC_Football_Tiebreaker_Policy_Jully_2026.pdf"
+    },
+    "checks": {
+     "ways": 5,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "ACC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "SMU loses 1 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 4,
+      "of": 5,
+      "teams": [
+       {
+        "team": "SMU",
+        "conference_record": "7-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "7-2",
+       "teams": [
+        "Duke",
+        "Louisville",
+        "Miami",
+        "Virginia Tech",
+        "Wake Forest"
+       ]
+      }
+     },
+     {
+      "ways": 1,
+      "of": 5,
+      "teams": [
+       {
+        "team": "SMU",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Miami"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f21",
+   "q": "what if Boise State ends with 2 losses",
+   "status": "partial",
+   "branches": 2,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "pac12",
+     "name": "Pac-12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Boise State"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "Boise State loses 1 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Boise State",
+        "slug": "boise-state",
+        "conf": {
+         "w": 6,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 2
+        },
+        "spot": "in_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "6-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Oregon State",
+         "best": "6-1"
+        }
+       ]
+      },
+      "ways": 3,
+      "of": 4
+     },
+     {
+      "teams": [
+       {
+        "team": "Boise State",
+        "slug": "boise-state",
+        "conf": {
+         "w": 6,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 9,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "6-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Oregon State",
+         "best": "6-1"
+        },
+        {
+         "team": "Texas State",
+         "best": "6-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 4
+     }
+    ],
+    "single_path": false,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Pac-12 Football Championship Game Tiebreakers (2026)",
+     "version": "published Sept. 3, 2026",
+     "checked": "2026-10-25",
+     "url": "https://pac-12.com/news/2026/9/3/pac-12-announces-commercial-and-operational-updates-ahead-of-its-2026-football-season-kickoff.aspx"
+    },
+    "checks": {
+     "ways": 4,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Pac-12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Boise State loses 1 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 3,
+      "of": 4,
+      "teams": [
+       {
+        "team": "Boise State",
+        "conference_record": "6-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "9-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "6-1",
+       "teams": [
+        "Oregon State"
+       ]
+      }
+     },
+     {
+      "ways": 1,
+      "of": 4,
+      "teams": [
+       {
+        "team": "Boise State",
+        "conference_record": "6-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "9-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "6-1",
+       "teams": [
+        "Oregon State",
+        "Texas State"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Pac-12 Football Championship Game Tiebreakers (2026)",
+     "version": "published Sept. 3, 2026",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f22",
+   "q": "what if James Madison ends with 2 losses",
+   "status": "partial",
+   "branches": 2,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "belt",
+     "name": "Sun Belt",
+     "format": "division winners",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "James Madison"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_total",
+       "text": "James Madison loses 1 of the remaining games"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "James Madison",
+        "slug": "james-madison",
+        "conf": {
+         "w": 6,
+         "l": 2,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "6-2",
+       "division": "East",
+       "teams": [
+        {
+         "team": "App State",
+         "best": "7-1"
+        },
+        {
+         "team": "Coastal Carolina",
+         "best": "6-2"
+        },
+        {
+         "team": "Georgia Southern",
+         "best": "7-1"
+        },
+        {
+         "team": "Georgia State",
+         "best": "6-2"
+        },
+        {
+         "team": "Marshall",
+         "best": "6-2"
+        }
+       ]
+      },
+      "ways": 3,
+      "of": 4
+     },
+     {
+      "teams": [
+       {
+        "team": "James Madison",
+        "slug": "james-madison",
+        "conf": {
+         "w": 7,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 10,
+         "l": 2
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "7-1",
+       "division": "East",
+       "teams": [
+        {
+         "team": "App State",
+         "best": "7-1"
+        },
+        {
+         "team": "Georgia Southern",
+         "best": "7-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 4
+     }
+    ],
+    "single_path": false,
+    "sim": [
+     {
+      "team": "James Madison",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Sun Belt Football Tie-Breaking Procedures",
+     "version": "live page (URL dated 2018; page footer 2026), read Oct. 25, 2026",
+     "checked": "2026-10-25",
+     "url": "https://sunbeltsports.org/sports/2018/8/30/FB_Tie-Breakers.aspx"
+    },
+    "checks": {
+     "ways": 4,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Sun Belt",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "James Madison loses 1 of the remaining games"
+    ],
+    "branches": [
+     {
+      "ways": 3,
+      "of": 4,
+      "teams": [
+       {
+        "team": "James Madison",
+        "conference_record": "6-2",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "6-2",
+       "teams": [
+        "App State",
+        "Coastal Carolina",
+        "Georgia Southern",
+        "Georgia State",
+        "Marshall"
+       ]
+      }
+     },
+     {
+      "ways": 1,
+      "of": 4,
+      "teams": [
+       {
+        "team": "James Madison",
+        "conference_record": "7-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "10-2"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "7-1",
+       "teams": [
+        "App State",
+        "Georgia Southern"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "James Madison",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Sun Belt Football Tie-Breaking Procedures",
+     "version": "live page (URL dated 2018; page footer 2026), read Oct. 25, 2026",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f23",
+   "q": "what if Duke loses out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "acc",
+     "name": "ACC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Duke"
+     ],
+     "items": [
+      {
+       "rule": "lose_out",
+       "text": "Duke loses out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Duke",
+        "slug": "duke",
+        "conf": {
+         "w": 2,
+         "l": 7,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 5,
+         "l": 7
+        },
+        "spot": "out_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "2-7",
+       "division": null,
+       "teams": [
+        {
+         "team": "Boston College",
+         "best": "6-2"
+        },
+        {
+         "team": "California",
+         "best": "6-3"
+        },
+        {
+         "team": "Clemson",
+         "best": "6-2"
+        },
+        {
+         "team": "Florida State",
+         "best": "5-3"
+        },
+        {
+         "team": "Georgia Tech",
+         "best": "5-3"
+        },
+        {
+         "team": "Louisville",
+         "best": "7-2"
+        },
+        {
+         "team": "Miami",
+         "best": "9-0"
+        },
+        {
+         "team": "NC State",
+         "best": "6-3"
+        },
+        {
+         "team": "North Carolina",
+         "best": "6-2"
+        },
+        {
+         "team": "Pittsburgh",
+         "best": "6-3"
+        },
+        {
+         "team": "SMU",
+         "best": "8-1"
+        },
+        {
+         "team": "Stanford",
+         "best": "6-3"
+        },
+        {
+         "team": "Syracuse",
+         "best": "5-4"
+        },
+        {
+         "team": "Virginia",
+         "best": "6-3"
+        },
+        {
+         "team": "Virginia Tech",
+         "best": "7-2"
+        },
+        {
+         "team": "Wake Forest",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25",
+     "url": "https://theacc.com/documents/2026/7/15/ACC_Football_Tiebreaker_Policy_Jully_2026.pdf"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "ACC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Duke loses out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Duke",
+        "conference_record": "2-7",
+        "final": true,
+        "games_left": 0,
+        "outcome": "out on records alone",
+        "overall_record": "5-7"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "2-7",
+       "teams": [
+        "Boston College",
+        "California",
+        "Clemson",
+        "Florida State",
+        "Georgia Tech",
+        "Louisville"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+     "version": "as amended July 1, 2026 (posted July 15, 2026)",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f24",
+   "q": "What if Utah loses only one more game?",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "big12",
+     "name": "Big 12",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Utah"
+     ],
+     "items": [
+      {
+       "rule": "lose_n_remaining",
+       "text": "Utah ends with 1 loss"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Utah",
+        "slug": "utah",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "open"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Arizona",
+         "best": "8-1"
+        },
+        {
+         "team": "BYU",
+         "best": "8-1"
+        },
+        {
+         "team": "Oklahoma State",
+         "best": "8-1"
+        },
+        {
+         "team": "Texas Tech",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 5,
+      "of": 5
+     }
+    ],
+    "single_path": false,
+    "sim": null,
+    "engines_agree": true,
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25",
+     "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf"
+    },
+    "checks": {
+     "ways": 5,
+     "fills": 8,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "Big 12",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Utah ends with 1 loss"
+    ],
+    "branches": [
+     {
+      "ways": 5,
+      "of": 5,
+      "teams": [
+       {
+        "team": "Utah",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "not decided by the scenario",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Arizona",
+        "BYU",
+        "Oklahoma State",
+        "Texas Tech"
+       ]
+      }
+     }
+    ],
+    "rules": {
+     "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+     "version": "republished Nov. 4, 2025",
+     "checked": "2026-10-25"
+    }
+   }
+  },
+  {
+   "id": "f25",
+   "q": "what if Georgia wins out",
+   "status": "partial",
+   "branches": 1,
+   "facts": {
+    "v": 1,
+    "kind": "scenario_facts",
+    "asof": "2026-10-27 17:58 MT",
+    "conference": {
+     "code": "sec",
+     "name": "SEC",
+     "format": "top two",
+     "spots": 2
+    },
+    "scenario": {
+     "teams": [
+      "Georgia"
+     ],
+     "items": [
+      {
+       "rule": "win_out",
+       "text": "Georgia wins out"
+      }
+     ]
+    },
+    "status": "partial",
+    "branches": [
+     {
+      "teams": [
+       {
+        "team": "Georgia",
+        "slug": "georgia",
+        "conf": {
+         "w": 8,
+         "l": 1,
+         "left": 0,
+         "final": true,
+         "best": null
+        },
+        "overall": {
+         "w": 11,
+         "l": 1
+        },
+        "spot": "in_records"
+       }
+      ],
+      "settled": false,
+      "pair": null,
+      "order_known": null,
+      "outcomes": [],
+      "tie": [],
+      "rivals": {
+       "rec": "8-1",
+       "division": null,
+       "teams": [
+        {
+         "team": "Kentucky",
+         "best": "8-1"
+        }
+       ]
+      },
+      "ways": 1,
+      "of": 1
+     }
+    ],
+    "single_path": true,
+    "sim": [
+     {
+      "team": "Georgia",
+      "ccg": null,
+      "playoff": {
+       "before": 0.123,
+       "after": 0.456,
+       "before_text": "12.3%",
+       "after_text": "45.6%"
+      }
+     }
+    ],
+    "engines_agree": true,
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25",
+     "url": "https://www.secsports.com/fbtiebreaker"
+    },
+    "checks": {
+     "ways": 1,
+     "fills": 24,
+     "fill_disagree": false
+    },
+    "limits": {
+     "teams": 3,
+     "conferences": 1,
+     "branches": 4
+    }
+   },
+   "compact": {
+    "v": 1,
+    "conference": "SEC",
+    "asof": "Oct 27, 2026, 5:58 PM MT",
+    "status": "partial",
+    "scenario": [
+     "Georgia wins out"
+    ],
+    "branches": [
+     {
+      "ways": 1,
+      "of": 1,
+      "teams": [
+       {
+        "team": "Georgia",
+        "conference_record": "8-1",
+        "final": true,
+        "games_left": 0,
+        "outcome": "in on records alone",
+        "overall_record": "11-1"
+       }
+      ],
+      "others_who_can_reach_the_record": {
+       "record": "8-1",
+       "teams": [
+        "Kentucky"
+       ]
+      }
+     }
+    ],
+    "sim": [
+     {
+      "team": "Georgia",
+      "playoff_chance_model_before": "12.3%",
+      "playoff_chance_model_after": "45.6%"
+     }
+    ],
+    "rules": {
+     "title": "Southeastern Conference Official Football Tiebreakers",
+     "version": "current SEC page (the PDF behind it)",
+     "checked": "2026-10-25"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,347 @@
+{
+ "acc": {
+  "conference": "ACC",
+  "format": "top2",
+  "sources": [
+   "https://theacc.com/documents/2026/7/15/ACC_Football_Tiebreaker_Policy_Jully_2026.pdf",
+   "https://theacc.com/news/2026/7/15/acc-announces-new-football-championship-tiebreaker-policy.aspx",
+   "https://theacc.com/news/2026/1/26/2026-acc-football-championship-game-to-kick-off-at-noon-et-on-abc.aspx (title game time and TV)"
+  ],
+  "flags": [
+   "The policy's Team Success Ranking step relies on other public rating systems, so KickTip's rating stands in for it.",
+   "Teams with a different number of conference games count as tied with the leader when they have the same wins or the same losses; KickTip resolves the top slot first. That is our reading of the policy wording.",
+   "Postseason-ineligible teams are not modeled."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "rating",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat_lost",
+   "rating",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "big12": {
+  "conference": "Big 12",
+  "format": "top2",
+  "sources": [
+   "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf (official tiebreaker policy)",
+   "https://big12sports.com/news/2026/5/27/big-12-announces-opening-slate-of-football-tv-selections.aspx (title game time and TV)"
+  ],
+  "flags": [
+   "The step that relies on other public rating systems is replaced by KickTip's rating; the coin toss is modeled as a random draw.",
+   "'Total wins in a 12-game season' counts at most one FCS win; NCAA-exempt games are ignored.",
+   "KickTip uses the official Big 12 policy labeled 2024-present (republished Nov. 4, 2025)."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "wins12",
+   "rating",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "wins12",
+   "rating",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "big10": {
+  "conference": "Big Ten",
+  "format": "top2",
+  "sources": [
+   "https://bigten.org/fb/article/blt6104802d94ebe1ab/ (official announcement of the Big Ten tiebreaking procedures, Aug. 26, 2024; the latest edition we found)",
+   "https://bigten.org/news/2026/8/19/championship-2026-discover-big-ten-football-championship-game-information.aspx (title game time and TV)"
+  ],
+  "flags": [
+   "The step that relies on other public rating systems is replaced by KickTip's rating.",
+   "The opponent-record step uses the cumulative conference win percentage of all conference opponents, as the policy states."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "rating",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat_lost",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "rating",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "sec": {
+  "conference": "SEC",
+  "format": "top2",
+  "sources": [
+   "https://www.secsports.com/fbtiebreaker (official SEC football tiebreakers)",
+   "https://www.secsports.com/championships/football-championship (title game date and site)",
+   "https://www.ncaa.com/news/football/article/2026-06-01/2026-sec-championship-game-date-time-tv-channel-history (kickoff and TV)"
+  ],
+  "flags": [
+   "The capped scoring-margin step (from other public rating systems) is replaced by KickTip's rating, because scores are not simulated.",
+   "When several common opponents are tied in the standings, KickTip treats equal-record opponents as one group, a simplification of the policy's sub-rule."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "margin_proxy",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat_lost",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "margin_proxy",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "American": {
+  "conference": "American",
+  "format": "top2",
+  "sources": [
+   "https://theamerican.org/documents/2026/9/30/26_FB_Tiebreakers.pdf (official 2026 tiebreakers, Section 10)",
+   "https://theamerican.org/news/2026/5/12/american-football-championship-presented-by-llh-to-air-on-abc-for-12th-straight-season.aspx (title game time and TV)"
+  ],
+  "flags": [
+   "The policy's CFP-ranking step and its computer composite (other public rating systems) are replaced by KickTip's rating.",
+   "The Army-Navy game (Dec. 12) is outside the standings because it is played after the title game."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "rating",
+   "common_pct",
+   "overall_pct",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat",
+   "rating",
+   "common_pct",
+   "overall_pct",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "usa": {
+  "conference": "Conference USA",
+  "format": "top2",
+  "sources": [
+   "https://conferenceusa.com/documents/2024/9/19/CUSA_FB_Championship_Game_Tiebreaker_Policy.pdf (official Conference USA tiebreaker policy)",
+   "https://conferenceusa.com/sports/2026/10/19/fbchamp2026.aspx (title game page: time and TV)"
+  ],
+  "flags": [
+   "The average computer ranking step (other public rating systems) is replaced by KickTip's rating.",
+   "The coin toss is modeled as a random draw."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_pct",
+   "common_ordered",
+   "rating",
+   "opp_conf_pct",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_equal",
+   "common_pct",
+   "common_ordered",
+   "rating",
+   "opp_conf_pct",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "midam": {
+  "conference": "MAC",
+  "format": "top2",
+  "sources": [
+   "https://getsomemaction.com/sports/2025/11/12/FB_1112255434.aspx (official MAC tiebreaker, Nov. 12, 2025; no 2026 revision found)",
+   "https://getsomemaction.com/news/2026/5/27/mac-announces-kickoff-times-broadcasting-schedule-for-2026-football-season.aspx (title game time and TV)"
+  ],
+  "flags": [
+   "The Team Rating Score step, which relies on other public rating systems, is replaced by KickTip's rating.",
+   "KickTip uses the Nov. 2025 official text because the MAC has published no 2026 revision."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_pct",
+   "rating",
+   "common_ordered",
+   "opp_conf_pct",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat",
+   "common_pct",
+   "rating",
+   "common_ordered",
+   "opp_conf_pct",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "mwest": {
+  "conference": "Mountain West",
+  "format": "top2",
+  "sources": [
+   "https://themw.com/news/2026/6/4/broadcast-details-announced-for-2026-mountain-west-football-championship-game.aspx (title game time and TV)",
+   "https://www.si.com/college/unlv/football/what-happens-if-the-unlv-rebels-end-up-in-a-tiebreaker-for-a-spot-in-the-mountain-west-championship-game (published report of the conference's rules, Nov. 2025)"
+  ],
+  "flags": [
+   "The CFP-ranking and computer composite step is replaced by KickTip's rating.",
+   "'Overall win percentage' counts at most one FCS win.",
+   "We could not find the Mountain West's own tiebreaker page, so the steps follow a published report of the conference's rules."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "rating",
+   "overall_pct",
+   "ordered_any",
+   "common_pct",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_beat",
+   "rating",
+   "overall_pct",
+   "ordered_any",
+   "common_pct",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "pac12": {
+  "conference": "Pac-12",
+  "format": "top2",
+  "sources": [
+   "https://pac-12.com/news/2026/9/3/pac-12-announces-commercial-and-operational-updates-ahead-of-its-2026-football-season-kickoff.aspx (official tiebreakers, title game time and TV)"
+  ],
+  "flags": [
+   "Week 13 home-and-home flex games do not count in the standings, so conference games after week 12 are excluded.",
+   "The policy's two ranking steps (highest CFP ranking the Tuesday before week 13, then other public rating systems) are replaced by one step using KickTip's rating."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "common_ordered",
+   "common_pct",
+   "rating",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_only",
+   "common_pct",
+   "common_ordered",
+   "opp_conf_pct",
+   "rating",
+   "draw"
+  ],
+  "host_steps": null,
+  "games_counted_in_standings": "through week 12"
+ },
+ "belt": {
+  "conference": "Sun Belt",
+  "format": "div",
+  "sources": [
+   "https://sunbeltsports.org/sports/2018/8/30/FB_Tie-Breakers.aspx (official Sun Belt football tiebreakers)",
+   "https://sunbeltsports.org/news/2026/5/27/sun-belt-espn-announce-updates-to-2026-football-schedule.aspx (title game time, TV and host rule)"
+  ],
+  "flags": [
+   "The Sun Belt is still divisional in 2026: the East and West division champions meet in the title game.",
+   "The policy's CFP-ranking and computer composite steps are replaced by KickTip's rating.",
+   "Division membership follows the 2026 division lists (Louisiana Tech in the West)."
+  ],
+  "two_team_steps": [
+   "h2h2",
+   "div_pct",
+   "ordered_div",
+   "common_nondiv",
+   "rating",
+   "fbs_pct",
+   "draw"
+  ],
+  "multi_team_steps": [
+   "h2h:rr_only_pct",
+   "div_pct",
+   "ordered_div",
+   "common_nondiv",
+   "rating",
+   "fbs_pct",
+   "draw"
+  ],
+  "host_steps": [
+   "h2h2",
+   "rating",
+   "common_pct",
+   "fbs_pct",
+   "draw"
+  ],
+  "games_counted_in_standings": "through week 13"
+ },
+ "ind": {
+  "conference": "Independents",
+  "format": "none",
+  "sources": [
+   "n/a (Notre Dame, UConn: no conference title game; Notre Dame is a CFP automatic bid only if ranked in the top 12)"
+  ],
+  "flags": [],
+  "two_team_steps": null,
+  "multi_team_steps": null,
+  "host_steps": null,
+  "games_counted_in_standings": "through week 13"
+ },
+ "_cfp": {
+  "seeds": "straight seeding by ranking; seeds 1-4 get byes; 5v12, 6v11, 7v10, 8v9; higher seed hosts; no reseeding; automatic qualifiers ranked outside the top 12 are seeded after the at-large teams",
+  "auto_bids": [
+   "acc",
+   "big10",
+   "big12",
+   "sec"
+  ],
+  "g6": [
+   "American",
+   "usa",
+   "midam",
+   "mwest",
+   "pac12",
+   "belt"
+  ],
+  "rule": "2026-27: champions of the ACC, Big Ten, Big 12 and SEC get automatic bids; the highest-ranked team from the American, Conference USA, MAC, Mountain West, Pac-12 or Sun Belt (champion or not) gets one; Notre Dame is in if ranked in the top 12; the remaining spots go to the next highest-ranked teams.",
+  "sources": [
+   "https://collegefootballplayoff.com/news/2026/1/23/2627-format",
+   "https://collegefootballplayoff.com/news/2026/8/6/sc-aug-2627",
+   "https://www.ncaa.com/news/football/article/2026-02-03/how-college-football-playoff-automatic-qualifiers-work-byes-seeds"
+  ],
+  "flags": [
+   "Committee rankings are replaced by the KickTip rating order (stand-in)."
+  ]
+ },
+ "_note": "Steps named in *_steps are implemented in src/tiebreak.py. 'rating' stands in for every other-public-rating-system / CFP-rank / computer-composite step (not reproducible); it uses the KickTip rating. Every flag is an uncertain or approximated item. Verified against official pages 2026-10-23 (MT)."
+}

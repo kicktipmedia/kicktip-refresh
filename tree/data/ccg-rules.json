@@ -1,0 +1,1048 @@
+{
+ "codes": [
+  "American",
+  "acc",
+  "belt",
+  "big10",
+  "big12",
+  "midam",
+  "mwest",
+  "pac12",
+  "sec",
+  "usa"
+ ],
+ "rules": {
+  "big12": {
+   "name": "Big 12",
+   "fmt": "top2",
+   "doc": {
+    "title": "Big 12 Football Tiebreaking Procedures (2024-present)",
+    "url": "https://big12sports.com/documents/2025/11/4/Big_12_Football_2024_Tiebreaker_Policy.pdf",
+    "version": "republished Nov. 4, 2025",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://big12sports.com/news/2026/5/27/big-12-announces-opening-slate-of-football-tv-selections.aspx"
+   ],
+   "ccg": {
+    "date": "2026-12-04",
+    "when": "Fri Dec 4, 6:00 PM MT (7:00 PM CT)",
+    "site": "AT&T Stadium, Arlington",
+    "host": "neutral"
+   },
+   "games_per_team": 9,
+   "tie_group": "equal",
+   "elim": "continue",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "wins12",
+     "t": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the last weekend of the regular season",
+     "t": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_all",
+     "t": "Win percentage in games among the tied teams. If they did not all play each other, a team that beat every other tied team is placed first."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "wins12",
+     "t": "Total wins in the 12-game season (at most one win over an FCS team counts)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the last weekend of the regular season",
+     "t": "A conference-specified analytics rating after the last weekend of the regular season. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "notes": [
+    "The Big 12 text says that once one team is placed, the rest start the procedure again, and that a tie cut down to two teams goes to the two-team steps. It does not say what happens to teams dropped from a longer tie for second place, so we keep going down the same list with the teams that remain.",
+    "In 'wins in a 12-game season', games exempted by NCAA rules are not counted and only one FCS win counts. The step can only be worked out once every team's non-conference games are played."
+   ]
+  },
+  "pac12": {
+   "name": "Pac-12",
+   "fmt": "top2",
+   "doc": {
+    "title": "Pac-12 Football Championship Game Tiebreakers (2026)",
+    "url": "https://pac-12.com/news/2026/9/3/pac-12-announces-commercial-and-operational-updates-ahead-of-its-2026-football-season-kickoff.aspx",
+    "version": "published Sept. 3, 2026",
+    "checked": "2026-10-25"
+   },
+   "ccg": {
+    "date": "2026-12-04",
+    "when": "Fri Dec 4, 6:00 PM MT (5:00 PM PT)",
+    "site": "home field of the higher seed",
+    "host": "higher_seed"
+   },
+   "games_per_team": 7,
+   "tie_group": "equal",
+   "elim": "continue",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "external",
+     "name": "highest College Football Playoff ranking on the Tuesday before week 13 games",
+     "t": "Highest College Football Playoff ranking on the Tuesday before week 13 games. The tool cannot compute this."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the last weekend of regular-season conference games",
+     "t": "A conference-specified analytics rating after the last weekend of regular-season conference games. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_only",
+     "t": "Win percentage in games among the tied teams. If every tied team has not played every other, this step is skipped."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the final weekend of regular-season games",
+     "t": "A conference-specified analytics rating after the final weekend of regular-season games. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "notes": [
+    "Only conference games through week 12 count; the week 13 home-and-home flex games do not count in the standings.",
+    "The Pac-12 lists head-to-head only for a tie for first place, then says a tie for second place uses 'the two-team tiebreaker policy'. We carry both readings (head-to-head first for a tie for second place, or skipped there); when they give different pairings for the conference championship game both pairings are shown and the tool does not choose.",
+    "The Pac-12 does not say what happens to teams dropped from a longer tie; we keep going down the same list with the teams that remain."
+   ],
+   "alt": {
+    "a": "the Pac-12's two-team policy is read as starting a tie for second place with head-to-head",
+    "b": "the Pac-12's two-team policy is read as using head-to-head only for a tie for first place, so a tie for second place starts with the win percentage against common opponents",
+    "box": "The Pac-12's policy lists head-to-head only for a tie for first place, and says a tie for second place uses the two-team policy. That can be read two ways, and the two readings give different pairings for the conference championship game",
+    "patch": {
+     "two_second": [
+      {
+       "k": "common_ordered",
+       "opp_ties": "collective",
+       "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ. If that opponent is itself a group of tied teams, the record against the group as a whole is used."
+      },
+      {
+       "k": "common_pct",
+       "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+      },
+      {
+       "k": "external",
+       "name": "highest College Football Playoff ranking on the Tuesday before week 13 games",
+       "t": "Highest College Football Playoff ranking on the Tuesday before week 13 games. The tool cannot compute this."
+      },
+      {
+       "k": "external",
+       "name": "a conference-specified analytics rating after the last weekend of regular-season conference games",
+       "t": "A conference-specified analytics rating after the last weekend of regular-season conference games. The tool cannot compute this."
+      },
+      {
+       "k": "random",
+       "name": "coin toss",
+       "t": "Coin toss (or random draw) run by the conference office."
+      }
+     ]
+    }
+   }
+  },
+  "big10": {
+   "name": "Big Ten",
+   "fmt": "top2",
+   "doc": {
+    "title": "2024 Big Ten Football Championship Game Tiebreaker",
+    "url": "https://bigten.org/fb/article/blt6104802d94ebe1ab/",
+    "version": "Aug. 26, 2024 (the latest edition we found)",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://bigten.org/news/2026/8/19/championship-2026-discover-big-ten-football-championship-game-information.aspx"
+   ],
+   "ccg": {
+    "date": "2026-12-05",
+    "when": "Sat Dec 5, 6:00 PM MT (8:00 PM ET)",
+    "site": "Lucas Oil Stadium, Indianapolis",
+    "host": "neutral"
+   },
+   "games_per_team": 9,
+   "tie_group": "equal",
+   "elim": "continue",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Record against the best-placed common opponent in the conference standings, then the next one down, until the teams differ."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Best cumulative conference win percentage of all conference opponents (counted even if the teams played different numbers of opponents)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the regular season",
+     "t": "A conference-specified analytics rating after the regular season. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_all",
+     "t": "Win percentage in games among the tied teams. If they did not all play each other, a team that beat every other tied team is placed first."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against the best-placed common opponent in the conference standings, then the next one down, until the teams differ."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Best cumulative conference win percentage of all conference opponents (counted even if the teams played different numbers of opponents)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the regular season",
+     "t": "A conference-specified analytics rating after the regular season. The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "notes": [
+    "This is the Big Ten's 2024 published text, the most recent we found. If the Big Ten republishes it for 2026 this page will be updated.",
+    "The Big Ten's text does not say how to treat a group of tied opponents when working down the standings. We use each team's record against the group as a whole.",
+    "A team ruled out by a step stays out for the rest of that tie (the Big Ten says it is not pulled back in)."
+   ]
+  },
+  "sec": {
+   "name": "SEC",
+   "fmt": "top2",
+   "doc": {
+    "title": "Southeastern Conference Official Football Tiebreakers",
+    "url": "https://www.secsports.com/fbtiebreaker",
+    "version": "current SEC page (the PDF behind it)",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://www.secsports.com/championships/football-championship"
+   ],
+   "ccg": {
+    "date": "2026-12-05",
+    "when": "Sat Dec 5, 2:00 PM MT (4:00 PM ET)",
+    "site": "Mercedes-Benz Stadium, Atlanta",
+    "host": "neutral"
+   },
+   "games_per_team": 9,
+   "tie_group": "equal",
+   "elim": "restart",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "h2h_then_combine",
+     "t": "Record against the best-placed common opponent, then the next one down. If several common opponents are tied in the standings, they are split by their own head-to-head results first; if that does not separate them, their records are combined."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating (capped scoring margin against all conference opponents)",
+     "t": "A conference-specified analytics rating (capped scoring margin against all conference opponents). The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_lost",
+     "t": "Head-to-head among the tied teams. With a full round robin, the best record wins. Otherwise a team that beat all the others is placed first, and a team that lost to all the others is dropped (if only two teams are left they are both placed)."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "h2h_then_combine",
+     "t": "Record against the best-placed common opponent, then the next one down. If several common opponents are tied in the standings, they are split by their own head-to-head results first; if that does not separate them, their records are combined."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating (capped scoring margin against all conference opponents)",
+     "t": "A conference-specified analytics rating (capped scoring margin against all conference opponents). The tool cannot compute this."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "notes": [
+    "If a step leaves a tie at the top that is too big for the open spots, the teams at the top go back to the beginning of the list and the others are dropped (SEC wording)."
+   ]
+  },
+  "usa": {
+   "name": "Conference USA",
+   "fmt": "top2",
+   "doc": {
+    "title": "Conference USA Football Regulations, Championship Game Tiebreaker Procedure",
+    "url": "https://s3.amazonaws.com/sidearm.sites/conferenceusa.com/documents/2024/9/19/CUSA_FB_Championship_Game_Tiebreaker_Policy.pdf",
+    "version": "2024 policy (the one posted on conferenceusa.com)",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://conferenceusa.com/sports/2026/10/19/fbchamp2026.aspx"
+   ],
+   "ccg": {
+    "date": "2026-12-04",
+    "when": "Fri Dec 4, 5:00 PM MT (6:00 PM CT)",
+    "site": "home field of the team with the higher win percentage",
+    "host": "higher_pct"
+   },
+   "games_per_team": 8,
+   "tie_group": "unequal_one_win",
+   "elim": "restart",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective_strict",
+     "t": "Win percentage against the common opponent(s) with the best conference record, then down the standings until the tie is broken. A group of tied opponents counts as one group; it is skipped if the teams played it an unequal number of times or have the same record against it."
+    },
+    {
+     "k": "external",
+     "name": "average of the conference's named rating systems",
+     "t": "Average of the conference's named rating systems. The tool cannot compute this."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_all",
+     "t": "Head-to-head among the tied teams (win percentage if all played each other; otherwise a team that beat all the others)."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective_strict",
+     "t": "Win percentage against the common opponent(s) with the best conference record, then down the standings until the tie is broken. A group of tied opponents counts as one group; it is skipped if the teams played it an unequal number of times or have the same record against it."
+    },
+    {
+     "k": "external",
+     "name": "average of the conference's named rating systems",
+     "t": "Average of the conference's named rating systems. The tool cannot compute this."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+    },
+    {
+     "k": "random",
+     "name": "coin toss",
+     "t": "Coin toss (or random draw) run by the conference office."
+    }
+   ],
+   "notes": [
+    "The same steps decide the host if the two finalists have the same record.",
+    "Conference USA says that when a tie among three or more teams is broken, the teams that remain start again at step 1; we do that.",
+    "For a tie among three or more teams, the policy says only 'head-to-head: the winner is selected'. We carry both readings (win percentage among the tied teams if they all played each other, otherwise a team that beat all the others; or only a team that beat every other tied team); when they give different pairings for the conference championship game both pairings are shown and the tool does not choose.",
+    "The policy applies 'provided all teams played an equal number of conference games' and has a separate rule for unequal schedules (teams one win behind with the same losses count as tied). The tool applies that rule if a game is ever cancelled."
+   ],
+   "alt": {
+    "a": "Conference USA's 'head-to-head: the winner is selected' is read, for a tie of three or more teams, as win percentage among the tied teams (or a team that beat all the others)",
+    "b": "Conference USA's 'head-to-head: the winner is selected' is read, for a tie of three or more teams, as needing one team that beat every other tied team",
+    "box": "Conference USA's policy says only 'head-to-head: the winner is selected' for a tie of three or more teams. That can be read two ways, and the two readings give different pairings for the conference championship game",
+    "patch": {
+     "multi": [
+      {
+       "k": "h2h_group",
+       "mode": "beat_all",
+       "t": "Head-to-head among the tied teams: a team that beat every other tied team."
+      },
+      {
+       "k": "common_pct",
+       "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+      },
+      {
+       "k": "common_ordered",
+       "opp_ties": "collective_strict",
+       "t": "Win percentage against the common opponent(s) with the best conference record, then down the standings until the tie is broken. A group of tied opponents counts as one group; it is skipped if the teams played it an unequal number of times or have the same record against it."
+      },
+      {
+       "k": "external",
+       "name": "average of the conference's named rating systems",
+       "t": "Average of the conference's named rating systems. The tool cannot compute this."
+      },
+      {
+       "k": "opp_conf_pct",
+       "t": "Combined conference win percentage of all conference opponents (strength of conference schedule)."
+      },
+      {
+       "k": "random",
+       "name": "coin toss",
+       "t": "Coin toss (or random draw) run by the conference office."
+      }
+     ]
+    }
+   }
+  },
+  "mwest": {
+   "name": "Mountain West",
+   "fmt": "top2",
+   "doc": {
+    "title": "Mountain West Football Championship Tiebreaking Procedures",
+    "url": "https://themw.com/documents/2026/10/12/MW_Football_Championship_Tiebreaking_Procedures.pdf",
+    "version": "document dated Oct. 12, 2026",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://themw.com/news/2026/6/4/broadcast-details-announced-for-2026-mountain-west-football-championship-game.aspx"
+   ],
+   "ccg": {
+    "date": "2026-12-04",
+    "when": "Fri Dec 4, 7:00 PM MT (9:00 PM ET), FOX",
+    "site": "home field of the participant with the better conference record (ties by the host rules)",
+    "host": "higher_pct"
+   },
+   "games_per_team": 8,
+   "tie_group": "equal",
+   "elim": "restart",
+   "pre": [
+    {
+     "k": "external",
+     "name": "CFP-ranked team tiebreaker immunity: the highest-ranked tied team in the Nov 24, 2026 College Football Playoff ranking that also wins its final regular-season game gets in automatically",
+     "t": "Before any other tiebreaker, the tied team ranked highest in the Nov 24, 2026 College Football Playoff ranking goes into the game (and hosts if it is tied for the best record) if it also wins its final regular-season game. This depends on the Nov 24 CFP ranking, which does not exist yet.",
+     "take": 1,
+     "optional": true,
+     "short": "CFP-ranking immunity"
+    }
+   ],
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "external",
+     "name": "highest College Football Playoff ranking (Nov 24, 2026) among tied teams that win their final game, otherwise the average of the conference's named rating systems",
+     "t": "The tied team that is ranked higher in the Nov 24 College Football Playoff ranking (if it won its final game); otherwise the team with the better average of four computer rankings.",
+     "take": "all",
+     "short": "Nov 24 CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage (at most one win over an FCS team counts)."
+    },
+    {
+     "k": "ordered_any",
+     "opp_ties": "collective",
+     "t": "Record against the next-highest-placed conference team (or tied group), going down the standings; teams a tied team did not play are skipped."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "beat_or_lost",
+     "t": "Mini round-robin: a team that beat every other tied team goes in; a team that lost to every other tied team is out. Then the tie starts again with the rest."
+    },
+    {
+     "k": "external",
+     "name": "highest College Football Playoff ranking (Nov 24, 2026) among tied teams that win their final game, otherwise the average of the conference's named rating systems",
+     "t": "Tied teams ranked in the Nov 24 College Football Playoff ranking that won their final game come first (in ranking order); the others follow by the average of four computer rankings.",
+     "take": "all",
+     "short": "Nov 24 CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage (at most one win over an FCS team counts)."
+    },
+    {
+     "k": "ordered_any",
+     "opp_ties": "collective",
+     "t": "Record against the next-highest-placed conference team (or tied group), going down the standings; teams a tied team did not play are skipped."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "random",
+     "name": "drawing by the Commissioner",
+     "t": "Drawing by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "host": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "external",
+     "name": "highest College Football Playoff ranking (Nov 24, 2026) among tied teams that win their final game, otherwise the average of the conference's named rating systems",
+     "t": "The tied team ranked higher in the Nov 24 College Football Playoff ranking (if it won its final game) hosts; otherwise the better average of four computer rankings.",
+     "take": "all",
+     "short": "Nov 24 CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage (at most one win over an FCS team counts)."
+    },
+    {
+     "k": "ordered_any",
+     "opp_ties": "collective",
+     "t": "Record against the next-highest-placed conference team (or tied group), going down the standings; teams a tied team did not play are skipped."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "notes": [
+    "Mountain West ties are shown as 'depends on the Nov 24 CFP ranking' until that ranking exists: the immunity step comes before every other step, for any tie for a spot or for hosting, and it also needs the team to win its final game afterwards.",
+    "Host: the outright best conference record hosts. Two teams tied for the best: immunity first, then the two-team steps. Three or more tied for the best: the immune team if there is one, otherwise the two-team steps from step 1 for the two teams that qualified.",
+    "Everything after the ranking step (overall record, record against the next-highest-placed team, common opponents, coin toss) is only reached on an exact tie in the ranking and is not worked out by the tool.",
+    "Teams that are ineligible for the postseason are not removed (no data)."
+   ]
+  },
+  "belt": {
+   "name": "Sun Belt",
+   "fmt": "div",
+   "doc": {
+    "title": "Sun Belt Football Tie-Breaking Procedures",
+    "url": "https://sunbeltsports.org/sports/2018/8/30/FB_Tie-Breakers.aspx",
+    "version": "live page (URL dated 2018; page footer 2026), read Oct. 25, 2026",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://sunbeltsports.org/news/2026/5/27/sun-belt-espn-announce-updates-to-2026-football-schedule.aspx",
+    "https://sunbeltsports.org/standings.aspx?path=football"
+   ],
+   "ccg": {
+    "date": "2026-12-04",
+    "when": "Fri Dec 4, 7:00 PM ET (5:00 PM MT), ESPN",
+    "site": "home field of the division champion with the better conference record",
+    "host": "higher_pct"
+   },
+   "games_per_team": 8,
+   "tie_group": "equal",
+   "elim": "continue",
+   "divisions": {
+    "East": [
+     "App State",
+     "Coastal Carolina",
+     "Georgia Southern",
+     "Georgia State",
+     "James Madison",
+     "Marshall",
+     "Old Dominion"
+    ],
+    "West": [
+     "Arkansas State",
+     "Louisiana",
+     "UL Monroe",
+     "South Alabama",
+     "Southern Miss",
+     "Troy",
+     "Louisiana Tech"
+    ]
+   },
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "div_pct",
+     "t": "Winning percentage in games against division opponents."
+    },
+    {
+     "k": "ordered_div",
+     "opp_ties": "collective",
+     "t": "Record against the team in the next-highest place of the division standings, then the next, until one team leads (a tied group counts as one)."
+    },
+    {
+     "k": "common_nondiv",
+     "t": "Winning percentage against common opponents from the other division."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking before the final weekend that wins its final weekend game, otherwise the average of the conference's named rating systems",
+     "t": "A ranked tied team that wins in the final weekend goes in; otherwise the better average of four computer rankings.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "fbs_pct",
+     "t": "Overall winning percentage against FBS opponents."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_only",
+     "t": "Highest winning percentage in the games the tied teams played against each other."
+    },
+    {
+     "k": "div_pct",
+     "t": "Winning percentage in games against division opponents."
+    },
+    {
+     "k": "ordered_div",
+     "opp_ties": "collective",
+     "t": "Record against the team in the next-highest place of the division standings, then the next, until one team leads."
+    },
+    {
+     "k": "common_nondiv",
+     "t": "Winning percentage against common opponents from the other division."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking before the final weekend that wins its final weekend game, otherwise the average of the conference's named rating systems",
+     "t": "The highest-ranked tied team that wins in the final weekend goes in; otherwise the better average of four computer rankings.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "fbs_pct",
+     "t": "Overall winning percentage against FBS opponents."
+    },
+    {
+     "k": "random",
+     "name": "determined by lot by the Commissioner",
+     "t": "Determined by lot by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "host": [
+    {
+     "k": "h2h",
+     "t": "The division champion that beat the other hosts."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking before the final weekend that wins its final weekend game, otherwise the average of the conference's named rating systems",
+     "t": "A ranked champion that wins in the final weekend hosts (the higher-ranked if both); otherwise the better average of four computer rankings.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer rankings)"
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "fbs_pct",
+     "t": "Overall winning percentage against FBS opponents."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "notes": [
+    "The conference's tiebreaker page still lists the OLD divisions (Texas State in the West, no Louisiana Tech); we use the rules as written and the 2026 divisions from the official 2026 standings page.",
+    "The host of the conference championship game is the division champion with the better conference record; when the two have the same record the host list applies (head-to-head first). The page does not say what a three-way host tie does, which cannot happen with two champions.",
+    "Steps after the ranking step are only reached on an exact tie in the ranking and are not worked out by the tool.",
+    "The rule for an ineligible division champion is not modeled."
+   ]
+  },
+  "midam": {
+   "name": "MAC",
+   "fmt": "top2",
+   "doc": {
+    "title": "MAC Football Championship Game Tiebreaker",
+    "url": "https://getsomemaction.com/sports/2025/11/12/FB_1112255434.aspx",
+    "version": "posted Nov. 12, 2025 (live page, footer 2026; no 2026 revision found)",
+    "checked": "2026-10-25"
+   },
+   "ccg": {
+    "date": "2026-12-05",
+    "when": "Sat Dec 5, 12:00 PM ET (10:00 AM MT), ESPN",
+    "site": "Ford Field, Detroit",
+    "host": "neutral"
+   },
+   "games_per_team": 8,
+   "tie_group": "equal",
+   "elim": "restart",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common opponents."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the final regular-season games",
+     "t": "The tied team with the higher conference-specified analytics rating.",
+     "take": 1
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against common opponents in order of finish, best finisher first."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents."
+    },
+    {
+     "k": "random",
+     "name": "draw by the Commissioner or designee",
+     "t": "Draw by the Commissioner or designee. The tool cannot compute this."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_all",
+     "t": "Head-to-head among the tied teams: the best combined win percentage if they all played each other; otherwise only a team that beat every other tied team goes first."
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common opponents (opponents every tied team played)."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after the final regular-season games",
+     "t": "The tied team with the highest conference-specified analytics rating goes in and the tie starts again.",
+     "take": 1
+    },
+    {
+     "k": "common_ordered",
+     "opp_ties": "collective",
+     "t": "Win percentage against common opponents in order of finish, best finisher first."
+    },
+    {
+     "k": "opp_conf_pct",
+     "t": "Combined conference win percentage of all conference opponents."
+    },
+    {
+     "k": "random",
+     "name": "draw by the Commissioner or designee",
+     "t": "Draw by the Commissioner or designee. The tool cannot compute this."
+    }
+   ],
+   "notes": [
+    "The MAC text does not say what happens to the remaining teams after one is placed in a tie of three or more, or when a tie is cut down to two teams; we start again from step 1 and use the two-team steps at two teams.",
+    "The step that ranks teams by results against common opponents in order of finish comes after the rating step, so it is only reached on an exact tie in that rating and is not worked out by the tool.",
+    "The rating step for three or more teams is read as placing one team (singular wording) and restarting."
+   ]
+  },
+  "acc": {
+   "name": "ACC",
+   "fmt": "top2",
+   "doc": {
+    "title": "ACC Football Tiebreaker Policy (as amended July 1, 2026)",
+    "url": "https://theacc.com/documents/2026/7/15/ACC_Football_Tiebreaker_Policy_Jully_2026.pdf",
+    "version": "as amended July 1, 2026 (posted July 15, 2026)",
+    "checked": "2026-10-25"
+   },
+   "ccg": {
+    "date": "2026-12-05",
+    "when": "Sat Dec 5, 12:00 PM ET (10:00 AM MT), ABC",
+    "site": "Charlotte, N.C.",
+    "host": "neutral"
+   },
+   "games_per_team": 9,
+   "tie_group": "acc_unequal",
+   "elim": "restart",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after all regular-season games",
+     "t": "The tied team with the better conference-specified analytics rating.",
+     "take": 1
+    },
+    {
+     "k": "random",
+     "name": "draw by the Commissioner or designee",
+     "t": "Draw by the Commissioner or designee. The tool cannot compute this."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_lost",
+     "t": "If the tied teams all played each other, the best record among them; if not, a team that beat every other tied team is placed first and a team that lost to every other tied team is removed. The tie then starts again."
+    },
+    {
+     "k": "external",
+     "name": "a conference-specified analytics rating after all regular-season games",
+     "t": "The tied team with the best conference-specified analytics rating goes in and the tie starts again.",
+     "take": 1
+    },
+    {
+     "k": "random",
+     "name": "draw by the Commissioner or designee",
+     "t": "Draw by the Commissioner or designee. The tool cannot compute this."
+    }
+   ],
+   "notes": [
+    "The ACC counts as tied with the leader any team that played a different number of conference games and has the same wins or the same losses (schedules are 8 or 9 games). The policy then says ties are broken 'starting with the highest win percentage, working downward'. Read one way, the whole group is handled together by the three-or-more-team steps; read the other way, teams are simply taken in win-percentage order. When the two readings give different pairings for the conference championship game, the tool shows both and says it depends on the ACC's reading.",
+    "After the ranking step only a draw remains, which is not worked out by the tool.",
+    "Postseason-ineligible teams are not removed (no data)."
+   ]
+  },
+  "American": {
+   "name": "American",
+   "fmt": "top2",
+   "doc": {
+    "title": "American Conference 2026 Football Tiebreakers (Section 10)",
+    "url": "https://theamerican.org/documents/2026/9/30/26_FB_Tiebreakers.pdf",
+    "version": "document dated Sept. 30, 2026",
+    "checked": "2026-10-25"
+   },
+   "extra_urls": [
+    "https://s3.amazonaws.com/sidearm.sites/theamerican.sidearmsports.com/documents/2026/9/30/26_FB_Tiebreakers.pdf"
+   ],
+   "ccg": {
+    "date": "2026-12-05",
+    "when": "Sat Dec 5, 8:00 PM ET (6:00 PM MT), ABC",
+    "site": "home field of the participant with the better conference record",
+    "host": "higher_pct"
+   },
+   "games_per_team": 8,
+   "tie_group": "equal",
+   "elim": "restart",
+   "two": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking that does not lose in the final weekend, otherwise the average of four computer metrics",
+     "t": "A tied team ranked in the latest College Football Playoff ranking that does not lose in the final weekend goes in (the higher-ranked one if both); otherwise the better average of four computer metrics.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer metrics)"
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage, not counting exempt games."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "multi": [
+    {
+     "k": "h2h_group",
+     "mode": "pct_else_beat_all",
+     "t": "Conference records among the tied teams; if any two did not play each other, they stay tied unless one team beat all the others."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking that does not lose in the final weekend, otherwise the average of four computer metrics",
+     "t": "The highest-ranked tied team(s) in the latest College Football Playoff ranking that do not lose in the final weekend go in; otherwise the better average of four computer metrics.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer metrics)"
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage, not counting exempt games."
+    },
+    {
+     "k": "random",
+     "name": "drawing by the Commissioner",
+     "t": "Drawing by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "host": [
+    {
+     "k": "h2h",
+     "t": "Head-to-head: the winner of the game between the two teams."
+    },
+    {
+     "k": "external",
+     "name": "highest ranked tied team in the latest College Football Playoff ranking that does not lose in the final weekend, otherwise the average of four computer metrics",
+     "t": "The tied team ranked higher in the latest College Football Playoff ranking (and not losing in the final weekend) hosts; otherwise the better average of four computer metrics.",
+     "take": "all",
+     "short": "latest CFP ranking (or the computer metrics)"
+    },
+    {
+     "k": "common_pct",
+     "t": "Win percentage against all common conference opponents (opponents every tied team played)."
+    },
+    {
+     "k": "overall_pct",
+     "t": "Overall winning percentage, not counting exempt games."
+    },
+    {
+     "k": "random",
+     "name": "coin toss by the Commissioner",
+     "t": "Coin toss by the Commissioner. The tool cannot compute this."
+    }
+   ],
+   "notes": [
+    "Section 10.4 of the document (teams with unequal schedules: a team with fewer games that beat all other tied teams ranks ahead on head-to-head; teams need at least 7 conference games) is not worked out: every team has 8 conference games.",
+    "'Exempt games' in the overall-record step cannot be identified from our data; that step is only reached after the ranking step.",
+    "The Army-Navy game (Dec 12) is outside the standings."
+   ]
+  }
+ }
+}

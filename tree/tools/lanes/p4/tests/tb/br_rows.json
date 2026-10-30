@@ -1,0 +1,15 @@
+{"about": "PHASE4_SPEC R1 boundary group BR-01..BR-12 (Phase 4 spec section 0, table). Matcher-level, zero model calls. The QA bank shipped for this build (questions.json a6c4ce28) does not carry these ids yet; QA adds them in the next bank. expect.params lists only the keys that must equal.",
+ "rows": [
+ {"id": "BR-01", "text": "What does Arizona need to reach the conference championship game?", "expect": {"tool": "team_needs", "params": {"team": "arizona", "goal": "championship_game"}}},
+ {"id": "BR-02", "text": "What has to happen for Indiana to make the playoff?", "expect": {"tool": "team_needs", "params": {"team": "indiana", "goal": "playoff"}}},
+ {"id": "BR-03", "text": "How many wins does Utah need?", "expect": {"tool": "team_needs", "params": {"team": "utah", "goal": "playoff"}}},
+ {"id": "BR-04", "text": "What is Utah's path to the conference championship game?", "expect": {"tool": "team_path", "params": {"team": "utah", "goal": "championship_game"}}},
+ {"id": "BR-05", "text": "How can BYU reach the conference championship game?", "expect": {"tool": "team_path", "params": {"team": "byu", "goal": "championship_game"}}},
+ {"id": "BR-06", "text": "What is Indiana's path to a first-round bye?", "expect": {"tool": "team_path", "params": {"team": "indiana", "goal": "bye"}}},
+ {"id": "BR-07", "text": "How can Ohio State get into the playoff field?", "expect": {"tool": "team_path", "params": {"team": "ohio-state", "goal": "playoff"}}},
+ {"id": "BR-08", "text": "What does BYU need to do on its path to the playoff?", "expect": {"tool": "team_needs", "params": {"team": "byu", "goal": "playoff"}}},
+ {"id": "BR-09", "text": "How can Utah reach the conference championship game, and what does it need?", "expect": {"tool": "team_needs", "params": {"team": "utah", "goal": "championship_game"}}},
+ {"id": "BR-10", "text": "How many games can Utah lose and still reach the conference championship game?", "expect": {"tool": "team_path", "params": {"team": "utah", "goal": "championship_game", "focus": "losses_allowed"}}},
+ {"id": "BR-11", "text": "How can Utah win the Big 12?", "expect": {"tool": "team_needs", "params": {"team": "utah", "goal": "conference"}}},
+ {"id": "BR-12", "text": "Compare Utah's and Arizona's path to a bye.", "expect": {"tool": "path_compare", "params": {"teams": ["utah", "arizona"], "goal": "bye"}}}
+]}

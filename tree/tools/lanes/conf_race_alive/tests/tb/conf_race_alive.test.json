@@ -1,0 +1,1591 @@
+{
+ "tool": "conf_race_alive",
+ "schema": 1,
+ "frozen": "2026-10-24",
+ "run": [
+  {
+   "id": "RACE-RUN-acc",
+   "params": {
+    "conference": "acc"
+   },
+   "expect": {
+    "facts.conference.id": "acc",
+    "facts.conference.name": "ACC",
+    "facts.conference.remaining": 35,
+    "facts.counts.teams": 17,
+    "facts.counts.in_race": 17,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "not_verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "ACC: the race for the conference championship game",
+     "In the race (17)",
+     "Out of the race (0)",
+     "Understood as: which ACC teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "A person who compared that reading with the published text found steps KickTip does not yet match, so some calls could change.",
+     "35 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "Teams here play different numbers of conference games",
+     "Boston College: 2-2, 4 games left, best finish 6-2",
+     "California: 2-3, 4 games left, best finish 6-3",
+     "Clemson: 2-2, 4 games left, best finish 6-2",
+     "Duke: 2-2, 5 games left, best finish 7-2",
+     "Florida State: 1-3, 4 games left, best finish 5-3",
+     "Georgia Tech: 1-3, 4 games left, best finish 5-3",
+     "Louisville: 3-2, 4 games left, best finish 7-2",
+     "Miami: 5-0, 4 games left, best finish 9-0",
+     "NC State: 1-3, 5 games left, best finish 6-3",
+     "North Carolina: 2-2, 4 games left, best finish 6-2",
+     "Pittsburgh: 2-3, 4 games left, best finish 6-3",
+     "SMU: 4-1, 4 games left, best finish 8-1",
+     "Stanford: 2-3, 4 games left, best finish 6-3",
+     "Syracuse: 1-4, 4 games left, best finish 5-4",
+     "Virginia: 2-3, 4 games left, best finish 6-3",
+     "Virginia Tech: 3-2, 4 games left, best finish 7-2",
+     "Wake Forest: 4-1, 4 games left, best finish 8-1",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-boston-college",
+   "params": {
+    "team": "boston-college"
+   },
+   "expect": {
+    "facts.conference.id": "acc",
+    "facts.team.standing": "in",
+    "facts.team.w": 2,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Boston College is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-big10",
+   "params": {
+    "conference": "big10"
+   },
+   "expect": {
+    "facts.conference.id": "big10",
+    "facts.conference.name": "Big Ten",
+    "facts.conference.remaining": 43,
+    "facts.counts.teams": 18,
+    "facts.counts.in_race": 17,
+    "facts.counts.out": 1,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "partial",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Big Ten: the race for the conference championship game",
+     "In the race (17)",
+     "Out of the race (1)",
+     "Understood as: which Big Ten teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "A person who compared that reading with the published text found steps KickTip does not yet match, so some calls could change.",
+     "43 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The newest tiebreaker text KickTip found is for an earlier season or may be stale.",
+     "Illinois: 2-2, 5 games left, best finish 7-2",
+     "Indiana: 4-1, 4 games left, best finish 8-1",
+     "Iowa: 2-2, 5 games left, best finish 7-2",
+     "Maryland: 0-4, 5 games left, best finish 5-4",
+     "Michigan: 1-3, 5 games left, best finish 6-3",
+     "Minnesota: 3-1, 5 games left, best finish 8-1",
+     "Nebraska: 2-2, 5 games left, best finish 7-2",
+     "Northwestern: 3-1, 5 games left, best finish 8-1",
+     "Ohio State: 4-0, 5 games left, best finish 9-0",
+     "Oregon: 2-2, 5 games left, best finish 7-2",
+     "Penn State: 0-4, 5 games left, best finish 5-4",
+     "Purdue: 2-2, 5 games left, best finish 7-2",
+     "Rutgers: 1-3, 5 games left, best finish 6-3",
+     "UCLA: 5-0, 4 games left, best finish 9-0",
+     "USC: 3-2, 4 games left, best finish 7-2",
+     "Washington: 1-3, 5 games left, best finish 6-3",
+     "Wisconsin: 3-1, 5 games left, best finish 8-1",
+     "Michigan State is out of the race on our reading of the rules, at 0-5 with best finish 4-5."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-out-michigan-state",
+   "params": {
+    "conference": "big10",
+    "team": "michigan-state"
+   },
+   "expect": {
+    "facts.view": "team",
+    "facts.team.standing": "out",
+    "facts.team.w": 0,
+    "facts.team.l": 5,
+    "facts.team.left": 4,
+    "facts.team.best": {
+     "w": 4,
+     "l": 5
+    },
+    "facts.team.id": "michigan-state"
+   },
+   "render": {
+    "contains": [
+     "Michigan State: the race for the conference championship game",
+     "Michigan State is out of the race on our reading of the rules.",
+     "Understood as: whether Michigan State is out of the race on our reading of the rules.",
+     "Conference record 0-5 with 4 games left. Best possible finish 4-5.",
+     "No set of results from the games left puts it in the game under the rules we read."
+    ],
+    "not_contains": [
+     "eliminated",
+     "In the race (",
+     "is in the race, but",
+     "is in the race for"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-illinois",
+   "params": {
+    "team": "illinois"
+   },
+   "expect": {
+    "facts.conference.id": "big10",
+    "facts.team.standing": "in",
+    "facts.team.w": 2,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Illinois is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-big12",
+   "params": {
+    "conference": "big12"
+   },
+   "expect": {
+    "facts.conference.id": "big12",
+    "facts.conference.name": "Big 12",
+    "facts.conference.remaining": 39,
+    "facts.counts.teams": 16,
+    "facts.counts.in_race": 16,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Big 12: the race for the conference championship game",
+     "In the race (16)",
+     "Out of the race (0)",
+     "Understood as: which Big 12 teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "39 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The newest tiebreaker text KickTip found is for an earlier season or may be stale.",
+     "Arizona: 3-1, 5 games left, best finish 8-1",
+     "Arizona State: 2-2, 5 games left, best finish 7-2",
+     "BYU: 3-1, 5 games left, best finish 8-1",
+     "Baylor: 2-2, 5 games left, best finish 7-2",
+     "Cincinnati: 2-2, 5 games left, best finish 7-2",
+     "Colorado: 0-4, 5 games left, best finish 5-4",
+     "Houston: 3-2, 4 games left, best finish 7-2",
+     "Iowa State: 1-3, 5 games left, best finish 6-3",
+     "Kansas: 1-3, 5 games left, best finish 6-3",
+     "Kansas State: 1-3, 5 games left, best finish 6-3",
+     "Oklahoma State: 3-1, 5 games left, best finish 8-1",
+     "TCU: 1-3, 5 games left, best finish 6-3",
+     "Texas Tech: 3-1, 5 games left, best finish 8-1",
+     "UCF: 2-2, 5 games left, best finish 7-2",
+     "Utah: 4-0, 5 games left, best finish 9-0",
+     "West Virginia: 2-3, 4 games left, best finish 6-3",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked",
+     "found steps KickTip does not yet match"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-arizona",
+   "params": {
+    "team": "arizona"
+   },
+   "expect": {
+    "facts.conference.id": "big12",
+    "facts.team.standing": "in",
+    "facts.team.w": 3,
+    "facts.team.l": 1
+   },
+   "render": {
+    "contains": [
+     "Arizona is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-sec",
+   "params": {
+    "conference": "sec"
+   },
+   "expect": {
+    "facts.conference.id": "sec",
+    "facts.conference.name": "SEC",
+    "facts.conference.remaining": 33,
+    "facts.counts.teams": 16,
+    "facts.counts.in_race": 15,
+    "facts.counts.out": 1,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "SEC: the race for the conference championship game",
+     "In the race (15)",
+     "Out of the race (1)",
+     "Understood as: which SEC teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "33 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "Alabama: 4-2, 3 games left, best finish 7-2",
+     "Arkansas: 1-3, 5 games left, best finish 6-3",
+     "Auburn: 2-3, 4 games left, best finish 6-3",
+     "Florida: 3-2, 4 games left, best finish 7-2",
+     "Georgia: 4-1, 4 games left, best finish 8-1",
+     "Kentucky: 5-1, 3 games left, best finish 8-1",
+     "LSU: 3-2, 4 games left, best finish 7-2",
+     "Mississippi State: 2-3, 4 games left, best finish 6-3",
+     "Missouri: 2-2, 5 games left, best finish 7-2",
+     "Oklahoma: 2-2, 5 games left, best finish 7-2",
+     "Ole Miss: 3-2, 4 games left, best finish 7-2",
+     "South Carolina: 2-3, 4 games left, best finish 6-3",
+     "Tennessee: 3-2, 4 games left, best finish 7-2",
+     "Texas: 2-2, 5 games left, best finish 7-2",
+     "Texas A&M: 1-4, 4 games left, best finish 5-4",
+     "Vanderbilt is out of the race on our reading of the rules, at 0-5 with best finish 4-5."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked",
+     "found steps KickTip does not yet match"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-out-vanderbilt",
+   "params": {
+    "conference": "sec",
+    "team": "vanderbilt"
+   },
+   "expect": {
+    "facts.view": "team",
+    "facts.team.standing": "out",
+    "facts.team.w": 0,
+    "facts.team.l": 5,
+    "facts.team.left": 4,
+    "facts.team.best": {
+     "w": 4,
+     "l": 5
+    },
+    "facts.team.id": "vanderbilt"
+   },
+   "render": {
+    "contains": [
+     "Vanderbilt: the race for the conference championship game",
+     "Vanderbilt is out of the race on our reading of the rules.",
+     "Understood as: whether Vanderbilt is out of the race on our reading of the rules.",
+     "Conference record 0-5 with 4 games left. Best possible finish 4-5.",
+     "No set of results from the games left puts it in the game under the rules we read."
+    ],
+    "not_contains": [
+     "eliminated",
+     "In the race (",
+     "is in the race, but",
+     "is in the race for"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-alabama",
+   "params": {
+    "team": "alabama"
+   },
+   "expect": {
+    "facts.conference.id": "sec",
+    "facts.team.standing": "in",
+    "facts.team.w": 4,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Alabama is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-American",
+   "params": {
+    "conference": "American"
+   },
+   "expect": {
+    "facts.conference.id": "American",
+    "facts.conference.name": "American",
+    "facts.conference.remaining": 31,
+    "facts.counts.teams": 14,
+    "facts.counts.in_race": 14,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "American: the race for the conference championship game",
+     "In the race (14)",
+     "Out of the race (0)",
+     "Understood as: which American teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "31 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "Army: 4-1, 3 games left, best finish 7-1",
+     "Charlotte: 1-2, 5 games left, best finish 6-2",
+     "East Carolina: 1-2, 5 games left, best finish 6-2",
+     "Florida Atlantic: 2-1, 5 games left, best finish 7-1",
+     "Memphis: 3-1, 4 games left, best finish 7-1",
+     "Navy: 1-4, 3 games left, best finish 4-4",
+     "North Texas: 3-0, 5 games left, best finish 8-0",
+     "Rice: 0-4, 4 games left, best finish 4-4",
+     "South Florida: 1-2, 5 games left, best finish 6-2",
+     "Temple: 1-2, 5 games left, best finish 6-2",
+     "Tulane: 1-2, 5 games left, best finish 6-2",
+     "Tulsa: 1-3, 4 games left, best finish 5-3",
+     "UAB: 2-1, 5 games left, best finish 7-1",
+     "UTSA: 4-0, 4 games left, best finish 8-0",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked",
+     "found steps KickTip does not yet match"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-army",
+   "params": {
+    "team": "army"
+   },
+   "expect": {
+    "facts.conference.id": "American",
+    "facts.team.standing": "in",
+    "facts.team.w": 4,
+    "facts.team.l": 1
+   },
+   "render": {
+    "contains": [
+     "Army is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-usa",
+   "params": {
+    "conference": "usa"
+   },
+   "expect": {
+    "facts.conference.id": "usa",
+    "facts.conference.name": "Conference USA",
+    "facts.conference.remaining": 25,
+    "facts.counts.teams": 10,
+    "facts.counts.in_race": 10,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "partial",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Conference USA: the race for the conference championship game",
+     "In the race (10)",
+     "Out of the race (0)",
+     "Understood as: which Conference USA teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "A person who compared that reading with the published text found steps KickTip does not yet match, so some calls could change.",
+     "25 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The published rules can be read two ways here.",
+     "Teams here play different numbers of conference games",
+     "The newest tiebreaker text KickTip found is for an earlier season or may be stale.",
+     "Delaware: 1-2, 5 games left, best finish 6-2",
+     "Florida International: 1-2, 5 games left, best finish 6-2",
+     "Jacksonville State: 3-0, 5 games left, best finish 8-0",
+     "Kennesaw State: 0-3, 5 games left, best finish 5-3",
+     "Liberty: 3-0, 5 games left, best finish 8-0",
+     "Middle Tennessee: 2-1, 5 games left, best finish 7-1",
+     "Missouri State: 1-2, 5 games left, best finish 6-2",
+     "New Mexico State: 2-1, 5 games left, best finish 7-1",
+     "Sam Houston: 0-3, 5 games left, best finish 5-3",
+     "Western Kentucky: 2-1, 5 games left, best finish 7-1",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-delaware",
+   "params": {
+    "team": "delaware"
+   },
+   "expect": {
+    "facts.conference.id": "usa",
+    "facts.team.standing": "in",
+    "facts.team.w": 1,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Delaware is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-midam",
+   "params": {
+    "conference": "midam"
+   },
+   "expect": {
+    "facts.conference.id": "midam",
+    "facts.conference.name": "MAC",
+    "facts.conference.remaining": 25,
+    "facts.counts.teams": 13,
+    "facts.counts.in_race": 12,
+    "facts.counts.out": 1,
+    "facts.counts.tie_only": 1,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "MAC: the race for the conference championship game",
+     "In the race (11)",
+     "Out of the race (1)",
+     "Understood as: which MAC teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "25 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The newest tiebreaker text KickTip found is for an earlier season or may be stale.",
+     "Akron: 0-4, 4 games left, best finish 4-4",
+     "Ball State: 2-2, 4 games left, best finish 6-2",
+     "Bowling Green: 2-2, 4 games left, best finish 6-2",
+     "Buffalo: 3-1, 4 games left, best finish 7-1",
+     "Central Michigan: 1-3, 4 games left, best finish 5-3",
+     "Eastern Michigan: 3-2, 3 games left, best finish 6-2",
+     "Kent State: 2-2, 4 games left, best finish 6-2",
+     "Massachusetts: 1-3, 4 games left, best finish 5-3",
+     "Miami (OH): 3-1, 4 games left, best finish 7-1",
+     "Ohio: 4-0, 4 games left, best finish 8-0",
+     "Toledo: 3-1, 4 games left, best finish 7-1",
+     "Western Michigan: 3-1, 4 games left, best finish 7-1",
+     "Sacramento State is out of the race on our reading of the rules, at 0-5 with best finish 3-5.",
+     "In the race, but only if a tiebreaker step KickTip cannot see goes their way (1)"
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked",
+     "found steps KickTip does not yet match"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-out-sacramento-state",
+   "params": {
+    "conference": "midam",
+    "team": "sacramento-state"
+   },
+   "expect": {
+    "facts.view": "team",
+    "facts.team.standing": "out",
+    "facts.team.w": 0,
+    "facts.team.l": 5,
+    "facts.team.left": 3,
+    "facts.team.best": {
+     "w": 3,
+     "l": 5
+    },
+    "facts.team.id": "sacramento-state"
+   },
+   "render": {
+    "contains": [
+     "Sacramento State: the race for the conference championship game",
+     "Sacramento State is out of the race on our reading of the rules.",
+     "Understood as: whether Sacramento State is out of the race on our reading of the rules.",
+     "Conference record 0-5 with 3 games left. Best possible finish 3-5.",
+     "No set of results from the games left puts it in the game under the rules we read."
+    ],
+    "not_contains": [
+     "eliminated",
+     "In the race (",
+     "is in the race, but",
+     "is in the race for"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-tie-akron",
+   "params": {
+    "team": "akron"
+   },
+   "expect": {
+    "facts.conference.id": "midam",
+    "facts.team.standing": "in_tie",
+    "facts.team.tie_only": true
+   },
+   "render": {
+    "contains": [
+     "Akron is in the race, but only if a tiebreaker step KickTip cannot see goes its way."
+    ],
+    "not_contains": [
+     "out of the race on our reading",
+     "clinched"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-ball-state",
+   "params": {
+    "team": "ball-state"
+   },
+   "expect": {
+    "facts.conference.id": "midam",
+    "facts.team.standing": "in",
+    "facts.team.w": 2,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Ball State is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-mwest",
+   "params": {
+    "conference": "mwest"
+   },
+   "expect": {
+    "facts.conference.id": "mwest",
+    "facts.conference.name": "Mountain West",
+    "facts.conference.remaining": 20,
+    "facts.counts.teams": 10,
+    "facts.counts.in_race": 10,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 1,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "partial",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Mountain West: the race for the conference championship game",
+     "In the race (9)",
+     "Out of the race (0)",
+     "Understood as: which Mountain West teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "A person who compared that reading with the published text found steps KickTip does not yet match, so some calls could change.",
+     "20 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "One tiebreaker step depends on a late-season ranking and the final game.",
+     "Air Force: 3-2, 3 games left, best finish 6-2",
+     "Hawai'i: 1-4, 3 games left, best finish 4-4",
+     "Nevada: 2-2, 4 games left, best finish 6-2",
+     "New Mexico: 3-0, 5 games left, best finish 8-0",
+     "North Dakota State: 3-2, 3 games left, best finish 6-2",
+     "Northern Illinois: 0-3, 5 games left, best finish 5-3",
+     "San Jos\u00e9 State: 2-2, 4 games left, best finish 6-2",
+     "UNLV: 2-1, 5 games left, best finish 7-1",
+     "UTEP: 0-3, 5 games left, best finish 5-3",
+     "Wyoming: 4-1, 3 games left, best finish 7-1",
+     "In the race, but only if a tiebreaker step KickTip cannot see goes their way (1)",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-tie-hawaii",
+   "params": {
+    "team": "hawaii"
+   },
+   "expect": {
+    "facts.conference.id": "mwest",
+    "facts.team.standing": "in_tie",
+    "facts.team.tie_only": true
+   },
+   "render": {
+    "contains": [
+     "Hawai'i is in the race, but only if a tiebreaker step KickTip cannot see goes its way."
+    ],
+    "not_contains": [
+     "out of the race on our reading",
+     "clinched"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-air-force",
+   "params": {
+    "team": "air-force"
+   },
+   "expect": {
+    "facts.conference.id": "mwest",
+    "facts.team.standing": "in",
+    "facts.team.w": 3,
+    "facts.team.l": 2
+   },
+   "render": {
+    "contains": [
+     "Air Force is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-pac12",
+   "params": {
+    "conference": "pac12"
+   },
+   "expect": {
+    "facts.conference.id": "pac12",
+    "facts.conference.name": "Pac-12",
+    "facts.conference.remaining": 15,
+    "facts.counts.teams": 8,
+    "facts.counts.in_race": 8,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 1,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "verified",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Pac-12: the race for the conference championship game",
+     "In the race (7)",
+     "Out of the race (0)",
+     "Understood as: which Pac-12 teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "15 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The published rules can be read two ways here.",
+     "Boise State: 3-0, 4 games left, best finish 7-0",
+     "Colorado State: 1-2, 4 games left, best finish 5-2",
+     "Fresno State: 1-2, 4 games left, best finish 5-2",
+     "Oregon State: 3-0, 4 games left, best finish 7-0",
+     "San Diego State: 2-2, 3 games left, best finish 5-2",
+     "Texas State: 2-1, 4 games left, best finish 6-1",
+     "Utah State: 1-2, 4 games left, best finish 5-2",
+     "Washington State: 0-4, 3 games left, best finish 3-4",
+     "In the race, but only if a tiebreaker step KickTip cannot see goes their way (1)",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked",
+     "found steps KickTip does not yet match"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-tie-washington-state",
+   "params": {
+    "team": "washington-state"
+   },
+   "expect": {
+    "facts.conference.id": "pac12",
+    "facts.team.standing": "in_tie",
+    "facts.team.tie_only": true
+   },
+   "render": {
+    "contains": [
+     "Washington State is in the race, but only if a tiebreaker step KickTip cannot see goes its way."
+    ],
+    "not_contains": [
+     "out of the race on our reading",
+     "clinched"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-boise-state",
+   "params": {
+    "team": "boise-state"
+   },
+   "expect": {
+    "facts.conference.id": "pac12",
+    "facts.team.standing": "in",
+    "facts.team.w": 3,
+    "facts.team.l": 0
+   },
+   "render": {
+    "contains": [
+     "Boise State is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-RUN-belt",
+   "params": {
+    "conference": "belt"
+   },
+   "expect": {
+    "facts.conference.id": "belt",
+    "facts.conference.name": "Sun Belt",
+    "facts.conference.remaining": 32,
+    "facts.counts.teams": 14,
+    "facts.counts.in_race": 14,
+    "facts.counts.out": 0,
+    "facts.counts.tie_only": 0,
+    "facts.counts.clinched": 0,
+    "facts.wording": "neutral",
+    "facts.verified": false,
+    "facts.analyst": "partial",
+    "facts.view": "all",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Sun Belt: the race for the conference championship game",
+     "In the race (14)",
+     "Out of the race (0)",
+     "Understood as: which Sun Belt teams are in the race, and which are out of the race on our reading of the rules.",
+     "In the race means some set of results from the games left puts a team in the game.",
+     "Race status is our reading of the conference's published tiebreaker rules, not a chance estimate.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts.",
+     "A person who compared that reading with the published text found steps KickTip does not yet match, so some calls could change.",
+     "32 conference games are still to be played.",
+     "Some tiebreakers use an outside ranking.",
+     "Some tiebreakers end in a draw.",
+     "The two division winners meet",
+     "The newest tiebreaker text KickTip found is for an earlier season or may be stale.",
+     "App State: 2-1, 5 games left, best finish 7-1",
+     "Arkansas State: 2-2, 4 games left, best finish 6-2",
+     "Coastal Carolina: 1-2, 5 games left, best finish 6-2",
+     "Georgia Southern: 2-1, 5 games left, best finish 7-1",
+     "Georgia State: 1-2, 5 games left, best finish 6-2",
+     "James Madison: 4-1, 3 games left, best finish 7-1",
+     "Louisiana: 2-2, 4 games left, best finish 6-2",
+     "Louisiana Tech: 3-0, 5 games left, best finish 8-0",
+     "Marshall: 1-2, 5 games left, best finish 6-2",
+     "Old Dominion: 1-4, 3 games left, best finish 4-4",
+     "South Alabama: 2-1, 5 games left, best finish 7-1",
+     "Southern Miss: 1-2, 5 games left, best finish 6-2",
+     "Troy: 1-2, 5 games left, best finish 6-2",
+     "UL Monroe: 1-2, 5 games left, best finish 6-2",
+     "None yet."
+    ],
+    "not_contains": [
+     "clinched",
+     "Clinched",
+     "eliminated",
+     "Eliminated",
+     "all teams",
+     "every team is",
+     "CCG",
+     "title game",
+     "has been checked by a person against its source",
+     "has not yet checked"
+    ]
+   }
+  },
+  {
+   "id": "RACE-TEAM-in-app-state",
+   "params": {
+    "team": "app-state"
+   },
+   "expect": {
+    "facts.conference.id": "belt",
+    "facts.team.standing": "in",
+    "facts.team.w": 2,
+    "facts.team.l": 1
+   },
+   "render": {
+    "contains": [
+     "App State is in the race for the conference championship game."
+    ],
+    "not_contains": [
+     "clinched",
+     "only if a tiebreaker",
+     "out of the race on our reading of the rules."
+    ]
+   }
+  },
+  {
+   "id": "RACE-VIEW-big10-out",
+   "params": {
+    "conference": "big10",
+    "status": "out"
+   },
+   "expect": {
+    "facts.view": "out",
+    "facts.counts.out": 1
+   },
+   "render": {
+    "contains": [
+     "which Big Ten teams are out of the race on our reading of the rules",
+     "Michigan State is out of the race on our reading of the rules, at 0-5 with best finish 4-5."
+    ],
+    "not_contains": [
+     "In the race (",
+     "Big Ten teams are in the race"
+    ]
+   }
+  },
+  {
+   "id": "RACE-VIEW-sec-in",
+   "params": {
+    "conference": "sec",
+    "status": "in"
+   },
+   "expect": {
+    "facts.view": "in"
+   },
+   "render": {
+    "contains": [
+     "which SEC teams are in the race.",
+     "In the race ("
+    ],
+    "not_contains": [
+     "Out of the race (",
+     "Vanderbilt is out of the race",
+     "are out of the race"
+    ]
+   }
+  },
+  {
+   "id": "RACE-VIEW-acc-out-empty",
+   "params": {
+    "conference": "acc",
+    "status": "out"
+   },
+   "expect": {
+    "facts.view": "out",
+    "facts.counts.out": 0
+   },
+   "render": {
+    "contains": [
+     "Out of the race (0)",
+     "None yet."
+    ],
+    "not_contains": [
+     "In the race (",
+     "No team is out of the race"
+    ]
+   }
+  },
+  {
+   "id": "RACE-INDEP-notre-dame",
+   "params": {
+    "team": "notre-dame"
+   },
+   "expect": {
+    "facts.view": "independent",
+    "facts.conference.id": "ind",
+    "facts.team.id": "notre-dame",
+    "facts.team.name": "Notre Dame",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "Notre Dame: the race for the conference championship game",
+     "Understood as: whether Notre Dame is in a conference race.",
+     "Notre Dame plays as an independent, so it is not in a conference race.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts."
+    ],
+    "not_contains": [
+     "out of the race",
+     "In the race (",
+     "clinched",
+     "eliminated"
+    ]
+   }
+  },
+  {
+   "id": "RACE-INDEP-uconn",
+   "params": {
+    "team": "uconn"
+   },
+   "expect": {
+    "facts.view": "independent",
+    "facts.conference.id": "ind",
+    "facts.team.id": "uconn",
+    "facts.team.name": "UConn",
+    "asof.label": "Oct 24, 2026, 11:58 PM MT"
+   },
+   "render": {
+    "contains": [
+     "UConn: the race for the conference championship game",
+     "Understood as: whether UConn is in a conference race.",
+     "UConn plays as an independent, so it is not in a conference race.",
+     "As of Oct 24, 2026, 11:58 PM MT. Chances and ranks on KickTip are estimates, not forecasts."
+    ],
+    "not_contains": [
+     "out of the race",
+     "In the race (",
+     "clinched",
+     "eliminated"
+    ]
+   }
+  },
+  {
+   "id": "RACE-INDEP-conf",
+   "params": {
+    "conference": "ind"
+   },
+   "expect": {
+    "facts.view": "independent",
+    "facts.conference.id": "ind",
+    "facts.conference.name": "Independents"
+   },
+   "render": {
+    "contains": [
+     "Independents: the race for the conference championship game",
+     "Notre Dame and UConn play as independents, so they are not in a conference race.",
+     "As of Oct 24, 2026, 11:58 PM MT."
+    ],
+    "not_contains": [
+     "out of the race",
+     "In the race ("
+    ]
+   }
+  }
+ ],
+ "invalid": [
+  {
+   "id": "RACE-BAD-1",
+   "params": {},
+   "reason": "bad_param",
+   "note": "nothing asked"
+  },
+  {
+   "id": "RACE-BAD-2",
+   "params": {
+    "conference": "big13"
+   },
+   "reason": "bad_param",
+   "note": "unknown conference"
+  },
+  {
+   "id": "RACE-BAD-3",
+   "params": {
+    "team": "Utah"
+   },
+   "reason": "bad_param",
+   "note": "team must be a slug"
+  },
+  {
+   "id": "RACE-BAD-4",
+   "params": {
+    "team": "not-a-team"
+   },
+   "reason": "bad_param",
+   "note": "unknown team"
+  },
+  {
+   "id": "RACE-BAD-5",
+   "params": {
+    "conference": "sec",
+    "status": "clinched"
+   },
+   "reason": "bad_param",
+   "note": "gated status not offered"
+  },
+  {
+   "id": "RACE-BAD-6",
+   "params": {
+    "conference": "sec",
+    "status": "alive"
+   },
+   "reason": "bad_param",
+   "note": "status not in list"
+  },
+  {
+   "id": "RACE-BAD-7",
+   "params": {
+    "conference": "sec",
+    "team": "michigan-state"
+   },
+   "reason": "bad_param",
+   "note": "team not in that conference"
+  },
+  {
+   "id": "RACE-BAD-ind-conf",
+   "params": {
+    "conference": "big12",
+    "team": "notre-dame"
+   },
+   "reason": "bad_param",
+   "note": "an independent is not in the Big 12"
+  }
+ ],
+ "match": [
+  {
+   "id": "RACE-M-01",
+   "text": "Who is still in the mix for the Big 12 championship game?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big12",
+     "status": "in"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-02",
+   "text": "which teams can still reach the SEC championship game",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "sec",
+     "status": "in"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-03",
+   "text": "who is eliminated from the Big Ten championship game race",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big10",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-04",
+   "text": "Is Arizona State out of the Big 12 championship game race?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big12",
+     "team": "arizona-state"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-05",
+   "text": "is Texas Tech still alive for the conference championship game",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "team": "texas-tech"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-06",
+   "text": "who is still alive in the ACC race",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "acc",
+     "status": "in"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-07",
+   "text": "who is still alive?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big12",
+     "status": "in"
+    }
+   },
+   "page": {
+    "mode": "conference",
+    "conf": "big12"
+   }
+  },
+  {
+   "id": "RACE-M-08",
+   "text": "Which MAC teams are out of the race for the conference title game",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "midam",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-10",
+   "text": "who is out of the Sun Belt race",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "belt",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-11",
+   "text": "is Notre Dame still alive for a conference championship game",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "team": "notre-dame"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-12",
+   "text": "is Michigan State eliminated from the Big Ten championship game race",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big10",
+     "team": "michigan-state"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-13",
+   "text": "Who's eliminated in the SEC?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "sec",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-14",
+   "text": "who is eliminated in the Big Ten",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big10",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-15",
+   "text": "which teams are ruled out in the MAC",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "midam",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-16",
+   "text": "who's eliminated?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "big12",
+     "status": "out"
+    }
+   },
+   "page": {
+    "mode": "conference",
+    "conf": "big12"
+   }
+  },
+  {
+   "id": "RACE-M-09",
+   "text": "Is Utah still alive for the conference championship game?",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "team": "utah"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-17",
+   "text": "Are the Bears still alive for the conference championship game?",
+   "expect_clarify": {
+    "tool": "conf_race_alive",
+    "param": "team",
+    "options": [
+     "baylor",
+     "missouri-state"
+    ]
+   }
+  },
+  {
+   "id": "RACE-M-18",
+   "text": "who is out of the Mid-American race",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "midam",
+     "status": "out"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-19",
+   "text": "who is in the race in the American Athletic Conference",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "conference": "American",
+     "status": "in"
+    }
+   }
+  },
+  {
+   "id": "RACE-M-20",
+   "text": "is the U still alive for the conference championship game",
+   "expect": {
+    "tool": "conf_race_alive",
+    "params": {
+     "team": "utah"
+    }
+   }
+  },
+  {
+   "id": "RACE-N-01",
+   "text": "what are Arizona State's chances to reach the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-02",
+   "text": "who will win the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-03",
+   "text": "who is still alive for the playoff",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-04",
+   "text": "who has clinched the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-05",
+   "text": "is anyone still alive for the national championship",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-06",
+   "text": "if Utah beats Texas Tech is Utah still alive for the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-07",
+   "text": "who is still alive in the Big 12 or the SEC championship race",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-08",
+   "text": "is Arizona State alive",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-09",
+   "text": "what does Arizona State need to reach the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-10",
+   "text": "Utah or Texas Tech still alive for the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-11",
+   "text": "who is still alive in the Big 12",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-12",
+   "text": "who is still in the mix for the 12-team playoff field",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-13",
+   "text": "put $20 on Utah to be alive for the Big 12 championship game",
+   "expect": null,
+   "expect_gate": "money"
+  },
+  {
+   "id": "RACE-N-14",
+   "text": "who is alive in the Big 12 championship game race and what are the odds",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-15",
+   "text": "is Notre Dame in the Big 12 race",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-16",
+   "text": "who is out of the race for the Independents championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-17",
+   "text": "what time is the Big 12 championship game",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-18",
+   "text": "how is Arizona State doing in the Big 12 race",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-19",
+   "text": "who is still alive in the Big 12 championship game race compared with the SEC",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-20",
+   "text": "which seeds are still in the mix for a first round bye",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-21",
+   "text": "who is eliminated from the playoff",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-22",
+   "text": "who's eliminated?",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-23",
+   "text": "who is eliminated in the Big 12 or the SEC",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-24",
+   "text": "is Utah eliminated",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-25",
+   "text": "who is eliminated in the Independents",
+   "expect": null
+  },
+  {
+   "id": "RACE-N-26",
+   "text": "what are the odds Vanderbilt is eliminated in the SEC",
+   "expect": null
+  }
+ ]
+}

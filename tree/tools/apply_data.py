@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """apply_data.py: put a new KickTip pipeline run onto a LIVE site zip, data-derived files only.
 usage: apply_data.py --base-zip Z [--base-sha SHA] --s0 <pipeline site built from the base's data> --s1 <pipeline site of the new run>
-                     --pipeline <pipeline tree root (data/store, data/ref, data/ccg.json)> --out OUT.zip [--report R.json] [--no-network]
+                     --pipeline <pipeline tree root (data/store, data/ref, data/ccg.json)> --out OUT.zip [--report R.json] [--no-network] [--ranks ranks.json]
 Method (same as toolbox9c, generalised):
  1. extract base; old as-of = base data/sim-bundle as_of (must equal S0's), new = S1's.
  2. 3-way merge live + (S0 -> S1) per file (tools/merge3.py: JSON leaf-wise, HTML git merge-file); any conflict = exit 2.
@@ -55,6 +55,11 @@ def build_once(tmp, a, network):
         if rel.endswith(('.html', '.js', '.json')) and rel not in ('_worker.js', 'scnai.js') and os.path.exists(base + '/' + rel) and rd(p) != rd(base + '/' + rel):
             t = open(p, encoding='utf-8').read(); t2 = t.replace(' (model)', '').replace('time TBA', 'time TBD')
             if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
+    # 2b. national ranks (optional --ranks FILE from tools/ranks_step.sh): replace data/ranks.json only if the live site has it
+    if getattr(a, 'ranks', None) and os.path.exists(a.ranks) and os.path.exists(out + '/data/ranks.json'):
+        rj = json.load(open(a.ranks, encoding='utf-8'))
+        if not (rj.get('v') == 1 and len(rj.get('t', {})) >= 130 and len(rj.get('cats', [])) == 9): die(3, 'bad --ranks file %s' % a.ranks)
+        if rd(a.ranks) != rd(out + '/data/ranks.json'): shutil.copyfile(a.ranks, out + '/data/ranks.json')
     # 4. derived data
     T, P, S, Bn = HERE, a.pipeline, out, out + '/data/sim-bundle.json'; SIM = out + '/assets/ks/sim.js'; tb = out + '/data/tb'
     steps = [
@@ -121,7 +126,7 @@ def build_once(tmp, a, network):
     return z_out, {'base_asof': B0, 'new_asof': S1a, 'changed': changed, 'deleted': deleted, 'merge': {k: len(v) for k, v in rep.items()}, 'entries': len(of)}, out
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('--base-zip', required=True); ap.add_argument('--base-sha'); ap.add_argument('--s0', required=True); ap.add_argument('--s1', required=True)
-    ap.add_argument('--pipeline', required=True); ap.add_argument('--out', required=True); ap.add_argument('--report'); ap.add_argument('--site-out'); ap.add_argument('--no-network', action='store_true'); a = ap.parse_args()
+    ap.add_argument('--pipeline', required=True); ap.add_argument('--out', required=True); ap.add_argument('--report'); ap.add_argument('--site-out'); ap.add_argument('--no-network', action='store_true'); ap.add_argument('--ranks'); a = ap.parse_args()
     if a.base_sha and sha(rd(a.base_zip)) != a.base_sha: die(3, 'base zip sha %s != expected' % sha(rd(a.base_zip)))
     res = []
     for tag in 'AB':

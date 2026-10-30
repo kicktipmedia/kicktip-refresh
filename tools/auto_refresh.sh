@@ -41,7 +41,7 @@ ASOF=$(python3 -c "import json;print(json.load(open('build/site/data/sim-bundle.
 SNAP=$R/pipeline/$(echo "$ASOF" | sed 's/ MT//;s/ /_/;s/://'); rm -rf $SNAP; mkdir -p $SNAP; cp -r build/site $SNAP/site
 # 3. apply onto live
 python3 $TREE/tools/apply_data.py --base-zip "$ZIP" --base-sha "$LIVE_SHA" --s0 "$S0" --s1 $SNAP/site --pipeline $TREE \
-  --out $RD/kicktip-site.zip --report $RD/report.json --site-out $RD/site > $RD/apply.log 2>&1 || fail 16 "apply_data: $(grep -h 'APPLY_DATA FAIL' $RD/apply.log | tail -n 1)"
+  --out $RD/kicktip-site.zip --report $RD/report.json --site-out $RD/site ${KT_RANKS:+--ranks "$KT_RANKS"} > $RD/apply.log 2>&1 || fail 16 "apply_data: $(grep -h 'APPLY_DATA FAIL' $RD/apply.log | tail -n 1)"
 NEW_SHA=$(sha256sum $RD/kicktip-site.zip | cut -d' ' -f1)
 rm -rf $RD/deploy; mkdir $RD/deploy; (cd $RD/deploy && unzip -q ../kicktip-site.zip) || fail 16 "unzip"
 diff -rq $RD/deploy $RD/site >/dev/null || fail 16 "deploy dir != zip"

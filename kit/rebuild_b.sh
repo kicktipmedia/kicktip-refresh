@@ -11,6 +11,10 @@ case "$(git -C $REPO rev-parse --abbrev-ref HEAD)" in batchB|batchB-rehearse) ;;
 [ -z "$(git -C $REPO status --porcelain)" ] || { echo "repo tree not clean: commit first"; git -C $REPO status --short | head; exit 3; }
 HEAD=$(git -C $REPO rev-parse HEAD); mkdir -p "$W"
 (cd $REPO && tools/rebuild_s0.sh "$W/s0" > "$W/s0.log" 2>&1) || { tail -5 "$W/s0.log"; echo "rebuild_s0 failed"; exit 4; }
+# resolved s0 asset check (QA r3): state.json must name s0-site.tar.gz and the release copy merged against must be Batch A's s0 (5b375ecf...)
+S0_EXPECT=${KT_B_S0_LIVE:-5b375ecf6afb2f9c6b61ee3fe9a5aa1823fa1ca49c0dc61ec9009a48bd05988b}
+S0A=$(python3 -c "import json;print(json.load(open('$REPO/state.json')).get('s0_asset','s0-site.tar.gz'))"); [ "$S0A" = s0-site.tar.gz ] || { echo "state.json resolves s0 asset to $S0A, want s0-site.tar.gz"; exit 7; }
+S0H=$(sha256sum "$W/s0/s0-site.prev.tar.gz" | cut -d' ' -f1); [ "$S0H" = "$S0_EXPECT" ] || { echo "resolved $S0A sha $S0H != expected $S0_EXPECT"; exit 7; }
 mkdir "$W/L" && (cd "$W/L" && unzip -q "$BASE") && node $T/bake_static.js "$W/L" --unbake > /dev/null
 cp -a "$W/L" "$W/F"; python3 $T/merge3.py "$W/L" "$W/s0/old" "$W/s0/new" "$W/F" "$W/merge.json" > "$W/merge.out"
 python3 - "$W/merge.json" <<'P'

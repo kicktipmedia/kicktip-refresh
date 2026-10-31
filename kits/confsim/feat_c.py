@@ -59,7 +59,7 @@ def put(rel, body):
     open(q, 'w', encoding='utf-8').write(body.rstrip('\n') + '\n' + MK + '\n'); print('wrote', rel)
 M = {}
 for sp in sorted(glob.glob(D + '/conference/*/simulator/index.html')):
-    s = open(sp, encoding='utf-8').read(); m = re.search(r'id="sim" data-code="([a-z0-9]+)" data-name="([^"]+)"', s); assert m, sp
+    s = open(sp, encoding='utf-8').read(); m = re.search(r'id="sim" data-code="([A-Za-z0-9-]+)" data-name="([^"]+)"', s); assert m, sp
     M[sp.split('/')[-3]] = [m[1], H.unescape(m[2])]
 assert len(M) == 10, ('simulator pages', sorted(M))
 cj = open(K + '/cc5conf.js', encoding='utf-8').read(); assert cj.count('/*CC5MAP*/{}') == 1

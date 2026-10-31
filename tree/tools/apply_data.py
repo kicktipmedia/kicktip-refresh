@@ -46,15 +46,25 @@ def build_once(tmp, a, network):
     B0 = json.load(open(base + '/data/sim-bundle.json'))['as_of']; S0a = json.load(open(a.s0 + '/data/sim-bundle.json'))['as_of']; S1a = json.load(open(a.s1 + '/data/sim-bundle.json'))['as_of']
     if B0 != S0a: die(3, 'base as_of %s != s0 as_of %s (wrong S0 pipeline site)' % (B0, S0a))
     F0, F1 = forms(B0), forms(S1a)
+    # refreshfix T1: give S0 and S1 the same post-fix convention the live base already has (' (model)' strip, 'time TBA' -> 'time TBD'),
+    # so a template/post-fix difference between the sides can never surface as a merge-file conflict (games/index.html rc=3/17/18 on Oct 31)
+    def norm(src, dst):
+        shutil.copytree(src, dst)
+        for rel, p in walk(dst):
+            if rel.endswith(('.html', '.js', '.json')) and rel not in ('_worker.js', 'scnai.js'):
+                t = open(p, encoding='utf-8').read(); t2 = t.replace(' (model)', '').replace('time TBA', 'time TBD')
+                if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
+        return dst
+    S0N = norm(a.s0, os.path.join(tmp, 's0n')); S1N = norm(a.s1, os.path.join(tmp, 's1n'))   # locals: build_once runs twice on the same args
     # 2. merge
     rep_p = os.path.join(tmp, 'merge.json')
-    run([sys.executable, HERE + '/merge3.py', base, a.s0, a.s1, out, rep_p, json.dumps(list(zip(F0[:4], F1[:4])))], env, 'merge3')
+    run([sys.executable, HERE + '/merge3.py', base, S0N, S1N, out, rep_p, json.dumps(list(zip(F0[:4], F1[:4])))], env, 'merge3')
     rep = json.load(open(rep_p))
     if rep['conflict'] or rep['json_conflicts']: die(2, 'merge conflicts: %s %s' % (rep['conflict'][:10], list(rep['json_conflicts'])[:10]))
     # stale what-if shards (week no longer simulated)
     deleted = []
     for rel, p in list(walk(out)):
-        if re.match(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$', rel) and os.path.exists(a.s0 + '/' + rel) and not os.path.exists(a.s1 + '/' + rel):
+        if re.match(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$', rel) and os.path.exists(S0N + '/' + rel) and not os.path.exists(S1N + '/' + rel):
             os.remove(p); deleted.append(rel)
     # 3. post-fixes of the live builds
     for rel, p in walk(out):

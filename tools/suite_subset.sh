@@ -9,13 +9,13 @@ run set9_polish node tests/set9_polish.js $T
 run worker_dark10 node tests/worker_dark10.mjs $T
 run set_router1 node tests/set_router1.js $T
 run set_router2 node tests/set_router2.js $T
-run qbank_scn_a1 node tests/qbank_scn_a1_check.js $T
+run qbank_scn_a1 env KT_SCN_DATA=$(pwd)/tests/fixtures/scn_575 node tests/qbank_scn_a1_check.js $T
 run drift python3 tools/check_explain_drift.py $T
 run scnai_unit node tests/scnai_unit.js $T
 run cost_scn node tests/cost_scn.js $T
 run qbank_scn_a2 node tests/qbank_scn_a2.mjs $T
-run set_scn_b node tests/set_scn_b.js $T $B
-run qbank_scn_b node tests/qbank_scn_b_check.js $T
+run set_scn_b env KT_SCN_DATA=$(pwd)/tests/fixtures/scn_575 node tests/set_scn_b.js $T $B
+run qbank_scn_b env KT_SCN_DATA=$(pwd)/tests/fixtures/scn_575 node tests/qbank_scn_b_check.js $T
 run set3m3_cfpno node tests/set3m3_cfpno.js $T
 run why2 node tests/why2.js $T
 echo SUITE_DONE fail=$fail; exit $fail

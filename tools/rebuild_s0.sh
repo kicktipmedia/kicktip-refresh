@@ -27,8 +27,9 @@ GOT=$(python3 -c "import json;print(json.load(open('$OUT/tree/data/out/refresh_l
 [ "$ASOF" = "$GOT" ] || { echo "s0-inputs as-of $GOT != live as-of $ASOF: refusing"; exit 3; }
 (cd "$OUT/tree" && KT_ASOF="$ASOF" python3 src/build.py > ../build.log 2>&1) || { tail -n 5 "$OUT/build.log"; exit 4; }
 REN="$OUT/tree/build/site"; NEW="$OUT/new"; cp -r "$OUT/old" "$NEW"
-# templates only change HTML: overlay the re-rendered .html onto the old S0 and keep its JSON byte-identical (float noise in a re-run would make JSON leaves conflict)
-(cd "$REN" && find . -name '*.html') | while read -r f; do mkdir -p "$NEW/$(dirname "$f")"; cp "$REN/$f" "$NEW/$f"; done
+# templates change HTML AND the assets build.py renders (e.g. terms_copy -> assets/chat.js, myteams.js, rootables.js): overlay every re-rendered file
+# outside data/ (derived from build.py's own output, so new templated assets are covered automatically); keep data/ JSON byte-identical (float noise would conflict)
+(cd "$REN" && find . -type f ! -path './data/*') | while read -r f; do mkdir -p "$NEW/$(dirname "$f")"; cp "$REN/$f" "$NEW/$f"; done
 B=$(python3 -c "import json;print(json.load(open('$REN/data/sim-bundle.json'))['as_of'])"); [ "$B" = "$ASOF" ] || { echo "rebuilt as_of $B != $ASOF"; exit 4; }
 echo "files differing old S0 -> new S0:"; diff -rq "$OUT/old" "$NEW" | sed 's/^/  /' | head -n 40 || true
 if [ -n "$CHECK" ]; then

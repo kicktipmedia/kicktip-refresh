@@ -148,7 +148,7 @@ function nwHtml(slug) {
   const nm = (i) => { const n = c.index.team_names[i], t = c.by[n]; return (t && (t.s || t.n)) || n; };
   const home = g0.h === tn, win = home ? ch('h') : ch('a'), loss = home ? ch('a') : ch('h'), opp = nm(home ? g0.a : g0.h), team = nm(tn);
   const P = (x) => Math.round(x / 10), b = P(base);
-  const pill = (v) => { const d = P(v) - b; return d === 0 ? '<span class="w2d">no change</span>' : '<span class="w2d ' + (d > 0 ? 'up' : 'dn') + '">' + (d > 0 ? '+' : '&minus;') + Math.abs(d) + '%</span>'; };
+  const pill = (v) => { const d = P(v) - b; return d === 0 ? '<span class="w2d">no change</span>' : '<span class="w2d ' + (d > 0 ? 'up' : 'dn') + '">' + (d > 0 ? '+' : '<span class="vh">minus </span>') + Math.abs(d) + '%</span>'; };
   const row = (lab, v) => '<div class="nw-r"><span class="nw-l">If ' + esc(team) + ' ' + lab + '</span><span class="nw-v"><b>' + P(v) + '%</b> ' + pill(v) + '</span></div><p class="nw-was">playoff &middot; was&nbsp;' + b + '%</p>';
   return '<div class="card nw"><h3 class="nw-h">Next game What If</h3><p class="nw-m">' + NBSP(esc(RB.whenShort(g0))) + ' &middot; ' + (g0.neutral ? 'vs' : home ? 'vs' : 'at') + ' ' + esc(opp) + '</p>' + row('wins', win) + row('loses', loss) + '<p class="nw-st">Chance to make the 12&#8209;team playoff (KickTip blend), data as of ' + NBSP(esc(K.fmt(c.index.as_of.replace(/ MT$/, '')) || RB.stampText(c.index.as_of))) + '.</p></div>';
 }

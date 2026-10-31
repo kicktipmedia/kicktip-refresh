@@ -40,7 +40,7 @@
     h += '<p class="cc5n">' + esc(w4restTxt(w4rest(), fl.length)) + "</p>";
     var top = res.table.filter(function (r) { return r.rank === res.table.filter(function (z) { return z.i === t[0]; })[0].rank; }), pill = "";
     if (!div && top.length > 1 && top.some(function (r) { return r.i === t[0]; })) pill = "Won a " + top.length + "-way tie at " + top[0].w + "-" + top[0].l;
-    var side = function (i, k) { var r = P.pl[i].r, o = ccOv(r), sd = div ? esc(conf.div[i]) + " division" : "No.&nbsp;" + k + " seed"; return '<div class="cc5s">' + LG(i, 40, false) + '<div class="cc5t"><div class="cc5sd">' + sd + '</div><div class="cc5nm">' + NB(T(i)) + '</div><div class="cc5r">' + r.w + "-" + r.l + "&nbsp;<span>" + cn + "&nbsp;&middot;&nbsp;" + o.w + "-" + o.l + "</span></div></div></div>"; };
+    var side = function (i, k) { var r = P.pl[i].r, o = ccOv(r), sd = div ? esc(conf.div[i]) + " division" : "No.&nbsp;" + k + " seed"; return '<div class="cc5s">' + LG(i, 40, false) + '<div class="cc5t"><div class="cc5sd">' + sd + '</div><div class="cc5nm">' + esc(T(i)) + '</div><div class="cc5r">' + r.w + "-" + r.l + "&nbsp;<span>" + cn + "&nbsp;&middot;&nbsp;" + o.w + "-" + o.l + "</span></div></div></div>"; };
     h += '<section class="cc5c" aria-label="' + esc(NAME) + ' championship"><div class="cc5top"><b>' + cn + " championship</b>" + (pill ? "<span>" + esc(pill) + "</span>" : "") + "</div>";
     h += '<div class="cc5vs">' + side(t[0], 1) + "<i>vs</i>" + side(t[1], 2) + "</div>";
     if (BASE && BASE.ready && BASE.pairKnown && BASE.pair) h += '<div class="cc5b">Starting results: ' + NB(T(BASE.pair[0])) + " vs " + NB(T(BASE.pair[1])) + "</div>";

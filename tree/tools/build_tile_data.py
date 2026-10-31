@@ -91,6 +91,7 @@ def main():
         for g in games:
             if g['ip'] or g['kick'] > end or started(g): continue
             if not shard(g['week'], g['id']): continue
+            if any(not (by.get(names[x]) or {}).get('g') for x in (g['h'], g['a'])): continue   # refreshfix T3: FBS vs 'FCS opponent' games are not rootable rows (why2 needs both names; Oct 31 fresh data)
             pH, pA = chance(g, 'h', tn, col), chance(g, 'a', tn, col)
             own = g['h'] == tn or g['a'] == tn
             rows.append(dict(id=g['id'], g=g, pH=pH, pA=pA, gap=abs(pH - pA), own=own,

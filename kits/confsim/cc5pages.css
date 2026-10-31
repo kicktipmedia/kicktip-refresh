@@ -1,0 +1,16 @@
+/* cc5 rev 5: home Conference Simulator tile (#cs-home) and the conference-page simulator section (.cc5cs). No inline styles (CSP style-src 'self'). */
+#cs-home .wl-mk{width:37px;height:48px;flex:none}
+#cs-home .csm{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 2px;font:700 15px 'Source Sans 3',system-ui,Arial;color:#121519}
+#cs-home .csm[hidden]{display:none}
+#cs-home .csn{display:inline-flex;align-items:center;gap:6px}
+#cs-home .csn img,#cs-home .csn>span:first-child{width:28px;height:28px;flex:none}
+#cs-home .csm i{font-style:normal;color:#4C5560;font-size:13px}
+#cs-home a.btn-wi{text-decoration:none;display:flex;align-items:center;justify-content:center}
+@media (min-width:768px){#cs-home{grid-column:2;grid-row:2}}
+.cc5cs .cc5ch2{font:800 22px/1.1 'Barlow Condensed',system-ui,Arial;text-transform:uppercase;letter-spacing:.02em;margin:0 0 4px;color:#121519}
+.cc5cs .cc5cl{margin:0 0 10px;font-size:15px;line-height:1.4;color:#121519}
+.cc5cs .sim.cc5em{background:transparent;border:0;padding:0;margin:0;box-shadow:none}
+.cc5lab{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;width:100%;min-height:44px;margin:14px 0 0;border:2px solid #262B31;border-radius:99px;background:#fff;font:700 15px 'Source Sans 3',system-ui,Arial;color:#121519;padding:4px 14px;text-align:center;cursor:pointer}
+.cc5lab span{font-weight:500;color:#4C5560;margin-right:6px}
+.cc5lab:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.card[hidden]{display:none}

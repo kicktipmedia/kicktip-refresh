@@ -36,21 +36,34 @@
     var tie = t && hs !== "higher_seed" && pc(t[0]) !== null && Math.abs(pc(t[0]) - pc(t[1])) < 1e-9;   /* t is the engine's post-tiebreaker order: t[0] = higher seed / host */
     var who = hs === "higher_seed" || tie ? "The higher seed hosts" : "The " + (R.fmt === "div" && conf.div ? "division champion" : "team") + " with the better conference record hosts";
     return '<p class="y s">' + esc(w + ". " + who + (t ? ": " + T(t[0]) : "") + ".") + "</p>"; }
+  /* rev 5 (Creative mock, Jared GO 1:24 PM MT Oct 31): the result is a full-width banner above the grid (#ccg sits before .simgrid); "Your changes" moves to the rail (#cc5chg) */
+  var SH_IC = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M5 5l3-3 3 3M3 8v6h10V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function ccChg(h) { var c = $("cc5chg"); if (c) c.innerHTML = h; }
+  function ccBlob() { return W4blob ? Promise.resolve(W4blob) : W4data ? w4render(W4data).then(function (r) { return r.blob; }) : Promise.resolve(null); }
+  function ccDl() { ccBlob().then(function (b) { if (!b || b.size < 1000) return; var a = document.createElement("a"), u = URL.createObjectURL(b); a.href = u; a.download = "KickTip What If.jpg"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 4000); }); }
+  function ccShare() {   /* phone with file share: the result image; otherwise the page link (the link does not carry the changes, and the message says so) */
+    if (w4canShare()) { w4share(); return; }
+    var u = location.href.split("#")[0], say = function (m) { var a = $("ann"); if (a) a.textContent = m; };
+    if (navigator.share) { navigator.share({ title: document.title, url: u }).catch(function () {}); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(function () { say("Link to this page copied. Your changes are not in the link; use Download image to keep them."); }, function () { say("Copy this page's address to share it."); });
+    else say("Copy this page's address to share it.");
+  }
   function ccCard(t, res) {
     w4card(t, res);   /* keeps W4data (share image) exactly as before */
     var fl = ccFlips(), P = ccPlaces(res), div = R.fmt === "div" && conf.div, cn = NB(NAME);
     var h = '<p class="cc5l">Your changes (' + fl.length + ")</p>";
     if (fl.length) h += '<ul class="cc5ch">' + fl.map(function (g) { var w = picks[g.id] === 1 ? g.h : g.a, l = w === g.h ? g.a : g.h; return '<li class="cc5fc"><span class="cc5ft">Flipped &middot; ' + ccDay(g) + "</span>If " + NB(T(l)) + " loses to " + NB(T(w)) + "</li>"; }).join("") + "</ul>";
     h += '<p class="cc5n">' + esc(w4restTxt(w4rest(), fl.length)) + "</p>";
+    ccChg(h);
     var top = res.table.filter(function (r) { return r.rank === res.table.filter(function (z) { return z.i === t[0]; })[0].rank; }), pill = "";
     if (!div && top.length > 1 && top.some(function (r) { return r.i === t[0]; })) pill = "Won a " + top.length + "-way tie at " + top[0].w + "-" + top[0].l;
-    var side = function (i, k) { var r = P.pl[i].r, o = ccOv(r), sd = div ? esc(conf.div[i]) + " division" : "No.&nbsp;" + k + " seed"; return '<div class="cc5s">' + LG(i, 40, false) + '<div class="cc5t"><div class="cc5sd">' + sd + '</div><div class="cc5nm">' + esc(T(i)) + '</div><div class="cc5r">' + r.w + "-" + r.l + "&nbsp;<span>" + cn + "&nbsp;&middot;&nbsp;" + o.w + "-" + o.l + "</span></div></div></div>"; };
-    h += '<section class="cc5c" aria-label="' + esc(NAME) + ' championship"><div class="cc5top"><b>' + cn + " championship</b>" + (pill ? "<span>" + esc(pill) + "</span>" : "") + "</div>";
-    h += '<div class="cc5vs">' + side(t[0], 1) + "<i>vs</i>" + side(t[1], 2) + "</div>";
-    if (BASE && BASE.ready && BASE.pairKnown && BASE.pair) h += '<div class="cc5b">Starting results: ' + NB(T(BASE.pair[0])) + " vs " + NB(T(BASE.pair[1])) + "</div>";
-    if (res.why && res.why.length) h += '<details class="cc5w"><summary>Why these two? (tiebreakers)</summary><ol>' + res.why.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ol></details>";
-    h += "</section>" + ccHost(t, res) + '<button type="button" class="w4sh" data-w4="share">' + (!w4canShare() ? "Download image" : "Share results") + "</button>";
-    return h;
+    var side = function (i, k) { var r = P.pl[i].r, o = ccOv(r), sd = div ? esc(conf.div[i]) + " division" : "No.&nbsp;" + k + " seed"; return '<div class="cc5s">' + LG(i, 64, false) + '<div class="cc5t"><div class="cc5sd">' + sd + '</div><div class="cc5nm">' + esc(T(i)) + '</div><div class="cc5r">' + r.w + "-" + r.l + "&nbsp;<span>" + cn + "&nbsp;&middot;&nbsp;" + o.w + "-" + o.l + "</span></div></div></div>"; };
+    var x = '<section class="cc5c" aria-label="Result: ' + esc(NAME) + ' championship"><div class="cc5top"><span class="cc5rk">Your result</span><b>' + cn + " championship</b>" + (pill ? '<span class="cc5pl">' + esc(pill) + "</span>" : "") + '</div><div class="cc5bd">';
+    x += '<div class="cc5vs">' + side(t[0], 1) + "<i>vs</i>" + side(t[1], 2) + '</div><div class="cc5mt">';
+    if (BASE && BASE.ready && BASE.pairKnown && BASE.pair) x += '<p class="cc5b">Starting results: ' + NB(T(BASE.pair[0])) + " vs " + NB(T(BASE.pair[1])) + "</p>";
+    x += ccHost(t, res) + '</div><div class="cc5ac"><button type="button" class="cc5p" data-w4="dl">Download image</button><button type="button" class="cc5q" data-w4="sh5">' + SH_IC + "Share</button></div>";
+    if (res.why && res.why.length) x += '<details class="cc5w"><summary>Why these two? (tiebreakers)</summary><ol>' + res.why.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ol></details>";
+    return x + "</div></section>";
   }
   function ccTable(res) {
     var P = ccPlaces(res), B = BASE && res.ready ? ccPlaces(BASE) : null, bp = (B && B.pair) || [], flipT = {}, h = "", div = R.fmt === "div" && conf.div;

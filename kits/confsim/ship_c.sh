@@ -3,7 +3,7 @@
 # usage: ship_c.sh <zip> <approved_sha256> <guard_canonical_id> <approved_confsim_head>
 # Order: KT_SCHEDULE off -> guards (FREEZE, no in_progress/queued/waiting/requested/pending refresh runs, clean head, canonical == guard, zip sha, main state.json live_id == guard, confsim on origin/main)
 #   -> deploy once (flock, no retry) -> bytecmp apex+www -> push confsim to main (fast-forward) -> publish_base (state.json) -> KT_SCHEDULE back to its prior value.
-# No S0 step: the change is a live-asset layer (assets/ccgsim-ui.js, assets/ccgsim.css + ?v= tokens); no template, data or build.py change, so the S0 merge base is unchanged.
+# No S0 step: the change is a live layer (assets/ccgsim-ui.js, assets/ccgsim.css, new assets/cc5home.js, cc5conf.js, cc5pages.css + ?v= tokens, and <link>/<script> tags on the head/script lines of index.html and the 10 conference pages); no template, data or build.py change, so the S0 merge base is unchanged and the refresh 3-way HTML merge carries the tags (they are not on the body line the pipeline rewrites).
 # Exit codes: 2-20 = nothing deployed (KT_SCHEDULE restored). >=21 = KT_SCHEDULE kept OFF + exact recovery steps in ship.out.
 #   21 deploy failed / canonical unknown   22 bytecmp failed (NEW live)   23 main push failed   24 publish_base / state check failed
 # Test mode (no network, no deploy, mocks only): KT_SHIP_TEST=1 KT_MOCK=<ok|pubfail|bytecmp|deployfail> ship_c.sh x x x x  (log: QA/ship.test.out)

@@ -33,7 +33,7 @@ if [ "${KT_SKIP_FETCH:-0}" != 1 ] && [ "${KT_LINES_PULLED:-0}" != 1 ]; then time
 read LFP1 LEP1 <<< "$(python3 $TOOLS/lines_fp.py $TREE)"; LFP1=${LFP1:-none}; [[ "$LEP1" =~ ^[0-9]+$ ]] || LEP1=0; [[ "${LEP0:-0}" =~ ^[0-9]+$ ]] || LEP0=0   # one pull per run (KT_LINES_PULLED: the gate already pulled); empty/corrupt -> none 0
 say "lines fp ${LFP0:-none} -> $LFP1 (pulled $(date -d @$LEP1 '+%F %T %Z' 2>/dev/null))"
 LCHG=0; { [ "$LFP1" != "none" ] && [ "$LFP1" != "$LFP0" ]; } && LCHG=1; [ "$LEP1" -gt $(( ${LEP0:-0} + 72000 )) ] && LCHG=1   # new numbers, or the live read is 20 h+ older than this pull
-tar czf $RD/inputs.tgz --exclude=data/cache/val data/store data/cache data/out/refresh_log.json 2>/dev/null || true
+tar czf $RD/inputs.tgz --exclude=data/cache/val --exclude=data/store/forecast_log.jsonl --exclude=data/store/snapshots-archive data/store data/cache data/out/refresh_log.json 2>/dev/null || true
 read FP1 DONE <<< "$(python3 $TOOLS/results_fp.py $TREE)"
 say "results fp $FP0 -> $FP1 (completed $DONE)"
 if [ "$FP1" = "$FP0" ] && [ $LCHG = 0 ] && [ $FORCE = 0 ]; then say "no new final, score, kickoff or spread change: skip, nothing deployed"; echo "{\"run\":\"$RUN\",\"exit\":0,\"skipped\":true}" > $RD/result.json; exit 0; fi

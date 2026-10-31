@@ -9,6 +9,7 @@ Method (same as toolbox9c, generalised):
  4. regenerate derived data: tile-data, data/tb/* (conf-bids, conf-outcome, team-stats, history, resume, ccg-games, needs-by-record,
     path-by-stage, trend, ccg-alive, ccg-paths + per-conf split, cfp-rankings).
  5. as-of stamps in every html/json/js text file: all known display forms old -> new, including data-asof="YYYY-MM-DD HH:MM" (home7c).
+ 5a. merged: tools/polish_refresh.py re-derives the team chances-card record line (pc-sub) from the merged page text.
  5b. nojs1 (if the base has assets/stamp.js): the base is unbaked before the merge; after step 5 tools/bake_static.js bakes numbers + 'Updated'
      stamps into HTML and --verify fails the run if any page is stale.
  6. restamp ?v= tokens; allow-list check: every changed file is html, data/**, or a token-only change; _worker.js identical.
@@ -99,6 +100,8 @@ def build_once(tmp, a, network):
             t = open(p, encoding='utf-8').read(); t2 = t
             for o, n in zip(F0, F1): t2 = t2.replace(o, n)
             if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
+    # 5a. merged build: re-derive the polish chances-card record line from the merged page text (else a refresh leaves it stale)
+    if os.path.exists(out + '/assets/polish.js'): run([sys.executable, HERE + '/polish_refresh.py', out], env, 'polish-refresh')
     # 5b. nojs1: bake default-model numbers + exact 'Updated' stamps into static HTML from the regenerated data (after step 5 so every data-asof is already new), then verify nothing is stale
     if BAKE:
         run(['node', HERE + '/bake_static.js', out, '--check'], env, 'bake-static')

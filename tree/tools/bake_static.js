@@ -14,10 +14,10 @@ function die(m) { console.error('BAKE FAIL: ' + m); process.exit(3); }
 if (!SITE || !fs.existsSync(SITE + '/index.html')) die('usage: bake_static.js <siteDir> [--unbake]');
 const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   '<noscript><p class="h25-js0">Turn on JavaScript to see the KickTip Top 25.</p></noscript>',
-  'Turn on JavaScript to view predictions. Without it this page shows no prediction or spread numbers.',
+  'Turn on JavaScript to see the chances. Without it this page shows no simulation numbers.',
   '<tr><td colspan="3"><span class="lk">Loading</span></td></tr>',
   'Spreads: ESPN, numbers only, shown when one has been posted.'];
-const NOJS_TXT = 'Turn on JavaScript to see game predictions and switch models.';
+const NOJS_TXT = 'Turn on JavaScript to see game numbers and switch models.';
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
 const mk = (n, s) => '<!--bk:' + n + '-->' + s + '<!--/bk-->';
 function unbake(t) { return t.replace(MK, (m, n) => { if (DEF[+n] === undefined) die('unknown marker ' + n); return DEF[+n]; }); }
@@ -83,9 +83,16 @@ function rep1(t, re, fn, what, f) { let n = 0; const o = t.replace(re, (...a) =>
 const SCRIPT = (t) => { const m = /\/assets\/stamp\.js\?v=([0-9a-f]{10})/.exec(t); return m ? m[1] : null; };
 const stampTok = require('crypto').createHash('sha256').update(fs.readFileSync(path.join(SITE, 'assets/stamp.js'))).digest('hex').slice(0, 10);
 const cssTok = fs.existsSync(path.join(SITE, 'assets/nojs.css')) ? require('crypto').createHash('sha256').update(fs.readFileSync(path.join(SITE, 'assets/nojs.css'))).digest('hex').slice(0, 10) : null;
+/* merge: ONE stamp per view switcher, placed after the closing </div> of <div data-vroot> so it shows in every view (bracket/list/cards) with JS on and off */
+function afterVroot(t, rel) {
+  const o = '<div data-vroot>', i = t.indexOf(o); if (i < 0 || t.indexOf(o, i + 1) >= 0) die('data-vroot count != 1 in ' + rel);
+  const re = /<div\b[^>]*>|<\/div>/g; re.lastIndex = i; let d = 0, m;
+  while ((m = re.exec(t))) { d += m[0][1] === '/' ? -1 : 1; if (!d) return t.slice(0, re.lastIndex) + upd() + t.slice(re.lastIndex); }
+  die('unbalanced data-vroot in ' + rel);
+}
 for (const f of files) {
   const rel = path.relative(SITE, f).replace(/\\/g, '/'); const t0 = fs.readFileSync(f, 'utf8'); let t = unbake(t0);
-  if (SP_STAMP && t.includes(DEF[7])) { t = t.split(DEF[7]).join(mk(7, 'Spreads: ESPN \u00b7 ' + K.label + '<span class="kt-spu" data-pulled="' + SP_ISO + '">' + NBSP(SP_STAMP) + '</span>. Numbers only, shown when one has been posted.')); stats.spreads++; }
+  if (SP_STAMP && t.includes(DEF[7])) { t = t.split(DEF[7]).join(mk(7, 'Spreads: ESPN \u00b7 updated <span class="kt-spu" data-pulled="' + SP_ISO + '">' + NBSP(SP_STAMP) + '</span>. Numbers only, shown when one has been posted.')); stats.spreads++; }
   /* as-of stamps everywhere: exact time, never 'recently' */
   if (t.includes('class="kt-asof"')) {
     t = t.replace(/(<span class="kt-asof" data-asof="([^"]*)">)recently(<\/span>)/g, (m, a, v, b) => { const s = K.fmt(v); if (!s) die('unparseable data-asof "' + v + '" in ' + rel); stats.asof++; return a + mk(3, NBSP(s)) + b; });
@@ -105,15 +112,15 @@ for (const f of files) {
     t = rep1(t, /(<ol class="h25-l" start="6"[^>]*data-t25r>)(<\/ol>)/, (m, a, b) => a + mk(0, top.slice(5).map((e, i) => t25row(e, i + 6, true)).join('')) + b, 't25r', rel);
     t = rep1(t, /(<p class="h25-asof" data-t25asof>)(<\/p>)/, (m, a, b) => upd('h25-upd') + a + mk(0, t25asof()) + b, 't25asof', rel);
     t = rep1(t, /(<table id="top12">[\s\S]*?<tbody>)(<\/tbody>)/, (m, a, b) => a + mk(0, topRows()) + b, 'top12', rel);
-    t = rep1(t, /(<ol class="t25-cards kc-list" aria-label="Top chances[^"]*"><\/ol>)/, (m, a) => a + upd(), 'top12 stamp', rel);
-    t = rep1(t, /(<table id="fieldseeds" class="fld">[\s\S]*?<tbody>)(<\/tbody>)(<\/table><\/div>)/, (m, a, b, c) => a + mk(0, fieldRows()) + b + c + upd(), 'fieldseeds', rel);
+    t = rep1(t, /(<table id="fieldseeds" class="fld">[\s\S]*?<tbody>)(<\/tbody>)(<\/table><\/div>)/, (m, a, b, c) => a + mk(0, fieldRows()) + b + c, 'fieldseeds', rel);
+    t = afterVroot(t, rel);
     stats.home++; baked = true;
   } else if (page === 'team') {
     const k = (/<main[^>]*data-team="([^"]+)"/.exec(t) || [])[1], tm = T[k]; if (!tm) die('team ' + k + ' not in pred-teams (' + rel + ')');
     const m = { c: tm.c, w: tm.w, p: tm.p, b: tm.b };
     let n = 0; t = t.replace(/(<b data-tile="([cwpb])">)&ndash;(<\/b>)/g, (x, a, key, b) => { n++; const v = m[key]; return a + mk(1, v === null || v === undefined ? 'n/a' : pct(v)) + b; });
     if (n < 2 || !t.includes('data-tile="p"')) die('tiles found ' + n + ' in ' + rel);
-    t = rep1(t, /(<b data-tile="b">[\s\S]*?<\/div><\/div>)(<p class="note">Chances come from)/, (x, a, b) => a + upd() + b, 'tiles stamp', rel);
+    t = rep1(t, /(<b data-tile="b">[\s\S]*?<\/div><\/div>)(<p class="note(?: pc-nt)?">Chances come from)/, (x, a, b) => a + upd() + b, 'tiles stamp', rel);
     const pp = PP.t && PP.t[k];
     if (pp && t.includes('<b data-wo>&ndash;</b>')) t = t.replace('<b data-wo>&ndash;</b>', '<b data-wo>' + mk(1, pp.wo === null || pp.wo === undefined ? 'n/a' : pct(pp.wo)) + '</b>');
     const pr = pathRows(k); if (pr) t = t.replace(/(<table id="paths" class="fld">[\s\S]*?<tbody>)<tr><td colspan="3"><span class="lk">Loading<\/span><\/td><\/tr>(<\/tbody>)/, (x, a, b) => a + mk(6, pr) + b);
@@ -121,11 +128,11 @@ for (const f of files) {
   } else if (page === 'conference' && t.includes(' data-f="')) {
     t = t.replace(/(<td class="n" data-f="([cwpb])" data-t="([^"]+)">)<span class="lk">Loading<\/span>(<\/td>)/g, (x, a, fk, k, b) => { const tm = T[k]; if (!tm) die('conf team ' + k + ' missing (' + rel + ')'); stats.cells++; return a + mk(2, cellPct(tm[fk])) + b; });
     if (/data-f="[cwpb]"[^>]*><span class="lk">Loading/.test(t)) die('conf Loading cell left in ' + rel);
-    t = rep1(t, /(<ol class="t25-cards kc-list[^"]*" aria-label="Conference standings, with chances"><\/ol>)/, (x, a) => a + upd(), 'conf stamp', rel);
+    t = afterVroot(t, rel);
     stats.conf++; baked = true;
   }
   if (baked) {
-    t = t.replace(/(<noscript><div class="ldm"><p>)Turn on JavaScript to view predictions\. Without it this page shows no prediction or spread numbers\.(<\/p>)/g, (x, a, b) => a + mk(5, NOJS_TXT) + b);
+    t = t.replace(/(<noscript><div class="ldm"><p>)Turn on JavaScript to see the chances\. Without it this page shows no simulation numbers\.(<\/p>)/g, (x, a, b) => a + mk(5, NOJS_TXT) + b);
     if (cssTok && (rel === 'index.html' || page === 'conference')) t = rep1(t, /<\/head>/, () => mk(0, '<noscript><link rel="stylesheet" href="/assets/nojs.css?v=' + cssTok + '"></noscript>') + '</head>', 'head', rel);
   }
   if (CHECK && unbake(t) !== unbake(t0)) die('unbake not exact for ' + rel);

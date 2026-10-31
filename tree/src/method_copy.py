@@ -6,7 +6,7 @@ f3 = lambda x: f"{x:.3f}"; pc1 = lambda x: f"{100 * x:.1f}%"; f2 = lambda x: f"{
 
 def models_html(MR, games_rated):
     li = "".join(f'<li><b>{E(m["name"])}{" (default)" if m.get("default") else ""}.</b> {E(m["blurb"])}</li>' for m in MR.MODELS)
-    return (f'<h2 id="models">The models</h2><p>KickTip can show its numbers from one of three models. The default is the <b>{E(MR.MODELS[0]["name"])}</b>. The model control at the top of each prediction page lets you switch to another. '
+    return (f'<h2 id="models">The models</h2><p>KickTip can show its numbers from one of three models. The default is the <b>{E(MR.MODELS[0]["name"])}</b>. The model control at the top of each chances page lets you switch to another. '
             f'Your choice is remembered on this device until you change it or choose the default again. Every model is KickTip\'s own version, inspired by widely used rating systems, and every number on a page is an estimate.</p><ul>{li}</ul>'
             f'<p>Whichever model is selected drives the win probability of every game, the simulated seasons, and so the conference championship game, conference, playoff, first-round-bye and path numbers on that page. Two things do not change with the model: '
             f'the KickTip team rating below, which stands in for the selection committee (so the order of the "if the season ended today" bracket is the same under every model), and the market column. The MSM rating is one ingredient of the blend and drives that committee stand-in, but it is not offered as a model of its own.</p>'

@@ -134,13 +134,12 @@ def team_games(full):
 # ---------------------------------------------------------------- chrome
 def pct_free(t): return t  # marker: static text never carries prediction numbers
 NAV = (("Home", "/"), ("Conferences", "/#conferences"), ("Playoff Picture", "/playoff/"), ("My teams", "/#my-teams"), ("Method", "/method/"))   # my-teams build: the My teams link (a count badge is added by assets/myteams.js)
-SHORT_DISC = ("KickTip is not a betting site. Predictions, odds and spreads are for information and entertainment only, not advice or a guarantee. "
-              "We do not recommend using them to place bets. Use at your own risk; KickTip is not liable for any loss.")
+SHORT_DISC = "Chances are for information and entertainment only, not advice or a guarantee."
 CCGDEF = '<p class="ccgdef">CCG = conference championship game</p>'
 def banner(dyn, here=""):
     load = ('<div class="ldm" data-loadbar hidden><p data-loadmsg role="status"></p></div>'
-            '<noscript><div class="ldm"><p>Turn on JavaScript to view predictions. Without it this page shows no prediction, odds or spread numbers.</p></div></noscript>') if dyn else ""
-    return (f'<div class="ban" role="note"><b>Predictions are for information only, not betting advice.</b><span class="l"><a href="/disclaimer/">Full disclaimer</a>' + ("" if here == "method" else '<a href="/method/">How we make the numbers</a>') + '</span></div>' + load)
+            '<noscript><div class="ldm"><p>Turn on JavaScript to see the chances. Without it this page shows no simulation numbers.</p></div></noscript>') if dyn else ""
+    return (f'<div class="ban" role="note"><b>Chances are for information only, not advice.</b><span class="l"><a href="/disclaimer/">Full disclaimer</a>' + ("" if here == "method" else '<a href="/method/">How we make the numbers</a>') + '</span></div>' + load)
 def sources_block(dyn, extra=""):
     mk = (" Spreads: ESPN, numbers only, shown when one has been posted." if dyn else "")
     if extra: mk = ""   # /top25/ (the only page that passes extra): no market line or model line is shown there, so the strip does not mention them
@@ -190,7 +189,7 @@ def page(title, path, body, *, active="", dyn=False, need="", ptype="static", ex
 {body}
 </main>
 {sources_block(dyn, src_extra)}
-<footer class="ft"><div class="w"><img class="flock" src="/assets/brand/logo/kicktip-media-lockup-transparent.png" width="220" height="97" alt="KickTip Media" loading="lazy"><p><b>KickTip is not a betting site. Information and entertainment only, not advice or a guarantee. We don't recommend using it to place bets; use at your own risk.</b></p>
+<footer class="ft"><div class="w"><img class="flock" src="/assets/brand/logo/kicktip-media-lockup-transparent.png" width="220" height="97" alt="KickTip Media" loading="lazy"><p><b>Information and entertainment only, not advice or a guarantee. Use at your own risk.</b></p>
 <p><a href="/disclaimer/">Full disclaimer</a><a href="/privacy/">Privacy</a><a href="/method/">Method</a><a href="/playoff/">Playoff picture</a><a href="/top25/">Top 25</a><a href="/games/">This week&#8217;s games</a></p>
 <p><span class="cred">{logos.CREDIT}.</span> Logos are shown unaltered next to the team, conference or league name; a logo is removed on request.</p><p>from the team behind Mtn Sports Media</p></div></footer>
 {pillbtn}{script}</body></html>'''
@@ -523,7 +522,7 @@ def sim_page(ck, cname, cs):
             f'<div id="sim-app"><noscript><p class="xhow">Turn on JavaScript to use the simulator. It needs no sign-in and stores nothing.</p></noscript></div>'
             f'<p class="ns"><a href="/conference/{cs}/">Back to the {E(cname)} race</a></p></div></div></section>')
     return page(f"{cname} conference championship game simulator", f"/conference/{cs}/simulator/", body, active="Conferences", dyn=False, ptype="ccgsim",
-                desc=f"Set the remaining {cname} games and see who would play in the conference championship game under the conference's published tiebreaker rules. Not a prediction.",
+                desc=f"Set the remaining {cname} games and see who would play in the conference championship game under the conference's published tiebreaker rules. Rules walkthrough only.",
                 src_extra=f"Tiebreaker rules: {E(CCG_RULES[ck]['doc']['title'])} (link on the page). Starting results: ESPN's pre-game favorite where listed, otherwise the team with the better record (or the home team when records are level): overall record first, then conference record; no number is shown.")
 
 def market_counts():
@@ -577,7 +576,7 @@ def disclaimer_page():
 <h2>The six points</h2><ol><li>KickTip is not a betting site.</li><li>Everything on KickTip is information and entertainment only.</li><li>Nothing on KickTip is advice or a guarantee. Make no decision based on this material.</li><li>KickTip does not recommend using this material to place bets.</li><li>You use it at your own risk.</li><li>KickTip is not liable for any loss.</li></ol>
 <h2>In more detail</h2>
 <p><b>Not a betting site.</b> KickTip does not take or place bets, does not link to sportsbooks, and has no sportsbook affiliates, ads, bonuses or promo codes.</p>
-<p><b>Information and entertainment only.</b> Predictions, win probabilities, chances and expected margins are produced by a statistical model or, where labeled, summarized from a public data service. They are estimates and can be wrong.</p>
+<p><b>Information and entertainment only.</b> Chances, win probabilities and expected margins are produced by a statistical model or, where labeled, summarized from a public data service. They are estimates and can be wrong.</p>
 <p><b>Expected margin and spread.</b> "KickTip's expected margin" is our own number from the model. "Spread (ESPN)" is the number of points ESPN lists the favorite as winning by, shown with the time it was read in MT. It is not our number, may be out of date, and is not an offer or a recommendation.</p>
 <p><b>Not advice or a guarantee.</b> Words like "lock" or "in with wins" describe the model's output, not a certainty. Nothing here is financial, legal or gambling advice. Make no decision based on this material.</p>
 <p><b>No recommendation to bet.</b> We do not recommend using any KickTip material to place a bet of any kind. If you choose to gamble anyway, you do so on your own judgment, and only where it is legal for you.</p>

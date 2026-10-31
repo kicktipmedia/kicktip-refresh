@@ -66,7 +66,7 @@
         render(use); if (models) modelCard(models, cur); main.setAttribute('data-loaded', '1');   /* status flag for tests and assistive tech */
         if (cur !== defId && !urlPick()) setUrl(cur);   /* a restored pick shows in the address bar so a copied URL reproduces it (nothing is written to storage) */
       });
-    }).catch(function () { loaded = false; var m = D.querySelector('[data-loadmsg]'); if (m) { m.textContent = 'Predictions could not load. Reload the page to try again.'; m.parentNode.hidden = false; } });
+    }).catch(function () { loaded = false; var m = D.querySelector('[data-loadmsg]'); if (m) { m.textContent = 'Chances could not load. Reload the page to try again.'; m.parentNode.hidden = false; } });
   }
   /* ---------- model control. Built here from the loaded data, so the static pages carry no model name or number. ---------- */
   function modelCard(models, def) {

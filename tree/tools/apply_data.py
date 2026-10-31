@@ -9,6 +9,8 @@ Method (same as toolbox9c, generalised):
  4. regenerate derived data: tile-data, data/tb/* (conf-bids, conf-outcome, team-stats, history, resume, ccg-games, needs-by-record,
     path-by-stage, trend, ccg-alive, ccg-paths + per-conf split, cfp-rankings).
  5. as-of stamps in every html/json/js text file: all known display forms old -> new, including data-asof="YYYY-MM-DD HH:MM" (home7c).
+ 5b. nojs1 (if the base has assets/stamp.js): the base is unbaked before the merge; after step 5 tools/bake_static.js bakes numbers + 'Updated'
+     stamps into HTML and --verify fails the run if any page is stale.
  6. restamp ?v= tokens; allow-list check: every changed file is html, data/**, or a token-only change; _worker.js identical.
  7. deterministic zip (sorted, 2026-01-01 00:00, 0644, deflate) built twice, sha must match.
 Exit 0 ok; 2 merge conflict; 3 check failed; 4 non-deterministic."""
@@ -36,6 +38,8 @@ def build_once(tmp, a, network):
     env = dict(os.environ, PYTHONHASHSEED='0', TZ='UTC', LC_ALL='C')
     base = os.path.join(tmp, 'base'); out = os.path.join(tmp, 'out'); os.makedirs(base)
     with zipfile.ZipFile(a.base_zip) as z: names = z.namelist(); z.extractall(base)
+    BAKE = os.path.exists(base + '/assets/stamp.js')   # nojs1: base carries baked numbers -> unbake so the 3-way merge sees pipeline-shaped HTML; re-baked after step 4
+    if BAKE: run(['node', HERE + '/bake_static.js', base, '--unbake'], env, 'unbake')
     shutil.copytree(base, out)
     B0 = json.load(open(base + '/data/sim-bundle.json'))['as_of']; S0a = json.load(open(a.s0 + '/data/sim-bundle.json'))['as_of']; S1a = json.load(open(a.s1 + '/data/sim-bundle.json'))['as_of']
     if B0 != S0a: die(3, 'base as_of %s != s0 as_of %s (wrong S0 pipeline site)' % (B0, S0a))
@@ -95,6 +99,10 @@ def build_once(tmp, a, network):
             t = open(p, encoding='utf-8').read(); t2 = t
             for o, n in zip(F0, F1): t2 = t2.replace(o, n)
             if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
+    # 5b. nojs1: bake default-model numbers + exact 'Updated' stamps into static HTML from the regenerated data (after step 5 so every data-asof is already new), then verify nothing is stale
+    if BAKE:
+        run(['node', HERE + '/bake_static.js', out, '--check'], env, 'bake-static')
+        run(['node', HERE + '/bake_static.js', out, '--verify'], env, 'bake-verify')
     # 6. tokens + checks
     run([sys.executable, T + '/restamp.py', out, base], env, 'restamp')
     bf = {rel: sha(rd(p)) for rel, p in walk(base)}; of = {rel: p for rel, p in walk(out)}

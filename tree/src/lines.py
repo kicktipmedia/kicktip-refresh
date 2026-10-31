@@ -37,9 +37,9 @@ def parse_day(doc, pulled_epoch):
     return rows, skip
 
 def load_store():
-    """The last good snapshot, or None if missing/corrupt (never raises)."""
+    """The last good snapshot, or None if missing, corrupt or EMPTY (never raises)."""
     try:
-        d = json.load(open(STORE)); assert isinstance(d.get("lines"), list) and int(d.get("pulled_epoch") or 0) > 0; return d
+        d = json.load(open(STORE)); assert isinstance(d.get("lines"), list) and len(d["lines"]) > 0 and int(d.get("pulled_epoch") or 0) > 0; return d
     except Exception: return None
 
 def save_store(rows, note, pulled=None):

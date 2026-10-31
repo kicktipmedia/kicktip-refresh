@@ -39,3 +39,5 @@ html body main[data-page=home] .hero .ph-ex a.ph-chip:hover,html body main[data-
 html body main[data-page=home] .hero .ph-ex a.ph-chip:active{transform:translateY(1px)}
 html body main[data-page=home] .hero .ph-ex a.ph-chip:focus-visible{outline:2px solid #F1F3F4;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){html body main[data-page=home] .hero .ph-ex a.ph-chip{transition:none}html body main[data-page=home] .hero .ph-ex a.ph-chip:active{transform:none}}
+/* cc5 rev 5.3.1 (Creative): 760px and up, the "What if" button sits 16px under the step cards, as on phones. */
+@media (min-width:760px){html body main[data-page=home] .hero .ph-ex{margin-top:16px}}

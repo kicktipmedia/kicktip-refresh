@@ -24,7 +24,7 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   'What if BYU loses?'];   /* 12: Lab chip sample text (hardcoded in the Lab rollout); team pages bake their own team */
 const NOJS_TXT = 'Turn on JavaScript to switch models and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
-const mk = (n, s) => '<!--bk:' + n + '-->' + s + '<!--/bk-->';
+const mk = (n, s) => '<!--bk:' + n + '-->' + String(s).replace(/\u00A0/g, '&nbsp;') + '<!--/bk-->';   /* HTML entities only: no literal NBSP in baked HTML (shared RB.* strings use \u00A0 for the DOM) */
 function unbake(t) { return t.replace(MK, (m, n) => { if (DEF[+n] === undefined) die('unknown marker ' + n); return DEF[+n]; }); }
 function walk(d, out = []) { for (const f of fs.readdirSync(d).sort()) { const p = path.join(d, f), s = fs.statSync(p); if (s.isDirectory()) walk(p, out); else if (f.endsWith('.html')) out.push(p); } return out; }
 const files = walk(SITE);

@@ -1,0 +1,364 @@
+/* Ask KickTip panel. Classes only, no inline styles (strict CSP). */
+.has-ask{--pillb:20px}
+.has-ask .ft{padding-bottom:calc(26px + 52px + var(--pillb) + env(safe-area-inset-bottom,0px))}   /* the floating pill (52px high) never hides the footer or the last lines: footer padding = pill height + its offset + the device safe area */
+.askpill{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:8;display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 20px 0 14px;border-radius:99px;background:var(--f);color:var(--w);border:2px solid var(--l);font:700 17px 'Source Sans 3',Arial,sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(18,21,25,.35)}
+.askpill[hidden],.scrim[hidden],.pnl[hidden]{display:none}
+.askpill:focus-visible,.pnl .cx:focus-visible,.pnl .q:focus-visible,.pnl .chip button:focus-visible,.pnl .snd:focus-visible,.pnl .addg:focus-visible,.pnl .opt:focus-visible,.pnl a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.pnl .hdp .cx:focus-visible{outline-color:var(--l)}
+.pnl .chip button:focus-visible{outline-offset:-5px}
+.scrim{position:fixed;inset:0;background:rgba(18,21,25,.55);z-index:9}
+.pnl{position:fixed;z-index:10;background:var(--w);color:var(--ink);display:flex;flex-direction:column;top:0;right:0;bottom:0;width:440px;max-width:100%;border-left:2px solid var(--f);box-shadow:-10px 0 30px rgba(18,21,25,.35);font:16px/1.45 'Source Sans 3',Arial,sans-serif}
+.pnl .hdp{background:var(--f);color:var(--w);padding:12px 12px 12px 18px;display:flex;align-items:center;gap:10px}
+.pnl .hdp h2{font-size:24px;margin:0}
+.pnl .lab{display:block;font:600 14px 'Source Sans 3',Arial,sans-serif;color:#D5DBE0}
+.pnl .cx{margin-left:auto;flex:none;width:44px;height:44px;border-radius:10px;border:2px solid #8A949E;background:transparent;color:var(--w);font:700 22px/1 Arial,sans-serif;cursor:pointer}
+.pnl .bd{flex:1;overflow:auto;padding:16px 18px}
+.pnl .bd h3{font-size:20px;margin:0 0 8px;text-transform:uppercase}
+.pnl .bd a{display:inline-flex;align-items:center;min-height:44px;color:var(--f);font-weight:700}
+.pnl .ac .yq a[data-tb-change]{display:inline;min-height:0;padding:12px 0;position:relative}
+.pnl .cmp{border-top:1px solid var(--s);padding:12px 18px 14px;background:var(--p)}
+.pnl .cmp form{display:flex;gap:10px;align-items:flex-end}
+.pnl .cmp label{display:block;font:700 14px 'Source Sans 3',Arial,sans-serif;margin-bottom:4px}
+.pnl .cmp .fld{flex:1;min-width:0}
+.pnl .cmp input{width:100%;box-sizing:border-box;min-height:48px;border:2px solid var(--s);border-radius:10px;padding:0 12px;font:16px 'Source Sans 3',Arial,sans-serif;color:var(--ink);background:var(--w)}
+.pnl .cmp input:disabled{background:#E4E8EB;color:var(--s)}
+.pnl .cmp input:focus{outline:3px solid var(--ink);outline-offset:1px}
+.pnl .cnt{display:block;font:600 13px 'Source Sans 3',Arial,sans-serif;color:var(--s);margin-top:4px;text-align:right}
+.pnl .snd{min-width:88px;min-height:48px;border-radius:10px;background:var(--f);color:var(--w);border:2px solid var(--f);font:700 16px 'Source Sans 3',Arial,sans-serif;cursor:pointer;margin-bottom:22px}
+.pnl .snd:disabled{background:#E4E8EB;color:var(--s);border:2px dashed var(--s);cursor:not-allowed}
+.pnl .q{display:block;width:100%;text-align:left;min-height:48px;margin:0 0 10px;padding:10px 14px;border:2px solid var(--f);border-radius:12px;background:var(--w);color:var(--ink);font:600 16px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.pnl .q small{display:block;font:600 12px 'Source Sans 3',Arial,sans-serif;letter-spacing:.08em;color:var(--s);text-transform:uppercase}
+.pnl .ub{margin:0 0 12px auto;max-width:85%;background:var(--f);color:var(--w);border-radius:14px 14px 4px 14px;padding:10px 14px;width:fit-content;overflow-wrap:anywhere}
+.pnl .ac,.pnl .st2{border:1px solid var(--s);border-radius:14px;padding:14px;background:var(--w)}
+.pnl .ac p,.pnl .st2 p{margin:6px 0}
+.pnl .req{display:inline-block;font:700 12px 'Source Sans 3',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:var(--l);padding:4px 8px;border-radius:6px}
+.pnl .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pnl .chip{display:inline-flex;align-items:center;gap:2px;min-height:44px;padding-left:12px;border-radius:99px;background:var(--f);color:var(--w);font:600 15px 'Source Sans 3',Arial,sans-serif}
+.pnl .chip button{flex:none;width:44px;height:44px;border:0;background:transparent;color:var(--w);font:700 20px/1 Arial,sans-serif;cursor:pointer;border-radius:50%}
+.pnl .addg{min-height:44px;padding:0 14px;border-radius:99px;border:2px dashed var(--f);background:var(--w);color:var(--f);font:700 15px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.pnl .ba{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:0;margin:8px 0}
+.pnl .ba caption{text-align:left;caption-side:top;padding-bottom:4px;font:700 15px 'Source Sans 3',Arial,sans-serif}
+.pnl .ba th{font-size:12px;padding:7px 8px;text-align:left}
+.pnl .ba td{padding:8px;font-size:15px;border-top:1px solid var(--ban)}
+.pnl .ba td.n,.pnl .ba th.n{text-align:right}
+.pnl .ba th:first-child{width:38%}.pnl .ba th:nth-child(4):last-child{width:28%}.pnl .ba td,.pnl .ba th{overflow-wrap:anywhere}
+.pnl .ba td:first-child{white-space:normal}
+.pnl .rgn{margin:8px 0 2px}
+.pnl .mdl{font-weight:700}
+.pnl .dl{font-weight:700;white-space:nowrap}
+.pnl .dim{color:var(--s);font-weight:600}
+.pnl .meta{font:600 14px 'Source Sans 3',Arial,sans-serif;color:var(--s)}
+.pnl .mn{font-size:13px;color:var(--s);margin-top:10px}
+.pnl .lk{font-size:14px}
+.pnl .prog{height:12px;border-radius:99px;background:#C9D1D7;overflow:hidden;margin:10px 0 6px}
+.pnl .prog span{display:block;height:100%;background:var(--f);border-radius:99px;transition:width .2s}
+.pnl .opt{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;margin:0 8px 8px 0;border-radius:10px;border:2px solid var(--f);background:var(--w);color:var(--ink);font:700 15px 'Source Sans 3',Arial,sans-serif;cursor:pointer;text-align:left}
+.pnl .ico{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--f);color:var(--l);font:700 16px Arial,sans-serif;margin-bottom:6px}
+.pnl .sk{height:14px;border-radius:6px;background:#DDE3E6;margin:10px 0;animation:ksh 1.2s ease-in-out infinite alternate}
+.pnl .w90{width:90%}.pnl .w80{width:80%}.pnl .w70{width:70%}
+@keyframes ksh{from{opacity:.55}to{opacity:1}}
+.pnl .grab{display:none;width:44px;height:5px;border-radius:9px;background:#8A949E;margin:0 auto 6px}
+@media(max-width:700px){
+.has-ask{--pillb:12px}
+.askpill{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:12px;justify-content:center}
+.pnl{top:auto;left:0;width:100%;height:88vh;height:88dvh;border-left:0;border-top:2px solid var(--f);border-radius:18px 18px 0 0;box-shadow:0 -10px 30px rgba(18,21,25,.35)}
+.pnl .hdp{border-radius:16px 16px 0 0}
+.pnl{padding-bottom:env(safe-area-inset-bottom,0px)}
+.pnl .grab{display:block}
+}
+@media(max-width:420px){.pnl .ba td,.pnl .ba th{padding:6px 4px;font-size:13px}.pnl .ba th{font-size:11px}.pnl .bd{padding:14px 12px}.pnl .ac{padding:12px 10px}}
+/* KickTip shield spinner (Creative spec, 2026-10-25): static #4C5560 track + cyan moving stroke along the shield outline; 1.8s loop = trace .8s, hold closed .32s, un-trace .68s. pathLength=1, stroke in viewBox units. No inline styles: all of it is here. */
+.pnl .kshd{display:block;flex:none;overflow:visible}
+.pnl .kshd path{fill:none;stroke-linejoin:round;stroke-linecap:butt}
+.pnl .kst{stroke:#4C5560}
+.pnl .ksm{stroke:#33E1EA;stroke-dasharray:1 1.01;stroke-dashoffset:1;animation:kshTrace 1.8s linear infinite}
+@keyframes kshTrace{0%{stroke-dashoffset:1;animation-timing-function:cubic-bezier(.45,0,.25,1)}44%{stroke-dashoffset:0}62%{stroke-dashoffset:0;animation-timing-function:cubic-bezier(.45,0,.25,1)}100%{stroke-dashoffset:-1}}
+.pnl .snd .kshd{height:24px;width:18.8px}
+.pnl .snd .kshd path{stroke-width:28px}
+.pnl .snd{flex:none;width:116px;min-width:116px}   /* one fixed width idle and running, so swapping the label never shifts the box */
+.pnl .snd.run{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;white-space:nowrap;cursor:progress}
+.pnl .snd.run span{font-size:15px}
+.pnl .spin{display:flex;flex-direction:column;align-items:center;gap:12px;background:var(--ink);border-radius:12px;padding:18px 12px;margin:10px 0}
+.pnl .spin .kshd{height:96px;width:75.2px}
+.pnl .spin .kshd path{stroke-width:11px}
+.pnl .spcap{margin:0;font:600 16px 'Source Sans 3',Arial,sans-serif;color:#D5DBE0;text-align:center}
+@media(forced-colors:active){.pnl .ksm{stroke:CanvasText}.pnl .kst{stroke:GrayText}}
+@media(prefers-reduced-motion:reduce){.pnl,.pnl *{animation:none!important;transition:none!important}.pnl .ksm{stroke-dashoffset:0!important}}
+.pnl .cmp .rn{margin:8px 0 0}
+
+/* ===== the Lab (lab1). Tokens only: ink #121519, graphite #262B31, cyan #33E1EA (dark only), paper #F1F3F4, secondary #4C5560 (light only), soft #D5DBE0 (dark only), divider #DDE3E6. Every control >= 44px. ===== */
+/* the floating button / bottom bar carries the Lab mark (decorative img, aria-hidden); desktop shows the word, phones show the question */
+.askpill .kpi{display:block;flex:none;width:23px;height:30px}
+.askpill .kph{display:none}
+html.wl-in .askpill{display:none}   /* home: the Lab is on screen, so the bar steps aside (set by chat.js, W.KTLab.watch) */
+.pnl .hdp h2{display:flex;align-items:center;gap:10px}
+.pnl .hdp h2 .kpi{flex:none;width:23px;height:30px}
+.pnl .lcr{margin:0;padding:0 18px calc(8px + env(safe-area-inset-bottom,0px));background:var(--p);color:var(--s);font:600 13px/17px 'Source Sans 3',Arial,sans-serif;text-align:center}   /* credit line: plain muted text under the composer, inside the sheet, never in the floating bar, never a link */
+.pnl.kbd .lcr{display:none}   /* hidden while the phone keyboard is up so the question box keeps the room */
+.pnl .hdp h2 span{min-width:0}
+@media(max-width:700px){
+  .askpill{justify-content:flex-start;gap:12px;padding:0 16px 0 12px}   /* input-style bar: mark left, the example question as placeholder text */
+  .askpill .kps{display:none}
+  .askpill .kph{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:#D5DBE0}
+}
+.askpill.kp-ico{width:52px;min-width:52px;padding:0;gap:0;justify-content:center;left:auto}   /* icon-only variant (documented, not shipped in v1): the button needs aria-label="What if" */
+.askpill.kp-ico .kps,.askpill.kp-ico .kph{display:none}
+.askpill.kp-ico .kpi{width:28px;height:36px}
+.askpill.kp-fb{left:auto;width:auto;justify-content:center;gap:10px;padding:0 20px 0 14px}   /* compact floating button on a phone (documented fallback, not default): the word, not the question */
+.askpill.kp-fb .kps{display:inline}
+.askpill.kp-fb .kph{display:none}
+/* the Lab: header, mode strip, panels (home tile, context cards, sheet strip) */
+.wl-hd{display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 0 6px}
+.wl-mk{display:block;flex:none}
+.wl-ht{min-width:0}
+.pk-tile.wl .wl-hd h3{margin:0;font-size:22px;line-height:1.1}
+.pk-tile p.wl-sub{margin:2px 0 0;font-size:14px;line-height:1.3;color:#4C5560}   /* compact1: was .wl-sub, lost to .pk-tile p (16px ink) */
+.wl-seg{display:flex;gap:2px;padding:2px;margin:2px 0 8px;border:1px solid #4C5560;border-radius:99px;background:#F1F3F4}
+.wl-tb{flex:1 1 0;min-width:0;min-height:44px;padding:0 8px;border:0;border-radius:99px;background:transparent;color:#121519;font:700 16px/1.1 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+.wl-tb[aria-selected="true"]{background:#121519;color:#fff}
+.wl-tb:focus-visible,.wl-s:focus-visible,.wl-ch:focus-visible,.wl .pt-cb:focus-visible,.wl-lk:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.wl-pn{display:flex;flex-direction:column;flex:1 1 auto;min-width:0}
+.wl-pn[hidden]{display:none}
+.wl-who{display:flex;align-items:center;gap:8px;min-height:44px}
+.wl-nm{margin:0;flex:1 1 auto;min-width:0;font:700 17px/1.2 'Source Sans 3',Arial,sans-serif;color:#121519;overflow-wrap:anywhere}
+.pk-tile p.wl-nm{font:700 17px/1.2 'Source Sans 3',Arial,sans-serif}
+.wl-ch{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font:700 15px/1.1 'Source Sans 3',Arial,sans-serif;color:#121519;text-decoration:underline;text-underline-offset:3px}
+.wl .pt-gm{margin:0 0 6px;text-align:left}
+.wl-sl{display:block;margin:0 0 2px;font:700 14px/1.2 'Source Sans 3',Arial,sans-serif;color:#4C5560}
+.wl-s{display:block;width:100%;box-sizing:border-box;min-height:48px;margin:0 0 6px;padding:0 12px;border:2px solid #121519;border-radius:10px;background:#fff;color:#121519;font:16px 'Source Sans 3',Arial,sans-serif}
+.wl .pt-cn{margin:0 0 8px;font-size:14px;line-height:1.3;color:#4C5560}
+.wl .pt-cn>span{display:block}
+.wl .pt-cb{display:flex;align-items:center;justify-content:center;width:100%;margin:auto 0 0;box-sizing:border-box;min-height:48px;padding:8px 20px;border:2px solid #121519;border-radius:99px;background:#121519;color:#fff;font:700 18px/1.1 'Barlow Condensed',Arial,sans-serif;letter-spacing:.02em;text-transform:uppercase;text-align:center;text-decoration:none;cursor:pointer}
+.wl .pt-cb[aria-disabled="true"]{background:#fff;border-style:dashed;border-color:#4C5560;color:#4C5560;cursor:not-allowed}
+.wl-hint{margin:6px 0 0;font-size:14px;line-height:1.3;color:#4C5560}
+.pnl .bd .wl a.pt-cb{display:flex;color:#fff;min-height:48px}
+.pnl .bd .wl a.wl-ch{color:#121519}
+.wl-sh{margin:0 0 14px}
+.wl-chip{display:inline-block;margin:0 0 6px;padding:5px 12px;border:2px solid #121519;border-radius:99px;background:#fff;color:#121519;font:700 14px/1.2 'Source Sans 3',Arial,sans-serif}
+/* context cards (team, conference, top 25 pages): same eyebrow as the Lab tile */
+.wl-eb{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;margin:0 0 6px;min-height:44px}
+.wl-eb b{min-width:0;font:700 20px/1 'Barlow Condensed',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#121519}
+.wl-eb .wl-chip{margin:0 0 0 auto}
+.wl-lk{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:#121519}
+@media(min-width:701px){.wl-cx .pt-cb{max-width:360px}}
+.wl-or{margin:8px 0 0;font-size:15px;color:#121519}
+.wl-or .wl-lk{display:inline-flex;padding:0 2px}
+@media(max-width:360px){.wl-tb{font-size:15px;padding:0 4px}.wl-eb b{font-size:18px}}
+
+/* labtile1: home Team tile link row, conference hub back line, hub card, pill hidden on conference hubs */
+.wl .wl-go,.wl .wl-sim{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;box-sizing:border-box;margin:10px 0 0;padding:6px 2px;border-top:1px solid #DDE3E6;color:#121519;font:700 16px/1.25 'Source Sans 3',Arial,sans-serif;text-decoration:none}
+.wl .wl-go .gl,.wl .wl-sim .gl{text-decoration:underline;text-underline-offset:3px}
+.wl .wl-go:active,.wl .wl-go.press{background:#121519;color:#fff;border-radius:8px;padding:6px 12px;border-top-color:transparent}
+.wl .wl-go:active .gl,.wl .wl-go.press .gl{text-decoration:none}
+.wl .wl-go:focus-visible,.wl .wl-sim:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.wl .wl-go svg,.wl .wl-sim svg{flex:none}
+html.kb-up .wl .wl-go{display:none}
+.wl-cx{border-radius:12px}
+.wl-cx .wl-sim{margin-top:6px}
+.lt-hub .askpill{display:none}
+.lt-hub .hero{padding-top:0}
+.lt-hub .hero .crumbs{margin:0}
+.lt-hub .hero .crumbs a{min-width:44px;min-height:44px;padding-right:12px;color:#33E1EA;font:600 16px/1.25 'Source Sans 3',Arial,sans-serif;text-decoration:underline;text-underline-offset:3px}
+.lt-hub .hero .crumbs a span{display:inline-block;margin-right:6px;text-decoration:none}
+.lt-hub .hero .kick{margin-top:-10px}
+@media(max-width:359px){.lt-hub .wl-sec .w{padding-left:12px;padding-right:12px}}
+@media(max-width:389px){
+  .lt-hub .hero{padding-bottom:14px}
+  .lt-hub .hero .kick{margin-top:-14px}
+  .lt-hub .hero .chd{margin:4px 0 4px}
+  .lt-hub .hero p:not(.crumbs):not(.kick){font-size:14px;line-height:1.3}
+  .lt-hub .wl-sec{padding-top:8px;padding-bottom:10px}
+  .lt-hub .wl-cx{padding:8px 12px 8px}
+  .lt-hub .wl-cx .wl-eb{min-height:0;margin:0 0 4px;gap:0 8px}
+  .lt-hub .wl-cx .wl-eb .wl-chip{padding:2px 9px;font-size:12px}
+  .lt-hub .wl-cx h2{margin:0 0 2px;font-size:30px;line-height:1.05}
+  .lt-hub .wl-cx .pt-cn{font-size:14px;line-height:1.35;margin:2px 0 4px}
+}
+@media(max-width:359px){.lt-hub .wl-cx{padding-left:8px;padding-right:8px}}
+
+/* scenario facts card (scn_a1): sits inside .ac, same table class as the before/after tables */
+.pnl .sx{margin:10px 0 12px;padding:10px 12px;border:1px solid var(--s);border-left:5px solid var(--f);border-radius:10px;background:var(--w);overflow-wrap:anywhere}
+.pnl .sx h3{margin:0 0 6px;font-size:18px;line-height:1.3}
+.pnl .sx .sxl{margin:0 0 6px;font-weight:700}
+.pnl .sx .sxp{margin:0 0 6px;font-size:15px}
+.pnl .sx .sxh{margin:12px 0 4px;font-size:15px;line-height:1.3}
+.pnl .sx .sxt{width:100%;margin:6px 0 8px;table-layout:fixed}
+.pnl .sx .sxt th:first-child,.pnl .sx .sxt td:first-child{width:27%}
+.pnl .sx .sxt th:last-child,.pnl .sx .sxt td:last-child{width:31%}
+.pnl .sx .sxs{display:block;font-size:13px;color:var(--ink)}
+.pnl .sx .sxu{margin:0 0 8px;padding-left:22px;font-size:14px}
+.pnl .sx .sxu li{margin:0 0 4px}
+@media(max-width:420px){.pnl .sx{padding:9px 8px}.pnl .sx .sxt td{font-size:13px}.pnl .sx .sxt td:last-child{font-size:12px}.pnl .sx .sxt th{font-size:11px}.pnl .sx .sxu{padding-left:18px}}
+.pnl .sx .sxai{margin:0 0 10px}
+.pnl .sx .sxw{margin:0 0 4px;font-size:15px;line-height:1.45}
+.pnl .sx .sxw.sxn{font-weight:700}
+.pnl .sx .sxg{margin:0;font-size:12px;color:var(--ink)}
+/* scn_a2b: 390px, the scenario card's table cells (team name, final record, In the game) all start at the top, so Yes lines up with the team name when the record wraps onto two lines */
+@media(max-width:420px){.pnl .sx .sxt td{vertical-align:top}}
+/* scn_b: shared-game branches inside the scenario card */
+.pnl .sx .sxb{margin:12px 0 0;padding:4px 0 0;border-top:1px solid var(--s)}
+.pnl .sx .sxb>.sxh{margin:6px 0 4px;font-size:16px}
+.pnl .sx .sxb .sxh{font-size:15px}
+.pnl .sx .sxb>.sxh:first-child{font-size:16px}
+.pnl .sx .sxx{font-style:italic}
+
+/* ===== whatif1 (Creative SPEC 23b2c6df): background scroll lock + tighter first screen. All restyle knobs live in this block. ===== */
+html.kp-lock body{overflow:hidden}
+html .pnl .bd{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+html .pnl .hdp h2 .kpi{width:25px;height:32px;margin:8px 0}
+html .pnl .hdp{overflow:visible}
+html .pnl .kht{margin:0 0 4px;font:400 14px/1.35 'Source Sans 3',Arial,sans-serif;color:var(--ink)}
+html .pnl .khw{margin:0 0 12px}
+html .pnl .khw>summary{display:inline-flex;align-items:center;gap:4px;min-height:44px;cursor:pointer;list-style:none;font:700 14px 'Source Sans 3',Arial,sans-serif;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+html .pnl .khw>summary::-webkit-details-marker{display:none}
+html .pnl .khw>summary svg{width:16px;height:16px;transition:transform .15s}
+html .pnl .khw[open]>summary svg{transform:rotate(180deg)}
+html .pnl .khw>summary:focus-visible{outline:2px solid #33E1EA;outline-offset:2px}
+html .pnl .khw .note{margin:4px 0 6px;font-size:14px;line-height:1.35}
+html .pnl .cmp{display:flex;flex-direction:column}
+html .pnl .cmp>form{order:1}html .pnl .cmp>.rn{order:2}html .pnl .cmp>.kchs{order:3}html .pnl .cmp>#kaix{order:4}html .pnl .cmp>.ts{order:5}html .pnl .cmp>*{order:6}
+html .pnl .kchs{display:flex;flex-wrap:wrap;gap:4px 8px;margin:8px 0 0}
+html .pnl:not([data-v=empty]) .kchs{display:none}
+html .pnl .kch{position:relative;display:inline-flex;align-items:center;height:36px;margin:4px 0;padding:0 12px;border:1px solid #4C5560;border-radius:18px;background:#262B31;color:#F1F3F4;font:600 13px 'Source Sans 3',Arial,sans-serif;cursor:pointer}
+html .pnl .kch::after{content:'';position:absolute;left:0;right:0;top:-4px;bottom:-4px}
+html .pnl .kch:focus-visible{outline:2px solid #33E1EA;outline-offset:2px}
+html .pnl.kbd .kchs{display:none}
+@media(max-width:430px){
+  html .pnl .hdp{padding:8px 12px 8px 16px}
+  html .pnl .hdp h2{font-size:20px;line-height:1.1}
+  html .pnl .hdp .lab{font-size:13px}
+  html .pnl .bd{padding:12px 16px}
+  html .pnl .bd h3{font-size:20px}
+  html .pnl .cmp,html .pnl .cmp.cmpc{padding:12px 16px 8px}
+  html .pnl .cmp form,html .pnl .cmp.cmpc form{flex-wrap:wrap;gap:8px}
+  html .pnl .cmp .fld{flex:1 1 100%}
+  html .pnl .cmp input{min-height:48px;font-size:16px}
+  html .pnl .cmp .snd,html .pnl .cmp.cmpc .snd,html .pnl .cmp.cmpc .snd.rev{flex:1 1 100%;width:100%;min-width:0;min-height:44px;height:44px;border:0;border-radius:10px;background:#33E1EA;color:#121519;font:700 16px 'Source Sans 3',Arial,sans-serif}
+  html .pnl .cmp .snd:disabled{opacity:1;background:#33E1EA;color:#121519}
+  html .pnl .cmp.cmpc .swc{position:relative;flex:0 0 auto;flex-direction:row;width:auto;min-height:32px;gap:8px;font-size:13px}
+  html .pnl .cmp.cmpc .swc::after{content:'';position:absolute;left:-4px;right:-8px;top:-6px;bottom:-6px}
+  html .pnl .cmp.cmpc .swc .trk i{background:#4C5560}
+  html .pnl .cmp.cmpc .swc[aria-checked=true] .trk i{background:#121519}
+  html .pnl .cmp.cmpc .swc .trk{width:32px;height:18px;background:transparent;border:1px solid #4C5560}
+  html .pnl .cmp.cmpc .swc .trk i{top:1px;left:1px;width:14px;height:14px}
+  html .pnl .cmp.cmpc .swc[aria-checked=true] .trk i{left:15px}
+  html .pnl .cmp.cmpc .cnl{font-size:12px}
+  html .pnl .lcr{font-size:12px}
+}
+@media(max-width:359px){
+  html .pnl .hdp{padding:6px 12px}
+  html .pnl .bd{padding:8px 12px}
+  html .pnl .cmp,html .pnl .cmp.cmpc{padding:8px 12px 6px}
+  html .pnl .kchs{margin-top:4px;gap:2px 6px}
+  html .pnl .kch{padding:0 10px}
+  html .pnl .cmp input{min-height:44px}
+  html .pnl .lcr{display:none}
+  html .pnl .hdp h2 .kpi{margin:4px 0}
+  html .pnl .khw{margin-bottom:8px}
+}
+/* whatif1b: composer flows right after the how-to block; no empty band */
+html .pnl[data-v=empty] .bd{flex:0 1 auto;min-height:0;overflow-y:auto;padding-bottom:0}
+html .pnl[data-v=empty] .cmp,html .pnl[data-v=empty] .cmp.cmpc{border-top:0;margin-top:12px}
+html .pnl .khw .wl-sh{margin-top:8px}
+@media(max-width:700px){html .pnl[data-v=empty]:not(.kbd){height:auto;max-height:88vh;max-height:88dvh}}
+@media(max-width:359px){html .pnl .kchs{flex-wrap:nowrap}html .pnl .kch:nth-child(n+3){display:none}html .pnl .kch{white-space:nowrap;padding:0 8px}html .pnl[data-v=empty] .cmp,html .pnl[data-v=empty] .cmp.cmpc{margin-top:8px}}
+html .pnl .khw{border:0;padding:0;background:none}
+/* whatif1c: AI toggle above the field in both states, so RUNTERMS sits directly after Run; 12px (8 at 320) under How it works */
+html .pnl .cmp.cmpc form .swc{order:-1}
+html .pnl[data-v=empty] .khw{margin-bottom:0}
+html .pnl[data-v=empty] .bd{padding-bottom:12px}
+html .pnl[data-v=empty] .cmp,html .pnl[data-v=empty] .cmp.cmpc{margin-top:0}
+@media(max-width:359px){html .pnl[data-v=empty] .bd{padding-bottom:8px}html .pnl[data-v=empty] .cmp,html .pnl[data-v=empty] .cmp.cmpc{margin-top:0}}
+/* whatif1e: keyboard up on phones: the sheet fills the visual viewport (JS sets top/height), scrolls inside itself, header stays; opaque backdrop; floating Ask pill hidden while the Lab is open */
+html.kp-lock #kpill{visibility:hidden}
+html.kb-up .scrim{background:rgba(18,21,25,.55)}
+html .pnl.kbf{display:flex;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border-radius:0;border-top:0;box-shadow:none}
+html .pnl.kbf .hdp{position:sticky;top:0;z-index:2;border-radius:0}
+html .pnl.kbf .grab{display:none}
+html .pnl.kbf .bd{overflow:auto;max-height:none;flex:1 1 auto;min-height:0;overflow-anchor:none}html .pnl.kbf .hdp,html .pnl.kbf .cmp,html .pnl.kbf .rbar{flex:0 0 auto}html .pnl.kbf[data-v=empty]{display:block}html .pnl.kbf[data-v=empty] .bd{overflow:visible;min-height:0}/* B5: keyboard up = the sheet keeps its column: results scroll inside .bd and the composer stays pinned over the keyboard, so nothing jumps */
+/* whatif1f: keyboard up: no empty band between the header and the composer */
+html .pnl.kbf[data-v=empty] .bd{padding-bottom:0}
+html .pnl.kbf[data-v=empty] .khw{margin:0}
+html .pnl.kbf[data-v=empty] .kht{margin-bottom:0}
+/* whatif1g: collapsed results dock: slim "Ask another what if" bar; bar only (Jared: the terms were already shown when the run started; they return when the dock expands) */
+html .pnl .kdk{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin:0;padding:0 12px;border:1px solid #4C5560;border-radius:10px;background:#262B31;color:#F1F3F4;font:700 15px 'Source Sans 3',Arial,sans-serif;cursor:pointer;order:7}
+html .pnl .kdk[hidden]{display:none}
+html .pnl .kdk:focus-visible{outline:2px solid #33E1EA;outline-offset:2px}
+html .pnl .cmp.dkc,html .pnl .cmp.cmpc.dkc{padding-top:4px;padding-bottom:8px}
+html .pnl .cmp.dkc>form,html .pnl .cmp.dkc>.kchs,html .pnl .cmp.dkc>#kaix,html .pnl .cmp.dkc>.rn{display:none!important}
+html .pnl.dkc-on .lcr{display:none}
+
+/* whatif2b: conference-page slim Lab button (styled like the Ask another what if bar) */
+.wl-cx.wl-sl{padding:10px 12px}
+.wl-slh{margin:0;font:inherit}
+.wl-slb{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;box-sizing:border-box;padding:6px 14px;border:0;border-radius:12px;background:#262B31;color:#F1F3F4;font:700 17px/1.2 'Source Sans 3',Arial,sans-serif;text-align:left;cursor:pointer}
+.wl-slb span{flex:1}.wl-slb .wl-mk{flex:none}.wl-slc{flex:none}
+.wl-slb:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.wl-sll{margin:8px 2px 0;font-size:14px}.wl-sll a{color:#121519;text-decoration:underline;display:inline-block;padding:10px 0}
+
+/* whatif2b: loading/status reply bubble */
+.pnl .spin.kbb{flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;width:fit-content;max-width:88%;box-sizing:border-box;min-height:56px;margin:10px 0;padding:12px 14px;border-radius:6px 16px 16px 16px;background:#121519;box-shadow:none;overflow:visible}
+.pnl .spin.kbb .kshd{height:32px;width:25px}.pnl .spin.kbb .kshd path{stroke-width:22px}
+.pnl .kbb .kbt{min-width:0}.pnl .kbb .spcap{margin:0;font:400 15px/1.35 'Source Sans 3',Arial,sans-serif;color:#FFFFFF;text-align:left;white-space:normal}
+.pnl .kbb .spcap.kb2{font-size:13px;color:#B9C0C8}
+.pnl .ac .spin.kbb{margin:6px 0 10px}
+.pnl .st2.kbe{max-width:88%;box-sizing:border-box;border:0;border-radius:6px 16px 16px 16px;background:#F1F3F4;padding:12px 14px}
+.pnl .st2.kbe h3{font-size:17px;margin:0 0 4px;color:#121519}.pnl .st2.kbe p{font-size:15px;line-height:1.35;color:#121519}
+.pnl .ub{background:#FFFFFF;color:#121519;border:1px solid #4C5560}
+@media(max-width:340px){.pnl .spin.kbb,.pnl .st2.kbe{padding:10px 12px;min-height:52px}.pnl .spin.kbb .kshd{height:28px;width:22px}.pnl .kbb .spcap{font-size:14px}.pnl .kbb .spcap.kb2{font-size:13px}}
+.pnl .rtx{margin:2px 0 0;padding:0}.pnl .rtx .rt1{margin:0;padding:2px 0 0;font:400 12px/1.3 'Source Sans 3',Arial,sans-serif;color:#4C5560;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.pnl .rtt{position:relative;display:inline-flex;align-items:center;gap:4px;padding:0;margin:0;border:0;background:none;color:#121519;font:700 12px/1.3 'Source Sans 3',Arial,sans-serif;text-decoration:underline;cursor:pointer}
+.pnl .rtt::after{content:'';position:absolute;left:-8px;right:-8px;top:50%;height:44px;transform:translateY(-50%)}
+.pnl .rtt .w2ch{display:inline-block;width:5px;height:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-top:-3px}
+.pnl .rtt[aria-expanded="true"] .w2ch{transform:rotate(-135deg);margin-top:2px}
+.pnl .rtp{padding:4px 0 0}.pnl .rtp .rn{margin:0 0 4px;font-size:12px}.pnl .rtp .lcr{margin:2px 0 0}
+@media(max-width:340px){.pnl .rtx .rt1,.pnl .rtt{font-size:11px}}
+@media(max-width:700px){html .pnl:not(.kbf){height:calc(100vh - 32px - env(safe-area-inset-top,0px));height:calc(100dvh - 32px - env(safe-area-inset-top,0px))}html .pnl[data-v=empty]:not(.kbd):not(.kbf){height:auto;max-height:calc(100dvh - 32px - env(safe-area-inset-top,0px))}html .pnl .grab{display:none}}
+
+/* B3: the Run-gate line sits directly under Run (order 2), starter chips below it */
+html .pnl .cmp>.rtx{order:2}html .pnl .cmp>.kchs{order:3}html .pnl .cmp .rtx .rt1,html .pnl.kb .cmp .rtx .rt1{display:block!important}html .pnl .cmp .rtx .rtp:not([hidden]) .rn{display:block!important}
+
+/* B3: home tile tagline */
+.pk-tile p.wl-tag{margin:4px 0 0;font:600 13px/1.3 'Source Sans 3',Arial,sans-serif;color:#121519}
+
+
+/* B4c: AI-on confirm line drops '· Not a betting site' (the AI line keeps 'KickTip is not a betting site.'); under 360 the one-line terms text is smaller so 'Terms' is never clipped */
+
+@media(max-width:359px){html .pnl .rtx .rt1,html .pnl .cmp .rtx .rt1{font-size:11px;letter-spacing:-.25px}}
+/* B4c: explicit caret on every what-if field (white fields: ink caret) */
+html .pnl .cmp input,html .ct .cmp input{caret-color:#121519}
+html .pt-t1 .pt-g>div:not(.pt-hero){padding-right:12px}
+@media(max-width:340px){html .pt-t1 .pt-g>div:not(.pt-zz),html .pt-t1 .pt-g>div.pt-hero{padding-left:8px;padding-right:8px}html .pt-t1 .pt-g .pt-lt,html .pt-t1 .pt-g>div:not(.pt-zz) .pt-lt{text-align:left;font-size:14.5px;letter-spacing:normal}html .pt-t1 .pt-g>div>dt{align-items:center}html .pt-t1 .pt-g>div>dd{align-self:center}}
+
+html .pnl .opt[data-fix]{display:flex;width:100%;box-sizing:border-box;margin-right:0;padding:8px 12px;line-height:1.3}@media(max-width:359px){html .pnl .opt[data-fix]{font-size:14px}}
+
+html .pnl .rtx .rtk,html .pnl .rtp .rtai{display:none}html .pnl .rtx.aion .rtk,html .pnl .rtx.aion .rtp .rtai{display:inline}html .pnl .rtx.aion .rtp .rtai{display:block}html .pnl .rtx.aion .rto{display:none}html .pnl .rtx.aion .rt1 .rtnb{display:inline!important}html .pnl .rtx.aion .rt1.rsh .rtpf,html .pnl .rtx.aion .rt1.rsh .rtk{display:none}html .pnl .rtx.aion .rt1.rsh .rto{display:inline}html .pnl .rtx.aion .rt1,html .pnl .cmp .rtx.aion .rt1{letter-spacing:normal}html .pnl .rtx.aion .rt1 .rtt{font-size:inherit}html .pnl .cmp.cmpc .cn{display:none!important}   /* B4f: AI on = one small line; one Terms panel */html .pnl .cmp input#kask,html .ct .cmp input,html input#kask:focus{caret-color:#121519!important}   /* B4f: caret hardening */
+html .pnl:not(.kbf) .rbar .rtx.aion{margin-bottom:4px}   /* B4f: >=12px under the one line with the keyboard down */
+/* B5: Start over (small text control, same style as the Terms link) and the left-out note under the chips */
+.pnl .kso{position:relative;display:inline-flex;align-items:center;align-self:center;padding:0;margin:0 0 0 4px;border:0;background:none;color:#121519;font:700 12px/1.3 'Source Sans 3',Arial,sans-serif;text-decoration:underline;cursor:pointer}
+.pnl .kso::after{content:'';position:absolute;left:0;right:-8px;top:50%;height:44px;transform:translateY(-50%)}
+.pnl .kso:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.pnl .ksop{margin:10px 0 0}
+.pnl .ksop .kso{margin:0}
+.pnl .kskp{margin:0 0 10px;font-size:14px;line-height:1.4;color:var(--ink)}
+.pnl .kskp b{font-weight:700}
+.pnl .kskr{min-height:28px;padding:4px 10px;margin-left:6px;font:inherit;font-size:14px;line-height:1.2;border-radius:6px;cursor:pointer;vertical-align:middle}   /* B5f: tap area at least 24px */
+
+/* B5d: sheet open/close motion. Slide up/down 320ms ease-out on transform (GPU) + backdrop fade; keyboard-up backdrop colour fades instead of snapping. Reduced motion: short fade only. */
+.pnl{transform:translateX(100%);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.pnl.kin{transform:none}
+.scrim{opacity:0;transition:opacity .32s cubic-bezier(.2,.8,.2,1),background-color .22s ease-out}
+.scrim.kin{opacity:1}
+@media(max-width:700px){.pnl{transform:translateY(100%)}.pnl.kin{transform:none}}
+@media(prefers-reduced-motion:reduce){html .pnl{transform:none!important;opacity:0;transition:opacity .15s linear!important}html .pnl.kin{opacity:1}.scrim{transition:opacity .15s linear}}
+
+/* B5e: the backdrop bleeds half a screen past the top and bottom so an iOS focus pan (layout viewport moved, vv.offsetTop > 0) can never uncover the page edge; its colour stays the same with the keyboard up (it used to switch to opaque = a dark flash, and the status-bar tint followed it) */
+.scrim{top:-50vh;bottom:-50vh}
+
+/* merged revb: page banner on screen -> the Lab gate drops its own '· Not a betting site' (one visible line) */
+html body.kt-tbv .pnl .rtx .rt1 .rtnb,html body.kt-tbv .rtx .rt1 .rtnb{display:none!important}
+/* merged revb2 (kt-tbcut): scrim alpha over the banner strip ~0.20 instead of 0.55 (0.55 x 0.36) */
+html body.kt-tbv .scrim{-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 var(--kt-tb0,0px),rgba(0,0,0,.36) var(--kt-tb0,0px),rgba(0,0,0,.36) var(--kt-tb1,0px),#000 var(--kt-tb1,0px));mask-image:linear-gradient(to bottom,#000 0,#000 var(--kt-tb0,0px),rgba(0,0,0,.36) var(--kt-tb0,0px),rgba(0,0,0,.36) var(--kt-tb1,0px),#000 var(--kt-tb1,0px))}
+
+/* audit2: Lab note under Run (Creative-approved wording; not a notice line) */
+.rwl{margin:4px 0 0;font-size:13px;line-height:1.35;color:#4C5560}

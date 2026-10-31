@@ -161,9 +161,26 @@
      clipboard failure: a read-only input with the URL, selected. No request, no AI, not gated by Run/terms. No-JS: the same plain link to #rootables (build.py rb_share). */
   /* Creative 11:21 E: one wording, set per team by build.py share_text() in og:description; fallback without a conference race. */
   function shareText(team) { var m = document.querySelector('meta[property="og:description"]'), c = m && m.getAttribute('content') || ''; return /^Games that help /.test(c) ? c : 'Games that help ' + team + '\'s playoff chances'; }
+  /* r3.2 file share: same gate as ccgsim-ui.js w4canShare (phones/tablets only, below 1024px); prefetch the card when the Share button nears the screen.
+     No card yet, fetch failed, or no file share: the link share / copy-link below, unchanged. */
+  var cardCache = {};
+  function fileGate() { try { if (window.matchMedia && matchMedia('(min-width:1024px)').matches) return false; return !!(navigator.share && navigator.canShare && navigator.canShare({ files: [new File([new Blob(['x'], { type: 'image/png' })], 'x.png', { type: 'image/png' })] })); } catch (e) { return false; } }
+  function prefetchCard(a) { var c = a.getAttribute('data-card'); if (!c || c in cardCache || !window.fetch) return; cardCache[c] = null;
+    fetch(c).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) { cardCache[c] = b; }, function () { cardCache[c] = null; }); }
+  function armShare() { if (!fileGate()) return; [].forEach.call(root.querySelectorAll('a[data-share]:not([data-armed])'), function (a) { a.setAttribute('data-armed', '');
+    if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es.some(function (x) { return x.isIntersecting; })) { io.disconnect(); prefetchCard(a); } }, { rootMargin: '400px' }); io.observe(a); } else prefetchCard(a); }); }
+  if ('MutationObserver' in window) new MutationObserver(armShare).observe(root, { childList: true, subtree: true }); armShare();
   root.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a[data-share]') : null; if (!a) return;
     var team = teamLabel(), url = location.origin + '/team/' + slug + '/#rootables', lab = a.querySelector('.rb-sl'), live = root.querySelector('.rb-cp');
+    var card = a.getAttribute('data-card'), blob = card && cardCache[card];
+    if (blob && fileGate()) {   /* r3.2 (Jared 3:24 PM MT 'share the entire list'): the tall card image + link, PNG prefetched so share() keeps the tap's user activation (iOS Safari) */
+      try {
+        var f = new File([blob], slug + '-rootables.png', { type: 'image/png' }), title = team + ' Rootables', tx = shareText(team);
+        var tries = [{ files: [f], title: title, text: tx, url: url }, { files: [f], title: title, text: tx }, { files: [f] }];
+        for (var i = 0; i < tries.length; i++) if (navigator.canShare(tries[i])) { e.preventDefault(); navigator.share(tries[i]).catch(function () {}); return; }
+      } catch (er) {}
+    }
     if (navigator.share) { e.preventDefault(); navigator.share({ title: team + ' Rootables', text: shareText(team), url: url }).catch(function () {}); return; }
     e.preventDefault();
     var done = function () { if (lab) lab.textContent = 'Link copied'; if (live) live.textContent = 'Link copied'; clearTimeout(a._t); a._t = setTimeout(function () { if (lab) lab.textContent = 'Share'; if (live) live.textContent = ''; }, 2000); };

@@ -1,0 +1,34 @@
+/* cc5 rev 5.2: compact sticky result bar (Creative ccgbar.css fb7ce27e, adapted to the site header + rev 5.1 .ccgc), desktop >=1100px only. Below 1100px nothing here applies: .ccgc unchanged. */
+#ccgbar{display:none}
+@media (min-width:1100px){
+  :root{--kt-bar:68px}
+  #ccgbar{display:block;position:fixed;left:0;right:0;top:var(--cb-top,0px);z-index:6;height:var(--kt-bar);
+    background:#121519;color:#F1F3F4;opacity:0;visibility:hidden;transition:opacity .15s ease,visibility 0s linear .15s;
+    box-shadow:0 2px 8px rgba(18,21,25,.25)}
+  #ccgbar.on{opacity:1;visibility:visible;transition:opacity .15s ease,visibility 0s}
+  #ccgbar .cb-in{max-width:1102px;margin:0 auto;height:100%;display:flex;align-items:center;gap:16px;padding:0 16px;box-sizing:border-box}
+  #ccgbar .cb-lb{font:700 12px/1.2 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#D5DBE0;white-space:nowrap}
+  #ccgbar .cb-lb b{color:#F1F3F4}
+  #ccgbar .cb-pl{font:700 12px system-ui,sans-serif;color:#121519;background:#33E1EA;border-radius:99px;padding:3px 9px;white-space:nowrap}
+  #ccgbar .cb-vs{display:flex;align-items:center;gap:12px;min-width:0}
+  #ccgbar .cb-vs>i{font:800 13px system-ui;font-style:normal;color:#D5DBE0}
+  #ccgbar .cb-tm{display:flex;align-items:center;gap:8px;min-width:0}
+  #ccgbar .cb-fr{flex:none;width:32px;height:32px;background:#fff;border-radius:6px;display:grid;place-items:center;overflow:hidden}
+  #ccgbar .cb-fr img,#ccgbar .cb-fr svg{width:26px;height:26px;object-fit:contain}
+  #ccgbar .cb-nm{font:800 18px/1.05 'Barlow Condensed',system-ui,sans-serif;white-space:nowrap}
+  #ccgbar .cb-nm small{font:700 11px system-ui;color:#D5DBE0;letter-spacing:.04em;margin-right:4px}
+  #ccgbar .cb-rc{display:block;font:600 12px/1.2 system-ui;color:#D5DBE0;font-variant-numeric:tabular-nums}
+  #ccgbar .cb-rt{margin-left:auto;display:flex;align-items:center;gap:14px;white-space:nowrap}
+  #ccgbar .cb-ch{font:600 13px system-ui;color:#D5DBE0}#ccgbar .cb-ch b{color:#33E1EA;font-size:15px}
+  #ccgbar a.cb-bk{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:2px solid #F1F3F4;border-radius:99px;color:#F1F3F4;font:700 14px system-ui;text-decoration:none}
+  #ccgbar a.cb-bk:focus-visible{outline:3px solid #33E1EA;outline-offset:2px}
+  #ccgbar:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:#33E1EA;opacity:0}
+  #ccgbar.cb-fl:after{animation:ccgfl .3s ease-out}
+  @keyframes ccgfl{0%,60%{opacity:1}100%{opacity:0}}
+  /* one bar on desktop: the new bar replaces rev 5.1's 44px .ccgc; the week strip sits under the new bar while it shows (--cb-sb, set by ccgbar.js) */
+  html.cb-js .ccgc,html.cb-js #ccgp{display:none!important}
+  html.cb-js .wkstrip{top:calc(var(--kt-bar-h,0px) + env(safe-area-inset-top,0px) + var(--cb-sb,0px))!important}
+  #ccg{scroll-margin-top:calc(var(--cb-top,0px) + 8px)}
+  #weeks,#wkstrip,#wpanel,#wph,#games>li{scroll-margin-top:calc(var(--cb-top,0px) + var(--kt-bar) + 12px)}
+}
+@media (prefers-reduced-motion:reduce){#ccgbar,#ccgbar.on{transition:none}#ccgbar.cb-fl:after{animation:none}}

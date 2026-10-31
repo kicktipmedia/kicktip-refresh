@@ -220,6 +220,9 @@ for (const f of files) {
     const pr = pathRows(k); if (pr) t = t.replace(/(<table id="paths" class="fld">[\s\S]*?<tbody>)<tr><td colspan="3"><span class="lk">Loading<\/span><\/td><\/tr>(<\/tbody>)/, (x, a, b) => a + mk(6, pr) + b);
     if (t.includes(DEF[9])) { const rh = rbHtml(k); if (rh) { t = rep1(t, /<noscript><p class="rb-msg">Turn on JavaScript to run Rootables\.<\/p><\/noscript>/, () => mk(9, '<noscript>' + rh + '</noscript>'), 'rootables', rel); stats.rb++; } }
     if (t.includes('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">')) { const nh = nwHtml(k); if (nh) { t = t.replace('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">', '<section id="what-if" aria-label="What if">' + mk(10, nh) + '<ul class="pk-tiles pk-one">'); stats.nw = (stats.nw || 0) + 1; } }
+    /* Creative 11:21 A: the floating Lab chip carried a hardcoded sample ("What if BYU loses?") pasted on every page by the Lab rollout; on team pages it must name the page's own team. Plain (unmarked) rewrite: idempotent, survives unbake/merge3. */
+    { const nm = (/<section class="card rb" id="rootables"[^>]*data-name="([^"]+)"/.exec(t) || [])[1] || (tm.n ? esc(tm.n) : null);
+      if (nm) t = t.replace(/(<span class="kph">)What if [^<]*? loses\?(<\/span>)/, (x, a, b) => a + 'What if ' + nm + ' loses?' + b); }
     stats.team++; baked = true;
   } else if (page === 'slate') {
     t = rep1(t, /(<\/tbody><\/table><\/div><\/div>)(<p class="note"><b>How to read)/, (x, a, b) => a + upd() + b, 'slate stamp', rel);

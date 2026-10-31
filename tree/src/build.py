@@ -163,6 +163,8 @@ SEO_IMG_ALT = "KickTip Media, college football playoff simulator"
 def rb_share(slug, name):   # R2 Rootables Share (SHARE-SPEC 6a68db1c): no-JS = this plain link to the anchor; assets/rootables.js shareHtml() draws the same markup and adds Web Share / copy link
     return (f'<a class="rb-share" href="/team/{slug}/#rootables" data-share aria-label="Share {E(name)} Rootables"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18"><path d="M12 15V3M7 8l5-5 5 5M5 13v6h14v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="rb-sl">Share</span></a>'
             '<span class="rb-cp vh" aria-live="polite"></span>')
+def share_text(team, conf=""):   # Creative Oct 31 11:21: Rootables share line = team og:description, share-card subline, navigator.share text (one wording)
+    return f"Games that help {team}'s playoff and {conf} championship chances" if conf else f"Games that help {team}'s playoff chances"
 MSM_URL = "https://mtnsportsmedia.com/"
 FOOT_MSM = f'<a href="{MSM_URL}" rel="noopener">from the Mtn Sports Media team</a>'
 # SITEMAP_LASTMOD dropped (audit2 R2): no <lastmod>, a fixed date goes stale and a per-refresh one is outside apply_data's allow-list.
@@ -173,7 +175,7 @@ ORG_LD = ('<script type="application/ld+json">{"@context":"https://schema.org","
 def seo_head(full_title, desc, ld=""):   # appended right after the og:image tags; extend here (one place)
     return (f'<meta property="og:locale" content="en_US"><meta property="og:image:type" content="image/png">'
             f'<meta name="twitter:title" content="{E(full_title)}"><meta name="twitter:description" content="{E(desc)}">{ld}')
-def page(title, path, body, *, active="", dyn=False, need="", ptype="static", extra="", desc="", conf="", team="", hero=None, av="", rb=False, ex=(), src_extra="", full_title="", ld=""):
+def page(title, path, body, *, active="", dyn=False, need="", ptype="static", extra="", desc="", conf="", team="", hero=None, av="", rb=False, ex=(), src_extra="", full_title="", ld="", ogd=""):
     av = ""   # content hash is added to every /assets/*.js|css reference by hash_assets() after all pages are written
     nav = "".join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if a == active else ""}>{a}</a>' for a, h in NAV)
     desc = desc or "Standings, tiebreakers and paths to the conference championship game for all 11 FBS groups, plus the 12-team playoff field."
@@ -198,7 +200,7 @@ def page(title, path, body, *, active="", dyn=False, need="", ptype="static", ex
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{E(full_title)}</title>
 <meta name="description" content="{E(desc)}">{canon}<meta name="color-scheme" content="light">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/icon/kicktip-icon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/brand/icon/kicktip-apple-touch-180.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#262B31"><meta property="og:site_name" content="KickTip Media"><meta property="og:type" content="website"><meta property="og:title" content="{E(full_title)}"><meta property="og:description" content="{E(desc)}">{ogurl}<meta property="og:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{SEO_IMG_ALT}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png">{seo_head(full_title, desc, ld)}<link rel="preload" href="/assets/fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/SourceSans3-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/icon/kicktip-icon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/brand/icon/kicktip-apple-touch-180.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#262B31"><meta property="og:site_name" content="KickTip Media"><meta property="og:type" content="website"><meta property="og:title" content="{E(full_title)}"><meta property="og:description" content="{E(ogd or desc)}">{ogurl}<meta property="og:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{SEO_IMG_ALT}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png">{seo_head(full_title, ogd or desc, ld)}<link rel="preload" href="/assets/fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/SourceSans3-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/kt.css{av}">{f'<link rel="stylesheet" href="/assets/chat.css{CV}">' if ask else ""}{extra}</head><body{' class="has-ask"' if ask else ''}>
 <a class="skip" href="#main">Skip to content</a>
 {terms_copy.BANNER_HTML}
@@ -473,7 +475,8 @@ def team_page(full, v):
             f'<section class="sec" data-pt="0"><div class="w two"><div>{games_card}</div><div>{pathcard}'
             f'<div class="card"><h2>More in the {E(cname)}</h2><ul class="chips">{others}</ul></div></div></div></section>')
     return page(f"{v['short']} path", f"/team/{v['slug']}/", body, full_title=f"{v['short']} playoff chances and path | KickTip Media", active="Conferences", dyn=True, need="pred-teams,pred-games,pred-paths,pred-lines", ptype="team", team=v["slug"], conf=cs, rb=True, ex=(full, full),
-                desc=f"{v['short']}: Playoff chances, conference standing, remaining games and the path to the conference championship game, from KickTip Media's college football playoff simulator.")
+                desc=f"{v['short']}: Playoff chances, conference standing, remaining games and the path to the conference championship game, from KickTip Media's college football playoff simulator.",
+                ogd=share_text(v['short'], cname if fmt != "none" else ""))
 
 # ---------------------------------------------------------------- full bracket (b9). Static markup only: seeds and format text, never a team or a number. kt.js fills [data-seed] on arrival.
 def bk_team(i, bye=False):

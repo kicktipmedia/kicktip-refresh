@@ -30,5 +30,6 @@
   html.cb-js .wkstrip{top:calc(var(--kt-bar-h,0px) + env(safe-area-inset-top,0px) + var(--cb-sb,0px))!important}
   #ccg{scroll-margin-top:calc(var(--cb-top,0px) + 8px)}
   #weeks,#wkstrip,#wpanel,#wph,#games>li{scroll-margin-top:calc(var(--cb-top,0px) + var(--kt-bar) + 12px)}
+  html.cb-js #games button,html.cb-js #games a{scroll-margin-top:calc(var(--cb-top,0px) + var(--kt-bar) + 72px)}   /* keyboard focus lands below header + bar + week strip */
 }
 @media (prefers-reduced-motion:reduce){#ccgbar,#ccgbar.on{transition:none}#ccgbar.cb-fl:after{animation:none}}

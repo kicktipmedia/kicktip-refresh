@@ -11,7 +11,7 @@
     var nav = document.querySelector("header.hd"), key = "", vis = false, on = false;
     function navH() { if (!nav) return 0; var p = getComputedStyle(nav).position; return p === "sticky" || p === "fixed" ? Math.round(nav.getBoundingClientRect().bottom) : 0; }
     function sync() {
-      var dk = mq.matches; d.classList.toggle("cb-js", dk); d.style.setProperty("--cb-top", navH() + "px");
+      var dk = mq.matches; d.classList.toggle("cb-js", dk && !!ccg.querySelector(".cc5c"));   /* no banner (undecided state): rev 5.1 .ccgc keeps working on desktop too */ d.style.setProperty("--cb-top", navH() + "px");
       var show = dk && on; bar.classList.toggle("on", show); d.style.setProperty("--cb-sb", show ? "68px" : "0px");
     }
     function render() {

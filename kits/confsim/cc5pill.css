@@ -1,0 +1,17 @@
+/* cc5 rev 5.4 (Jared 3:21 PM MT, Creative spec): the mobile floating Lab pill (#kpill.askpill, every page) reads as a button, not a text bar. <=700px only (chat.css's
+   mobile breakpoint); the desktop floater is unchanged. Markup unchanged: the button already carries <img.kpi> + <span.kps>What if</span> + <span.kph>(scenario)</span>;
+   here .kps shows, .kph is display:none (so the accessible name is "What if"), the KickTip Lab logo (shield + flask) stays as is, unaltered (Jared 3:22 PM MT; its ink shield body keeps a clear edge on the cyan fill, so no ink circle). Hide hooks keep winning (higher specificity, no display
+   set on variants): [hidden], .pk-hide, html.wl-in, html.rb-in (Batch B), .lt-hub. Ink #121519 on #33E1EA 11.6:1 / #1FCBD4 9.6:1; ink ring vs paper #F1F3F4 16.6:1,
+   vs the dark hero it sits on the cyan fill edge (ring inside the fill, fill vs #121519 11.6:1). */
+@media (max-width:700px){
+  html body .askpill{display:inline-flex;left:auto;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:auto;max-width:calc(100% - 32px);min-height:48px;box-sizing:border-box;padding:0 16px;gap:8px;justify-content:flex-start;align-items:center;border:2px solid #121519;border-radius:999px;background:#33E1EA;color:#121519;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(18,21,25,.25);transition:background-color .12s ease,transform .06s ease}
+  html body .askpill.kp-ico,html body .askpill.kp-fb{left:auto;width:auto;min-width:0;padding:0 16px;gap:8px;justify-content:flex-start}
+  html body .askpill .kpi,html body .askpill.kp-ico .kpi{display:block;flex:none;width:23px;height:30px}
+  html body .askpill .kps,html body .askpill.kp-ico .kps,html body .askpill.kp-fb .kps{display:inline;color:#121519;font-weight:700}
+  html body .askpill .kph,html body .askpill.kp-ico .kph,html body .askpill.kp-fb .kph{display:none}
+  html body .askpill:after{content:"";flex:none;width:14px;height:14px;background:#121519;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 4l6 6-6 6' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 4l6 6-6 6' fill='none' stroke='%23000' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+  html body .askpill:hover,html body .askpill:active{background:#1FCBD4}
+  html body .askpill:active{transform:translateY(1px)}
+  html body .askpill:focus-visible{outline:2px solid #F1F3F4;outline-offset:2px}
+}
+@media (max-width:700px) and (prefers-reduced-motion:reduce){html body .askpill{transition:none}html body .askpill:active{transform:none}}

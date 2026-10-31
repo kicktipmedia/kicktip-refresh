@@ -1,7 +1,7 @@
 """'Why it moved' chip engine (SPEC-4-upgrades-v2.md section 2a, sha12 fa5ead38bf0c). Public model data only; no network, no private/, no odds.
 What it does
   snapshot_all()  (run_all.py, after the simulations): records today's make-the-12 chance per team for EACH model in data/store/snapshots/<model>/<YYYY-MM-DD_HHMM>.json
-                  (as_of in MT, the model version, seasons, seed, remaining games, and the per-game driver table below). Idempotent: the same as_of overwrites itself. Old files (> KEEP_DAYS) are pruned.
+                  (as_of in MT, the model version, seasons, seed, remaining games, and the per-game driver table below). Idempotent: the same as_of overwrites itself. Old files (> KEEP_DAYS) are moved to data/store/snapshots-archive/ (never deleted).
   chips(model, sim_teams, short)  (build.py, read-only): for one model returns {team full name: [delta_points_rounded (signed int), popover text]} for the teams that get a chip, and a status dict.
 Rules (all decided here, in Python; assets/kt.js only draws what pred-teams.json carries, key 'm' per team)
   * Reference snapshot = the LAST snapshot of the most recent EARLIER Mountain Time calendar day that has one ('the previous daily update'). None -> no chip for that model.
@@ -146,10 +146,20 @@ def snapshot(model, outdir, with_drivers=True, procs=None):
         except Exception as e: print(f"WARNING moves: driver tables for {model} failed ({type(e).__name__}: {e}); chips will use the fallback sentence", file=sys.stderr)
     d = parse_mt(st["as_of"]); os.makedirs(f"{SNAPDIR}/{model}", exist_ok=True)
     p = f"{SNAPDIR}/{model}/{d.strftime('%Y-%m-%d_%H%M')}.json"; json.dump(s, open(p, "w"), separators=(",", ":"))
-    cut = dt.datetime.now(MT) - dt.timedelta(days=KEEP_DAYS)
-    for dd, f, _ in _files(model):
-        if dd < cut: os.remove(f)
+    _archive_old(model)
     return p
+
+def _archive_old(model):
+    """Accuracy logger (Jared, Oct 31 2026: 'keep the snapshots'): snapshots older than KEEP_DAYS are MOVED, byte for byte, to
+    <SNAPDIR>-archive/<model>/ (outside the chip glob, so chips behave exactly as before) instead of being deleted. Never raises; never deletes."""
+    try:
+        cut = dt.datetime.now(MT) - dt.timedelta(days=KEEP_DAYS); arc = f"{SNAPDIR.rstrip('/')}-archive/{model}"
+        for dd, f, _ in _files(model):
+            if dd < cut:
+                os.makedirs(arc, exist_ok=True); t = f"{arc}/{os.path.basename(f)}"
+                if os.path.exists(t): print(f"WARNING moves: archive already has {t}; leaving {f} in place", file=sys.stderr); continue
+                os.replace(f, t)
+    except Exception as e: print(f"WARNING moves: snapshot archive step failed ({type(e).__name__}: {e}); nothing deleted", file=sys.stderr)
 
 def snapshot_all(with_drivers=True, procs=None):
     import models_registry as MR

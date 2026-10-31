@@ -42,6 +42,7 @@ L1=$(cut -d' ' -f1 /proc/loadavg); NP=$(nproc); TH=$(python3 -c "print($NP if $L
 say "models: OMP_NUM_THREADS=$TH"
 export KT_ASOF=$(python3 -c "import json;print(json.load(open('data/out/refresh_log.json'))['refreshed_mt'])")   # model stamp = results-pulled minute (one as-of per run; makes replays reproducible)
 OMP_NUM_THREADS=$TH timeout 5400 nice python3 src/run_all.py --no-refresh --whatif --whatif-all > $RD/run_all.log 2>&1 || fail 14 "run_all failed: $(tail -n 3 $RD/run_all.log)"
+timeout 120 python3 src/forecast_log.py > $RD/forecast_log.log 2>&1 || say "WARNING forecast log failed (refresh continues): $(tail -n 1 $RD/forecast_log.log)"   # accuracy logger: data/store/forecast_log.jsonl only, committed by publish_base (git add -A tree/data/store); never blocks
 timeout 120 python3 src/lines.py > $RD/lines_merge.log 2>&1 || say "lines merge failed, the previous market_lines.json is kept: $(tail -n 1 $RD/lines_merge.log)"   # never blocks a results deploy
 timeout 600 python3 src/build.py > $RD/build.log 2>&1 || fail 15 "build.py failed: $(tail -n 3 $RD/build.log)"
 ASOF=$(python3 -c "import json;print(json.load(open('build/site/data/sim-bundle.json'))['as_of'])")

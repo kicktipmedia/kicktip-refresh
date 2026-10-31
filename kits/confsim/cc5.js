@@ -29,7 +29,7 @@
   /* cc5 venue line from rules data: MT first, one host sentence */
   function ccMT(w) { return String(w || "").replace(/^([A-Z][a-z]{2} [A-Z][a-z]{2} \d+), (\d+:\d\d [AP]M) ([ECP]T) \((\d+:\d\d [AP]M) MT\)/, "$1, $4 MT ($2 $3)"); }
   function ccHost(t) { var R0 = R.ccg || {}; if (!R0.when) return ""; var w = ccMT(R0.when), hs = R0.host;
-    if (!hs || hs === "neutral") return '<p class="y s">' + esc(w + (R0.site ? ", " + R0.site : "") + ".") + "</p>";
+    if (!hs || hs === "neutral") return '<p class="y s">' + esc((w + (R0.site ? ", " + R0.site : "")).replace(/\.?$/, ".")) + "</p>";
     var who = hs === "higher_seed" ? "The higher seed hosts" : "The " + (R.fmt === "div" && conf.div ? "division champion" : "team") + " with the better conference record hosts";
     return '<p class="y s">' + esc(w + ". " + who + (t ? ": " + T(t[0]) : "") + ".") + "</p>"; }
   function ccCard(t, res) {

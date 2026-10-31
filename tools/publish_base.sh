@@ -31,7 +31,10 @@ if lfp: s['lines_fp']=lfp
 if lep: s['lines_epoch']=int(lep)
 json.dump(s,open('state.json','w'),indent=1); open('state.json','a').write('\n')
 P
+export GIT_AUTHOR_NAME=kicktipmedia GIT_AUTHOR_EMAIL=kicktipmedia@users.noreply.github.com GIT_COMMITTER_NAME=kicktipmedia GIT_COMMITTER_EMAIL=kicktipmedia@users.noreply.github.com  # rebase/autostash need an identity on the runner
 git add state.json; [ -n "$S0" ] && git add -A tree/data/store || true
 git -c user.name="kicktipmedia" -c user.email="kicktipmedia@users.noreply.github.com" commit -q -m "live: $ID (${SHA:0:12})" || true
-for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
+# --autostash: the refresh leaves other tracked pipeline files modified (not ours to commit); without it pull --rebase refuses and state.json is never pushed
+OK=0; for i in 1 2 3; do git pull -q --rebase --autostash && git push -q && { OK=1; break; }; sleep 5; done
+[ $OK = 1 ] || { echo "push of state.json failed after 3 tries: live $ID NOT recorded"; exit 4; }
 echo "recorded live $ID sha $SHA"

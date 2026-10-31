@@ -1,0 +1,46 @@
+
+/* cc5: scenario result view (Creative rev 3 mock d3c61dfa). Championship card on white with an ink top bar, full standings with conference + overall W-L and changed marks. */
+.ccg.cc5{background:transparent;color:#121519;border:0;padding:0;border-radius:0}
+.cc5l{font:700 12px 'Source Sans 3',system-ui,Arial;letter-spacing:.06em;text-transform:uppercase;color:#4C5560;margin:4px 0 6px}
+.ccg.cc5 ul.cc5ch,.cc5ch{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:6px}
+.cc5fc{background:#fff;border:2px solid #121519;border-radius:12px;padding:8px 10px;font:700 15px/1.25 'Source Sans 3',system-ui,Arial;color:#121519}
+.cc5ft{display:block;font:700 11px 'Source Sans 3',system-ui,Arial;letter-spacing:.06em;text-transform:uppercase;color:#4C5560}
+.cc5n{font:400 13px/1.35 'Source Sans 3',system-ui,Arial;color:#4C5560;margin:4px 0 0}
+.cc5c{background:#fff;border:1px solid #C9CED3;border-radius:14px;margin-top:12px;overflow:hidden;color:#121519}
+.cc5top{background:#121519;color:#fff;padding:5px 10px;font:800 16px 'Barlow Condensed',system-ui,Arial;text-transform:uppercase;letter-spacing:.03em;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.cc5top span{font:700 11px 'Source Sans 3',system-ui,Arial;letter-spacing:.04em;color:#121519;background:#33E1EA;border-radius:99px;padding:3px 8px;white-space:nowrap}
+.cc5vs{display:grid;grid-template-columns:1fr 14px 1fr;align-items:center;gap:0 4px;padding:8px 8px 4px}
+.cc5vs>i{font:800 12px 'Source Sans 3',system-ui,Arial;color:#4C5560;text-align:center;font-style:normal}
+.cc5s{display:flex;align-items:center;gap:6px;min-width:0}.cc5s>img,.cc5s>span:first-child{flex:none;width:40px;height:40px}.cc5t{min-width:0}
+.cc5sd{font:700 11px/1 'Source Sans 3',system-ui,Arial;letter-spacing:.05em;text-transform:uppercase;color:#4C5560}
+.cc5nm{font:800 19px/1 'Barlow Condensed',system-ui,Arial;margin-top:2px;text-transform:none}
+.cc5r{font:800 19px/1 'Barlow Condensed',system-ui,Arial;font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}.cc5r span{font:700 11px 'Source Sans 3',system-ui,Arial;color:#4C5560;vertical-align:2px}
+.cc5b{font:400 12px/1.2 'Source Sans 3',system-ui,Arial;color:#4C5560;padding:2px 10px 4px}
+.cc5w{border-top:1px solid #DDE3E6;padding:0 10px}
+.cc5w summary{min-height:44px;display:flex;align-items:center;font:700 15px 'Source Sans 3',system-ui,Arial;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:#121519}
+.cc5w ol{margin:0 0 10px 18px;padding:0;font-size:14px;line-height:1.4}
+.ccg.cc5 .y.s{color:#4C5560}
+.cc5st h2{margin-bottom:8px}
+.cc5lg{display:flex;flex-wrap:wrap;gap:6px 12px;font:400 12px 'Source Sans 3',system-ui,Arial;color:#4C5560;margin:0 0 8px}
+.cc5lg[hidden]{display:none}
+.cc5lg b{display:inline-block;width:14px;height:14px;border-radius:3px;background:#DDF6F8;border:1px solid #4C5560;vertical-align:-2px;margin-right:4px}
+.xst.cc5x{background:#fff;border:1px solid #4C5560;border-radius:12px;border-collapse:separate;border-spacing:0;overflow:hidden}
+.xst.cc5x th{font:700 11px 'Source Sans 3',system-ui,Arial;letter-spacing:.05em;padding:7px 4px}
+.xst.cc5x th.n,.xst.cc5x td.n{text-align:right}.xst.cc5x th.pl,.xst.cc5x td.pl{text-align:center;width:30px}.xst.cc5x th.n{width:48px}.xst.cc5x th.o{width:50px}
+.xst.cc5x tbody td{padding:5px 4px;vertical-align:top}
+.xst.cc5x td.pl{font:800 17px/1.2 'Barlow Condensed',system-ui,Arial}
+.xst.cc5x td.n b{font:800 18px/1.2 'Barlow Condensed',system-ui,Arial}.xst.cc5x td.o{font-size:14px;color:#4C5560;padding-right:8px;line-height:1.45}
+.cc5tw{display:flex;gap:5px;align-items:flex-start;min-width:0}.cc5tw>img,.cc5tw>span:first-child{flex:none;width:24px;height:24px}.cc5tw>div{min-width:0}
+.cc5tw b{font:700 15px/1.25 'Source Sans 3',system-ui,Arial}
+.xst.cc5x tr.chg td{background:#DDF6F8}.xst.cc5x tr.inp td.pl{box-shadow:inset 4px 0 0 #121519}
+.cc5mv{vertical-align:1px;display:inline-flex;align-items:center;height:16px;font:700 11px/1 'Source Sans 3',system-ui,Arial;padding:0 4px;border-radius:99px;border:1.5px solid #121519;color:#121519;background:#fff;white-space:nowrap}
+.cc5mv.up{background:#121519;color:#fff}
+.cc5tgs{display:flex;flex-wrap:wrap;align-items:center;gap:2px 3px;margin-top:1px}.cc5tgs:empty{display:none}
+.cc5tg{display:inline-flex;align-items:center;height:16px;font:700 11px/1 'Source Sans 3',system-ui,Arial;padding:0 3px;border-radius:3px;white-space:nowrap}
+.cc5tg.in{background:#121519;color:#fff}.cc5tg.fl{border:1.5px solid #4C5560;color:#121519;background:#fff}
+.cc5tw small{font-size:11px;line-height:16px;color:#4C5560;white-space:nowrap}
+.cc5stamp{font-size:12px;margin-top:10px}
+.cc5btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:99px;border:2px solid #262B31;background:#fff;font:700 15px 'Source Sans 3',system-ui,Arial;color:#262B31;margin-top:12px;text-decoration:none}
+.xst.cc5x tr.dvh th{background:#F1F3F4;color:#121519;text-align:left;font:700 12px 'Source Sans 3',system-ui,Arial;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px}
+.cc5top b{font:inherit;min-width:0}
+@media (max-width:359px){.cc5vs{grid-template-columns:1fr 10px 1fr;gap:0 2px;padding:8px 4px 4px}.cc5s{gap:4px}.cc5s>img,.cc5s>span:first-child{width:32px;height:32px}.cc5r span{display:block;vertical-align:0;margin-top:2px}.cc5top span{font-size:10px;padding:3px 6px}}

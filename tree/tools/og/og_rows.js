@@ -24,7 +24,7 @@ const out = { as_of: idx.as_of, stamp: RB.stampText(idx.as_of), teams: {} };
 fs.readdirSync(path.join(SITE, 'team')).sort().forEach((slug) => {
   if (!fs.existsSync(path.join(SITE, 'team', slug, 'index.html'))) return;
   const key = Object.keys(by).find((k) => by[k].g === slug); const tn = idx.team_names.indexOf(key); if (tn < 0) return;
-  const conf = confName[(by[key] || {}).c] || '', res = RB.compute(tn, 'blend', ctx, ctx.asOfMs);
+  const conf = confName[(by[key] || {}).c] || '', res = RB.compute(tn, 'blend', ctx, ctx.asOfMs); res.rows = res.rows.filter((r) => slugOf(r.h) && slugOf(r.a));   /* belt and braces: never a share-card row against a non-FBS side */
   const rows = res.rows.map((r) => { const rootAway = r.root === r.a; return { ko: iso(r.kick), ...(() => { const w = when(r); return { day: w.day, time: w.time, when: w.day + ' \u00b7 ' + (w.time ? w.time + ' MT' : 'time TBD') }; })(), away: side(r.a), home: side(r.h), root: rootAway ? 'away' : 'home', neutral: !!r.neutral,
     race: RB.tagText(r.race, conf).replace(/\u00a0/g, ' '), gain: Math.round(r.gap) / 10, gain_txt: RB.pts(r.gap), color: TC[slugOf(r.root)] || '#121519' }; });
   out.teams[slug] = { team: nm(tn), n_big: res.nBig, n_window: res.nWindow, games: rows };

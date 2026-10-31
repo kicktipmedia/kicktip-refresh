@@ -50,6 +50,8 @@ jobs:
       TZ: America/Toronto
     steps:
       - uses: actions/checkout@v4
+        # check out the branch tip at run start, not the commit pinned when the run was queued (a queued run otherwise reads a stale state.json and exits 12)
+        with: { ref: "${{ github.ref_name }}" }
       - name: Stop if frozen
         run: if [ -e FREEZE ]; then echo "FREEZE present:"; cat FREEZE; exit 1; fi
       - uses: actions/setup-python@v5

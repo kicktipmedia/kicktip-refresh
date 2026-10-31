@@ -12,7 +12,8 @@ Method (same as toolbox9c, generalised):
  5a. merged: tools/polish_refresh.py re-derives the team chances-card record line (pc-sub) from the merged page text.
  5b. nojs1 (if the base has assets/stamp.js): the base is unbaked before the merge; after step 5 tools/bake_static.js bakes numbers + 'Updated'
      stamps into HTML and --verify fails the run if any page is stale.
- 6. restamp ?v= tokens; allow-list check: every changed file is html, data/**, or a token-only change; _worker.js identical.
+ 5c. Batch B (base has og/rootables/): tools/og/og_cards.py redraws the per-team share cards whose Rootables list changed.
+ 6. restamp ?v= tokens; allow-list check: every changed file is html, data/**, og/rootables/{slug}-1200x630|1080x1350.png, or a token-only change; _worker.js identical.
  7. deterministic zip (sorted, 2026-01-01 00:00, 0644, deflate) built twice, sha must match.
 Exit 0 ok; 2 merge conflict; 3 check failed; 4 non-deterministic."""
 import argparse, datetime, hashlib, json, os, re, shutil, subprocess, sys, tempfile, zipfile
@@ -106,18 +107,27 @@ def build_once(tmp, a, network):
     if BAKE:
         run(['node', HERE + '/bake_static.js', out, '--check'], env, 'bake-static')
         run(['node', HERE + '/bake_static.js', out, '--verify'], env, 'bake-verify')
+    # 5c. Batch B: per-team Rootables share cards (og/rootables/{slug}-1200x630.png = og:image, -1080x1350.png = tall), only on a base that has them.
+    #     tools/og/og_cards.py redraws a card only when its list changed (key in data/og-cards.json); KT_OG_CACHE lets build B reuse build A's PNGs.
+    OGC = os.path.isdir(base + '/og/rootables')
+    if OGC:
+        oenv = dict(env, KT_OG_CACHE=os.environ.get('KT_OG_CACHE') or os.path.join(tempfile.gettempdir(), 'kt-og-cache'))
+        print(run([sys.executable, HERE + '/og/og_cards.py', out, '--base', base], oenv, 'og-cards').strip().splitlines()[-1])
     # 6. tokens + checks
     run([sys.executable, T + '/restamp.py', out, base], env, 'restamp')
     bf = {rel: sha(rd(p)) for rel, p in walk(base)}; of = {rel: p for rel, p in walk(out)}
     new = sorted(set(of) - set(bf)); gone = sorted(set(bf) - set(of))
+    OGRE = re.compile(r'^og/rootables/[a-z0-9-]+-(1200x630|1080x1350)\.png$')   # Batch B allow-list: share cards only, nothing else under og/
+    new = [r for r in new if not (OGC and OGRE.match(r))]
     if new: die(3, 'unexpected new files %s' % new[:10])
     if gone != sorted(deleted): die(3, 'unexpected removed files %s' % gone[:10])
     TOK = re.compile(r'\?v=[0-9a-f]{10}'); changed = {}
     for rel in sorted(of):
-        if sha(rd(of[rel])) == bf[rel]: continue
+        if rel in bf and sha(rd(of[rel])) == bf[rel]: continue
         if rel == '_worker.js': die(3, '_worker.js changed')
         if rel.endswith('.html'): changed[rel] = 'html: data/stamps/tokens'
         elif rel.startswith('data/'): changed[rel] = 'data'
+        elif OGC and OGRE.match(rel): changed[rel] = 'og card'
         else:
             try: same = TOK.sub('?v=0', open(of[rel], encoding='utf-8').read()) == TOK.sub('?v=0', open(base + '/' + rel, encoding='utf-8').read())
             except UnicodeDecodeError: same = False

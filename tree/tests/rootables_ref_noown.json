@@ -88,6 +88,51 @@
        "away_wins": 406,
        "gap": 16,
        "own": false
+      },
+      {
+       "id": "401856737",
+       "home": "Texas Longhorns",
+       "away": "Mississippi State Bulldogs",
+       "hid": 74,
+       "aid": 111,
+       "neutral": false,
+       "kick_utc": "2026-10-31T23:30Z",
+       "kick_mt": "Sat Oct 31, 5:30 PM MT",
+       "base": 390,
+       "home_wins": 390,
+       "away_wins": 406,
+       "gap": 16,
+       "own": false
+      },
+      {
+       "id": "401858501",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers",
+       "hid": 131,
+       "aid": 6,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 390,
+       "home_wins": 390,
+       "away_wins": 403,
+       "gap": 13,
+       "own": false
+      },
+      {
+       "id": "401856734",
+       "home": "Georgia Bulldogs",
+       "away": "Florida Gators",
+       "hid": 125,
+       "aid": 121,
+       "neutral": true,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 390,
+       "home_wins": 390,
+       "away_wins": 401,
+       "gap": 11,
+       "own": false
       }
      ]
     },
@@ -259,6 +304,60 @@
        "kick_utc": "2026-10-31T16:45Z",
        "home": "Ole Miss Rebels",
        "away": "Auburn Tigers"
+      },
+      {
+       "id": "401858508",
+       "score": 16,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        390,
+        406
+       ],
+       "ccg": [
+        464,
+        464
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401856737",
+       "score": 16,
+       "race": "cfp12",
+       "root": 111,
+       "cfp12": [
+        390,
+        406
+       ],
+       "ccg": [
+        464,
+        464
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:30Z",
+       "home": "Texas Longhorns",
+       "away": "Mississippi State Bulldogs"
+      },
+      {
+       "id": "401856844",
+       "score": 15,
+       "race": "ccg",
+       "root": 56,
+       "cfp12": [
+        388,
+        391
+       ],
+       "ccg": [
+        459,
+        474
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-30T23:30Z",
+       "home": "UCF Knights",
+       "away": "Baylor Bears"
       }
      ]
     }
@@ -345,6 +444,21 @@
        "home_wins": 649,
        "away_wins": 664,
        "gap": 15,
+       "own": false
+      },
+      {
+       "id": "401859185",
+       "home": "Navy Midshipmen",
+       "away": "Notre Dame Fighting Irish",
+       "hid": 61,
+       "aid": 132,
+       "neutral": true,
+       "kick_utc": "2026-10-31T16:00Z",
+       "kick_mt": "Sat Oct 31, 10:00 AM MT",
+       "base": 649,
+       "home_wins": 659,
+       "away_wins": 649,
+       "gap": 10,
        "own": false
       }
      ]
@@ -526,6 +640,60 @@
        "kick_utc": "2026-10-31T16:45Z",
        "home": "Ole Miss Rebels",
        "away": "Auburn Tigers"
+      },
+      {
+       "id": "401856737",
+       "score": 19,
+       "race": "cfp12",
+       "root": 111,
+       "cfp12": [
+        646,
+        665
+       ],
+       "ccg": [
+        477,
+        477
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:30Z",
+       "home": "Texas Longhorns",
+       "away": "Mississippi State Bulldogs"
+      },
+      {
+       "id": "401858284",
+       "score": 18,
+       "race": "cfp12",
+       "root": 82,
+       "cfp12": [
+        649,
+        667
+       ],
+       "ccg": [
+        477,
+        477
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401858508",
+       "score": 17,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        649,
+        666
+       ],
+       "ccg": [
+        477,
+        477
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
       }
      ]
     }
@@ -766,6 +934,42 @@
        "kick_utc": "2026-10-31T19:45Z",
        "home": "Wake Forest Demon Deacons",
        "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401858508",
+       "score": 17,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        523,
+        540
+       ],
+       "ccg": [
+        408,
+        408
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401856847",
+       "score": 11,
+       "race": "ccg",
+       "root": 24,
+       "cfp12": [
+        526,
+        520
+       ],
+       "ccg": [
+        400,
+        411
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:00Z",
+       "home": "Iowa State Cyclones",
+       "away": "Oklahoma State Cowboys"
       }
      ]
     }
@@ -852,6 +1056,51 @@
        "home_wins": 712,
        "away_wins": 738,
        "gap": 26,
+       "own": false
+      },
+      {
+       "id": "401858284",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers",
+       "hid": 13,
+       "aid": 82,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:45Z",
+       "kick_mt": "Sat Oct 31, 1:45 PM MT",
+       "base": 712,
+       "home_wins": 712,
+       "away_wins": 733,
+       "gap": 21,
+       "own": false
+      },
+      {
+       "id": "401856848",
+       "home": "Cincinnati Bearcats",
+       "away": "Utah Utes",
+       "hid": 39,
+       "aid": 77,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:45Z",
+       "kick_mt": "Sat Oct 31, 1:45 PM MT",
+       "base": 712,
+       "home_wins": 723,
+       "away_wins": 704,
+       "gap": 19,
+       "own": false
+      },
+      {
+       "id": "401858501",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers",
+       "hid": 131,
+       "aid": 6,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 712,
+       "home_wins": 712,
+       "away_wins": 730,
+       "gap": 18,
        "own": false
       }
      ]
@@ -1024,6 +1273,60 @@
        "kick_utc": "2026-10-31T23:45Z",
        "home": "Arkansas Razorbacks",
        "away": "Missouri Tigers"
+      },
+      {
+       "id": "401858508",
+       "score": 26,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        712,
+        738
+       ],
+       "ccg": [
+        163,
+        163
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401858284",
+       "score": 21,
+       "race": "cfp12",
+       "root": 82,
+       "cfp12": [
+        712,
+        733
+       ],
+       "ccg": [
+        163,
+        163
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401856848",
+       "score": 19,
+       "race": "cfp12",
+       "root": 39,
+       "cfp12": [
+        723,
+        704
+       ],
+       "ccg": [
+        163,
+        163
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Cincinnati Bearcats",
+       "away": "Utah Utes"
       }
      ]
     }
@@ -1177,6 +1480,51 @@
        "home_wins": 522,
        "away_wins": 537,
        "gap": 15,
+       "own": false
+      },
+      {
+       "id": "401858284",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers",
+       "hid": 13,
+       "aid": 82,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:45Z",
+       "kick_mt": "Sat Oct 31, 1:45 PM MT",
+       "base": 524,
+       "home_wins": 521,
+       "away_wins": 535,
+       "gap": 14,
+       "own": false
+      },
+      {
+       "id": "401856734",
+       "home": "Georgia Bulldogs",
+       "away": "Florida Gators",
+       "hid": 125,
+       "aid": 121,
+       "neutral": true,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 524,
+       "home_wins": 521,
+       "away_wins": 534,
+       "gap": 13,
+       "own": false
+      },
+      {
+       "id": "401858509",
+       "home": "USC Trojans",
+       "away": "Ohio State Buckeyes",
+       "hid": 104,
+       "aid": 22,
+       "neutral": false,
+       "kick_utc": "2026-10-31T23:30Z",
+       "kick_mt": "Sat Oct 31, 5:30 PM MT",
+       "base": 524,
+       "home_wins": 517,
+       "away_wins": 529,
+       "gap": 12,
        "own": false
       }
      ]
@@ -1334,6 +1682,60 @@
        "kick_utc": "2026-10-31T16:45Z",
        "home": "Ole Miss Rebels",
        "away": "Auburn Tigers"
+      },
+      {
+       "id": "401858284",
+       "score": 14,
+       "race": "cfp12",
+       "root": 82,
+       "cfp12": [
+        521,
+        535
+       ],
+       "ccg": [
+        586,
+        586
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401856847",
+       "score": 14,
+       "race": "ccg",
+       "root": 127,
+       "cfp12": [
+        525,
+        520
+       ],
+       "ccg": [
+        589,
+        575
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:00Z",
+       "home": "Iowa State Cyclones",
+       "away": "Oklahoma State Cowboys"
+      },
+      {
+       "id": "401856734",
+       "score": 13,
+       "race": "cfp12",
+       "root": 121,
+       "cfp12": [
+        521,
+        534
+       ],
+       "ccg": [
+        586,
+        586
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:30Z",
+       "home": "Georgia Bulldogs",
+       "away": "Florida Gators"
       }
      ]
     }
@@ -1420,6 +1822,36 @@
        "home_wins": 581,
        "away_wins": 601,
        "gap": 20,
+       "own": false
+      },
+      {
+       "id": "401859185",
+       "home": "Navy Midshipmen",
+       "away": "Notre Dame Fighting Irish",
+       "hid": 61,
+       "aid": 132,
+       "neutral": true,
+       "kick_utc": "2026-10-31T16:00Z",
+       "kick_mt": "Sat Oct 31, 10:00 AM MT",
+       "base": 581,
+       "home_wins": 594,
+       "away_wins": 579,
+       "gap": 15,
+       "own": false
+      },
+      {
+       "id": "401858509",
+       "home": "USC Trojans",
+       "away": "Ohio State Buckeyes",
+       "hid": 104,
+       "aid": 22,
+       "neutral": false,
+       "kick_utc": "2026-10-31T23:30Z",
+       "kick_mt": "Sat Oct 31, 5:30 PM MT",
+       "base": 581,
+       "home_wins": 573,
+       "away_wins": 587,
+       "gap": 14,
        "own": false
       }
      ]
@@ -1586,6 +2018,60 @@
        "kick_utc": "2026-10-31T19:30Z",
        "home": "Indiana Hoosiers",
        "away": "Minnesota Golden Gophers"
+      },
+      {
+       "id": "401856737",
+       "score": 26,
+       "race": "cfp12",
+       "root": 111,
+       "cfp12": [
+        576,
+        602
+       ],
+       "ccg": [
+        410,
+        410
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:30Z",
+       "home": "Texas Longhorns",
+       "away": "Mississippi State Bulldogs"
+      },
+      {
+       "id": "401856735",
+       "score": 24,
+       "race": "cfp12",
+       "root": 25,
+       "cfp12": [
+        578,
+        602
+       ],
+       "ccg": [
+        410,
+        410
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T16:45Z",
+       "home": "Ole Miss Rebels",
+       "away": "Auburn Tigers"
+      },
+      {
+       "id": "401858508",
+       "score": 20,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        581,
+        601
+       ],
+       "ccg": [
+        410,
+        410
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
       }
      ]
     }
@@ -1672,6 +2158,36 @@
        "home_wins": 412,
        "away_wins": 428,
        "gap": 16,
+       "own": false
+      },
+      {
+       "id": "401858508",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack",
+       "hid": 84,
+       "aid": 65,
+       "neutral": false,
+       "kick_utc": "2026-10-31T20:15Z",
+       "kick_mt": "Sat Oct 31, 2:15 PM MT",
+       "base": 417,
+       "home_wins": 417,
+       "away_wins": 432,
+       "gap": 15,
+       "own": false
+      },
+      {
+       "id": "401859185",
+       "home": "Navy Midshipmen",
+       "away": "Notre Dame Fighting Irish",
+       "hid": 61,
+       "aid": 132,
+       "neutral": true,
+       "kick_utc": "2026-10-31T16:00Z",
+       "kick_mt": "Sat Oct 31, 10:00 AM MT",
+       "base": 417,
+       "home_wins": 428,
+       "away_wins": 417,
+       "gap": 11,
        "own": false
       }
      ]
@@ -1838,6 +2354,63 @@
        "kick_utc": "2026-10-31T16:00Z",
        "home": "Texas Tech Red Raiders",
        "away": "Arizona Wildcats"
+      },
+      {
+       "id": "401856843",
+       "score": 18,
+       "race": "ccg",
+       "root": 133,
+       "cfp12": [
+        412,
+        428
+       ],
+       "ccg": [
+        265,
+        283
+       ],
+       "sec": {
+        "race": "cfp12",
+        "v": 16
+       },
+       "kick_utc": "2026-10-31T19:30Z",
+       "home": "BYU Cougars",
+       "away": "Arizona State Sun Devils"
+      },
+      {
+       "id": "401858509",
+       "score": 17,
+       "race": "cfp12",
+       "root": 22,
+       "cfp12": [
+        407,
+        424
+       ],
+       "ccg": [
+        270,
+        270
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:30Z",
+       "home": "USC Trojans",
+       "away": "Ohio State Buckeyes"
+      },
+      {
+       "id": "401858508",
+       "score": 15,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        417,
+        432
+       ],
+       "ccg": [
+        270,
+        270
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
       }
      ]
     }
@@ -1924,6 +2497,51 @@
        "home_wins": 698,
        "away_wins": 668,
        "gap": 30,
+       "own": false
+      },
+      {
+       "id": "401858501",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers",
+       "hid": 131,
+       "aid": 6,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 680,
+       "home_wins": 676,
+       "away_wins": 700,
+       "gap": 24,
+       "own": false
+      },
+      {
+       "id": "401856842",
+       "home": "Texas Tech Red Raiders",
+       "away": "Arizona Wildcats",
+       "hid": 91,
+       "aid": 2,
+       "neutral": false,
+       "kick_utc": "2026-10-31T16:00Z",
+       "kick_mt": "Sat Oct 31, 10:00 AM MT",
+       "base": 680,
+       "home_wins": 672,
+       "away_wins": 693,
+       "gap": 21,
+       "own": false
+      },
+      {
+       "id": "401858508",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack",
+       "hid": 84,
+       "aid": 65,
+       "neutral": false,
+       "kick_utc": "2026-10-31T20:15Z",
+       "kick_mt": "Sat Oct 31, 2:15 PM MT",
+       "base": 680,
+       "home_wins": 680,
+       "away_wins": 701,
+       "gap": 21,
        "own": false
       }
      ]
@@ -2096,6 +2714,60 @@
        "kick_utc": "2026-10-31T19:45Z",
        "home": "Cincinnati Bearcats",
        "away": "Utah Utes"
+      },
+      {
+       "id": "401856733",
+       "score": 28,
+       "race": "ccg",
+       "root": 130,
+       "cfp12": [
+        682,
+        678
+       ],
+       "ccg": [
+        143,
+        115
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T23:45Z",
+       "home": "Arkansas Razorbacks",
+       "away": "Missouri Tigers"
+      },
+      {
+       "id": "401858501",
+       "score": 24,
+       "race": "cfp12",
+       "root": 6,
+       "cfp12": [
+        676,
+        700
+       ],
+       "ccg": [
+        123,
+        123
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:30Z",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers"
+      },
+      {
+       "id": "401856842",
+       "score": 21,
+       "race": "cfp12",
+       "root": 2,
+       "cfp12": [
+        672,
+        693
+       ],
+       "ccg": [
+        123,
+        123
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T16:00Z",
+       "home": "Texas Tech Red Raiders",
+       "away": "Arizona Wildcats"
       }
      ]
     }
@@ -2535,6 +3207,60 @@
        "kick_utc": "2026-10-31T19:45Z",
        "home": "Wake Forest Demon Deacons",
        "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401858508",
+       "score": 13,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        226,
+        239
+       ],
+       "ccg": [
+        321,
+        321
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401856735",
+       "score": 11,
+       "race": "cfp12",
+       "root": 25,
+       "cfp12": [
+        226,
+        237
+       ],
+       "ccg": [
+        321,
+        321
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T16:45Z",
+       "home": "Ole Miss Rebels",
+       "away": "Auburn Tigers"
+      },
+      {
+       "id": "401856846",
+       "score": 10,
+       "race": "ccg",
+       "root": 115,
+       "cfp12": [
+        228,
+        225
+       ],
+       "ccg": [
+        325,
+        315
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T18:00Z",
+       "home": "Colorado Buffaloes",
+       "away": "Kansas State Wildcats"
       }
      ]
     }
@@ -2621,6 +3347,21 @@
        "home_wins": 584,
        "away_wins": 600,
        "gap": 16,
+       "own": false
+      },
+      {
+       "id": "401859185",
+       "home": "Navy Midshipmen",
+       "away": "Notre Dame Fighting Irish",
+       "hid": 61,
+       "aid": 132,
+       "neutral": true,
+       "kick_utc": "2026-10-31T16:00Z",
+       "kick_mt": "Sat Oct 31, 10:00 AM MT",
+       "base": 584,
+       "home_wins": 596,
+       "away_wins": 584,
+       "gap": 12,
        "own": false
       }
      ]
@@ -2802,6 +3543,60 @@
        "kick_utc": "2026-10-31T23:30Z",
        "home": "Texas Longhorns",
        "away": "Mississippi State Bulldogs"
+      },
+      {
+       "id": "401856735",
+       "score": 23,
+       "race": "cfp12",
+       "root": 25,
+       "cfp12": [
+        578,
+        601
+       ],
+       "ccg": [
+        426,
+        426
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T16:45Z",
+       "home": "Ole Miss Rebels",
+       "away": "Auburn Tigers"
+      },
+      {
+       "id": "401858508",
+       "score": 23,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        584,
+        607
+       ],
+       "ccg": [
+        426,
+        426
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401856844",
+       "score": 18,
+       "race": "ccg",
+       "root": 56,
+       "cfp12": [
+        585,
+        586
+       ],
+       "ccg": [
+        418,
+        436
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-30T23:30Z",
+       "home": "UCF Knights",
+       "away": "Baylor Bears"
       }
      ]
     }
@@ -2888,6 +3683,51 @@
        "home_wins": 542,
        "away_wins": 520,
        "gap": 22,
+       "own": false
+      },
+      {
+       "id": "401856843",
+       "home": "BYU Cougars",
+       "away": "Arizona State Sun Devils",
+       "hid": 75,
+       "aid": 133,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 524,
+       "home_wins": 523,
+       "away_wins": 536,
+       "gap": 13,
+       "own": false
+      },
+      {
+       "id": "401856734",
+       "home": "Georgia Bulldogs",
+       "away": "Florida Gators",
+       "hid": 125,
+       "aid": 121,
+       "neutral": true,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 524,
+       "home_wins": 522,
+       "away_wins": 534,
+       "gap": 12,
+       "own": false
+      },
+      {
+       "id": "401858501",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers",
+       "hid": 131,
+       "aid": 6,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 524,
+       "home_wins": 524,
+       "away_wins": 535,
+       "gap": 11,
        "own": false
       }
      ]
@@ -3060,6 +3900,60 @@
        "kick_utc": "2026-10-31T23:30Z",
        "home": "Texas Longhorns",
        "away": "Mississippi State Bulldogs"
+      },
+      {
+       "id": "401858508",
+       "score": 24,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        524,
+        548
+       ],
+       "ccg": [
+        493,
+        493
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
+      },
+      {
+       "id": "401856735",
+       "score": 23,
+       "race": "cfp12",
+       "root": 25,
+       "cfp12": [
+        519,
+        542
+       ],
+       "ccg": [
+        493,
+        493
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T16:45Z",
+       "home": "Ole Miss Rebels",
+       "away": "Auburn Tigers"
+      },
+      {
+       "id": "401858284",
+       "score": 22,
+       "race": "cfp12",
+       "root": 82,
+       "cfp12": [
+        524,
+        546
+       ],
+       "ccg": [
+        493,
+        493
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers"
       }
      ]
     }
@@ -3146,6 +4040,51 @@
        "home_wins": 761,
        "away_wins": 786,
        "gap": 25,
+       "own": false
+      },
+      {
+       "id": "401858508",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack",
+       "hid": 84,
+       "aid": 65,
+       "neutral": false,
+       "kick_utc": "2026-10-31T20:15Z",
+       "kick_mt": "Sat Oct 31, 2:15 PM MT",
+       "base": 761,
+       "home_wins": 761,
+       "away_wins": 785,
+       "gap": 24,
+       "own": false
+      },
+      {
+       "id": "401856848",
+       "home": "Cincinnati Bearcats",
+       "away": "Utah Utes",
+       "hid": 39,
+       "aid": 77,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:45Z",
+       "kick_mt": "Sat Oct 31, 1:45 PM MT",
+       "base": 761,
+       "home_wins": 770,
+       "away_wins": 755,
+       "gap": 15,
+       "own": false
+      },
+      {
+       "id": "401858501",
+       "home": "Indiana Hoosiers",
+       "away": "Minnesota Golden Gophers",
+       "hid": 131,
+       "aid": 6,
+       "neutral": false,
+       "kick_utc": "2026-10-31T19:30Z",
+       "kick_mt": "Sat Oct 31, 1:30 PM MT",
+       "base": 761,
+       "home_wins": 760,
+       "away_wins": 774,
+       "gap": 14,
        "own": false
       }
      ]
@@ -3318,6 +4257,60 @@
        "kick_utc": "2026-10-31T19:30Z",
        "home": "BYU Cougars",
        "away": "Arizona State Sun Devils"
+      },
+      {
+       "id": "401858284",
+       "score": 25,
+       "race": "cfp12",
+       "root": 82,
+       "cfp12": [
+        761,
+        786
+       ],
+       "ccg": [
+        201,
+        201
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T19:45Z",
+       "home": "Wake Forest Demon Deacons",
+       "away": "Virginia Cavaliers"
+      },
+      {
+       "id": "401856736",
+       "score": 24,
+       "race": "ccg",
+       "root": 81,
+       "cfp12": [
+        757,
+        766
+       ],
+       "ccg": [
+        193,
+        217
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "Oklahoma Sooners",
+       "away": "South Carolina Gamecocks"
+      },
+      {
+       "id": "401858508",
+       "score": 24,
+       "race": "cfp12",
+       "root": 65,
+       "cfp12": [
+        761,
+        785
+       ],
+       "ccg": [
+        201,
+        201
+       ],
+       "sec": null,
+       "kick_utc": "2026-10-31T20:15Z",
+       "home": "UCLA Bruins",
+       "away": "Nevada Wolf Pack"
       }
      ]
     }

@@ -43,12 +43,16 @@ const mk = (id, kick, pH, pA, extra) => ({ g: { id, week: 1, h: 1, a: 2, neutral
 const defs = [mk('a', 5e5, 510, 500), mk('b', 4e5, 509, 500), mk('c', 3e5, 600, 500), mk('d', 2e5, 500, 600), mk('e', 1e5, 600, 500), mk('f', 6e5, 700, 500), mk('g', 7e5, 650, 500), mk('h', 8e5, 400, 500)];
 const sc = { index: idx, asOfMs: 0, games: defs.map(d => d.g), shard: (w, id) => defs.find(d => d.g.id === id).s };
 const sr = R.compute(0, 'cfp12', sc, 0);
-ok(sr.rows.map(r => r.id).join(',') === 'f,g,e,d,c', 'order largest first, ties by earlier kickoff, max 5: ' + sr.rows.map(r => r.id)); 
+ok(sr.rows.map(r => r.id).join(',') === 'f,g,e,d,c,h,a', 'order largest first, ties by earlier kickoff, all 7 under the cap of 8: ' + sr.rows.map(r => r.id)); 
 ok(sr.nBig === 7 && sr.nWindow === 8 && sr.nHidden === 1, 'gap 10 shown, gap 9 hidden: ' + [sr.nBig, sr.nWindow, sr.nHidden]);
 ok(sr.rows[3].root === 2 && sr.rows[3].pRoot === 600, 'root for the side with the higher chance (away)');
 const none = { index: idx, asOfMs: 0, games: [defs[0].g], shard: () => ({ h: [], a: [] }) }; const rn = R.compute(0, 'cfp12', none, 0); ok(rn.nWindow === 1 && rn.nBig === 0, 'unlisted team = baseline = 0 gap');
 const ipg = { index: idx, asOfMs: 0, games: [Object.assign({}, defs[2].g, { ip: true })], shard: () => defs[2].s }; ok(R.compute(0, 'cfp12', ipg, 0).nWindow === 0, 'in progress dropped');
 const tba = Object.assign({}, defs[2].g, { tba: true, kick: 1e6 }); ok(R.compute(0, 'cfp12', { index: idx, asOfMs: 0, games: [tba], shard: () => defs[2].s }, 1e6 + 5e7).nWindow === 1 && R.compute(0, 'cfp12', { index: idx, asOfMs: 0, games: [tba], shard: () => defs[2].s }, 1e6 + 9e7).nWindow === 0, 'TBA day lasts to the end of the day');
+// cap 8 (Oct 31 12:17): 10 qualifying games -> 8 rows, nBig 10
+{ const d10 = [...Array(10).keys()].map(i => mk('z' + i, 1e5 * (i + 1), 520 + 10 * i, 500)); const s10 = R.compute(0, 'cfp12', { index: idx, asOfMs: 0, games: d10.map(d => d.g), shard: (w, id) => d10.find(d => d.g.id === id).s }, 0);
+  ok(s10.rows.length === 8 && s10.nBig === 10 && s10.rows[0].id === 'z9' && s10.rows[7].id === 'z2', 'cap 8 of 10: ' + s10.rows.map(r => r.id)); }
+{ const sb = R.compute(0, 'blend', sc, 0); ok(sb.rows.length <= 8, 'blend cap 8'); }
 // blended list: own game never listed for any team; 'title' measure never read
 ok(nm.every((x, t) => !c.index.baseline[t] || !R.compute(t, 'blend', c, c.asOfMs).rows.some(r => r.h === t || r.a === t)), 'blend: own game never listed (all teams)');
 { const ti = c.index.metrics.indexOf('title') + 1, cx = Object.assign({}, c, { index: Object.assign({}, c.index, { baseline: c.index.baseline.map(b => b.map((v, i) => i === ti - 1 ? NaN : v)) }), shard: (w, id) => { const s = c.shard(w, id); return s && { h: s.h.map(r => r.map((v, i) => i === ti ? NaN : v)), a: s.a.map(r => r.map((v, i) => i === ti ? NaN : v)) }; } });

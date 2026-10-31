@@ -4,7 +4,7 @@
    The pure function KTRootables.compute() has no DOM; tests/rootables_unit.js runs it under node against the published shards. */
 (function () {
   'use strict';
-  var MS7 = 7 * 864e5, THRESH = 10, MAXROWS = 5, MINUS = '\u2212';
+  var MS7 = 7 * 864e5, THRESH = 10, MAXROWS = 8, MINUS = '\u2212';
   var METRICS = { cfp12: { col: 'cfp12', short: 'Make the 12', full: 'Make the 12', phrase: 'make-the-12 chance' },
                   ccg: { col: 'ccg', short: 'Reach CCG', full: 'Reach CCG', aria: 'Reach the conference championship game', phrase: 'chance to reach the conference championship game' } };
   var SHORT = '__RUN_SHORT_HTML__';   /* the SHORT under-Run line under Run Rootables again (built from src/terms_copy.py); the FULL line is static HTML in the card */

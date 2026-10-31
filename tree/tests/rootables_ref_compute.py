@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 MT = ZoneInfo('America/Denver')
 METRIC = {'cfp12': 'Make the 12', 'ccg': 'Reach the conference title game'}
 THRESH = 10   # per-mille = 1.0 point
+MAXROWS = 8   # page Rootables cap (Jared Oct 31 12:17 MT: "Raise the page Rootables to 8")
 TEAMS = ('Utah Utes', 'BYU Cougars', 'Houston Cougars', 'LSU Tigers', 'Tennessee Volunteers')   # Utah + BYU = the two required examples; Houston = My teams 3rd card; LSU = bye-week example; Tennessee = 'nothing moves it 1.0 point' example
 def base_dir(model): return 'live/data' + ('' if model == 'blend' else f'/m/{model}')
 def load(model='blend'):
@@ -46,12 +47,12 @@ def blend_block(idx, sh, win, t):
         sec = None if o['gap'] < THRESH else dict(race='cfp12' if race == 'ccg' else 'ccg', v=o['gap'] if root(o) == root(m) else -o['gap'])
         rows.append(dict(id=i, score=m['gap'], race=race, root=root(m), cfp12=[p['home_wins'], p['away_wins']], ccg=[c['home_wins'], c['away_wins']], sec=sec, kick_utc=m['kick_utc'], home=m['home'], away=m['away']))
     rows.sort(key=lambda r: (-r['score'], r['kick_utc'], r['id'])); big = [r for r in rows if r['score'] >= THRESH]
-    return dict(n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:5])
+    return dict(n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:MAXROWS])
 def team_block(idx, sh, win, tm):
     t = idx['team_names'].index(tm); blk = {'team': tm, 'tid': t}
     for m in METRIC:
         rows = swings(idx, sh, t, m, win); big = [r for r in rows if r['gap'] >= THRESH]
-        blk[m] = dict(baseline=idx['baseline'][t][idx['metrics'].index(m)], n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:5])
+        blk[m] = dict(baseline=idx['baseline'][t][idx['metrics'].index(m)], n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:MAXROWS])
     blk['blend'] = blend_block(idx, sh, win, t)
     return blk
 if __name__ == '__main__':

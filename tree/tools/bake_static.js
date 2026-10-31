@@ -167,7 +167,7 @@ function rbHtml(slug) {
   const li = res.rows.map((r) => RB.rvCard({ slug: sl(r.root), when: RB.whenCard(r), root: { name: nm(r.root), logo: lgo(r.root) }, other: { name: nm(r.other), logo: lgo(r.other) }, where: r.neutral || r.root === r.h ? 'vs' : 'at', gain: RB.pts(r.gap), label: RB.fill(S.gain, { Team: team }), tag: RB.tagText(r.race, conf), race: r.race, also: RB.alsoText(r.sec, conf),
     sr: 'Root for ' + nm(r.root) + '. ' + team + '\u2019s chance for ' + RB.fill(S.race[r.race], { Conf: conf }) + ' is ' + RB.pts(r.gap) + ' points higher if ' + nm(r.root) + ' wins.' + (r.sec ? ' ' + RB.alsoText(r.sec, conf).replace('\u2212', 'minus ') + '.' : '') + ' Kickoff ' + RB.whenLong(r) + '.' })).join('');
   const L = li.split('</li>').filter(Boolean).map((x) => x + '</li>'), top = L.slice(0, 2).join(''), more = L.slice(2).join('');
-  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s ' + (conf ? 'playoff and ' + esc(conf) + '&nbsp;championship' : 'playoff') + ' chances (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show all ' + L.length + ' games</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
+  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s ' + (conf ? 'playoff and ' + esc(conf) + '&nbsp;championship' : 'playoff') + ' chances (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show ' + (L.length - 2) + ' more game' + (L.length === 3 ? '' : 's') + '</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
 }
 
 /* ---- page edits ---- */

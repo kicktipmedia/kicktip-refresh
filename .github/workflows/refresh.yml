@@ -72,6 +72,9 @@ jobs:
         continue-on-error: true
         uses: actions/cache/save@v4
         with: { path: natranks/last, key: "natranks-${{ github.run_id }}" }
+      - name: Failed-input hold (restore)
+        uses: actions/cache/restore@v4
+        with: { path: hold, key: "refresh-hold-${{ github.run_id }}", restore-keys: "refresh-hold-" }
       - name: Pull ESPN and decide (cheap gate)
         id: gate
         run: |
@@ -82,13 +85,23 @@ jobs:
           fi
           python3 -m pip install -q numpy==2.5.4
           cd tree && python3 src/refresh.py > /tmp/refresh.json && cd ..
+          (cd tree && timeout 180 python3 src/lines.py --pull --no-merge) || echo "lines pull failed (kept last snapshot)"
+          echo "KT_LINES_PULLED=1" >> $GITHUB_ENV   # auto_refresh reuses this pull: the gate fp is the build fp (one ESPN pull per run)
           FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")
-          echo "fp $OLD -> $FP"
-          if [ "$FP" = "$OLD" ] && [ "${{ inputs.force }}" != "true" ]; then
+          read LFP LEP <<< "$(python3 tools/lines_fp.py tree)"; read LFP0 LEP0 <<< "$(python3 -c "import json;s=json.load(open('state.json'));print(s.get('lines_fp') or '-', s.get('lines_epoch',0))")"
+          [[ "$LEP" =~ ^[0-9]+$ ]] || LEP=0; [[ "$LEP0" =~ ^[0-9]+$ ]] || LEP0=0
+          LCHG=0; { [ "$LFP" != "none" ] && [ "$LFP" != "$LFP0" ]; } && LCHG=1; [ "$LEP" -gt $(( LEP0 + 72000 )) ] && LCHG=1
+          INHASH="$FP-$LFP"; echo "inhash=$INHASH" >> $GITHUB_OUTPUT   # refreshfix B2: one failed attempt per input hash (same pattern as ranks N2)
+          echo "fp $OLD -> $FP; lines fp $LFP0 -> $LFP (pulled epoch $LEP, live $LEP0, changed=$LCHG)"
+          if [ "$FP" = "$OLD" ] && [ $LCHG = 0 ] && [ "${{ inputs.force }}" != "true" ]; then
             if [ "${{ steps.ranks.outputs.ranks_force }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
-            else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff: skip." >> $GITHUB_STEP_SUMMARY; fi
+            else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff/spread: skip." >> $GITHUB_STEP_SUMMARY; fi
+          elif [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ] && [ "${{ inputs.force }}" != "true" ]; then
+            echo "changed=0" >> $GITHUB_OUTPUT; echo "Held: inputs $INHASH already failed once; waiting for new results or spreads (force=true overrides)." >> $GITHUB_STEP_SUMMARY
           else echo "changed=1" >> $GITHUB_OUTPUT; fi
+          cp tree/data/store/espn_lines.json /tmp/espn_lines.json 2>/dev/null || true
           git checkout -- tree/data/store
+          cp /tmp/espn_lines.json tree/data/store/espn_lines.json 2>/dev/null || true
       - name: Install tools (pinned)
         if: steps.gate.outputs.changed == '1'
         run: |
@@ -116,8 +129,17 @@ jobs:
           if python3 -c "import json,sys;sys.exit(0 if 'live_id' in json.load(open('$R')) else 1)"; then
             git checkout -- state.json
             eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('ZIP=%s ID=%s S0=%s ASOF=%s FP=%s DONE=%s'%tuple(shlex.quote(str(r[k])) for k in ('zip','live_id','s0','as_of','fp','completed')))")"
-            tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE"
+            eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('LFP=%s LEP=%s'%(shlex.quote(str(r.get('lines_fp',''))),shlex.quote(str(r.get('lines_epoch','')))))")"
+            tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE" --s0-inputs tree ${LFP:+--lines-fp "$LFP"} ${LEP:+--lines-epoch "$LEP"}
           fi
+      - name: Failed-input hold (record this input hash)
+        if: failure() && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
+        run: mkdir -p hold && echo "${{ steps.gate.outputs.inhash }}" > hold/failed
+      - name: Failed-input hold (save)
+        if: failure() && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with: { path: hold, key: "refresh-hold-${{ github.run_id }}" }
       - name: Commit FREEZE if a post-deploy check failed
         if: failure()
         run: |

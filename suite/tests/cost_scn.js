@@ -19,8 +19,8 @@ const ck = (ok, w, x) => { n++; if (!ok) { bad++; console.log("FAIL " + w + (x !
     console.log(m + ": input ~" + tokIn(mean, m) + " tokens typical (" + tokIn(max, m) + " largest fixture, " + tokIn(SCN.MAX_FACTS_JSON, m) + " at the Worker's size limit); typical write-up " + typ.toFixed(1) + " neurons; largest fixture with a long reply " + real.toFixed(1) + "; Worker's conservative worst case (limit-size facts) " + worker.toFixed(1) + (meas ? "; measured on Preview " + ((meas.summary[m] || {}).neurons_avg ?? "n/a") : ""));
   }
   const askW = (m) => { const r = M[id[m]], inTok = Math.ceil(T.ASK_SYS.length / ASK.PROMPT_CHARS_PER_TOKEN + (json(m) ? ASK.JSON_ENVELOPE_TOKENS : 0) + ASK.MAX_CHARS / ASK.TEXT_CHARS_PER_TOKEN + ASK.FRAME_TOKENS); return (inTok * r.inn + (r.calibrated ? ASK.REALISTIC_OUT_TOKENS : 256) * r.out) / 1e6; };
-  const a70 = askW("70b"); console.log("one home ask worst case on 70b: " + a70.toFixed(2) + " neurons (the caps1 figure, 74.899)");
-  ck(Math.abs(a70 - 74.899) < 0.05, "re-derived ask worst case matches the caps1 figure 74.899", a70);
+  const a70 = askW("70b"); console.log("one home ask worst case on 70b: " + a70.toFixed(2) + " neurons (AI-primary f44e095d figure, 79.753; caps1 was 74.899)");
+  ck(Math.abs(a70 - 79.753) < 0.05, "re-derived ask worst case matches the AI-primary figure 79.753 (ASK_SYS grew with f44e095d; caps1 was 74.899)", a70);
   ck(R["70b"].worker_worst <= a70 + 1e-9, "a write-up's conservative worst case on 70b (" + R["70b"].worker_worst.toFixed(1) + ") is <= one ask's worst case (" + a70.toFixed(1) + ")", R["70b"]);
   ck(R["8b"].worker_worst < R["70b"].worker_worst / 2, "8b write-up costs under half of 70b", R);
   ck(R["70b"].typical <= 72 && R["70b"].worker_worst <= 72, "70b: typical (" + R["70b"].typical.toFixed(1) + ") and conservative worst case (" + R["70b"].worker_worst.toFixed(1) + ") are both at or under the planning figure 72", R["70b"]);

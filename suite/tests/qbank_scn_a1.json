@@ -179,7 +179,7 @@
    "text": "What if BYU finishes with no losses?",
    "kind": "clarify",
    "expect": {
-    "reason": "invalid_loss_count"
+    "reason": "loss_range"
    }
   },
   {
@@ -776,9 +776,9 @@
   {
    "id": "scn41",
    "text": "what if BYU, Utah, Texas Tech and Arizona win out",
-   "kind": "unchanged",
+   "kind": "clarify",
    "expect": {
-    "note": "the standard parser does not read this one; it takes the same path as router2c (AI mode or the not-understood line)"
+    "reason": "conflict"
    }
   },
   {
@@ -816,7 +816,7 @@
    "text": "what if BYU ends with 9 losses",
    "kind": "clarify",
    "expect": {
-    "reason": "too_many_games"
+    "reason": "loss_range"
    }
   },
   {

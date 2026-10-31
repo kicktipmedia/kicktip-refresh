@@ -81,3 +81,36 @@ No cron is installed. See the recommendation in the latest report. When the go c
 - Box replay on the same inputs (KT_SKIP_FETCH=1): 1011 of 1014 files identical; the 3 sim-bundle.json files differ only in last-digit float noise in 4 model-metadata fields (resume_sd, bench, sor_sd, hfa; CPU/BLAS rounding). No displayed number differs.
 - Every refresh is a full run (what-ifs on the same as-of as scores). One as-of per run: model stamp = results-pulled minute (KT_ASOF in run_all.py).
 - Cadence: off-days hourly check (skip ~20 s when nothing changed). Saturday ticks every 30 min; concurrency group 'refresh' runs one at a time and keeps at most ONE pending run (GitHub replaces an older pending run with the newer one), so busy Saturdays run back-to-back: a fresh update roughly every 35-60 min.
+
+## Feature ships and the S0 merge base (added Oct 30, 2026, refreshfix)
+Why: every refresh 3-way-merges live + (S0 -> S1). S0/S1 are rendered by `tree/src/build.py`; feature ships edit the live HTML directly.
+If a feature changes HTML that the pipeline also regenerates (games table/rows/cards, Sources strip, method page, stamps), the data merge
+conflicts (Oct 30, 9:39 PM MT run 41165311294: live B5 games table had renamed headers + no Gap column; S1 added/removed rows next to them -> `games/index.html rc=3`).
+**S0 asset name:** `state.json` key `s0_asset` (now `s0-site-v2.tar.gz`; absent = `s0-site.tar.gz`). `fetch_base.sh`, `publish_base.sh` and
+`rebuild_s0.sh` all use it. The S0 must be rendered by the SAME `build.py` templates the branch runs: refreshfix templates use
+`s0-site-v2.tar.gz` (sha 9792844d…), main's old templates keep `s0-site.tar.gz` (a8b733c0…) until the merge, so neither branch reverts the other's copy.
+Old S0 (e78fc637…, before Oct 30) is kept as `s0-site-backup-oct29.tar.gz` on release `base` and in `/workspace/hub/backups/`.
+
+**Rule for every feature ship that touches pipeline-generated HTML:**
+1. Port the same change into `tree/src/build.py` (same branch/PR as the ship). Visible copy must match the live wording; do not use "market".
+2. `tools/rebuild_s0.sh <new empty dir outside the repo> --check <feature zip>` re-renders S0 at the live as-of from `s0-inputs.tar.gz`.
+   The out dir is never deleted (the script refuses the repo, /, $HOME, /workspace, /tmp, and non-empty dirs).
+   - Check 1 (report only): merge of the feature zip + (old S0 -> new S0). Lists pages where the zip carries the change in other markup.
+   - Check 2 (required, gate): `KT_S0_OVERRIDE=<out>/new tools/auto_refresh.sh --no-deploy --force` in a clone whose `base/kicktip-site.zip`
+     is the feature zip and `state.json live_sha` its sha. Must exit 0 (apply_data with no conflict + full suite).
+3. Ship as usual (guard, sha, deploy, bytecmp), then `tools/publish_base.sh <zip> <id>` and `tools/rebuild_s0.sh <dir> --upload`.
+   `--upload` first saves the current asset once as `s0-site-backup-<sha12>.tar.gz` (never overwritten by a second run), then replaces it.
+   Rollback: `gh release download base -p s0-site-backup-<sha12>.tar.gz -D /tmp/rb && mv /tmp/rb/s0-site-backup-<sha12>.tar.gz /tmp/rb/<s0_asset> && gh release upload base /tmp/rb/<s0_asset> --clobber`.
+   Ships that only change JS/CSS/assets need neither step.
+4. Refresh runs keep `s0-inputs.tar.gz` current (`publish_base --s0-inputs tree`).
+
+**Spreads (ESPN):** `src/lines.py --pull` runs ONCE per run before the gate fingerprint (2 h minimum interval Thu-Sat MT, 12 h otherwise;
+the interval counts failed/empty attempts too, via `espn_lines.json.attempt`). The workflow sets `KT_LINES_PULLED=1` so `auto_refresh.sh`
+does not pull again: the gate fp equals the build fp. A new snapshot (`lines_fp`) triggers a full run. Safety:
+- Empty pull (no usable spreads) or network error: `espn_lines.json` is not touched (last good lines stay, `pulled_epoch` never 0).
+- Corrupt `espn_lines.json`: `lines_fp.py` prints `none 0`; the merge keeps the previous `market_lines.json` and logs it; never a hard failure.
+- The `lines.py` merge failing is a warning, not a failed run.
+
+**Failed-input hold (no loop on a red suite):** when a full run fails (suite exit 17 or anything else), the workflow stores the input
+hash `<results_fp>-<lines_fp>` in the Actions cache `refresh-hold-*`. The next scheduled run with the SAME inputs stops at the gate
+("Held: …" in the summary) instead of rerunning the 15-min models. New results or new spreads give a new hash: one retry. `force=true` overrides.

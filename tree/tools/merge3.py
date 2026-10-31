@@ -84,11 +84,25 @@ def anchored(l,a,b):
                 if ok: lt=nl; rep.setdefault('numeric_fallback',[]).append('per-number '+at[a1:a2]+' -> '+bt[b1:b2]); continue
             bad.append(repr(at[max(0,a1-30):a2+30]))
     return lt.encode('utf-8'),bad
+STALE_GAP=b'<td data-c="gap"><span class="lk">Loading</span></td>'
+CNT=re.compile(rb'Right now that is \d+ of the \d+ games that have not started')
+def livefix(f,l,a):
+    """Live-only leftovers that the templates can never reproduce (Oct 31 refreshfix):
+    games/index.html: stray <td data-c="gap"> cells left in a few live rows after the Gap column was removed (header has no Gap column);
+    method/index.html: the 'Right now that is N of the M games' count is pipeline data; live's stale value is replaced by S0's so S1 applies."""
+    if f=='games/index.html' and STALE_GAP not in a and STALE_GAP in l:
+        rep.setdefault('livefix',[]).append(f+' stray gap cells: %d'%l.count(STALE_GAP)); l=l.replace(STALE_GAP,b'')
+    if f=='method/index.html':
+        m=CNT.search(a)
+        if m and CNT.search(l) and m.group(0) not in l:
+            rep.setdefault('livefix',[]).append(f+' count '+CNT.search(l).group(0).decode()+' -> S0'); l=CNT.sub(lambda _:m.group(0),l,count=1)
+    return l
 for f in changed:
     lp=L+'/'+f
     if not os.path.exists(lp): rep['missing_live'].append(f); continue
     l,a,b=rd(lp),rd(S0+'/'+f),rd(S1+'/'+f)
     if a is None or b is None: rep['conflict'].append(f+' (only in one of S0/S1)'); continue
+    l=livefix(f,l,a)
     if l==a: open(OUT+'/'+f,'wb').write(b); rep['taken'].append(f); continue
     if f.endswith('.json'):
         conf=[]; m=jm(json.loads(pre(l,0)),json.loads(pre(a,0)),json.loads(pre(b,1)),'',conf)

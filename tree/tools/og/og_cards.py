@@ -57,6 +57,7 @@ def main():
     for c in old.values():
         for e in c.values(): e.pop('asof', None)   # pre-fix manifests carried the as-of text
     cache = os.environ.get('KT_OG_CACHE')
+    if cache == 'off': cache = None   # KT_OG_CACHE=off: no cache (QA determinism check: every card drawn from scratch)
     if cache: os.makedirs(cache, exist_ok=True)
     od = os.path.join(S, 'og', 'rootables'); os.makedirs(od, exist_ok=True)
     man, todo, kept, stats = {}, [], 0, {'teams': 0, 'rows': {}}
@@ -75,7 +76,7 @@ def main():
             ck = os.path.join(cache, f'{key}-{sha(stamp.encode())[:8]}.png') if cache else None
             if ck and os.path.exists(ck): shutil.copyfile(ck, dst); kept += 0; continue
             todo.append((slug, sz, px, dst, ck, page_html(card_data(t, stamp), sz, S)[0]))
-    tr = time.time(); times = []
+    tr = time.time(); times = []; warns = []
     if todo:
         from playwright.sync_api import sync_playwright
         from PIL import Image
@@ -91,7 +92,15 @@ def main():
                     pg = pages[sz]; pg.goto('file://' + f, wait_until='load'); pg.evaluate('document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>0))))')
                     pg.evaluate(FIT)
                     over = pg.evaluate("()=>{const bd=document.querySelector('.bd');return [bd.scrollHeight-bd.clientHeight].concat([...document.querySelectorAll('.r,.pn,.op,.mid')].filter(e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+2).map(e=>e.className+' '+e.scrollWidth+'x'+e.scrollHeight+'/'+e.clientWidth+'x'+e.clientHeight+' '+e.textContent.slice(0,40)))}")
-                    if over[0] > 0 or len(over) > 1: die(f'{slug} {px}: content overflows the card ({over})')
+                    if os.environ.get('KT_OG_FORCE_OVERFLOW') == slug: over = [1, 'forced (test)']   # test hook only
+                    if over[0] > 0 or len(over) > 1:   # QA r3 item 4: one bad card never fails the refresh. Keep the previous card; with none, draw the safe no-rows card. No clipped text ships.
+                        prevp = os.path.join(a.base, 'og', 'rootables', f'{slug}-{px}.png') if a.base else None
+                        if prevp and os.path.exists(prevp) and old.get(slug, {}).get(px):
+                            shutil.copyfile(prevp, dst); man[slug][px] = dict(old[slug][px], k='stale-' + old[slug][px]['k'][:18]); warns.append(f'{slug} {px}: overflow {over}; kept previous card'); times.append(time.time() - t1); continue
+                        else:
+                            fb = dict(card_data(D['teams'][slug], stamp), fallback=True); open(f, 'w', encoding='utf-8').write(page_html(fb, sz, S)[0].replace('src="LOGO/', 'src="' + logo).replace('src="BRAND"', 'src="' + brand + '"').replace('url("FONT")', 'url("' + font + '")'))
+                            pg.goto('file://' + f, wait_until='load'); pg.evaluate('document.fonts.ready'); man[slug][px] = dict(man[slug][px], k='fallback'); warns.append(f'{slug} {px}: overflow {over}; no previous card, drew the no-rows fallback card')
+                        ck = None
                     png = pg.screenshot(type='png')
                     im = Image.open(io.BytesIO(png)).convert('RGB').quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
                     bio = io.BytesIO(); im.save(bio, 'PNG', optimize=True); open(dst, 'wb').write(bio.getvalue())
@@ -108,6 +117,8 @@ def main():
     tot = sum(os.path.getsize(os.path.join(od, f)) for f in os.listdir(od))
     rep = {'teams': stats['teams'], 'rendered': len(todo), 'kept': kept, 'render_s': round(time.time() - tr, 2), 'per_card_s': round(sum(times) / len(times), 3) if times else 0,
            'total_s': round(time.time() - t0, 2), 'bytes': tot, 'max_rows': max(stats['rows'].values() or [0])}
+    rep['warnings'] = warns
+    for w in warns: print('OG_CARDS WARNING:', w, file=sys.stderr)
     print('og_cards', json.dumps(rep))
     if a.report: json.dump(rep, open(a.report, 'w'), indent=1)
 if __name__ == '__main__': main()

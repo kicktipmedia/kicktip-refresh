@@ -106,7 +106,7 @@ span.w2d.w2d:not(.up):not(.dn){background:#fff;color:#4C5560;border-color:#C9CED
 .rv-sd.on{border-color:var(--tc,#4C5560)}
 .rv-sd .lg,.rv-sd .lg img,.rv-sd img{width:52px;height:52px}
 .rv-sd .lg{display:block;margin:0 auto}
-.rv-nm{font:600 15px/1.2 'Source Sans 3',Arial,sans-serif;color:#4C5560;overflow-wrap:anywhere}.rv-sd.on .rv-nm{font-weight:700;color:#121519}
+.rv-nm{font:600 15px/1.2 'Source Sans 3',Arial,sans-serif;color:#4C5560;word-break:normal;overflow-wrap:normal;hyphens:none}.rv-sd.on .rv-nm{font-weight:700;color:#121519}
 .rv-tag{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--tc,#4C5560);color:#fff;font:800 11px/1 'Source Sans 3',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:0 0 8px 8px;white-space:nowrap}
 .rv-vs{align-self:center;font-size:12px;color:#4C5560;font-weight:700}
 .rv-gn{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-top:1px solid #DDE1E4;padding-top:8px}
@@ -122,3 +122,6 @@ span.w2d.w2d:not(.up):not(.dn){background:#fff;color:#4C5560;border-color:#C9CED
 @media(max-width:700px){.has-ask #rootables{padding-bottom:calc(52px + 16px + var(--pillb,12px) + env(safe-area-inset-bottom,0px))}}
 .rv-gn{flex-wrap:wrap}
 .rv-gn .rv-also{flex:0 0 100%;text-align:right;font-size:13px;font-weight:400;color:#4C5560;margin-top:-2px}
+
+/* Batch B r3: the 'What if' chip hides while the Rootables card is on screen (rootables.js IntersectionObserver) */
+html.rb-in .askpill{display:none}

@@ -94,7 +94,7 @@
      o = { slug: root team slug (tc- class), when, root: {name, logo}, other: {name, logo}, where: 'at'|'vs', gain: points text '3.0', label: '<Team> playoff gain', sr, extra: li attrs } */
   function rvCard(o) {
     var NB = '\u00A0', E = function (t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-    return '<li class="rb-row rv-cd' + (o.slug ? ' tc-' + o.slug : '') + '"' + (o.extra || '') + '><div aria-hidden="true">' + (o.tag ? '<p class="rv-race rv-' + o.race + '">' + E(o.tag) + '</p>' : '') + '<p class="rv-when">' + E(o.when) + '</p><div class="rv-mu"><div class="rv-sd on"><span class="rv-tag">Root' + NB + 'for</span>' + (o.root.logo || '') + '<span class="rv-nm">' + E(o.root.name).replace(/ /g, NB) + '</span></div><span class="rv-vs">' + o.where + '</span><div class="rv-sd">' + (o.other.logo || '') + '<span class="rv-nm">' + E(o.other.name).replace(/ /g, NB) + '</span></div></div>' +
+    return '<li class="rb-row rv-cd' + (o.slug ? ' tc-' + o.slug : '') + '"' + (o.extra || '') + '><div aria-hidden="true">' + (o.tag ? '<p class="rv-race rv-' + o.race + '">' + E(o.tag) + '</p>' : '') + '<p class="rv-when">' + E(o.when) + '</p><div class="rv-mu"><div class="rv-sd on"><span class="rv-tag">Root' + NB + 'for</span>' + (o.root.logo || '') + '<span class="rv-nm">' + E(o.root.name) + '</span></div><span class="rv-vs">' + o.where + '</span><div class="rv-sd">' + (o.other.logo || '') + '<span class="rv-nm">' + E(o.other.name) + '</span></div></div>' +
       '<div class="rv-gn"><span>' + E(o.label) + '</span><b>+' + o.gain + NB + 'pts</b>' + (o.also ? '<span class="rv-also">' + E(o.also) + '</span>' : '') + '</div></div>' + (o.sr ? '<p class="sr">' + E(o.sr) + '</p>' : '') + '</li>';
   }
   function whenCardAt(r, tz) { var NB = '\u00A0', p;
@@ -109,6 +109,8 @@
   /* ---------- panel ---------- */
   var D = document, root = D.getElementById('rootables'), main = D.getElementById('main');
   if (!root || !main) return;
+  /* Batch B r3 (Creative): the floating 'What if' chip never covers a Rootables row: hidden while the Rootables card is on screen. No JS: polish.css bottom padding (.has-ask #rootables) keeps the last row clear of the chip. */
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { D.documentElement.classList.toggle('rb-in', es[es.length - 1].isIntersecting); }).observe(root);
   var slug = main.getAttribute('data-team'), noCcg = root.getAttribute('data-noccg') === '1';
   var S = { outcome: 'cfp12', model: null, tok: 0, how: false }, cache = {}, started = false;
   function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Rebuild the Batch B zip (audit2 Batch A + cap 8 + share cards) on top of ANY live base zip (the release kicktip-site.zip whose sha = main state.json live_sha).
-# Only from a committed, clean audit2 head. Does NOT deploy. usage: rebuild_a2.sh <live_base_zip> <out_zip> <work_dir(new)>
-# Recipe: unzip live -> unbake -> merge3(release S0 -> S0 rebuilt from batchB HEAD) -> live-only assets (a2kit/assets) -> feat.py -> feat_blend.py
-#         -> bake --check, --verify -> bump_all -> mkzip. Writes <out_zip>.head (audit2 commit) and <out_zip>.sha256.
+# Only from a committed, clean batchB head. Does NOT deploy. usage: rebuild_b.sh <live_base_zip> <out_zip> <work_dir(new)>
+# Recipe: unzip live -> unbake -> merge3(release S0 -> S0 rebuilt from batchB HEAD) -> live-only assets (kit/assets) -> feat.py -> feat_blend.py
+#         -> bake --check, --verify -> bump_all -> mkzip. Writes <out_zip>.head (batchB commit) and <out_zip>.sha256.
 set -euo pipefail
 BASE=$(realpath "$1"); OUTZ=$(realpath -m "$2"); W=$(realpath -m "$3"); K=$(cd "$(dirname "$0")" && pwd)
 REPO=/workspace/hub/kicktip-batchB/repo; T=$REPO/tree/tools; export GH_CONFIG_DIR=/workspace/kicktip-refresh/.gh

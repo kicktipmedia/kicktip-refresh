@@ -49,7 +49,8 @@ def html(d,sz):
   kmt='<span class="kmt"> &middot; Kickoff times&nbsp;MT</span>'   # shown only when the fit pass shortens '1:45 PM MT' to '1:45 PM' (Creative r3: keep MT)
   if extra: rows+=f'<div class="more">+{extra}&nbsp;more at kicktipmedia.com{kmt}</div>'
   elif gs: rows+=f'<div class="more kmt">Kickoff times&nbsp;MT</div>'
-  if not gs: rows=f'<div class="emp"><p>No other games this week move {d["team"]}\'s chances by&nbsp;much.</p><small>See every game at kicktipmedia.com</small></div>'
+  if d.get('fallback'): rows=f'<div class="emp"><p>See this week&#39;s {d["team"]} Rootables at kicktipmedia.com</p><small>Every game, updated with the latest data</small></div>'   # og_cards overflow fallback: no rows, no claim
+  elif not gs: rows=f'<div class="emp"><p>No other games this week move {d["team"]}\'s chances by&nbsp;much.</p><small>See every game at kicktipmedia.com</small></div>'
   st=f'<span>Updated {d["asof"]}</span>' if d.get('asof') else '<span></span>'
   return f'<html><head><meta charset=utf-8><style>{css}</style></head><body><div class="hd"><h1>{d["team"]} Rootables</h1><img src="../kt_header.png" alt="KickTip"></div><div class="bd">{rows}</div><div class="ft">{st}<span>{CHARTER}</span><span>kicktipmedia.com</span></div></body></html>',len(gs),extra
 JOBS=[('byu_sample','og'),('byu_sample','portrait'),('empty_byu_sample','og'),('empty_byu_sample','portrait')]

@@ -111,7 +111,7 @@ def build_once(tmp, a, network):
     #     tools/og/og_cards.py redraws a card only when its list changed (key in data/og-cards.json); KT_OG_CACHE lets build B reuse build A's PNGs.
     OGC = os.path.isdir(base + '/og/rootables')
     if OGC:
-        oenv = dict(env, KT_OG_CACHE=os.environ.get('KT_OG_CACHE') or os.path.join(tempfile.gettempdir(), 'kt-og-cache'))
+        oenv = dict(env, KT_OG_CACHE=os.environ.get('KT_OG_CACHE') or OG_CACHE)   # per-run cache dir (A -> B only, removed after the run); KT_OG_CACHE=off disables it
         print(run([sys.executable, HERE + '/og/og_cards.py', out, '--base', base], oenv, 'og-cards').strip().splitlines()[-1])
     # 6. tokens + checks
     run([sys.executable, T + '/restamp.py', out, base], env, 'restamp')
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('--base-zip', required=True); ap.add_argument('--base-sha'); ap.add_argument('--s0', required=True); ap.add_argument('--s1', required=True)
     ap.add_argument('--pipeline', required=True); ap.add_argument('--out', required=True); ap.add_argument('--report'); ap.add_argument('--site-out'); ap.add_argument('--no-network', action='store_true'); ap.add_argument('--ranks'); a = ap.parse_args()
     if a.base_sha and sha(rd(a.base_zip)) != a.base_sha: die(3, 'base zip sha %s != expected' % sha(rd(a.base_zip)))
-    res = []
+    res = []; OG_CACHE = tempfile.mkdtemp(prefix='kt-og-cache-')
     for tag in 'AB':
         tmp = tempfile.mkdtemp(prefix='apply_%s_' % tag)
         try:
@@ -158,6 +158,7 @@ if __name__ == '__main__':
                 shutil.copy(z, a.out + '.tmp')
                 if a.site_out: shutil.rmtree(a.site_out, ignore_errors=True); shutil.copytree(out, a.site_out)
         finally: shutil.rmtree(tmp, ignore_errors=True)
+    shutil.rmtree(OG_CACHE, ignore_errors=True)
     if res[0][0] != res[1][0]: die(4, 'NOT DETERMINISTIC %s vs %s' % (res[0][0], res[1][0]))
     os.replace(a.out + '.tmp', a.out); info = res[0][1]; info['sha256'] = res[0][0]
     if a.report: json.dump(info, open(a.report, 'w'), indent=1)

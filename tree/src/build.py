@@ -63,11 +63,11 @@ REF_T = parse_mt(REFRESH["refreshed_mt"]).astimezone(dt.timezone.utc)
 LIVE_ST = ("STATUS_IN_PROGRESS", "STATUS_HALFTIME", "STATUS_END_PERIOD", "STATUS_DELAYED", "STATUS_SUSPENDED")
 
 def game_when(g):
-    """(sort key, label). ESPN 'time TBA' placeholders sit at 04:00-05:00Z (midnight ET): use the ET calendar date and say TBA."""
+    """(sort key, label). ESPN 'time TBA' placeholders sit at 04:00-05:00Z (midnight ET): use the ET calendar date and say TBD (the live wording; apply_data used to post-fix TBA->TBD, and an S0 with TBA conflicts in merge3 when the games list shifts)."""
     u = dt.datetime.strptime(g["date_utc"], "%Y-%m-%dT%H:%MZ").replace(tzinfo=dt.timezone.utc)
     if g["date_utc"][11:] in ("04:00Z", "05:00Z"):
         d = (u - dt.timedelta(hours=5)).date() if False else u.date()
-        return u, d.strftime("%a %b %-d") + ", time TBA"
+        return u, d.strftime("%a %b %-d") + ", time TBD"
     m = u.astimezone(MT); return u, m.strftime("%a %b %-d, %-I:%M %p MT")
 
 def game_state(g):

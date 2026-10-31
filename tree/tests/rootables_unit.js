@@ -9,7 +9,7 @@ function ctxFor(model) {
   Object.keys(index.shards).forEach(w => sh[w] = J(b + '/whatif/' + index.shards[w]));
   return { index, games: R.buildGames(index, bundle), asOfMs: R.mtMs(index.as_of), shard: (w, id) => (sh[w] && sh[w][id]) || null };
 }
-const py = J(HUB + '/data.json'), NAME = { 'Utah Utes': 0 };
+const py = J(__dirname + '/rootables_ref_noown.json')   /* Oct 31: reference = tests/rootables_ref_compute.py (Creative compute.py + own-game exclusion), run on the same saved live data */, NAME = { 'Utah Utes': 0 };
 ok(R.mtMs('2026-10-24 17:55 MT') === Date.UTC(2026, 9, 24, 23, 55), 'mtMs MDT'); ok(R.mtMs('2026-11-02 17:55 MT') === Date.UTC(2026, 10, 3, 0, 55), 'mtMs MST');
 ok(R.stampText('2026-10-24 17:55 MT') === 'Oct 24, 2026, 5:55 PM MT', 'stamp text');
 ['blend', 'elo', 'eff'].forEach(model => {
@@ -26,10 +26,10 @@ ok(R.stampText('2026-10-24 17:55 MT') === 'Oct 24, 2026, 5:55 PM MT', 'stamp tex
 // the named numbers
 const c = ctxFor('blend'), nm = c.index.team_names, U = nm.indexOf('Utah Utes'), B = nm.indexOf('BYU Cougars');
 const show = (t, m) => R.compute(t, m, c, c.asOfMs).rows.map(r => [nm[r.root], R.pc(r.pRoot), R.pc(r.pOther), '+' + R.pts(r.gap)].join(' '));
-let u = show(U, 'cfp12'); ok(u[0] === 'Utah Utes 52.0% 18.9% +33.1' && u[1] === 'Utah Utes 48.5% 19.4% +29.1', 'Utah make12 ' + u.slice(0, 2));
-u = show(U, 'ccg'); ok(u[0] === 'Utah Utes 61.3% 23.2% +38.1' && u[1] === 'Utah Utes 56.2% 26.3% +29.9', 'Utah ccg ' + u.slice(0, 2));
-u = show(B, 'cfp12'); ok(u[0] === 'BYU Cougars 70.8% 28.1% +42.7', 'BYU make12 ' + u[0]);
-const ru = R.compute(U, 'cfp12', c, c.asOfMs); ok(ru.nWindow === 54 && ru.nBig === 10 && ru.nHidden === 44 && ru.rows.length === 5 && ru.hasOwn, 'Utah 54 window/10 big/44 hidden');
+const ru = R.compute(U, 'cfp12', c, c.asOfMs), rb = R.compute(B, 'cfp12', c, c.asOfMs);
+ok(ru.hasOwn && rb.hasOwn, 'Utah/BYU play this week (hasOwn kept for the bye line)');
+ok(![U, B].some(t => ['cfp12', 'ccg'].some(m => R.compute(t, m, c, c.asOfMs).rows.some(r => r.h === t || r.a === t))), 'own game never listed (Utah, BYU)');
+ok(nm.every((x, t) => !c.index.baseline[t] || !R.compute(t, 'cfp12', c, c.asOfMs).rows.some(r => r.h === t || r.a === t)), 'own game never listed (all teams)');
 const lsu = R.compute(nm.indexOf('LSU Tigers'), 'cfp12', c, c.asOfMs); ok(!lsu.hasOwn && lsu.rows.length > 0, 'LSU bye');
 const tn = R.compute(nm.indexOf('Tennessee Volunteers'), 'cfp12', c, c.asOfMs); ok(tn.nBig === 0 && tn.nHidden === 54, 'Tennessee none >=1.0');
 // window: the clock moves the window; started games drop; in-progress flag drops

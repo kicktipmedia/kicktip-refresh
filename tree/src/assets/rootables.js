@@ -39,7 +39,8 @@
       if (g.ip || g.kick > end || now > (g.tba ? g.kick + 864e5 : g.kick)) return;   /* in progress, outside the next 7 days, or already started (a TBA day counts until it is over) */
       var s = ctx.shard(g.week, g.id); if (!s) return;
       function chance(side) { var l = s[side] || []; for (var i = 0; i < l.length; i++) if (l[i][0] === team) return l[i][col]; return index.baseline[team][col - 1]; }
-      var pH = chance('h'), pA = chance('a'), own = g.h === team || g.a === team; if (own) hasOwn = true;
+      if (g.h === team || g.a === team) { hasOwn = true; return; }   /* Jared Oct 31: leave off the team's own game (rooting for your own team is a given); the slots fill with the next-biggest games */
+      var pH = chance('h'), pA = chance('a'), own = false;
       rows.push({ id: g.id, h: g.h, a: g.a, neutral: g.neutral, kick: g.kick, tba: g.tba, pH: pH, pA: pA, gap: Math.abs(pH - pA), root: pH >= pA ? g.h : g.a, other: pH >= pA ? g.a : g.h, pRoot: Math.max(pH, pA), pOther: Math.min(pH, pA), own: own });
     });
     var big = rows.filter(function (r) { return r.gap >= THRESH; });

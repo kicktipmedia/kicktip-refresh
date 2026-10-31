@@ -160,7 +160,7 @@ function rbHtml(slug) {
   const team = nm(tn), res = RB.compute(tn, 'cfp12', c, c.asOfMs);
   const st = '<p class="rb-simn"><span class="bl">Simulation analysis, not advice. Data as of ' + NBSP(esc(K.fmt(c.index.as_of.replace(/ MT$/, '')) || RB.stampText(c.index.as_of))) + '.</span></p>';
   if (!res.nWindow) return '<p class="rb-msg">No games in the next 7 days.</p>' + st;
-  if (!res.rows.length) return '<p class="rb-msg none">No game this week moves ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by 1% or more.</p>' + st;
+  if (!res.rows.length) return '<p class="rb-msg none">No other games this week move ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by much.</p>' + st;
   const LGM = rbLogoMap(), lgo = (i) => { const t = c.by[c.index.team_names[i]], m = t && t.g && LGM[t.g]; return m ? '<span class="lg s52" aria-hidden="true"><img src="/assets/logos/64/' + m[0] + '.png" alt="" width="52" height="52" decoding="async" loading="lazy"></span>' : ''; };
   const sl = (i) => String((c.by[c.index.team_names[i]] || {}).g || '').replace(/[^a-z0-9-]/g, '');
   const li = res.rows.map((r) => RB.rvCard({ slug: sl(r.root), when: RB.whenCard(r), root: { name: nm(r.root), logo: lgo(r.root) }, other: { name: nm(r.other), logo: lgo(r.other) }, where: r.neutral || r.root === r.h ? 'vs' : 'at', gain: RB.pts(r.gap), label: team + ' playoff gain',

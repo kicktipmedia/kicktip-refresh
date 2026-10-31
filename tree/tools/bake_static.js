@@ -19,7 +19,7 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   'Spreads: ESPN, numbers only, shown when one has been posted.',
   '<span class="lk">Loading</span>',   /* 8: audit2 game cells (wp/kl/mk/ln) on /games/, conference and team pages */
   '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript>',   /* 9: audit2 Rootables phase 2 (no-JS list) */
-  '',   /* 10: reserved */
+  '',   /* 10: audit2 polish2 next-game What If card (baked; unbake removes it) */
   '<li><span class="lk">Loading</span></li>'];   /* 11: audit2 conference 'Who controls their destiny' */
 const NOJS_TXT = 'Turn on JavaScript to switch models and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
@@ -108,11 +108,11 @@ function mkCellS(i, tbl) {
 function lnBlockS(id, i) {   /* closed (mobile default); the summary in the button carries the numbers, so nothing is hidden behind JS */
   const m = mkCellS(i, false), sum = [m[1]]; let rows = '<div class="r"><dt>Spread (ESPN)' + (i.L && !i.closed ? '<small>' + tmS(i.L[1]) + '</small>' : i.L ? '<small>Last spread: ' + esc(lineS(i.L[0], i.h, i.a)) + ', ' + tmS(i.L[1]) + '</small>' : '') + '</dt><dd' + (i.L && !i.closed ? '' : ' class="nm"') + '>' + (i.L && i.closed ? CLT : m[0]) + '</dd></div>';
   if (i.ks !== null) { rows += '<div class="r"><dt>KickTip&#39;s expected margin</dt><dd>' + esc(margS(i.ks, i.h, i.a)) + '</dd></div>'; sum.push('KickTip\'s expected margin: ' + margS(i.ks, i.h, i.a)); }
-  return '<button type="button" class="gbt" aria-expanded="false" aria-controls="ln-' + id + '"><span>Spread and margin</span><span class="gsm">' + esc(sum.join(' \u00B7 ')) + '</span><i class="gcv" aria-hidden="true"></i></button><div class="gnb" id="ln-' + id + '" hidden><dl>' + rows + '</dl></div>';
+  return '<button type="button" class="gbt" aria-expanded="false" aria-controls="ln-' + id + '"><span>ESPN spread and expected margin</span><span class="gsm">' + esc(sum.join(' \u00B7 ')) + '</span><i class="gcv" aria-hidden="true"></i></button><div class="gnb" id="ln-' + id + '" hidden><dl>' + rows + '</dl></div>';
 }
 function gameCell(at, kind, tag) {
   const g = PG[at.gk], i = gInfo(at, g), h = at.h, a = at.a;
-  if (kind === 'wp') { if (g && g[0] !== null && g[0] !== undefined) { const hp = g[0] >= 0.5; return tag === 'td' ? esc(hp ? h : a) + ' ' + pct(hp ? g[0] : 1 - g[0]) : '<span class="gwl">KickTip win chance</span><span class="gwr"><span>' + esc(a) + ' ' + pct(1 - g[0]) + '</span><span>' + esc(h) + ' ' + pct(g[0]) + '</span></span><span class="gpb" aria-hidden="true"><i data-pw="' + Math.round(g[0] * 1000) / 10 + '"></i></span>'; }
+  if (kind === 'wp') { if (g && g[0] !== null && g[0] !== undefined) { const hp = g[0] >= 0.5; return tag === 'td' ? esc(hp ? h : a) + ' ' + pct(hp ? g[0] : 1 - g[0]) : '<span class="gwl">KickTip win chance</span><span class="gwr"><span>' + esc(a) + ' <b>' + pct(1 - g[0]) + '</b></span><span>' + esc(h) + ' <b>' + pct(g[0]) + '</b></span></span><span class="gpb" aria-hidden="true"><i data-pw="' + Math.round(g[0] * 1000) / 10 + '"></i></span>'; }
     return g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">Not modeled (FCS opponent)</span>'; }
   if (kind === 'kl') return i.ks !== null ? esc(margS(i.ks, h, a)) : '<span class="lk">n/a</span>';
   if (kind === 'mk') return mkCellS(i, true)[0];
@@ -135,6 +135,23 @@ function rbCtx() {
   (bun.teams || []).forEach((t) => { if (t.n) by[t.n] = t; });
   return (RBX = { index: idx, games: games, asOfMs: RB.mtMs(idx.as_of), by: by, shard: (w, id) => { if (!(w in sh)) { const f = idx.shards[w]; sh[w] = f ? J('data/whatif/' + f) : null; } return (sh[w] && sh[w][id]) || null; } });
 }
+/* ---- audit2 polish2: next-game What If (team page). The team's own next game in the Rootables window, playoff chance if it wins / loses, from the same What If shards ---- */
+function nwHtml(slug) {
+  const c = rbCtx(); let nmK = null; Object.keys(c.by).forEach((k) => { if (c.by[k].g === slug) nmK = k; });
+  const tn = c.index.team_names.indexOf(nmK); if (tn < 0) return null;
+  const col = c.index.metrics.indexOf('cfp12') + 1; if (col < 1) return null;
+  const end = c.asOfMs + 7 * 864e5; let g0 = null;
+  c.games.forEach((g) => { if (g.ip || g.kick > end || c.asOfMs > (g.tba ? g.kick + 864e5 : g.kick)) return; if (g.h !== tn && g.a !== tn) return; if (!g0 || g.kick < g0.kick) g0 = g; });
+  if (!g0) return null; const sh = c.shard(g0.week, g0.id); if (!sh) return null;
+  const base = c.index.baseline[tn][col - 1];
+  const ch = (side) => { const l = sh[side] || []; for (let i = 0; i < l.length; i++) if (l[i][0] === tn) return l[i][col]; return base; };
+  const nm = (i) => { const n = c.index.team_names[i], t = c.by[n]; return (t && (t.s || t.n)) || n; };
+  const home = g0.h === tn, win = home ? ch('h') : ch('a'), loss = home ? ch('a') : ch('h'), opp = nm(home ? g0.a : g0.h), team = nm(tn);
+  const P = (x) => Math.round(x / 10), b = P(base);
+  const pill = (v) => { const d = P(v) - b; return d === 0 ? '<span class="w2d">no change</span>' : '<span class="w2d ' + (d > 0 ? 'up' : 'dn') + '">' + (d > 0 ? '+' : '&minus;') + Math.abs(d) + '%</span>'; };
+  const row = (lab, v) => '<div class="nw-r"><span class="nw-l">If ' + esc(team) + ' ' + lab + '</span><span class="nw-v"><b>' + P(v) + '%</b> ' + pill(v) + '</span></div><p class="nw-was">playoff &middot; was&nbsp;' + b + '%</p>';
+  return '<div class="card nw"><h3 class="nw-h">Next game What If</h3><p class="nw-m">' + NBSP(esc(RB.whenShort(g0))) + ' &middot; ' + (g0.neutral ? 'vs' : home ? 'vs' : 'at') + ' ' + esc(opp) + '</p>' + row('wins', win) + row('loses', loss) + '<p class="nw-st">Chance to make the 12&#8209;team playoff (KickTip blend), data as of ' + NBSP(esc(K.fmt(c.index.as_of.replace(/ MT$/, '')) || RB.stampText(c.index.as_of))) + '.</p></div>';
+}
 function rbHtml(slug) {
   const c = rbCtx(); let nmK = null; Object.keys(c.by).forEach((k) => { if (c.by[k].g === slug) nmK = k; });
   const tn = c.index.team_names.indexOf(nmK); if (tn < 0) return null;
@@ -144,7 +161,7 @@ function rbHtml(slug) {
   if (!res.nWindow) return '<p class="rb-msg">No games in the next 7 days.</p>' + st;
   if (!res.rows.length) return '<p class="rb-msg none">No game this week moves ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by 1% or more.</p>' + st;
   const li = res.rows.map((r) => { const s = nm(r.root), o = nm(r.other), where = r.neutral || r.root === r.h ? 'vs' : 'at';
-    return '<li class="rb-row rb-cd"><div class="rb-cw"><span class="rb-who">' + esc(s) + '</span><span class="rb-gn">+' + Math.max(1, Math.round(r.gap / 10)) + '%<small>' + esc(team) + ' gain</small></span></div><p class="rb-wn"><span class="rb-tag">Root&nbsp;for</span> ' + where + ' ' + esc(o) + ' \u00B7 ' + NBSP(esc(RB.whenShort(r))) + '</p></li>'; }).join('');
+    const tg = (c.by[c.index.team_names[r.root]] || {}).g; return '<li class="rb-row rb-cd' + (tg ? ' tc-' + String(tg).replace(/[^a-z0-9-]/g, '') : '') + '"><div class="rb-cw"><span class="rb-who">' + esc(s) + '</span><span class="rb-gn">+' + Math.max(1, Math.round(r.gap / 10)) + '%<small>' + esc(team) + ' gain</small></span></div><p class="rb-wn"><span class="rb-tag">Root&nbsp;for</span> ' + where + ' ' + esc(o) + ' \u00B7 ' + NBSP(esc(RB.whenShort(r))) + '</p></li>'; }).join('');
   const L = li.split('</li>').filter(Boolean).map((x) => x + '</li>'), top = L.slice(0, 2).join(''), more = L.slice(2).join('');
   return '<p class="rb-sub">For ' + esc(team) + '&#8217;s chance to make the 12-team playoff field (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show all ' + L.length + ' games</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
 }
@@ -199,6 +216,7 @@ for (const f of files) {
     if (pp && t.includes('<b data-wo>&ndash;</b>')) t = t.replace('<b data-wo>&ndash;</b>', '<b data-wo>' + mk(1, pp.wo === null || pp.wo === undefined ? 'n/a' : pct(pp.wo)) + '</b>');
     const pr = pathRows(k); if (pr) t = t.replace(/(<table id="paths" class="fld">[\s\S]*?<tbody>)<tr><td colspan="3"><span class="lk">Loading<\/span><\/td><\/tr>(<\/tbody>)/, (x, a, b) => a + mk(6, pr) + b);
     if (t.includes(DEF[9])) { const rh = rbHtml(k); if (rh) { t = rep1(t, /<noscript><p class="rb-msg">Turn on JavaScript to run Rootables\.<\/p><\/noscript>/, () => mk(9, '<noscript>' + rh + '</noscript>'), 'rootables', rel); stats.rb++; } }
+    if (t.includes('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">')) { const nh = nwHtml(k); if (nh) { t = t.replace('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">', '<section id="what-if" aria-label="What if">' + mk(10, nh) + '<ul class="pk-tiles pk-one">'); stats.nw = (stats.nw || 0) + 1; } }
     stats.team++; baked = true;
   } else if (page === 'slate') {
     t = rep1(t, /(<\/tbody><\/table><\/div><\/div>)(<p class="note"><b>How to read)/, (x, a, b) => a + upd() + b, 'slate stamp', rel);

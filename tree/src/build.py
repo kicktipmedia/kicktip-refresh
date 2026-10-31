@@ -162,7 +162,8 @@ CV = ""                                          # asset URLs carry a content ha
 SEO_IMG_ALT = "KickTip Media, college football playoff simulator"
 MSM_URL = "https://mtnsportsmedia.com/"
 FOOT_MSM = f'<a href="{MSM_URL}" rel="noopener">from the Mtn Sports Media team</a>'
-SITEMAP_LASTMOD = "2026-10-31"   # date of the last template change (a per-refresh date would change sitemap.xml, which apply_data's allow-list forbids)
+# SITEMAP_LASTMOD dropped (audit2 R2): no <lastmod>, a fixed date goes stale and a per-refresh one is outside apply_data's allow-list.
+SITEMAP_LASTMOD = None   # date of the last template change (a per-refresh date would change sitemap.xml, which apply_data's allow-list forbids)
 ORG_LD = ('<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://kicktipmedia.com/#org","name":"KickTip Media","url":"https://kicktipmedia.com/",'
           '"logo":"https://kicktipmedia.com/assets/brand/icon/kicktip-icon-512.png","parentOrganization":{"@type":"Organization","@id":"https://mtnsportsmedia.com/#org","name":"Mtn Sports Media","url":"https://mtnsportsmedia.com/"}},'
           '{"@type":"WebSite","@id":"https://kicktipmedia.com/#site","name":"KickTip Media","url":"https://kicktipmedia.com/","publisher":{"@id":"https://kicktipmedia.com/#org"}}]}</script>')
@@ -685,7 +686,7 @@ def build():
     w("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /data/\nDisallow: /api/\n\nSitemap: {BASE}/sitemap.xml\n")
     w("site.webmanifest", json.dumps(dict(name="KickTip Media", short_name="KickTip", start_url="/", display="browser", background_color="#121519", theme_color="#262B31",
         icons=[dict(src="/assets/brand/icon/kicktip-icon-192.png", sizes="192x192", type="image/png"), dict(src="/assets/brand/icon/kicktip-icon-512.png", sizes="512x512", type="image/png")]), indent=1) + "\n")
-    w("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}{u}</loc><lastmod>{SITEMAP_LASTMOD}</lastmod></url>\n" for u in urls) + "</urlset>\n")
+    w("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}{u}</loc></url>\n" for u in urls) + "</urlset>\n")
     w("_headers", "/*\n  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; worker-src 'self'\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n/assets/*\n  Cache-Control: public, max-age=86400\n/data/*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: public, max-age=300\n")
     hash_assets()
     if os.environ.get("KT_HDR", "p") != "off":   # sticky slim header (src/header-kit/): post-processes the finished site tree; KT_HDR=q builds option Q, KT_HDR=off skips it

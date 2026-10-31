@@ -11,6 +11,18 @@ for f in sorted(set(walk(S0))|set(walk(S1))):
     if a!=b: changed.append(f)
 TOK=re.compile(r'\?v=[0-9a-f]{10}'); REF=re.compile(r'((?:/assets|/data)/[A-Za-z0-9_./-]+?\.(?:js|css|json|png|svg|webp|ico))\?v=([0-9a-f]{10})'); REF2=re.compile(r'((?:/assets|/data)/[A-Za-z0-9_./-]+?\.(?:js|css|json|png|svg|webp|ico))\?v=X')
 SKIP={'assets/lg.js'}; MANUAL={'method/index.html'}
+CONF_RE=re.compile(r'conference/[a-z0-9-]+/index\.html$')
+def rg_tbody(t):   # standings: the first <tbody> of the first <table>
+    i=t.find('<table'); i=t.find('<tbody',i) if i>=0 else -1; j=t.find('</tbody>',i) if i>=0 else -1
+    return (i,j+8) if i>=0 and j>=0 else None
+def rg_gcl(t):     # Remaining conference games list: <div class="gcl"> .. its matching </div>
+    i=t.find('<div class="gcl">')
+    if i<0: return None
+    d=0
+    for m in re.finditer(r'<div\b|</div>',t[i:]):
+        d+=1 if m.group(0)!='</div>' else -1
+        if d==0: return (i,i+m.end())
+    return None
 GM={}
 for _f in walk(L):
     if _f.endswith('.html'):
@@ -115,7 +127,26 @@ for f in changed:
         if bad: rep['conflict'].append(f+' anchored: '+'; '.join(bad[:5])); continue
         open(OUT+'/'+f,'wb').write(post(m.decode('utf-8')).encode('utf-8')); rep['merged'].append(f); continue
     ish=f.endswith('.html')
+    # confmerge (Oct 31): conference pages carry a site-only block (kc cards, view switch) right after the standings table; when the bottom
+    # standings rows or the games list change, git merge-file conflicts on the rows next to it. Resolver: the two data regions (standings
+    # <tbody> and the Remaining-games <div class="gcl">) are cut out of L, S0 and S1 and replaced by one identical marker line each, the rest
+    # is merged as usual, then S1's region goes back in. Sound only when live did not edit inside the region: L region == S0 region
+    # (after the ?v and as-of normalisation), else that region is left to the normal merge. Missing region on any side: normal merge.
+    REG=[]
+    if CONF_RE.match(f):
+        lt,at,bt=pre(l,0).decode('utf-8'),pre(a,0).decode('utf-8'),pre(b,1).decode('utf-8')
+        for k,fn in enumerate((rg_tbody,rg_gcl)):
+            rl,ra,rb=fn(lt),fn(at),fn(bt)
+            if not (rl and ra and rb): continue
+            if TOK.sub('?v=X',lt[rl[0]:rl[1]])!=TOK.sub('?v=X',at[ra[0]:ra[1]]): rep.setdefault('resolver_skipped',[]).append(f+' r%d live-edited'%k); continue
+            mk='<!--KTR%d-->'%k; REG.append((mk,TOK.sub('?v=X',bt[rb[0]:rb[1]])))
+            lt=lt[:rl[0]]+mk+lt[rl[1]:]; at=at[:ra[0]]+mk+at[ra[1]:]; bt=bt[:rb[0]]+mk+bt[rb[1]:]
+        if REG:
+            rep.setdefault('resolved',{})[f]=[m for m,_ in REG]
+            l,a,b=lt.encode('utf-8'),at.encode('utf-8'),bt.encode('utf-8')
     def nz(c,new=0):
+        if REG: c=c.decode('utf-8').encode('utf-8')   # already pre()-normalised: pre() is idempotent on @@ASOF markers
+
         t=pre(c,new).decode('utf-8')
         if ish: t=TOK.sub('?v=X',t).replace('><','>\n@@<'); t='\n\u00a7\n'.join(t.split('\n'))
         return t.encode('utf-8')
@@ -132,6 +163,8 @@ for f in changed:
                 r=subprocess.CompletedProcess([],0,t1.encode('utf-8'),b''); rep.setdefault('deletions_accepted',{})[f]=n[0]
         if r.returncode==0:
             t=r.stdout.decode('utf-8')
+            for mk,rt in REG:
+                assert t.count(mk)==1, (f,mk); t=t.replace(mk,rt)
             if ish:
                 t=t.replace('\n\u00a7\n','\n').replace('>\n@@<','><')
                 lt=l.decode('utf-8'); lm={}

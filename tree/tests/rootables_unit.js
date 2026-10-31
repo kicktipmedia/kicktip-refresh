@@ -15,6 +15,9 @@ ok(R.stampText('2026-10-24 17:55 MT') === 'Oct 24, 2026, 5:55 PM MT', 'stamp tex
 ['blend', 'elo', 'eff'].forEach(model => {
   const c = ctxFor(model), p = py[model], nm = c.index.team_names;
   ok(c.index.as_of === p.as_of && c.index.seasons === p.seasons, model + ' stamp/seasons');
+  Object.keys(p.teams).forEach(tm => { const t = nm.indexOf(tm), r = R.compute(t, 'blend', c, c.asOfMs), x = p.teams[tm].blend;
+    ok(r.nWindow === x.n_window && r.nBig === x.n_big && r.nHidden === x.n_hidden && r.rows.length === x.top.length, `${model} ${tm} blend counts`);
+    r.rows.forEach((row, i) => { const y = x.top[i]; ok(row.id === y.id && row.gap === y.score && row.race === y.race && row.root === y.root && JSON.stringify(row.sec) === JSON.stringify(y.sec), `${model} ${tm} blend row ${i}`); }); });
   Object.keys(p.teams).forEach(tm => ['cfp12', 'ccg'].forEach(m => {
     const t = nm.indexOf(tm), r = R.compute(t, m, c, c.asOfMs), x = p.teams[tm][m];
     ok(r.nWindow === x.n_window && r.nBig === x.n_big && r.nHidden === x.n_hidden, `${model} ${tm} ${m} counts js ${r.nWindow}/${r.nBig}/${r.nHidden} py ${x.n_window}/${x.n_big}/${x.n_hidden}`);
@@ -46,4 +49,8 @@ ok(sr.rows[3].root === 2 && sr.rows[3].pRoot === 600, 'root for the side with th
 const none = { index: idx, asOfMs: 0, games: [defs[0].g], shard: () => ({ h: [], a: [] }) }; const rn = R.compute(0, 'cfp12', none, 0); ok(rn.nWindow === 1 && rn.nBig === 0, 'unlisted team = baseline = 0 gap');
 const ipg = { index: idx, asOfMs: 0, games: [Object.assign({}, defs[2].g, { ip: true })], shard: () => defs[2].s }; ok(R.compute(0, 'cfp12', ipg, 0).nWindow === 0, 'in progress dropped');
 const tba = Object.assign({}, defs[2].g, { tba: true, kick: 1e6 }); ok(R.compute(0, 'cfp12', { index: idx, asOfMs: 0, games: [tba], shard: () => defs[2].s }, 1e6 + 5e7).nWindow === 1 && R.compute(0, 'cfp12', { index: idx, asOfMs: 0, games: [tba], shard: () => defs[2].s }, 1e6 + 9e7).nWindow === 0, 'TBA day lasts to the end of the day');
+// blended list: own game never listed for any team; 'title' measure never read
+ok(nm.every((x, t) => !c.index.baseline[t] || !R.compute(t, 'blend', c, c.asOfMs).rows.some(r => r.h === t || r.a === t)), 'blend: own game never listed (all teams)');
+{ const ti = c.index.metrics.indexOf('title') + 1, cx = Object.assign({}, c, { index: Object.assign({}, c.index, { baseline: c.index.baseline.map(b => b.map((v, i) => i === ti - 1 ? NaN : v)) }), shard: (w, id) => { const s = c.shard(w, id); return s && { h: s.h.map(r => r.map((v, i) => i === ti ? NaN : v)), a: s.a.map(r => r.map((v, i) => i === ti ? NaN : v)) }; } });
+  ok(nm.every((x, t) => !c.index.baseline[t] || JSON.stringify(R.compute(t, 'blend', cx, c.asOfMs)) === JSON.stringify(R.compute(t, 'blend', c, c.asOfMs))), "blend: poisoning the 'title' column changes nothing (title never read)"); }
 console.log(`rootables_unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

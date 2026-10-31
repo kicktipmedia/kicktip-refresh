@@ -37,11 +37,22 @@ def swings(idx, sh, team, metric, win):
         out.append(dict(id=g['id'], home=names[g['h']], away=names[g['a']], hid=g['h'], aid=g['a'], neutral=g['neutral'], kick_utc=d.strftime('%Y-%m-%dT%H:%MZ'),
                         kick_mt=d.astimezone(MT).strftime('%a %b %-d, %-I:%M %p MT'), base=base, home_wins=h, away_wins=a, gap=abs(h - a), own=team in (g['h'], g['a'])))
     out.sort(key=lambda r: (-r['gap'], r['kick_utc'], r['id'])); return out
+def blend_block(idx, sh, win, t):
+    # blended list (Oct 31): score = max(cfp12 gap, ccg gap); race = bigger (tie -> cfp12); 'title' never read
+    P = {r['id']: r for r in swings(idx, sh, t, 'cfp12', win)}; C = {r['id']: r for r in swings(idx, sh, t, 'ccg', win)}; rows = []
+    for i, p in P.items():
+        c = C[i]; m, o, race = (c, p, 'ccg') if c['gap'] > p['gap'] else (p, c, 'cfp12')
+        root = lambda r: r['hid'] if r['home_wins'] >= r['away_wins'] else r['aid']
+        sec = None if o['gap'] < THRESH else dict(race='cfp12' if race == 'ccg' else 'ccg', v=o['gap'] if root(o) == root(m) else -o['gap'])
+        rows.append(dict(id=i, score=m['gap'], race=race, root=root(m), cfp12=[p['home_wins'], p['away_wins']], ccg=[c['home_wins'], c['away_wins']], sec=sec, kick_utc=m['kick_utc'], home=m['home'], away=m['away']))
+    rows.sort(key=lambda r: (-r['score'], r['kick_utc'], r['id'])); big = [r for r in rows if r['score'] >= THRESH]
+    return dict(n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:5])
 def team_block(idx, sh, win, tm):
     t = idx['team_names'].index(tm); blk = {'team': tm, 'tid': t}
     for m in METRIC:
         rows = swings(idx, sh, t, m, win); big = [r for r in rows if r['gap'] >= THRESH]
         blk[m] = dict(baseline=idx['baseline'][t][idx['metrics'].index(m)], n_window=len(rows), n_big=len(big), n_hidden=len(rows) - len(big), top=big[:5])
+    blk['blend'] = blend_block(idx, sh, win, t)
     return blk
 if __name__ == '__main__':
     out = {}

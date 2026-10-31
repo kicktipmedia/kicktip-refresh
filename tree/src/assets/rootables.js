@@ -31,7 +31,8 @@
   }
   /* compute(team, metric, ctx, now): ctx = { index, games, shard(week, id) -> {h:[[team,ccg,title,cfp12,bye]..],a:[..]} | null, asOfMs }.
      Chance for a team under each result of a game = its row in the shard, or its baseline when it is not listed (it moved less than 0.3 point). Integers are per-mille; sort and threshold on the integers. */
-  function compute(team, metric, ctx, now) {
+  function compute(team, metric, ctx, now, all) {
+    if (metric === 'blend') return blend(team, ctx, now);
     var index = ctx.index, col = index.metrics.indexOf(metric) + 1, rows = [], hasOwn = false;
     if (col < 1) throw new Error('metric');
     var end = ctx.asOfMs + MS7;
@@ -45,7 +46,27 @@
     });
     var big = rows.filter(function (r) { return r.gap >= THRESH; });
     big.sort(function (x, y) { return y.gap - x.gap || x.kick - y.kick || (x.id < y.id ? -1 : x.id > y.id ? 1 : 0); });
-    return { rows: big.slice(0, MAXROWS), nBig: big.length, nWindow: rows.length, nHidden: rows.length - big.length, hasOwn: hasOwn, seasons: index.seasons, asOf: index.as_of };
+    return { rows: big.slice(0, MAXROWS), nBig: big.length, nWindow: rows.length, nHidden: rows.length - big.length, hasOwn: hasOwn, seasons: index.seasons, asOf: index.as_of, all: all ? rows : undefined };
+  }
+
+  /* Blended Rootables (Jared Oct 31, 10:51 MT): ONE list from the cfp12 and ccg measures ('title' is not used: unverified). Score = the larger of the two swings;
+     same window, same 1.0-point threshold on the score, own games and started games left off. race = the race with the bigger swing (tie: playoff);
+     sec = the other race when it also moves 1.0 point or more, signed for the side we root for (negative = that race prefers the other side). */
+  function blend(team, ctx, now) {
+    var P = compute(team, 'cfp12', ctx, now, true), C = compute(team, 'ccg', ctx, now, true), byC = {}, rows = [];
+    C.all.forEach(function (r) { byC[r.id] = r; });
+    P.all.forEach(function (p) {
+      var c = byC[p.id] || null, m = p, o = c, race = 'cfp12';
+      if (c && c.gap > p.gap) { m = c; o = p; race = 'ccg'; }
+      var r = {}; Object.keys(m).forEach(function (k) { r[k] = m[k]; });
+      r.race = race; r.gapP = p.gap; r.gapC = c ? c.gap : 0; r.sec = null;
+      r.pP = [p.pH, p.pA]; r.pC = c ? [c.pH, c.pA] : null;
+      if (o && o.gap >= THRESH) r.sec = { race: race === 'cfp12' ? 'ccg' : 'cfp12', v: o.root === m.root ? o.gap : -o.gap };
+      rows.push(r);
+    });
+    var big = rows.filter(function (r) { return r.gap >= THRESH; });
+    big.sort(function (x, y) { return y.gap - x.gap || x.kick - y.kick || (x.id < y.id ? -1 : x.id > y.id ? 1 : 0); });
+    return { rows: big.slice(0, MAXROWS), nBig: big.length, nWindow: rows.length, nHidden: rows.length - big.length, hasOwn: P.hasOwn, seasons: ctx.index.seasons, asOf: ctx.index.as_of, blend: true };
   }
   function pts(gap) { return (gap / 10).toFixed(1); }
   function pc(p) { return (p / 10).toFixed(1) + '%'; }

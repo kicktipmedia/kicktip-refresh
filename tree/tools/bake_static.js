@@ -133,8 +133,8 @@ let RBX = null, LGMX = null;
 function rbLogoMap() { if (LGMX) return LGMX; const m = /MAP = (\{.*?\}\}), PAD/s.exec(fs.readFileSync(path.join(SITE, 'assets/lg.js'), 'utf8')); if (!m) die('lg.js MAP not found'); return (LGMX = JSON.parse(m[1]).t); }
 function rbCtx() {
   if (RBX) return RBX; const idx = J('data/whatif/index.json'), bun = J('data/sim-bundle.json'), games = RB.buildGames(idx, bun), sh = {}, by = {};
-  (bun.teams || []).forEach((t) => { if (t.n) by[t.n] = t; });
-  return (RBX = { index: idx, games: games, asOfMs: RB.mtMs(idx.as_of), by: by, shard: (w, id) => { if (!(w in sh)) { const f = idx.shards[w]; sh[w] = f ? J('data/whatif/' + f) : null; } return (sh[w] && sh[w][id]) || null; } });
+  (bun.teams || []).forEach((t) => { if (t.n) by[t.n] = t; }); const confs = {}; (bun.confs || []).forEach((x) => { confs[x.code] = x.name; });
+  return (RBX = { index: idx, games: games, asOfMs: RB.mtMs(idx.as_of), by: by, confs: confs, shard: (w, id) => { if (!(w in sh)) { const f = idx.shards[w]; sh[w] = f ? J('data/whatif/' + f) : null; } return (sh[w] && sh[w][id]) || null; } });
 }
 /* ---- audit2 polish2: next-game What If (team page). The team's own next game in the Rootables window, playoff chance if it wins / loses, from the same What If shards ---- */
 function nwHtml(slug) {
@@ -157,16 +157,16 @@ function rbHtml(slug) {
   const c = rbCtx(); let nmK = null; Object.keys(c.by).forEach((k) => { if (c.by[k].g === slug) nmK = k; });
   const tn = c.index.team_names.indexOf(nmK); if (tn < 0) return null;
   const nm = (i) => { const n = c.index.team_names[i], t = c.by[n]; return (t && (t.s || t.n)) || n; };
-  const team = nm(tn), res = RB.compute(tn, 'cfp12', c, c.asOfMs);
+  const team = nm(tn), res = RB.compute(tn, 'blend', c, c.asOfMs), conf = c.confs[(c.by[nmK] || {}).c] || '', S = RB.STR;   /* blended list (Oct 31): cfp12 + ccg, tagged by race */
   const st = '<p class="rb-simn"><span class="bl">Simulation analysis, not advice. Data as of ' + NBSP(esc(K.fmt(c.index.as_of.replace(/ MT$/, '')) || RB.stampText(c.index.as_of))) + '.</span></p>';
   if (!res.nWindow) return '<p class="rb-msg">No games in the next 7 days.</p>' + st;
-  if (!res.rows.length) return '<p class="rb-msg none">No other games this week move ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by much.</p>' + st;
+  if (!res.rows.length) return '<p class="rb-msg none">' + esc(RB.fill(S.empty, { Team: team })) + '</p>' + st;
   const LGM = rbLogoMap(), lgo = (i) => { const t = c.by[c.index.team_names[i]], m = t && t.g && LGM[t.g]; return m ? '<span class="lg s52" aria-hidden="true"><img src="/assets/logos/64/' + m[0] + '.png" alt="" width="52" height="52" decoding="async" loading="lazy"></span>' : ''; };
   const sl = (i) => String((c.by[c.index.team_names[i]] || {}).g || '').replace(/[^a-z0-9-]/g, '');
-  const li = res.rows.map((r) => RB.rvCard({ slug: sl(r.root), when: RB.whenCard(r), root: { name: nm(r.root), logo: lgo(r.root) }, other: { name: nm(r.other), logo: lgo(r.other) }, where: r.neutral || r.root === r.h ? 'vs' : 'at', gain: RB.pts(r.gap), label: team + ' playoff gain',
-    sr: 'Root for ' + nm(r.root) + '. ' + team + '\u2019s playoff chance is ' + RB.pts(r.gap) + ' points higher if ' + nm(r.root) + ' wins. Kickoff ' + RB.whenLong(r) + '.' })).join('');
+  const li = res.rows.map((r) => RB.rvCard({ slug: sl(r.root), when: RB.whenCard(r), root: { name: nm(r.root), logo: lgo(r.root) }, other: { name: nm(r.other), logo: lgo(r.other) }, where: r.neutral || r.root === r.h ? 'vs' : 'at', gain: RB.pts(r.gap), label: RB.fill(S.gain, { Team: team }), tag: RB.tagText(r.race, conf), race: r.race, also: RB.alsoText(r.sec, conf),
+    sr: 'Root for ' + nm(r.root) + '. ' + team + '\u2019s chance for ' + RB.fill(S.race[r.race], { Conf: conf }) + ' is ' + RB.pts(r.gap) + ' points higher if ' + nm(r.root) + ' wins.' + (r.sec ? ' ' + RB.alsoText(r.sec, conf).replace('\u2212', 'minus ') + '.' : '') + ' Kickoff ' + RB.whenLong(r) + '.' })).join('');
   const L = li.split('</li>').filter(Boolean).map((x) => x + '</li>'), top = L.slice(0, 2).join(''), more = L.slice(2).join('');
-  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s chance to make the 12-team playoff field (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show all ' + L.length + ' games</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
+  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s ' + (conf ? 'playoff and ' + esc(conf) + ' championship' : 'playoff') + ' chances (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show all ' + L.length + ' games</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
 }
 
 /* ---- page edits ---- */

@@ -4,7 +4,12 @@
    Without JavaScript nothing is reserved and the page keeps its original content. */
 (function () {
   var d = document.documentElement, done = false, ok = function () { if (done) return; done = true; d.classList.add("cc5ok"); };
-  d.classList.add("cc5js"); setTimeout(ok, 10000);
+  d.classList.add("cc5js");
+  /* rev 5.2 (QA B3): the 10 s fail-safe starts at window load, not at head-script time, so slow connections keep the reservation until the simulator draws */
+  addEventListener("load", function () { setTimeout(ok, 10000); });
+  /* rev 5.2: release at once if the simulator script or its data (ccg-sim / sim-bundle json) fails (nothing will draw) */
+  addEventListener("error", function (e) { var t = e.target; if (t && t.tagName === "SCRIPT" && /\/assets\/ccgsim(-ui)?\.js/.test(t.src || "")) ok(); }, true);
+  if (window.fetch) { var f = window.fetch; window.fetch = function (u) { var p = f.apply(this, arguments), w = /\/data\/(ccg-sim|sim-bundle)[^\/]*\.json/.test(typeof u === "string" ? u : (u && u.url) || ""); return w ? p.then(function (r) { if (!r.ok) ok(); return r; }, function (x) { ok(); throw x; }) : p; }; }
   ["pointerdown", "keydown"].forEach(function (t) { addEventListener(t, ok, { capture: true, once: true }); });
   document.addEventListener("DOMContentLoaded", function () {
     var app = document.getElementById("sim-app"), fin = function () { setTimeout(ok, document.getElementById("aib") ? 0 : 1500); };

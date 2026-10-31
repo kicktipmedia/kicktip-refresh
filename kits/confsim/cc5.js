@@ -26,6 +26,12 @@
     return rem().filter(function (g) { var s = state(g); return (s === "chg" || s === "set") && picks[g.id] !== undefined && picks[g.id] !== null; }).sort(function (a, b) { return (a.wk || 0) - (b.wk || 0) || (a.date < b.date ? -1 : 1); });
   }
   function ccDay(g) { var d = dmt(g.date, g.id), t = dmt(new Date().toISOString()); return d.k === t.k ? "Today" : d.m + "&nbsp;" + d.d; }
+  /* cc5 venue line from rules data: MT first, one host sentence */
+  function ccMT(w) { return String(w || "").replace(/^([A-Z][a-z]{2} [A-Z][a-z]{2} \d+), (\d+:\d\d [AP]M) ([ECP]T) \((\d+:\d\d [AP]M) MT\)/, "$1, $4 MT ($2 $3)"); }
+  function ccHost(t) { var R0 = R.ccg || {}; if (!R0.when) return ""; var w = ccMT(R0.when), hs = R0.host;
+    if (!hs || hs === "neutral") return '<p class="y s">' + esc(w + (R0.site ? ", " + R0.site : "") + ".") + "</p>";
+    var who = hs === "higher_seed" ? "The higher seed hosts" : "The " + (R.fmt === "div" && conf.div ? "division champion" : "team") + " with the better conference record hosts";
+    return '<p class="y s">' + esc(w + ". " + who + (t ? ": " + T(t[0]) : "") + ".") + "</p>"; }
   function ccCard(t, res) {
     w4card(t, res);   /* keeps W4data (share image) exactly as before */
     var fl = ccFlips(), P = ccPlaces(res), div = R.fmt === "div" && conf.div, cn = NB(NAME);
@@ -39,7 +45,7 @@
     h += '<div class="cc5vs">' + side(t[0], 1) + "<i>vs</i>" + side(t[1], 2) + "</div>";
     if (BASE && BASE.ready && BASE.pairKnown && BASE.pair) h += '<div class="cc5b">Starting results: ' + NB(T(BASE.pair[0])) + " vs " + NB(T(BASE.pair[1])) + "</div>";
     if (res.why && res.why.length) h += '<details class="cc5w"><summary>Why these two? (tiebreakers)</summary><ol>' + res.why.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ol></details>";
-    h += "</section>" + hostLine(res, t) + '<button type="button" class="w4sh" data-w4="share">' + (!w4canShare() ? "Download image" : "Share results") + "</button>";
+    h += "</section>" + ccHost(t) + '<button type="button" class="w4sh" data-w4="share">' + (!w4canShare() ? "Download image" : "Share results") + "</button>";
     return h;
   }
   function ccTable(res) {
@@ -53,7 +59,7 @@
         if (ch) { mk = mv > 0 ? '<span class="cc5mv up"><span aria-hidden="true">&#9650;' + mv + '</span><span class="vh">up ' + mv + "</span></span>" : mv < 0 ? '<span class="cc5mv"><span aria-hidden="true">&#9660;' + (-mv) + '</span><span class="vh">down ' + (-mv) + "</span></span>" : '<span class="cc5mv">Changed</span>'; was = "<small>was&nbsp;" + b.lab + "&nbsp;&middot;&nbsp;" + b.r.w + "-" + b.r.l + "</small>"; }
         if (inS) tags += '<span class="cc5tg in">Championship</span>'; if (flipT[i]) tags += '<span class="cc5tg fl">Game&nbsp;flipped</span>';
         var pl = /^T/.test(s.lab) ? '<span aria-hidden="true">' + s.lab + '</span><span class="vh">Tied for ' + s.lab.slice(1) + "</span>" : s.lab;
-        h += '<tr class="' + (ch ? "chg" : "") + (inS ? " inp" : "") + '"><td class="pl">' + pl + '</td><td class="tm"><div class="cc5tw">' + LG(i, 28, false) + "<div><b>" + NB(x.name) + "</b>" + (mk ? "&nbsp;" + mk : "") + '<div class="cc5tgs">' + tags + was + '</div></div></div></td><td class="n"><b>' + x.w + "-" + x.l + '</b></td><td class="n o">' + o.w + "-" + o.l + (o.left ? "*" : "") + "</td></tr>";
+        h += '<tr class="' + (ch ? "chg" : "") + (inS ? " inp" : "") + '"><td class="pl">' + pl + '</td><td class="tm"><div class="cc5tw">' + LG(i, 28, false) + "<div><b>" + esc(x.name) + "</b>" + (mk ? "&nbsp;" + mk : "") + '<div class="cc5tgs">' + tags + was + '</div></div></div></td><td class="n"><b>' + x.w + "-" + x.l + '</b></td><td class="n o">' + o.w + "-" + o.l + (o.left ? "*" : "") + "</td></tr>";
       });
     });
     $("stb").innerHTML = h; $("sh").innerHTML = (res.ready ? "Final " : "") + NB(NAME) + " standings"; $("cclg").hidden = !B;

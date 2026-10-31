@@ -44,6 +44,8 @@ ok("rows only for unstarted games in horizon", sorted({r["id"] for r in rows}) =
 r = rows[0]; ok("row fields", set(r) == {"run_utc", "run_mt", "as_of", "mv", "m", "id", "ko", "h", "a", "p", "em"} and r["em"] == 3.2 and r["p"] == 0.61 and r["run_mt"].endswith(" MT") and r["run_utc"].endswith("Z"), str(r))
 run(); ok("dedup: unchanged forecast adds no row", len(open(LOG).read().splitlines()) == len(MR.MODELS))
 write(0.64); run(); ok("changed forecast appends one row per model", len(open(LOG).read().splitlines()) == 2 * len(MR.MODELS))
+open(LOG, "a").write('{"m":"blend","id":"x'); write(0.66); run(); L = open(LOG).read().splitlines()
+ok("torn last line: new rows still parse", L[-1 - len(MR.MODELS)] == '{"m":"blend","id":"x' and all(json.loads(l)["p"] == 0.66 for l in L[-len(MR.MODELS):]) and len(L) == 3 * len(MR.MODELS) + 1)
 before = open(LOG).read(); write(0.70); os.remove(f"{R}/data/out/refresh_log.json"); r4 = run()
 ok("failure is fail-soft (exit 0, WARNING, log untouched)", r4.returncode == 0 and "WARNING" in r4.stderr and open(LOG).read() == before, r4.stderr)
 shutil.rmtree(T); print("ACC_DONE fail=%d" % len(fails)); sys.exit(1 if fails else 0)

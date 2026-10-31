@@ -43,6 +43,9 @@ def main(now=None):
             rows.append(dict(run_utc=now.strftime("%Y-%m-%dT%H:%M:%SZ"), run_mt=now.astimezone(MT).strftime("%Y-%m-%d %H:%M MT"), as_of=st["as_of"], mv=mv,
                              m=m["id"], id=g["id"], ko=g["date_utc"], h=g["home"], a=g["away"], p=p, em=em))
     if rows:
+        if os.path.exists(LOG) and os.path.getsize(LOG) > 0:
+            with open(LOG, "rb") as f: f.seek(-1, 2); torn = f.read(1) != b"\n"
+            if torn: open(LOG, "a").write("\n")      # a crash left a partial last line: end it so the next row stays parseable (the torn line is kept as is)
         with open(LOG, "a") as f:
             for r in rows: f.write(json.dumps(r, separators=(",", ":"), ensure_ascii=False) + "\n")
     print(f"forecast_log: {len(rows)} new rows ({len(last)} keys before) -> {os.path.relpath(LOG, ROOT)}")

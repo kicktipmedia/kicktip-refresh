@@ -50,6 +50,8 @@ def main():
     old = {}
     bm = os.path.join(a.base or S, 'data', 'og-cards.json')
     if os.path.exists(bm): old = json.load(open(bm)).get('cards', {})
+    for c in old.values():
+        for e in c.values(): e.pop('asof', None)   # pre-fix manifests carried the as-of text
     cache = os.environ.get('KT_OG_CACHE')
     if cache: os.makedirs(cache, exist_ok=True)
     od = os.path.join(S, 'og', 'rootables'); os.makedirs(od, exist_ok=True)
@@ -65,7 +67,7 @@ def main():
             if not a.all and prev.get('k') == key and os.path.exists(src_prev):
                 if os.path.abspath(src_prev) != os.path.abspath(dst): shutil.copyfile(src_prev, dst)
                 man[slug][px] = prev; kept += 1; continue
-            man[slug][px] = {'k': key, 'asof': D['as_of'], 'rows': min(len(t['games']), card3.S[sz]['CAP'])}
+            man[slug][px] = {'k': key, 'sd': sha(stamp.encode())[:8], 'rows': min(len(t['games']), card3.S[sz]['CAP'])}   # sd = hash of the drawn Updated stamp: no as-of text in data/og-cards.json (apply_data's old-as-of check)
             ck = os.path.join(cache, f'{key}-{sha(stamp.encode())[:8]}.png') if cache else None
             if ck and os.path.exists(ck): shutil.copyfile(ck, dst); kept += 0; continue
             todo.append((slug, sz, px, dst, ck, page_html(card_data(t, stamp), sz, S)[0]))

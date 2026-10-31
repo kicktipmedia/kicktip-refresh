@@ -12,6 +12,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTD = f"{ROOT}/data/out"; STORE = f"{ROOT}/data/store/espn_lines.json"; OUT = f"{OUTD}/market_lines.json"
 SB = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=%s&groups=80&limit=300"
 MIN_INTERVAL = 12 * 3600; DAYS = 14
+GAMEDAY_INTERVAL = 2 * 3600   # Thu-Sat (MT): game days, re-read at most every 2 h
+def min_interval():
+    import zoneinfo
+    return GAMEDAY_INTERVAL if dt.datetime.now(zoneinfo.ZoneInfo("America/Denver")).weekday() in (3, 4, 5) else MIN_INTERVAL
 
 def utc(s): return dt.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc)
 def epoch(d): return int(d.timestamp())
@@ -53,7 +57,8 @@ def ingest_research(d):
 def pull(force=False):
     if os.path.exists(STORE):
         age = time.time() - json.load(open(STORE))["pulled_epoch"]
-        if age < MIN_INTERVAL and not force: print(f"last pull is {age/3600:.1f} h old (< 12 h): no request made"); return None
+        iv = min_interval()
+        if age < iv and not force: print(f"last pull is {age/3600:.1f} h old (< {iv/3600:.0f} h): no request made"); return None
     rows, skip, today = [], {}, dt.datetime.now(dt.timezone.utc).date()
     try:
         for i in range(DAYS):
@@ -84,5 +89,7 @@ def merge():
 if __name__ == "__main__":
     a = sys.argv[1:]
     if "--ingest-research" in a: ingest_research(a[a.index("--ingest-research") + 1])
-    elif "--pull" in a: pull("--force" in a)
+    elif "--pull" in a:
+        pull("--force" in a)
+        if "--no-merge" in a: sys.exit(0)
     merge()

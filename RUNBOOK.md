@@ -81,3 +81,17 @@ No cron is installed. See the recommendation in the latest report. When the go c
 - Box replay on the same inputs (KT_SKIP_FETCH=1): 1011 of 1014 files identical; the 3 sim-bundle.json files differ only in last-digit float noise in 4 model-metadata fields (resume_sd, bench, sor_sd, hfa; CPU/BLAS rounding). No displayed number differs.
 - Every refresh is a full run (what-ifs on the same as-of as scores). One as-of per run: model stamp = results-pulled minute (KT_ASOF in run_all.py).
 - Cadence: off-days hourly check (skip ~20 s when nothing changed). Saturday ticks every 30 min; concurrency group 'refresh' runs one at a time and keeps at most ONE pending run (GitHub replaces an older pending run with the newer one), so busy Saturdays run back-to-back: a fresh update roughly every 35-60 min.
+
+## Feature ships and the S0 merge base (added Oct 30, 2026, refreshfix)
+Why: every refresh 3-way-merges live + (S0 -> S1). S0/S1 are rendered by `tree/src/build.py`; feature ships edit the live HTML directly.
+If a feature changes HTML that the pipeline also regenerates (games table/rows/cards, Sources strip, method page, stamps), the data merge
+conflicts (Oct 30, 9:39 PM MT run 41165311294: live B5 games table had renamed headers + no Gap column; S1 added/removed rows next to them -> `games/index.html rc=3`).
+**Rule for every feature ship that touches pipeline-generated HTML:**
+1. Port the same change into `tree/src/build.py` (same branch/PR as the ship).
+2. `tools/rebuild_s0.sh /tmp/s0rb --check <feature zip>` : re-renders S0 at the live as-of with the new templates from release asset `s0-inputs.tar.gz`
+   and dry-runs the merge of the feature zip; must print `conflicts [] []`.
+3. Ship as usual (guard, sha, deploy, bytecmp), then `tools/publish_base.sh <zip> <id>` and `tools/rebuild_s0.sh /tmp/s0rb --upload`
+   (keeps `s0-site.prev.tar.gz` as rollback). Ships that only change JS/CSS/assets need neither step.
+4. Refresh runs keep `s0-inputs.tar.gz` current (`publish_base --s0-inputs tree`).
+Spreads: `src/lines.py --pull` runs in every refresh before the fingerprint (2 h min interval Thu-Sat MT, 12 h otherwise); a new spread
+snapshot (`lines_fp`) or a live read 20 h+ older than the pull triggers a full run; `lines.py` merge runs before `build.py` -> `/data/pred-lines.json`.

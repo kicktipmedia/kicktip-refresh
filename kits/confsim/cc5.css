@@ -46,3 +46,4 @@
 @media (max-width:359px){.cc5vs{grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr);gap:0 4px;padding:8px 4px 4px}.cc5s{gap:4px}.cc5s>img,.cc5s>span:first-child{width:32px;height:32px}.cc5r span{display:block;vertical-align:0;margin-top:2px}.cc5top span{font-size:10px;padding:3px 6px}}
 .xst.cc5x td.tm{padding-right:8px}.cc5tw b{overflow-wrap:break-word}
 .cc5jl{display:inline-flex;align-items:center;min-height:44px;font:700 14px 'Source Sans 3',system-ui,Arial;color:#121519;text-decoration:underline;text-underline-offset:3px}
+.cc5r{white-space:normal}.cc5r span{display:inline-block;white-space:nowrap}

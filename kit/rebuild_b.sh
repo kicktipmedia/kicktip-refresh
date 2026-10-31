@@ -5,7 +5,7 @@
 #         -> bake --check, --verify -> bump_all -> mkzip. Writes <out_zip>.head (batchB commit) and <out_zip>.sha256.
 set -euo pipefail
 BASE=$(realpath "$1"); OUTZ=$(realpath -m "$2"); W=$(realpath -m "$3"); K=$(cd "$(dirname "$0")" && pwd)
-REPO=/workspace/hub/kicktip-batchB/repo; T=$REPO/tree/tools; export GH_CONFIG_DIR=/workspace/kicktip-refresh/.gh
+REPO=${KT_B_REPO:-/workspace/hub/kicktip-batchB/repo}; T=$REPO/tree/tools; export GH_CONFIG_DIR=/workspace/kicktip-refresh/.gh
 [ ! -e "$W" ] || { echo "work dir $W exists (no rm -rf)"; exit 2; }
 case "$(git -C $REPO rev-parse --abbrev-ref HEAD)" in batchB|batchB-rehearse) ;; *) echo "repo not on batchB"; exit 3;; esac
 [ -z "$(git -C $REPO status --porcelain)" ] || { echo "repo tree not clean: commit first"; git -C $REPO status --short | head; exit 3; }

@@ -33,12 +33,16 @@ def page_html(d, sz, site):
     ff = '@font-face{font-family:"Noto Sans";src:url("FONT") format("truetype");font-weight:100 900;font-stretch:62.5% 100%}'
     return h.replace('<style>', '<style>' + ff, 1), n, x
 # fit pass (Batch B, open for Creative): a long opponent name next to a long tag ('Mountain West championship') does not fit the wide row.
-# Root-for panel: a long name ('Florida International') steps its font down 1px at a time, to 20px at least.
+# Root-for panel (r3.1): the name must end >= 12px inside the panel. Font steps down 1px to 80% of its size; past that it wraps at a space (never mid-word); still bad -> .nmbad = overflow (keep previous card).
 # Step 4 (r3 dates): if a row still overflows, every row's time drops ' MT' ('1:45 PM') and the card says 'Kickoff times MT' once. The date is never dropped.
 # Step 5 (r3 dates): a row that still overflows wraps its kickoff line at the ' · ' only (every other space there is &nbsp;): 'Sat Oct 31 ·' / '1:30 PM'.
 # Step 1: that tag drops to 18px. Step 2: the opponent name may wrap to 2 lines. Step 3: tag 16px, kickoff 18px. Anything still overflowing fails the run (no clipped text ships).
 FIT = """()=>{const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
- for(const pn of document.querySelectorAll('.pn')){const nm=pn.querySelector('.nm');let f=parseFloat(getComputedStyle(nm).fontSize);while(ov(pn)&&f>20){f-=1;nm.style.fontSize=f+'px';}}
+ const gap=pn=>{const nm=pn.querySelector('.nm'),r=document.createRange();r.selectNodeContents(nm);return pn.getBoundingClientRect().right-Math.max(...[...r.getClientRects()].map(x=>x.right))};
+ for(const pn of document.querySelectorAll('.pn')){const nm=pn.querySelector('.nm'),f0=parseFloat(getComputedStyle(nm).fontSize),fl=Math.round(f0*0.8);let f=f0;const bad=()=>ov(pn)||gap(pn)<12;
+  while(bad()&&f>fl){f-=1;nm.style.fontSize=f+'px';}
+  if(bad()){nm.textContent=nm.textContent.replace(/\u00a0/g,' ');Object.assign(nm.style,{whiteSpace:'normal',wordBreak:'normal',overflowWrap:'normal',hyphens:'none',lineHeight:'1.05'});const w=nm.parentElement;Object.assign(w.style,{minWidth:'0',flex:'1 1 auto',maxWidth:(pn.getBoundingClientRect().right-w.getBoundingClientRect().left-12)+'px'});}
+  if(bad())pn.classList.add('nmbad');}
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),on=r.querySelector('.on'),tg=r.querySelector('.tg');const md=r.querySelector('.mid'),bad=()=>ov(op)||ov(md);if(!op||!bad())continue;
   tg.style.fontSize='18px';tg.style.padding='6px 10px';if(!bad())continue;
   const b=on.querySelector('b');if(b)b.textContent=b.textContent.replace(/\u00a0/g,' ');on.style.whiteSpace='normal';on.style.lineHeight='1';if(!bad())continue;
@@ -91,7 +95,7 @@ def main():
                     open(f, 'w', encoding='utf-8').write(h.replace('src="LOGO/', 'src="' + logo).replace('src="BRAND"', 'src="' + brand + '"').replace('url("FONT")', 'url("' + font + '")'))
                     pg = pages[sz]; pg.goto('file://' + f, wait_until='load'); pg.evaluate('document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>0))))')
                     pg.evaluate(FIT)
-                    over = pg.evaluate("()=>{const bd=document.querySelector('.bd');return [bd.scrollHeight-bd.clientHeight].concat([...document.querySelectorAll('.r,.pn,.op,.mid')].filter(e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+2).map(e=>e.className+' '+e.scrollWidth+'x'+e.scrollHeight+'/'+e.clientWidth+'x'+e.clientHeight+' '+e.textContent.slice(0,40)))}")
+                    over = pg.evaluate("()=>{const bd=document.querySelector('.bd');return [bd.scrollHeight-bd.clientHeight].concat([...document.querySelectorAll('.r,.pn,.op,.mid,.nmbad')].filter(e=>e.classList.contains('nmbad')||e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+2).map(e=>e.className+' '+e.scrollWidth+'x'+e.scrollHeight+'/'+e.clientWidth+'x'+e.clientHeight+' '+e.textContent.slice(0,40)))}")
                     if os.environ.get('KT_OG_FORCE_OVERFLOW') == slug: over = [1, 'forced (test)']   # test hook only
                     if over[0] > 0 or len(over) > 1:   # QA r3 item 4: one bad card never fails the refresh. Keep the previous card; with none, draw the safe no-rows card. No clipped text ships.
                         prevp = os.path.join(a.base, 'og', 'rootables', f'{slug}-{px}.png') if a.base else None

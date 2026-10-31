@@ -16,7 +16,7 @@ TMP=$(mktemp -d); cp "$ZIP" $TMP/kicktip-site.zip
 gh release view base >/dev/null 2>&1 || gh release create base --title "Live base (do not delete)" --notes "Current live zip and S0 pipeline site for the refresh workflow." >/dev/null
 OLD=$(python3 -c "import json;print(json.load(open('state.json'))['live_id'])")
 gh release upload base $TMP/kicktip-site.zip --clobber
-if [ -n "$S0" ]; then tar czf $TMP/s0-site.tar.gz -C "$S0" .; gh release upload base $TMP/s0-site.tar.gz --clobber; fi
+if [ -n "$S0" ]; then A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','s0-site.tar.gz'))"); tar czf "$TMP/$A" -C "$S0" .; gh release upload base "$TMP/$A" --clobber; fi
 # pipeline inputs/outputs of this as-of, so tools/rebuild_s0.sh can re-render S0 with new templates (feature ships)
 if [ -n "$S0IN" ]; then tar czf $TMP/s0-inputs.tar.gz -C "$S0IN" data/store data/out data/cache/scoreboard; gh release upload base $TMP/s0-inputs.tar.gz --clobber; fi
 python3 - "$ID" "$SHA" "$OLD" "$ASOF" "$FP" "$DONE" "$LFP" "$LEP" <<'P'

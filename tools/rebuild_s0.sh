@@ -17,8 +17,9 @@ AOUT=$(realpath -m "$OUT"); AREPO=$(pwd -P)
 case "$AOUT/" in "$AREPO"/*|/|"$HOME"/|/workspace/|/tmp/) echo "refusing out_dir $AOUT (inside the repo or a top-level dir)"; exit 2;; esac
 [ ! -e "$AOUT" ] || [ -z "$(ls -A "$AOUT")" ] || { echo "refusing: $AOUT exists and is not empty (no rm -rf)"; exit 2; }
 OUT=$AOUT; mkdir -p "$OUT/tree" "$OUT/old"
-gh release download base -D "$OUT" -p s0-inputs.tar.gz -p s0-site.tar.gz
-tar xzf "$OUT/s0-site.tar.gz" -C "$OUT/old"; mv "$OUT/s0-site.tar.gz" "$OUT/s0-site.prev.tar.gz"
+A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','s0-site.tar.gz'))")   # state.json s0_asset (default s0-site.tar.gz)
+gh release download base -D "$OUT" -p s0-inputs.tar.gz -p "$A"
+tar xzf "$OUT/$A" -C "$OUT/old"; mv "$OUT/$A" "$OUT/s0-site.prev.tar.gz"
 tar cf - --exclude=./build --exclude=./data/out --exclude=./data/store -C tree . | tar xf - -C "$OUT/tree"
 tar xzf "$OUT/s0-inputs.tar.gz" -C "$OUT/tree"
 ASOF=$(python3 -c "import json;print(json.load(open('state.json'))['as_of'])")
@@ -41,6 +42,6 @@ tar czf "$OUT/s0-site.tar.gz" -C "$NEW" .; echo "new s0 sha $(sha256sum "$OUT/s0
 if [ $UP = 1 ]; then
   PS=$(sha256sum "$OUT/s0-site.prev.tar.gz" | cut -c1-12); BK="s0-site-backup-$PS.tar.gz"
   if gh release view base --json assets --jq '.assets[].name' | grep -qx "$BK"; then echo "backup $BK already on release base (kept)"; else cp "$OUT/s0-site.prev.tar.gz" "$OUT/$BK" && gh release upload base "$OUT/$BK"; fi
-  gh release upload base "$OUT/s0-site.tar.gz" --clobber
-  echo "uploaded; rollback: gh release download base -p $BK -D /tmp/rb && mv /tmp/rb/$BK /tmp/rb/s0-site.tar.gz && gh release upload base /tmp/rb/s0-site.tar.gz --clobber"
+  mkdir -p "$OUT/up" && cp "$OUT/s0-site.tar.gz" "$OUT/up/$A" && gh release upload base "$OUT/up/$A" --clobber
+  echo "uploaded; rollback: gh release download base -p $BK -D /tmp/rb && mv /tmp/rb/$BK /tmp/rb/$A && gh release upload base /tmp/rb/$A --clobber"
 fi

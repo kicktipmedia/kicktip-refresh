@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""audit2 feature layer: hand-ports of the build.py audit2 head/footer/sitemap changes onto files where merge3 reported a conflict (live markup differs from S0).
+"""Batch B feature layer (Batch A markup): hand-ports of the build.py audit2 head/footer/sitemap changes onto files where merge3 reported a conflict (live markup differs from S0).
 Idempotent. usage: feat.py <siteDir>"""
 import sys, re, html
 D = sys.argv[1]

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Rebuild the Batch B zip (audit2 Batch A + cap 8 + share cards) on top of ANY live base zip (the release kicktip-site.zip whose sha = main state.json live_sha).
+# Rebuild the Batch B zip (Batch A head/footer layer + cap 8 + share cards) on top of ANY live base zip (the release kicktip-site.zip whose sha = main state.json live_sha).
 # Only from a committed, clean batchB head. Does NOT deploy. usage: rebuild_b.sh <live_base_zip> <out_zip> <work_dir(new)>
 # Recipe: unzip live -> unbake -> merge3(release S0 -> S0 rebuilt from batchB HEAD) -> live-only assets (kit/assets) -> feat.py -> feat_blend.py
 #         -> bake --check, --verify -> bump_all -> mkzip. Writes <out_zip>.head (batchB commit) and <out_zip>.sha256.

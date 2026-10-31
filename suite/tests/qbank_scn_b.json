@@ -302,11 +302,11 @@
   },
   {
    "id": "sb12",
-   "note": "all branches impossible",
+   "note": "all branches impossible (B3: impossible season totals answer loss_range with the valid range)",
    "text": "What if Utah and Arizona both end with 8 losses",
    "kind": "clarify",
    "expect": {
-    "reason": "too_many_games"
+    "reason": "loss_range"
    }
   },
   {
@@ -344,11 +344,14 @@
   },
   {
    "id": "sb16",
-   "note": "control: pinned game plus constraint",
+   "note": "control: pinned game plus constraint (Utah 0 losses, 1 to BYU + 2 more of its remaining is feasible: a card, not conflict)",
    "text": "What if BYU beats Utah and Utah ends with 3 losses",
-   "kind": "clarify",
+   "kind": "card",
    "expect": {
-    "reason": "conflict"
+    "title": "What this means for BYU and Utah",
+    "status": "partial",
+    "branches": 1,
+    "game_branches": true
    }
   },
   {
@@ -416,11 +419,11 @@
   },
   {
    "id": "sb23",
-   "note": "control: invalid total",
+   "note": "control: invalid total (B3: impossible season totals answer loss_range with the valid range)",
    "text": "What if BYU finishes with no losses?",
    "kind": "clarify",
    "expect": {
-    "reason": "invalid_loss_count"
+    "reason": "loss_range"
    }
   },
   {
@@ -434,11 +437,11 @@
   },
   {
    "id": "sb25",
-   "note": "control: Utah State alias is not Utah",
+   "note": "control: Utah State alias is not Utah (B3: impossible season totals answer loss_range with the valid range)",
    "text": "What if Utah State and Utah both end with one loss",
    "kind": "clarify",
    "expect": {
-    "reason": "invalid_loss_count"
+    "reason": "loss_range"
    }
   }
  ]

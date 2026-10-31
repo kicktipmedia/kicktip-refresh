@@ -67,7 +67,7 @@ x = resB('What if BYU, Utah, Arizona and Texas Tech all end with 3 losses');
 { const fb = x.r.branches ? build(x.p, x.r) : null; chk('three-team limit: four named teams -> no card (too_many_teams) or keeps the clarify', (!x.r.branches && !x.r.ok) || (fb && fb.reason === 'too_many_teams'), [x.r.ok, x.r.clarify, fb && fb.reason]); }
 { const fake = { ok: true, branches: [0, 1, 2, 3, 4].map(() => ({ shared: [], impossible: null, res: null })) }; chk('branch cap in the card builder: 5 branches -> too_many_branches', H.EX.buildBranched({ res: fake, bundle: B, parsed: { items: [] } }).reason === 'too_many_branches'); }
 x = resB('What if Utah and Arizona both end with 8 losses');
-chk('all branches impossible/invalid: the resolver says so (too_many_games), never an empty card', !x.r.ok && !x.r.branches && x.r.clarify.reason === 'too_many_games');
+chk('all branches impossible/invalid: the resolver says so (B3 loss_range with a valid range, or too_many_games), never an empty card', !x.r.ok && !x.r.branches && (x.r.clarify.reason === 'too_many_games' || (x.r.clarify.reason === 'loss_range' && x.r.clarify.total === 8 && x.r.clarify.max < 8 && x.r.clarify.min <= x.r.clarify.max)), x.r.clarify);
 x = resB('What if BYU and Utah each end with 9 losses');
 chk('invalid total losses: clarify, no branches', !x.r.ok && !x.r.branches, x.r.clarify);
 { const q = parse('What if BYU and Utah each end with 7 losses'), r = H.KS.resolve(q, B, { branches: true }); chk('impossible totals -> a clarify, never a card with no live branch', !r.ok && !r.branches, r.clarify); }

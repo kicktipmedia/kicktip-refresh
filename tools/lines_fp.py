@@ -4,5 +4,7 @@ fp covers game id + spread only (numbers); a re-read with identical numbers keep
 import json,hashlib,sys,os
 p=sys.argv[1]+'/data/store/espn_lines.json'
 if not os.path.exists(p): print('none 0'); sys.exit(0)
-d=json.load(open(p)); rows=sorted((str(r['id']),r['s']) for r in d.get('lines',[]))
-print(hashlib.sha256(json.dumps(rows).encode()).hexdigest()[:16], int(d.get('pulled_epoch') or 0))
+try:
+    d=json.load(open(p)); rows=sorted((str(r['id']),r['s']) for r in d['lines']); ep=int(d.get('pulled_epoch') or 0); assert rows and ep>0
+except Exception: print('none 0'); sys.exit(0)   # corrupt/empty snapshot: no change signal (merge keeps the last good lines)
+print(hashlib.sha256(json.dumps(rows).encode()).hexdigest()[:16], ep)

@@ -21,6 +21,7 @@ js() { python3 -c "import json,os;v=json.load(open('$R/state.json'))['$1'];print
 LIVE_ID=$(js live_id) && LIVE_SHA=$(js live_sha) && ZIP=$(js zip_path) && S0=$(js s0_pipeline_site) && TREE=$(js pipeline_tree) && FP0=$(js results_fp) && OLD_ASOF=$(js as_of) || fail 12 "state.json unreadable"
 LFP0=$(python3 -c "import json;print(json.load(open('$R/state.json')).get('lines_fp',''))"); LEP0=$(python3 -c "import json;print(json.load(open('$R/state.json')).get('lines_epoch',0))") || fail 12 "state.json unreadable"
 [ "$(sha256sum "$ZIP" | cut -d' ' -f1)" = "$LIVE_SHA" ] || fail 12 "base zip sha != state.live_sha"
+[ -n "${KT_S0_OVERRIDE:-}" ] && [ $NODEPLOY = 1 ] && S0=$KT_S0_OVERRIDE   # rebuild_s0 check 2: dry run only
 [ -d "$S0" ] || fail 12 "S0 pipeline site missing: $S0"
 say "live $LIVE_ID sha ${LIVE_SHA:0:12} as_of $OLD_ASOF"
 # 1. pull
@@ -28,8 +29,8 @@ cd $TREE || fail 12 "no pipeline tree"
 if [ "${KT_SKIP_FETCH:-0}" = 1 ]; then echo "KT_SKIP_FETCH: using frozen inputs already in tree/data" > $RD/refresh.json; else timeout 300 python3 src/refresh.py > $RD/refresh.json 2>&1; fi || fail 13 "refresh.py failed: $(tail -n 3 $RD/refresh.json)"
 python3 -c "import json,sys;l=json.load(open('data/out/refresh_log.json'));sys.exit(1 if l['errors'] else 0)" || fail 13 "ESPN errors: $(python3 -c "import json;print(json.load(open('data/out/refresh_log.json'))['errors'])")"
 # 1b. ESPN pre-game spreads (fail soft, at most every 2 h on Thu-Sat, 12 h otherwise); skipped on replays (snapshot comes from the frozen inputs)
-if [ "${KT_SKIP_FETCH:-0}" != 1 ]; then timeout 180 python3 src/lines.py --pull --no-merge > $RD/lines_pull.log 2>&1 || say "lines pull failed (kept last snapshot): $(tail -n 1 $RD/lines_pull.log)"; fi
-read LFP1 LEP1 <<< "$(python3 $TOOLS/lines_fp.py $TREE)"
+if [ "${KT_SKIP_FETCH:-0}" != 1 ] && [ "${KT_LINES_PULLED:-0}" != 1 ]; then timeout 180 python3 src/lines.py --pull --no-merge > $RD/lines_pull.log 2>&1 || say "lines pull failed (kept last snapshot): $(tail -n 1 $RD/lines_pull.log)"; fi
+read LFP1 LEP1 <<< "$(python3 $TOOLS/lines_fp.py $TREE)"; LFP1=${LFP1:-none}; [[ "$LEP1" =~ ^[0-9]+$ ]] || LEP1=0; [[ "${LEP0:-0}" =~ ^[0-9]+$ ]] || LEP0=0   # one pull per run (KT_LINES_PULLED: the gate already pulled); empty/corrupt -> none 0
 say "lines fp ${LFP0:-none} -> $LFP1 (pulled $(date -d @$LEP1 '+%F %T %Z' 2>/dev/null))"
 LCHG=0; { [ "$LFP1" != "none" ] && [ "$LFP1" != "$LFP0" ]; } && LCHG=1; [ "$LEP1" -gt $(( ${LEP0:-0} + 72000 )) ] && LCHG=1   # new numbers, or the live read is 20 h+ older than this pull
 tar czf $RD/inputs.tgz --exclude=data/cache/val data/store data/cache data/out/refresh_log.json 2>/dev/null || true
@@ -41,7 +42,7 @@ L1=$(cut -d' ' -f1 /proc/loadavg); NP=$(nproc); TH=$(python3 -c "print($NP if $L
 say "models: OMP_NUM_THREADS=$TH"
 export KT_ASOF=$(python3 -c "import json;print(json.load(open('data/out/refresh_log.json'))['refreshed_mt'])")   # model stamp = results-pulled minute (one as-of per run; makes replays reproducible)
 OMP_NUM_THREADS=$TH timeout 5400 nice python3 src/run_all.py --no-refresh --whatif --whatif-all > $RD/run_all.log 2>&1 || fail 14 "run_all failed: $(tail -n 3 $RD/run_all.log)"
-timeout 120 python3 src/lines.py > $RD/lines_merge.log 2>&1 || fail 15 "lines merge failed: $(tail -n 3 $RD/lines_merge.log)"
+timeout 120 python3 src/lines.py > $RD/lines_merge.log 2>&1 || say "lines merge failed, the previous market_lines.json is kept: $(tail -n 1 $RD/lines_merge.log)"   # never blocks a results deploy
 timeout 600 python3 src/build.py > $RD/build.log 2>&1 || fail 15 "build.py failed: $(tail -n 3 $RD/build.log)"
 ASOF=$(python3 -c "import json;print(json.load(open('build/site/data/sim-bundle.json'))['as_of'])")
 [ "$ASOF" != "$OLD_ASOF" ] || fail 15 "new build as_of equals live as_of ($ASOF)"

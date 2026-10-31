@@ -36,10 +36,25 @@ def parse_day(doc, pulled_epoch):
         rows.append(dict(id=str(e["id"]), home=h, away=a, kickoff=k, s=sp + 0.0, t=pulled_epoch))
     return rows, skip
 
-def save_store(rows, note):
+def load_store():
+    """The last good snapshot, or None if missing/corrupt (never raises)."""
+    try:
+        d = json.load(open(STORE)); assert isinstance(d.get("lines"), list) and int(d.get("pulled_epoch") or 0) > 0; return d
+    except Exception: return None
+
+def save_store(rows, note, pulled=None):
+    """Writes only a NON-EMPTY, valid snapshot (refreshfix B1): an empty or invalid pull never replaces the last good lines.
+    pulled_epoch = the request time (never 0)."""
+    rows = [r for r in rows if isinstance(r.get("s"), float) and r.get("id")]
+    if not rows: return False
+    pulled = int(pulled or max(r["t"] for r in rows))
     os.makedirs(os.path.dirname(STORE), exist_ok=True)
-    pulled = max([r["t"] for r in rows] or [0])
-    tmp = STORE + ".tmp"; json.dump(dict(note=note, pulled_epoch=pulled, lines=rows), open(tmp, "w"), indent=1); os.replace(tmp, STORE)
+    tmp = STORE + ".tmp"; json.dump(dict(note=note, pulled_epoch=pulled, lines=rows), open(tmp, "w"), indent=1); os.replace(tmp, STORE); return True
+
+def note_attempt():
+    """Throttle marker for a pull that returned nothing usable: kept beside the snapshot, never touches its lines or pulled_epoch."""
+    try: json.dump(dict(attempt_epoch=int(time.time())), open(STORE + ".attempt", "w"))
+    except Exception: pass
 
 def ingest_research(d):
     """Re-reads the saved scoreboard day files of the coverage research (no network). Each day's pull time is that request's time in requests.log (UTC)."""
@@ -55,11 +70,14 @@ def ingest_research(d):
     save_store(rows, "ESPN public scoreboard, saved research pull Oct 24 2026 6:30-6:45 PM ET; numbers only"); print("ingested", len(rows), "pre-game spreads;", skip); return rows
 
 def pull(force=False):
-    if os.path.exists(STORE):
-        age = time.time() - json.load(open(STORE))["pulled_epoch"]
+    last = load_store(); att = 0
+    try: att = int(json.load(open(STORE + ".attempt"))["attempt_epoch"])
+    except Exception: pass
+    if last or att:
+        age = time.time() - max(int((last or {}).get("pulled_epoch") or 0), att)
         iv = min_interval()
         if age < iv and not force: print(f"last pull is {age/3600:.1f} h old (< {iv/3600:.0f} h): no request made"); return None
-    rows, skip, today = [], {}, dt.datetime.now(dt.timezone.utc).date()
+    rows, skip, today, t0 = [], {}, dt.datetime.now(dt.timezone.utc).date(), int(time.time())
     try:
         for i in range(DAYS):
             day = (today + dt.timedelta(days=i)).strftime("%Y%m%d")
@@ -68,14 +86,20 @@ def pull(force=False):
             for k, v in s.items(): skip[k] = skip.get(k, 0) + v
             time.sleep(1.1)
     except Exception as e:
-        print(f"{type(e).__name__}: pull failed, the last snapshot is kept"); return None
-    save_store(rows, "ESPN public scoreboard pull; numbers only"); print("pulled", len(rows), "pre-game spreads;", skip); return rows
+        note_attempt(); print(f"{type(e).__name__}: pull failed, the last snapshot is kept"); return None
+    if not save_store(rows, "ESPN public scoreboard pull; numbers only", t0):
+        note_attempt(); print("pulled 0 usable pre-game spreads; the last snapshot is kept;", skip); return None
+    print("pulled", len(rows), "pre-game spreads;", skip); return rows
 
 def merge():
     """data/out/market_lines.json: one entry per game id with a line. ESPN snapshot only (no stored fallback). A game only gets a line if the
     teams match sim_games exactly (by game id). Never a book count, never a provider."""
     sg = json.load(open(f"{OUTD}/sim_games.json"))["games"]; byid = {g["id"]: g for g in sg}; out = {}
-    esp = json.load(open(STORE)) if os.path.exists(STORE) else dict(lines=[], pulled_epoch=None); bad = 0
+    esp = load_store()
+    if esp is None and os.path.exists(STORE):   # corrupt snapshot: keep the previous merged lines (never hard-fail the refresh)
+        if os.path.exists(OUT): print("espn_lines.json unreadable: kept the previous market_lines.json"); return json.load(open(OUT))
+    if esp is None: esp = dict(lines=[], pulled_epoch=None)
+    bad = 0
     for r in esp["lines"]:
         g = byid.get(r["id"])
         if not g or g["home"] != r["home"] or g["away"] != r["away"]: bad += 1; continue

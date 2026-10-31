@@ -71,7 +71,7 @@ const run = async (id, p) => T.answer(id, p);
     ["Why did Utah's chance drop?", null], ["How do injuries change Utah's chances?", null], ["What if Utah beats BYU, does their chance go up?", null], ["How would a loss change Utah's chances?", null], ["How does Utah's chance compare with BYU's?", null], ["Utah's chance", null], ["What are Utah's playoff chances?", null],
     ["What is Utah's rank?", "team_snapshot"], ["Where is Utah ranked?", "team_snapshot"], ["Top 10 teams", "rankings_list"], ["Top 25 risers", "rankings_list"], ["Biggest movers in the Big 12", null], ["Biggest risers in the Top 25", null], ["Is Utah's chance of making the playoff going up and Utah vs BYU", null],
     ["How has Utah's chance changed since last year?", null], ["Has Utah's chance changed since 2024?", null], ["Is the over under going up?", null], ["Utah's stock is going up", null], ["Did Utah's basketball rank drop?", null], ["Should I bet on Utah going up?", null], ["Has Utah moved?", null],
-    ["Who has the biggest games this week?", null], ["Which games matter the most?", "games_that_matter"], ["Is Tech's chance going up?", { clar: true }], ["Is the Bears' chance going up?", { clar: true }], ["Who moved the most, Utah or BYU?", null]
+    ["Who has the biggest games this week?", null], ["Which games matter the most?", "games_that_matter"], ["Is Tech's chance going up?", { clar: true }], ["Is the Bears' chance going up?", "team_trend"], ["Who moved the most, Utah or BYU?", null]
   ];
   const tableRun = async (name, tbl, tool) => {
     ck(tbl.length >= 40 && tbl.filter(x => x[1] === null).length >= 14, name + ": table size (>=40 rows, >=14 refusals)");

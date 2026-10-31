@@ -8,7 +8,7 @@ KH = hashlib.sha256(b''.join(open(K + '/' + f, 'rb').read() for f in ('feat_c.py
 MK = '/* cc5-kit:' + KH + ' */'
 def gate(txt, name):
     if MK in txt: print(name, 'already has this kit', KH, '(no-op)'); return False
-    if re.search(r'/\* cc5', txt): sys.exit(name + ': base already carries a different cc5 rev (' + ','.join(re.findall(r'cc5-kit:(\w+)', txt)) + '); rebuild on a pre-cc5 base or the live zip from before confsim')
+    if re.search(r'/\* cc5', txt): sys.exit(name + ': base already carries a different cc5 rev (' + ','.join(re.findall(r'cc5-kit:(\w+)', txt)) + '); this kit cannot re-apply over it: build the newer rev with an upgrade kit for that base (cc5 old rev -> new rev)')
     return True
 p = D + '/assets/ccgsim-ui.js'; t = open(p, encoding='utf-8').read()
 if gate(t, 'ccgsim-ui.js'):

@@ -28,9 +28,13 @@
   function ccDay(g) { var d = dmt(g.date, g.id), t = dmt(new Date().toISOString()); return d.k === t.k ? "Today" : d.m + "&nbsp;" + d.d; }
   /* cc5 venue line from rules data: MT first, one host sentence */
   function ccMT(w) { return String(w || "").replace(/^([A-Z][a-z]{2} [A-Z][a-z]{2} \d+), (\d+:\d\d [AP]M) ([ECP]T) \((\d+:\d\d [AP]M) MT\)/, "$1, $4 MT ($2 $3)"); }
-  function ccHost(t) { var R0 = R.ccg || {}; if (!R0.when) return ""; var w = ccMT(R0.when), hs = R0.host;
+  var CC_NET = { pac12: "CBS" };   /* network missing from rules data: Pac-12 title game on CBS/Paramount+ (pac-12.com/news/2026/5/26) */
+  function ccHost(t, res) { var R0 = R.ccg || {}; if (!R0.when) return ""; var w = ccMT(R0.when), hs = R0.host, net = CC_NET[CODE];
+    if (net && w.indexOf(net) < 0) w += ", " + net;
     if (!hs || hs === "neutral") return '<p class="y s">' + esc((w + (R0.site ? ", " + R0.site : "")).replace(/\.?$/, ".")) + "</p>";
-    var who = hs === "higher_seed" ? "The higher seed hosts" : "The " + (R.fmt === "div" && conf.div ? "division champion" : "team") + " with the better conference record hosts";
+    var pc = function (i) { var r = res && res.table.filter(function (z) { return z.i === i; })[0]; return r ? r.pct : null; };
+    var tie = t && hs !== "higher_seed" && pc(t[0]) !== null && Math.abs(pc(t[0]) - pc(t[1])) < 1e-9;   /* t is the engine's post-tiebreaker order: t[0] = higher seed / host */
+    var who = hs === "higher_seed" || tie ? "The higher seed hosts" : "The " + (R.fmt === "div" && conf.div ? "division champion" : "team") + " with the better conference record hosts";
     return '<p class="y s">' + esc(w + ". " + who + (t ? ": " + T(t[0]) : "") + ".") + "</p>"; }
   function ccCard(t, res) {
     w4card(t, res);   /* keeps W4data (share image) exactly as before */
@@ -45,7 +49,7 @@
     h += '<div class="cc5vs">' + side(t[0], 1) + "<i>vs</i>" + side(t[1], 2) + "</div>";
     if (BASE && BASE.ready && BASE.pairKnown && BASE.pair) h += '<div class="cc5b">Starting results: ' + NB(T(BASE.pair[0])) + " vs " + NB(T(BASE.pair[1])) + "</div>";
     if (res.why && res.why.length) h += '<details class="cc5w"><summary>Why these two? (tiebreakers)</summary><ol>' + res.why.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ol></details>";
-    h += "</section>" + ccHost(t) + '<button type="button" class="w4sh" data-w4="share">' + (!w4canShare() ? "Download image" : "Share results") + "</button>";
+    h += "</section>" + ccHost(t, res) + '<button type="button" class="w4sh" data-w4="share">' + (!w4canShare() ? "Download image" : "Share results") + "</button>";
     return h;
   }
   function ccTable(res) {

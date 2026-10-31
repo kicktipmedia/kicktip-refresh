@@ -145,7 +145,8 @@ function rbHtml(slug) {
   if (!res.rows.length) return '<p class="rb-msg none">No game this week moves ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by 1% or more.</p>' + st;
   const li = res.rows.map((r) => { const s = nm(r.root), o = nm(r.other), where = r.neutral || r.root === r.h ? 'vs' : 'at';
     return '<li class="rb-row rb-cd"><div class="rb-cw"><span class="rb-who">' + esc(s) + '</span><span class="rb-gn">+' + Math.max(1, Math.round(r.gap / 10)) + '%<small>' + esc(team) + ' gain</small></span></div><p class="rb-wn"><span class="rb-tag">Root&nbsp;for</span> ' + where + ' ' + esc(o) + ' \u00B7 ' + NBSP(esc(RB.whenShort(r))) + '</p></li>'; }).join('');
-  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s chance to make the 12-team playoff field (KickTip blend):</p><ol class="rb-list">' + li + '</ol>' + st;
+  const L = li.split('</li>').filter(Boolean).map((x) => x + '</li>'), top = L.slice(0, 2).join(''), more = L.slice(2).join('');
+  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s chance to make the 12-team playoff field (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show all ' + L.length + ' games</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
 }
 
 /* ---- page edits ---- */

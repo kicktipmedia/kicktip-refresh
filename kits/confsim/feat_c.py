@@ -81,4 +81,7 @@ tag('index.html', [(r'<script src="/assets/hdr\.js\?v=\w{10}"></script>', '<scri
 for slug in sorted(M):
     tag('conference/' + slug + '/index.html', [(r'<script src="/assets/hdr\.js\?v=\w{10}"></script>', '<script src="/assets/cc5pre.js' + TOK + '"></script>'), (r'<link rel="stylesheet" href="/assets/kc\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/ccgsim.css' + TOK + '"><link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">'),
         (r'<script src="/assets/asof\.js\?v=\w{10}" defer></script>', '<script src="/assets/ccgsim.js' + TOK + '" defer></script><script src="/assets/ai-client.js' + TOK + '" defer></script><script src="/assets/cc5conf.js' + TOK + '" defer></script><script src="/assets/ccgsim-ui.js' + TOK + '" defer></script>')])
-print('tagged index.html +', len(M), 'conference pages')
+for slug in sorted(M):   # rev 5.1: the simulator pages get the head script + reservation CSS too (their own load shift, 0.59-0.69 on live)
+    tag('conference/' + slug + '/simulator/index.html', [(r'<script src="/assets/hdr\.js\?v=\w{10}"></script>', '<script src="/assets/cc5pre.js' + TOK + '"></script>'),
+        (r'<link rel="stylesheet" href="/assets/ccgsim\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">')])
+print('tagged index.html +', len(M), 'conference pages +', len(M), 'simulator pages')

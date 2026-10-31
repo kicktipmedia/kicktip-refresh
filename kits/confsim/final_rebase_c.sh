@@ -5,7 +5,7 @@ set -euo pipefail; export GH_CONFIG_DIR=/workspace/kicktip-refresh/.gh
 TAG=$1; C=${KT_C:-/workspace/hub/kicktip-confsim}; REPO=${KT_REPO:-$C/repo}; export KT_REPO=$REPO   # KT_C/KT_REPO/KT_CANON_ID/KT_BASE_ZIP: scratch-test overrides only
 cd $REPO; [ "$(git rev-parse --abbrev-ref HEAD)" = confsim ] || { echo "not on confsim"; exit 2; }
 [ -z "$(git status --porcelain)" ] || { echo "repo tree not clean: commit first"; exit 2; }
-git -c credential.helper='!gh auth git-credential' fetch -q origin main
+git -c credential.helper='!gh auth git-credential' fetch -q origin main || { echo "ABORT 30: cannot fetch origin/main (origin unreachable or auth failed); nothing changed"; exit 30; }   # QA N3: named exit code, not git's 128
 GI=(-c user.name="KickTip Build" -c user.email=build@kicktip.invalid)   # QA B2: the box has no git identity; rebase replays commits
 set +e; RB=$(git "${GI[@]}" rebase origin/main 2>&1); rc=$?; set -e
 if [ $rc -ne 0 ]; then echo "$RB" | tail -5

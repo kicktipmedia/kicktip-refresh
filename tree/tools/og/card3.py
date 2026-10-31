@@ -15,6 +15,10 @@ def order(gs):
     if k not in seen: seen.add(k); out.append(g)
   return out
 nb=lambda s:s.replace(' ','&nbsp;')
+def kt(g):   # Creative r3 blocker: every row shows the real date, as on the page: 'Sat Oct 31 &middot; 1:45 PM MT' / 'Sat Nov 14 &middot; time TBD' (entity separator, no literal U+00A0)
+  if 'day' not in g: return nb(g['when'])
+  t=nb(g['time'])+'<span class="mt">&nbsp;MT</span>' if g.get('time') else 'time&nbsp;TBD'
+  return nb(g['day'])+' &middot; '+t
 rk=lambda t:f'#{t["rank"]}&nbsp;' if t.get('rank') else ''
 def html(d,sz):
   s=S[sz]; allg=order(d['games']); gs=allg[:s['CAP']]; extra=len(allg)-len(gs)
@@ -32,7 +36,7 @@ def html(d,sz):
 .tg{{align-self:center;font:700 {s['TG']}px/1 "Noto Sans";padding:7px 12px;border-radius:999px;white-space:nowrap;border:2px solid #4C5560;color:#4C5560;background:#fff;margin-right:16px}}{'.mid .tg{{margin-left:16px;align-self:flex-start}}' if sz=='portrait' else ''}.tg.po{{background:#121519;border-color:#121519;color:#fff}}
 .gn{{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-right:20px;min-width:{180 if sz=='og' else 210}px}}.gn span{{font:700 {s['GL']}px/1 "Noto Sans";color:#4C5560}}.gn b{{font:900 {s['GF']}px/1.05 "Noto Sans";white-space:nowrap;font-variant-numeric:tabular-nums;margin-top:4px}}
 .mid{{flex:1;min-width:0;display:flex;{'flex-direction:column;justify-content:center;align-items:flex-start;gap:10px' if sz=='portrait' else 'align-items:center'}}}
-.more{{font:700 {s['KF']}px "Noto Sans";color:#4C5560;text-align:center}}
+.kmt{{display:none}}.nomt .mt{{display:none}}.nomt .kmt{{display:inline}}.more{{font:700 {s['KF']}px "Noto Sans";color:#4C5560;text-align:center}}
 .emp{{background:#fff;border:2px solid #C9CED3;border-radius:14px;padding:48px;text-align:center}}.emp p{{font:800 {s['NF']+6}px/1.3 "Noto Sans"}}.emp small{{display:block;margin-top:16px;font:600 {s['KF']+2}px "Noto Sans";color:#4C5560}}
 .ft{{height:{s['FOOT']}px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 {s['HP']}px;font:600 {s['FF']}px "Noto Sans";color:#4C5560;border-top:2px solid #DDE1E4}}'''
   rows=''
@@ -40,9 +44,11 @@ def html(d,sz):
     rs,os_=g[g['root']],g['home' if g['root']=='away' else 'away']
     at='vs' if g.get('neutral') else ('at' if g['root']=='away' else 'vs')  # root away plays at home team; root home hosts
     tag=f'<span class="tg {"po" if g["race"]=="Playoff" else ""}">{nb(g["race"])}</span>'
-    mid=f'<div class="mid"><div class="op"><img src="../logos/{os_["id"]}.png" alt=""><div><div class="on">{at} <b>{rk(os_)}{nb(os_["name"])}</b></div><div class="kt">{nb(g["when"])}</div></div></div>{tag}</div>'
+    mid=f'<div class="mid"><div class="op"><img src="../logos/{os_["id"]}.png" alt=""><div><div class="on">{at} <b>{rk(os_)}{nb(os_["name"])}</b></div><div class="kt">{kt(g)}</div></div></div>{tag}</div>'
     rows+=f'<div class="r"><div class="pn" style="--f:{fill(g["color"])}"><span class="dc"><img src="../logos/{rs["id"]}.png" alt=""></span><div><div class="rl">Root for</div><div class="nm">{rk(rs)}{nb(rs["name"])}</div></div></div>{mid}<div class="gn"><span>{d["team"]}&nbsp;gain</span><b>+{g["gain"]:.1f}&nbsp;pts</b></div></div>'
-  if extra: rows+=f'<div class="more">+{extra}&nbsp;more at kicktipmedia.com</div>'
+  kmt='<span class="kmt"> &middot; Kickoff times&nbsp;MT</span>'   # shown only when the fit pass shortens '1:45 PM MT' to '1:45 PM' (Creative r3: keep MT)
+  if extra: rows+=f'<div class="more">+{extra}&nbsp;more at kicktipmedia.com{kmt}</div>'
+  elif gs: rows+=f'<div class="more kmt">Kickoff times&nbsp;MT</div>'
   if not gs: rows=f'<div class="emp"><p>No other games this week move {d["team"]}\'s chances by&nbsp;much.</p><small>See every game at kicktipmedia.com</small></div>'
   st=f'<span>Updated {d["asof"]}</span>' if d.get('asof') else '<span></span>'
   return f'<html><head><meta charset=utf-8><style>{css}</style></head><body><div class="hd"><h1>{d["team"]} Rootables</h1><img src="../kt_header.png" alt="KickTip"></div><div class="bd">{rows}</div><div class="ft">{st}<span>{CHARTER}</span><span>kicktipmedia.com</span></div></body></html>',len(gs),extra

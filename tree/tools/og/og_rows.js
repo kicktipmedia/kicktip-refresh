@@ -16,16 +16,16 @@ const confName = {}; (bun.confs || []).forEach((c) => { confName[c.code] = c.nam
 const slugOf = (i) => (by[idx.team_names[i]] || {}).g || '', nm = (i) => { const n = idx.team_names[i], t = by[n]; return (t && (t.s || t.n)) || n; };
 const side = (i) => { const g = slugOf(i), l = (LG[g] || [])[0]; return { name: nm(i), id: l ? +l : null, slug: g, rank: CFP[g] || null }; };
 const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-function when(r) {   /* 'Sat 1:45 PM MT' (America/Denver); TBD kickoffs: 'Sat, time TBD' */
-  const f = new Intl.DateTimeFormat('en-US', { timeZone: r.tba ? 'UTC' : 'America/Denver', weekday: 'short', hour: 'numeric', minute: '2-digit', hour12: true }).formatToParts(new Date(r.kick));
-  const p = {}; f.forEach((x) => { p[x.type] = x.value; }); return r.tba ? p.weekday + ', time TBD' : p.weekday + ' ' + p.hour + ':' + p.minute + ' ' + p.dayPeriod + ' MT'; }
+function when(r) {   /* real kickoff from the data: {day:'Sat Oct 31', time:'1:45 PM' | null (TBD)}; zone America/Denver (TBD kickoffs carry a UTC date only) */
+  const f = new Intl.DateTimeFormat('en-US', { timeZone: r.tba ? 'UTC' : 'America/Denver', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).formatToParts(new Date(r.kick));
+  const p = {}; f.forEach((x) => { p[x.type] = x.value; }); return { day: p.weekday + ' ' + p.month + ' ' + p.day, time: r.tba ? null : p.hour + ':' + p.minute + ' ' + p.dayPeriod }; }
 const iso = (ms) => new Date(ms).toISOString().slice(0, 16);
 const out = { as_of: idx.as_of, stamp: RB.stampText(idx.as_of), teams: {} };
 fs.readdirSync(path.join(SITE, 'team')).sort().forEach((slug) => {
   if (!fs.existsSync(path.join(SITE, 'team', slug, 'index.html'))) return;
   const key = Object.keys(by).find((k) => by[k].g === slug); const tn = idx.team_names.indexOf(key); if (tn < 0) return;
   const conf = confName[(by[key] || {}).c] || '', res = RB.compute(tn, 'blend', ctx, ctx.asOfMs);
-  const rows = res.rows.map((r) => { const rootAway = r.root === r.a; return { ko: iso(r.kick), when: when(r), away: side(r.a), home: side(r.h), root: rootAway ? 'away' : 'home', neutral: !!r.neutral,
+  const rows = res.rows.map((r) => { const rootAway = r.root === r.a; return { ko: iso(r.kick), ...(() => { const w = when(r); return { day: w.day, time: w.time, when: w.day + ' \u00b7 ' + (w.time ? w.time + ' MT' : 'time TBD') }; })(), away: side(r.a), home: side(r.h), root: rootAway ? 'away' : 'home', neutral: !!r.neutral,
     race: RB.tagText(r.race, conf).replace(/\u00a0/g, ' '), gain: Math.round(r.gap) / 10, gain_txt: RB.pts(r.gap), color: TC[slugOf(r.root)] || '#121519' }; });
   out.teams[slug] = { team: nm(tn), n_big: res.nBig, n_window: res.nWindow, games: rows };
 });

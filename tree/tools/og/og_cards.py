@@ -20,7 +20,7 @@ def card_data(t, stamp):
     gs = []
     for g in t['games']:
         a, h = dict(g['away']), dict(g['home'])
-        gs.append(dict(ko=g['ko'], when=g['when'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], gain=g['gain'], color=g['color']))
+        gs.append(dict(ko=g['ko'], when=g['when'], day=g['day'], time=g['time'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], gain=g['gain'], color=g['color']))
     return dict(team=t['team'], asof=stamp, games=gs)
 def page_html(d, sz, site):
     h, n, x = card3.html(d, sz)
@@ -34,13 +34,17 @@ def page_html(d, sz, site):
     return h.replace('<style>', '<style>' + ff, 1), n, x
 # fit pass (Batch B, open for Creative): a long opponent name next to a long tag ('Mountain West championship') does not fit the wide row.
 # Root-for panel: a long name ('Florida International') steps its font down 1px at a time, to 20px at least.
+# Step 4 (r3 dates): if a row still overflows, every row's time drops ' MT' ('1:45 PM') and the card says 'Kickoff times MT' once. The date is never dropped.
+# Step 5 (r3 dates): a row that still overflows wraps its kickoff line at the ' · ' only (every other space there is &nbsp;): 'Sat Oct 31 ·' / '1:30 PM'.
 # Step 1: that tag drops to 18px. Step 2: the opponent name may wrap to 2 lines. Step 3: tag 16px, kickoff 18px. Anything still overflowing fails the run (no clipped text ships).
 FIT = """()=>{const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
  for(const pn of document.querySelectorAll('.pn')){const nm=pn.querySelector('.nm');let f=parseFloat(getComputedStyle(nm).fontSize);while(ov(pn)&&f>20){f-=1;nm.style.fontSize=f+'px';}}
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),on=r.querySelector('.on'),tg=r.querySelector('.tg');const md=r.querySelector('.mid'),bad=()=>ov(op)||ov(md);if(!op||!bad())continue;
   tg.style.fontSize='18px';tg.style.padding='6px 10px';if(!bad())continue;
   const b=on.querySelector('b');if(b)b.textContent=b.textContent.replace(/\u00a0/g,' ');on.style.whiteSpace='normal';on.style.lineHeight='1';if(!bad())continue;
-  tg.style.fontSize='16px';tg.style.padding='5px 8px';const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}}"""
+  tg.style.fontSize='16px';tg.style.padding='5px 8px';const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}
+ if([...document.querySelectorAll('.r')].some(r=>ov(r.querySelector('.op'))||ov(r.querySelector('.mid'))))document.body.classList.add('nomt');
+ for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),md=r.querySelector('.mid');if(!ov(op)&&!ov(md))continue;const kt=r.querySelector('.kt');kt.style.whiteSpace='normal';kt.style.lineHeight='1.1';kt.style.marginTop='2px';}}"""
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('site'); ap.add_argument('--base'); ap.add_argument('--all', action='store_true'); ap.add_argument('--report'); ap.add_argument('--only'); a = ap.parse_args()
     S = os.path.abspath(a.site); t0 = time.time()

@@ -18,7 +18,7 @@ S0H=$(sha256sum "$W/s0/s0-site.prev.tar.gz" | cut -d' ' -f1); [ "$S0H" = "$S0_EX
 mkdir "$W/L" && (cd "$W/L" && unzip -q "$BASE") && node $T/bake_static.js "$W/L" --unbake > /dev/null
 cp -a "$W/L" "$W/F"; python3 $T/merge3.py "$W/L" "$W/s0/old" "$W/s0/new" "$W/F" "$W/merge.json" > "$W/merge.out"
 python3 - "$W/merge.json" <<'P'
-import json,sys; d=json.load(open(sys.argv[1])); known={'index.html','sitemap.xml','conference/american/simulator/index.html','assets/rootables.js'}   # rootables.js: overwritten by kit/assets right after (batchB: MAXROWS 8 on both sides)
+import json,sys; d=json.load(open(sys.argv[1])); known={'assets/rootables.js'}   # rootables.js: overwritten by kit/assets right after (batchB: MAXROWS 8 on both sides)
 bad=[c for c in d['conflict'] if c.split(' ')[0] not in known]; print('merge3 merged',len(d['merged']),'conflicts',d['conflict'])
 ml=[m for m in d['missing_live'] if m not in ('playoff/index.html','top25/index.html')]   # S0-only pages live redirects away
 sys.exit(5 if bad or ml or d['json_conflicts'] else 0)

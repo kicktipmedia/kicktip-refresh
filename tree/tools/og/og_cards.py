@@ -80,7 +80,7 @@ def main():
             ck = os.path.join(cache, f'{key}-{sha(stamp.encode())[:8]}.png') if cache else None
             if ck and os.path.exists(ck): shutil.copyfile(ck, dst); kept += 0; continue
             todo.append((slug, sz, px, dst, ck, page_html(card_data(t, stamp), sz, S)[0]))
-    tr = time.time(); times = []; warns = []
+    tr = time.time(); times = []; warns = []; kept_prev = 0
     if todo:
         from playwright.sync_api import sync_playwright
         from PIL import Image
@@ -100,7 +100,7 @@ def main():
                     if over[0] > 0 or len(over) > 1:   # QA r3 item 4: one bad card never fails the refresh. Keep the previous card; with none, draw the safe no-rows card. No clipped text ships.
                         prevp = os.path.join(a.base, 'og', 'rootables', f'{slug}-{px}.png') if a.base else None
                         if prevp and os.path.exists(prevp) and old.get(slug, {}).get(px):
-                            shutil.copyfile(prevp, dst); man[slug][px] = dict(old[slug][px], k='stale-' + old[slug][px]['k'][:18]); warns.append(f'{slug} {px}: overflow {over}; kept previous card'); times.append(time.time() - t1); continue
+                            shutil.copyfile(prevp, dst); man[slug][px] = dict(old[slug][px], k='stale-' + old[slug][px]['k'][:18]); warns.append(f'{slug} {px}: overflow {over}; kept previous card'); kept_prev += 1; times.append(time.time() - t1); continue
                         else:
                             fb = dict(card_data(D['teams'][slug], stamp), fallback=True); open(f, 'w', encoding='utf-8').write(page_html(fb, sz, S)[0].replace('src="LOGO/', 'src="' + logo).replace('src="BRAND"', 'src="' + brand + '"').replace('url("FONT")', 'url("' + font + '")'))
                             pg.goto('file://' + f, wait_until='load'); pg.evaluate('document.fonts.ready'); man[slug][px] = dict(man[slug][px], k='fallback'); warns.append(f'{slug} {px}: overflow {over}; no previous card, drew the no-rows fallback card')
@@ -119,7 +119,7 @@ def main():
     if not only:
         json.dump({'v': 1, 'spec': '1b18d56c', 'renderer': VER, 'cards': man}, open(os.path.join(S, 'data', 'og-cards.json'), 'w'), separators=(',', ':'), sort_keys=True)
     tot = sum(os.path.getsize(os.path.join(od, f)) for f in os.listdir(od))
-    rep = {'teams': stats['teams'], 'rendered': len(todo), 'kept': kept, 'render_s': round(time.time() - tr, 2), 'per_card_s': round(sum(times) / len(times), 3) if times else 0,
+    rep = {'teams': stats['teams'], 'rendered': len(todo) - kept_prev, 'kept': kept + kept_prev, 'render_s': round(time.time() - tr, 2), 'per_card_s': round(sum(times) / len(times), 3) if times else 0,
            'total_s': round(time.time() - t0, 2), 'bytes': tot, 'max_rows': max(stats['rows'].values() or [0])}
     rep['warnings'] = warns
     for w in warns: print('OG_CARDS WARNING:', w, file=sys.stderr)

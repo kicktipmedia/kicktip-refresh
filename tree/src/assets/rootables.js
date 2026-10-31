@@ -71,8 +71,8 @@
   function pts(gap) { return (gap / 10).toFixed(1); }
   function pc(p) { return (p / 10).toFixed(1) + '%'; }
   function commas(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-  function whenShort(r) { /* 'Sat Oct 24 · 8:15 PM MT'; a TBA day uses the placeholder's calendar date and says time TBA, like the Remaining games table */
-    if (r.tba) { var d = tzParts(r.kick, 'UTC', { weekday: 'short', month: 'short', day: 'numeric' }); return d.weekday + ' ' + d.month + ' ' + d.day + ' \u00B7 time TBA'; }
+  function whenShort(r) { /* 'Sat Oct 24 · 8:15 PM MT'; a TBA day uses the placeholder's calendar date and says time TBD, like the Remaining games table */
+    if (r.tba) { var d = tzParts(r.kick, 'UTC', { weekday: 'short', month: 'short', day: 'numeric' }); return d.weekday + ' ' + d.month + ' ' + d.day + ' \u00B7 time TBD'; }
     var p = tzParts(r.kick, 'America/Denver', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
     return p.weekday + ' ' + p.month + ' ' + p.day + ' \u00B7 ' + p.hour + ':' + p.minute + ' ' + p.dayPeriod + ' MT';
   }

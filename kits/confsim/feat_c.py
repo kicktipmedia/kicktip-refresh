@@ -6,7 +6,7 @@ Idempotent; every anchor must match exactly once.
 usage: feat_c.py <siteDir>"""
 import sys, os, re, hashlib
 D = sys.argv[1]; K = os.path.dirname(os.path.abspath(__file__))
-KF = ('feat_c.py', 'cc5.js', 'cc5.css', 'cc5home.js', 'cc5conf.js', 'cc5pages.css','cc5pre.js','ccgbar.js','ccgbar.css')   # rebuild_c.sh checks the same list against HEAD
+KF = ('feat_c.py', 'cc5.js', 'cc5.css', 'cc5home.js', 'cc5conf.js', 'cc5pages.css','cc5pre.js','ccgbar.js','ccgbar.css','cc5pill.css')   # rebuild_c.sh checks the same list against HEAD
 # skip-if-marker keys on a content hash of the kit: same kit -> no-op; an older cc5 rev already in the base -> fail loudly (no silent skip)
 KH = hashlib.sha256(b''.join(open(K + '/' + f, 'rb').read() for f in KF)).hexdigest()[:12]
 MK = '/* cc5-kit:' + KH + ' */'
@@ -45,6 +45,9 @@ if gate(t, 'ccgsim-ui.js'):
         '    if (b.getAttribute("data-w4") === "share") { w4share(); return; }\n    if (b.getAttribute("data-w4") === "dl") { ccDl(); return; } if (b.getAttribute("data-w4") === "sh5") { ccShare(); return; }   /* cc5 rev 5 */\n')
     rep('document.querySelector(".slk").hidden = true;', '(document.querySelector(".slk") || {}).hidden = true;')   # rev 4 removed .slk; no-games-left case
     open(p, 'w', encoding='utf-8').write(t.rstrip('\n') + '\n' + MK + '\n'); print('patched ccgsim-ui.js', KH)
+p = D + '/assets/chat.css'; c = open(p, encoding='utf-8').read()   # rev 5.4: mobile floating Lab pill as a button (append-only, every page that loads chat.css)
+if gate(c, 'chat.css'):
+    open(p, 'a', encoding='utf-8').write(open(K + '/cc5pill.css', encoding='utf-8').read() + MK + '\n'); print('patched chat.css', KH)
 p = D + '/assets/ccgsim.css'; c = open(p, encoding='utf-8').read()
 if gate(c, 'ccgsim.css'):
     open(p, 'a', encoding='utf-8').write(open(K + '/cc5.css', encoding='utf-8').read() + MK + '\n'); print('patched ccgsim.css', KH)

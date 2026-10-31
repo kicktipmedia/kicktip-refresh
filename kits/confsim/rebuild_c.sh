@@ -10,7 +10,7 @@ REPO=${KT_REPO:-/workspace/hub/kicktip-confsim/repo}
 [ "$(git -C $REPO rev-parse --abbrev-ref HEAD)" = confsim ] || { echo "repo not on confsim"; exit 3; }
 [ -z "$(git -C $REPO status --porcelain)" ] || { echo "repo tree not clean: commit first"; exit 3; }
 HEAD=$(git -C $REPO rev-parse HEAD)
-for f in feat_c.py cc5.js cc5.css cc5home.js cc5conf.js cc5pages.css cc5pre.js ccgbar.js ccgbar.css rebuild_c.sh; do cmp -s "$K/$f" <(git -C $REPO show HEAD:kits/confsim/$f) || { echo "kit $f ($K) differs from kits/confsim/$f committed at HEAD"; exit 3; }; done   # vs the committed blob, not the working copy
+for f in feat_c.py cc5.js cc5.css cc5home.js cc5conf.js cc5pages.css cc5pre.js ccgbar.js ccgbar.css cc5pill.css rebuild_c.sh; do cmp -s "$K/$f" <(git -C $REPO show HEAD:kits/confsim/$f) || { echo "kit $f ($K) differs from kits/confsim/$f committed at HEAD"; exit 3; }; done   # vs the committed blob, not the working copy
 mkdir -p "$W/m" && (cd "$W/m" && unzip -q "$BASE")
 python3 "$REPO/kits/confsim/feat_c.py" "$W/m"
 python3 $REPO/tree/tools/feature/bump_all.py "$W/m"

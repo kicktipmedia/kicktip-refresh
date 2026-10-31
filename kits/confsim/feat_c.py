@@ -6,7 +6,7 @@ Idempotent; every anchor must match exactly once.
 usage: feat_c.py <siteDir>"""
 import sys, os, re, hashlib
 D = sys.argv[1]; K = os.path.dirname(os.path.abspath(__file__))
-KF = ('feat_c.py', 'cc5.js', 'cc5.css', 'cc5home.js', 'cc5conf.js', 'cc5pages.css')   # rebuild_c.sh checks the same list against HEAD
+KF = ('feat_c.py', 'cc5.js', 'cc5.css', 'cc5home.js', 'cc5conf.js', 'cc5pages.css','cc5pre.js')   # rebuild_c.sh checks the same list against HEAD
 # skip-if-marker keys on a content hash of the kit: same kit -> no-op; an older cc5 rev already in the base -> fail loudly (no silent skip)
 KH = hashlib.sha256(b''.join(open(K + '/' + f, 'rb').read() for f in KF)).hexdigest()[:12]
 MK = '/* cc5-kit:' + KH + ' */'
@@ -66,6 +66,7 @@ cj = open(K + '/cc5conf.js', encoding='utf-8').read(); assert cj.count('/*CC5MAP
 put('assets/cc5conf.js', cj.replace('/*CC5MAP*/{}', json.dumps(M, ensure_ascii=True, separators=(',', ':'), sort_keys=True)))
 put('assets/cc5home.js', open(K + '/cc5home.js', encoding='utf-8').read())
 put('assets/cc5pages.css', open(K + '/cc5pages.css', encoding='utf-8').read())
+put('assets/cc5pre.js', open(K + '/cc5pre.js', encoding='utf-8').read())   # rev 5.1: head script, html.cc5js for the load-time height reservation
 TOK = '?v=0000000000'   # bump_all.py sets the real tokens
 def tag(rel, pairs):
     q = D + '/' + rel; s = open(q, encoding='utf-8').read()
@@ -75,9 +76,9 @@ def tag(rel, pairs):
         ln = s.count('\n', 0, e) + 1; assert len(s.split('\n')[ln - 1]) < 5000, (rel, 'anchor on a body content line', ln)
         s = s[:e] + add + s[e:]
     open(q, 'w', encoding='utf-8').write(s)
-tag('index.html', [(r'<link rel="stylesheet" href="/assets/pk-tiles\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">'),
+tag('index.html', [(r'<script src="/assets/hdr\.js\?v=\w{10}"></script>', '<script src="/assets/cc5pre.js' + TOK + '"></script>'), (r'<link rel="stylesheet" href="/assets/pk-tiles\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">'),
                    (r'<script src="/assets/nr\.js\?v=\w{10}" defer></script>', '<script src="/assets/ccgsim.js' + TOK + '" defer></script><script src="/assets/cc5home.js' + TOK + '" defer></script>')])
 for slug in sorted(M):
-    tag('conference/' + slug + '/index.html', [(r'<link rel="stylesheet" href="/assets/kc\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/ccgsim.css' + TOK + '"><link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">'),
+    tag('conference/' + slug + '/index.html', [(r'<script src="/assets/hdr\.js\?v=\w{10}"></script>', '<script src="/assets/cc5pre.js' + TOK + '"></script>'), (r'<link rel="stylesheet" href="/assets/kc\.css\?v=\w{10}">', '<link rel="stylesheet" href="/assets/ccgsim.css' + TOK + '"><link rel="stylesheet" href="/assets/cc5pages.css' + TOK + '">'),
         (r'<script src="/assets/asof\.js\?v=\w{10}" defer></script>', '<script src="/assets/ccgsim.js' + TOK + '" defer></script><script src="/assets/ai-client.js' + TOK + '" defer></script><script src="/assets/cc5conf.js' + TOK + '" defer></script><script src="/assets/ccgsim-ui.js' + TOK + '" defer></script>')])
 print('tagged index.html +', len(M), 'conference pages')

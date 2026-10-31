@@ -18,7 +18,7 @@ if [ -n "${KT_CANON_ID:-}" ]; then CN=$KT_CANON_ID; else CN=$(curl -s -m 30 -H "
 R=$C/rel-$TAG; mkdir -p $R; if [ -n "${KT_BASE_ZIP:-}" ]; then cp "$KT_BASE_ZIP" $R/kicktip-site.zip; else gh release download base -R kicktipmedia/kicktip-refresh -p kicktip-site.zip -D $R --clobber; fi
 [ "$(sha256sum $R/kicktip-site.zip | cut -d' ' -f1)" = "$SHA" ] || { echo "release zip sha != live_sha"; exit 5; }
 Z=$C/siteC-$TAG.zip; $REPO/kits/confsim/rebuild_c.sh $R/kicktip-site.zip $Z $C/w-$TAG
-n=$(grep -rlP '\xA0' $C/w-$TAG/m/assets/ccgsim-ui.js $C/w-$TAG/m/assets/ccgsim.css $C/w-$TAG/m/assets/cc5home.js $C/w-$TAG/m/assets/cc5conf.js $C/w-$TAG/m/assets/cc5pages.css || true)   # QA B1: grep exits 1 when clean; rev 5 adds the three new cc5 assets
+n=$(grep -rlP '\xA0' $C/w-$TAG/m/assets/ccgsim-ui.js $C/w-$TAG/m/assets/ccgsim.css $C/w-$TAG/m/assets/cc5home.js $C/w-$TAG/m/assets/cc5conf.js $C/w-$TAG/m/assets/cc5pages.css $C/w-$TAG/m/assets/cc5pre.js || true)   # QA B1: grep exits 1 when clean; rev 5 adds the three new cc5 assets
 [ -z "$n" ] || { echo "literal NBSP in $n"; exit 6; }; echo "literal NBSP: 0"
 
 echo "GUARD=$ID"; echo "next (after Creative OK + QA PASS): QA/ship_c.sh $Z $(cut -d' ' -f1 $Z.sha256) $ID $(cat $Z.head)"

@@ -21,7 +21,8 @@ if 'cc5:' not in t:
               '      \'<p class="cc5n cc5stamp">Updated \' + esc(String(D.asof || "").replace(/^\\d{4}-(\\d\\d)-(\\d\\d) (\\d\\d?):(\\d\\d) MT$/, function (m, mo, d, hh, mi) { var H = +hh; return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+mo - 1] + " " + (+d) + ", " + ((H % 12) || 12) + ":" + mi + " " + (H < 12 ? "AM" : "PM") + " MT"; })).replace(/ /g, "&nbsp;").replace(/,&nbsp;/, ", ") + \'</p><a class="cc5btn" href="#weeks">Change games</a></section>\' +\n'
               '      \'<details class="dtl"><summary>How ties are broken</summary><div id="steps"></div></details>\' +\n')
     rep(old_st, '')
-    rep('      \'<div class="main"><p class="xhow" id="favnote"></p>\' +\n', '      \'<div class="main"><p class="xhow" id="favnote"></p>\' +\n' + new_st)
+    ns = '            \'<p class="ns">Nothing is stored. Your changes stay on this page and clear when you leave or reload.</p></div></div>\';\n'
+    rep(ns, '            \'<p class="ns">Nothing is stored. Your changes stay on this page and clear when you leave or reload.</p>\' +\n' + new_st + '      \'</div></div>\';\n')   # Jared 12:52 PM MT: standings at the very bottom, after the card and the whole game switcher
     rep('    picks = Object.assign({}, fav.picks);\n    shell();', '    picks = Object.assign({}, fav.picks); BASE = K.solve(R, conf, fav.picks);   /* cc5 baseline: the starting results */\n    shell();')
     t = t.replace('  var BASE = null, NB', '  var BASE, NB')
     open(p, 'w', encoding='utf-8').write(t); print('patched ccgsim-ui.js')

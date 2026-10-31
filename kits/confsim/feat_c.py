@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""confsim (cc5) feature layer: Creative rev 3 scenario result view onto the LIVE assets/ccgsim-ui.js + ccgsim.css. Idempotent; every anchor must match exactly once.
+"""confsim (cc5) feature layer: Creative rev 4 scenario result view (mock dec020e8) onto the LIVE assets/ccgsim-ui.js + ccgsim.css. Idempotent; every anchor must match exactly once.
 usage: feat_c.py <siteDir>"""
-import sys, os
+import sys, os, re, hashlib
 D = sys.argv[1]; K = os.path.dirname(os.path.abspath(__file__))
+# skip-if-marker keys on a content hash of the kit: same kit -> no-op; an older cc5 rev already in the base -> fail loudly (no silent skip)
+KH = hashlib.sha256(b''.join(open(K + '/' + f, 'rb').read() for f in ('feat_c.py', 'cc5.js', 'cc5.css'))).hexdigest()[:12]
+MK = '/* cc5-kit:' + KH + ' */'
+def gate(txt, name):
+    if MK in txt: print(name, 'already has this kit', KH, '(no-op)'); return False
+    if re.search(r'/\* cc5', txt): sys.exit(name + ': base already carries a different cc5 rev (' + ','.join(re.findall(r'cc5-kit:(\w+)', txt)) + '); rebuild on a pre-cc5 base or the live zip from before confsim')
+    return True
 p = D + '/assets/ccgsim-ui.js'; t = open(p, encoding='utf-8').read()
-if 'cc5:' not in t:
+if gate(t, 'ccgsim-ui.js'):
     def rep(a, b):
         global t
         assert t.count(a) == 1, ('anchor', a[:80], t.count(a)); t = t.replace(a, b)
@@ -27,7 +34,7 @@ if 'cc5:' not in t:
     rep('<p class="slk"><a href="#sh">See standings</a></p>', '')   # rev 4: the one jump link sits under the buttons
     rep('    picks = Object.assign({}, fav.picks);\n    shell();', '    picks = Object.assign({}, fav.picks); BASE = K.solve(R, conf, fav.picks);   /* cc5 baseline: the starting results */\n    shell();')
     t = t.replace('  var BASE = null, NB', '  var BASE, NB')
-    open(p, 'w', encoding='utf-8').write(t); print('patched ccgsim-ui.js')
+    open(p, 'w', encoding='utf-8').write(t.rstrip('\n') + '\n' + MK + '\n'); print('patched ccgsim-ui.js', KH)
 p = D + '/assets/ccgsim.css'; c = open(p, encoding='utf-8').read()
-if '/* cc5' not in c:
-    open(p, 'a', encoding='utf-8').write(open(K + '/cc5.css', encoding='utf-8').read()); print('patched ccgsim.css')
+if gate(c, 'ccgsim.css'):
+    open(p, 'a', encoding='utf-8').write(open(K + '/cc5.css', encoding='utf-8').read() + MK + '\n'); print('patched ccgsim.css', KH)

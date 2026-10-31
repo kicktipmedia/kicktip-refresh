@@ -1,4 +1,4 @@
-  /* cc5: scenario result view (Creative rev 3 mock d3c61dfa, Jared OK 12:39 PM MT Oct 31). Championship card with both teams' records, then the full standings with conference and overall W-L,
+  /* cc5: scenario result view (Creative rev 4 mock dec020e8, Jared OK 12:58 PM MT Oct 31). Championship card with both teams' records, then the full standings with conference and overall W-L,
      changed-team marks against the starting results (BASE = K.solve on fav.picks, set in init) and T places. Display only: K.solve and the tiebreaker steps are not touched. */
   var BASE = null, NB = function (s) { return esc(s).replace(/ /g, "&nbsp;"); };
   function ccOv(r) { var n = (conf.nc && conf.nc[r.i]) || { w: 0, g: 0, left: 0 }; return { w: r.w + n.w, l: r.g + n.g - r.w - n.w, left: n.left || 0 }; }

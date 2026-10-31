@@ -1,5 +1,5 @@
 
-/* cc5: scenario result view (Creative rev 3 mock d3c61dfa). Championship card on white with an ink top bar, full standings with conference + overall W-L and changed marks. */
+/* cc5: scenario result view (Creative rev 4 mock dec020e8). Championship card on white with an ink top bar, full standings with conference + overall W-L and changed marks. */
 .ccg.cc5{background:transparent;color:#121519;border:0;padding:0;border-radius:0}
 .cc5l{font:700 12px 'Source Sans 3',system-ui,Arial;letter-spacing:.06em;text-transform:uppercase;color:#4C5560;margin:4px 0 6px}
 .ccg.cc5 ul.cc5ch,.cc5ch{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:6px}

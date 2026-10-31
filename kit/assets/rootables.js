@@ -156,7 +156,8 @@
     return '<div class="rb-hd"><h2 id="rbh">Rootables</h2>' + shareHtml() + '</div><p class="rb-sub">' + (byeLine ? esc(team) + ' has no game in the next 7 days. These games still move ' + esc(team) + '\u2019s ' + ph + '.' : 'Who to cheer for this week, for ' + esc(team) + '\u2019s ' + ph + '.') + '</p>';
   }
   var ICON = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18"><path d="M12 15V3M7 8l5-5 5 5M5 13v6h14v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  function shareHtml() { var t = esc(teamLabel()); return '<a class="rb-share" href="/team/' + slug + '/#rootables" data-share data-card="/og/rootables/' + slug + '-1080x1350.png" aria-label="Share ' + t + ' Rootables">' + ICON + '<span class="rb-sl">Share</span></a><span class="rb-cp vh" aria-live="polite"></span>'; }
+  function cardV() { var e = D.querySelector('.kt-asof[data-asof]'); return e ? '?v=' + e.getAttribute('data-asof').replace(/\D/g, '') : ''; }   /* r3.2: the card PNG is redrawn under the same name each refresh; the data as-of busts caches */
+  function shareHtml() { var t = esc(teamLabel()); return '<a class="rb-share" href="/team/' + slug + '/#rootables" data-share data-card="/og/rootables/' + slug + '-1080x1350.png' + cardV() + '" aria-label="Share ' + t + ' Rootables">' + ICON + '<span class="rb-sl">Share</span></a><span class="rb-cp vh" aria-live="polite"></span>'; }
   /* Share (Creative SHARE-SPEC 6a68db1c): navigator.share when available (AbortError: nothing); else copy the link, label 'Link copied' for 2s (aria-live);
      clipboard failure: a read-only input with the URL, selected. No request, no AI, not gated by Run/terms. No-JS: the same plain link to #rootables (build.py rb_share). */
   /* Creative 11:21 E: one wording, set per team by build.py share_text() in og:description; fallback without a conference race. */

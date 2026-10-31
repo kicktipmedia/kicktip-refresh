@@ -86,6 +86,9 @@ def mt_day(iso):
 def nice_stamp(s):
     """'2026-10-23 23:05 MT' -> 'Oct 23, 2026, 11:05 PM MT' (site date style)."""
     return fmt_long(parse_mt(s)).split(", ", 1)[1]
+def short_stamp(s):
+    """audit2: '2026-10-23 23:05 MT' -> 'Oct 23, 11:05 PM MT' (the one site stamp form, 'Updated <Mon D>, <h:mm AM/PM> MT'; apply_data restamps this form)."""
+    d = parse_mt(s); return f"{d.strftime('%b')} {d.day}, {d.strftime('%I').lstrip('0')}:{d.strftime('%M %p')} MT"
 def nice_ccg(t):
     """'Sat 2026-12-05, noon ET (...)' -> 'Sat, Dec 5, 2026, noon ET (...)'."""
     def f(m): d = dt.date(int(m.group(2)), int(m.group(3)), int(m.group(4))); return f"{m.group(1)}, {d.strftime('%b')} {d.day}, {d.year}"
@@ -113,7 +116,7 @@ def results_card(full=None, members=None, title="Results", limit=None):
         else:
             hw = g["hs"] > g["as_"]; w, l = ((g["home"], g["hn"], g["hs"]), (g["away"], g["an"], g["as_"])) if hw else ((g["away"], g["an"], g["as_"]), (g["home"], g["hn"], g["hs"]))
             out.append(f'<tr><td>{mt_day(g["date"])}</td><td>{nm(g["away"], g["an"])} {"vs" if g["neutral"] else "at"} {nm(g["home"], g["hn"])}</td><td><b>Final</b> &middot; {nm(w[0], w[1])} {w[2]}, {nm(l[0], l[1])} {l[2]}</td></tr>')
-    note = f'<p class="note">Final scores from ESPN public data, last checked {E(nice_stamp(REFRESH["refreshed_mt"]))}.' + (f' Showing the latest {limit} of {total}; every result is on the team pages.' if limit and total > limit else "") + '</p>'
+    note = f'<p class="note">Final scores from ESPN public data. Updated {E(short_stamp(REFRESH["refreshed_mt"]))}.' + (f' Showing the latest {limit} of {total}; every result is on the team pages.' if limit and total > limit else "") + '</p>'
     return f'<div class="card"><h2>{title}</h2>' + tbl('<th>Date (MT)</th><th>Game</th><th>Result</th>' if not full else '<th>Date (MT)</th><th>Opponent</th><th>Result</th>', "".join(out), "", kind="g") + note + '</div>'
 
 # ---------------------------------------------------------------- standings (static, not predictions)
@@ -155,7 +158,18 @@ ASK_PAGES = ("conference", "team", "playoff", "top25")   # c1: pages that carry 
 def RBV(name):   # content-hash cache-busting token for the Rootables assets (first 10 hex of sha256 of src/assets/<name>)
     return hashlib.sha256(open(f"{SITE}/assets/{name}", "rb").read()).hexdigest()[:10]   # hashes the BUILT file (build() copies and fills the assets before any page is written)
 CV = ""                                          # asset URLs carry a content hash added at the end of build() (hash_assets): no hand-set cache-busting tokens
-def page(title, path, body, *, active="", dyn=False, need="", ptype="static", extra="", desc="", conf="", team="", hero=None, av="", rb=False, ex=(), src_extra=""):
+# audit2 SEO: ONE place for the head/footer extras (titles + descriptions are passed by each page function; see SEO-PLAN.md)
+SEO_IMG_ALT = "KickTip Media, college football playoff simulator"
+MSM_URL = "https://mtnsportsmedia.com/"
+FOOT_MSM = f'<a href="{MSM_URL}" rel="noopener">from the Mtn Sports Media team</a>'
+SITEMAP_LASTMOD = "2026-10-31"   # date of the last template change (a per-refresh date would change sitemap.xml, which apply_data's allow-list forbids)
+ORG_LD = ('<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://kicktipmedia.com/#org","name":"KickTip Media","url":"https://kicktipmedia.com/",'
+          '"logo":"https://kicktipmedia.com/assets/brand/icon/kicktip-icon-512.png","parentOrganization":{"@type":"Organization","@id":"https://mtnsportsmedia.com/#org","name":"Mtn Sports Media","url":"https://mtnsportsmedia.com/"}},'
+          '{"@type":"WebSite","@id":"https://kicktipmedia.com/#site","name":"KickTip Media","url":"https://kicktipmedia.com/","publisher":{"@id":"https://kicktipmedia.com/#org"}}]}</script>')
+def seo_head(full_title, desc, ld=""):   # appended right after the og:image tags; extend here (one place)
+    return (f'<meta property="og:locale" content="en_US"><meta property="og:image:type" content="image/png">'
+            f'<meta name="twitter:title" content="{E(full_title)}"><meta name="twitter:description" content="{E(desc)}">{ld}')
+def page(title, path, body, *, active="", dyn=False, need="", ptype="static", extra="", desc="", conf="", team="", hero=None, av="", rb=False, ex=(), src_extra="", full_title="", ld=""):
     av = ""   # content hash is added to every /assets/*.js|css reference by hash_assets() after all pages are written
     nav = "".join(f'<a href="{h}"{" class=\"on\" aria-current=\"page\"" if a == active else ""}>{a}</a>' for a, h in NAV)
     desc = desc or "Standings, tiebreakers and paths to the conference championship game for all 11 FBS groups, plus the 12-team playoff field."
@@ -174,12 +188,13 @@ def page(title, path, body, *, active="", dyn=False, need="", ptype="static", ex
     if ask: script += f'<script src="/assets/chat.js{CV}" defer></script>'
     if rb: script += f'<script src="/assets/rootables.js?v={RBV("rootables.js")}" defer></script>'; extra = f'<link rel="stylesheet" href="/assets/rootables.css?v={RBV("rootables.css")}">' + extra   # Rootables (team pages only): own content-hash version token, so a code change needs no cache purge
     pillbtn = '<button type="button" id="kpill" class="askpill" aria-haspopup="dialog" aria-expanded="false"><i aria-hidden="true">?</i>Ask KickTip: what if...</button>' if ask else ""
+    full_title = full_title or f"{title} | KickTip Media"
     canon = "" if path == "/404.html" else f'<link rel="canonical" href="{BASE}{path}">'
     ogurl = "" if path == "/404.html" else f'<meta property="og:url" content="{BASE}{path}">'
     return f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{E(title)} | KickTip Media</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{E(full_title)}</title>
 <meta name="description" content="{E(desc)}">{canon}<meta name="color-scheme" content="light">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/icon/kicktip-icon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/brand/icon/kicktip-apple-touch-180.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#262B31"><meta property="og:site_name" content="KickTip Media"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)} | KickTip Media"><meta property="og:description" content="{E(desc)}">{ogurl}<meta property="og:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="KickTip Media"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png"><link rel="preload" href="/assets/fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/SourceSans3-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/icon/kicktip-icon-32.png"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/brand/icon/kicktip-apple-touch-180.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#262B31"><meta property="og:site_name" content="KickTip Media"><meta property="og:type" content="website"><meta property="og:title" content="{E(full_title)}"><meta property="og:description" content="{E(desc)}">{ogurl}<meta property="og:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{SEO_IMG_ALT}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{BASE}/assets/brand/social/kicktip-og-1200x630.png">{seo_head(full_title, desc, ld)}<link rel="preload" href="/assets/fonts/BarlowCondensed-Bold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/SourceSans3-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/kt.css{av}">{f'<link rel="stylesheet" href="/assets/chat.css{CV}">' if ask else ""}{extra}</head><body{' class="has-ask"' if ask else ''}>
 <a class="skip" href="#main">Skip to content</a>
 {terms_copy.BANNER_HTML}
@@ -191,7 +206,7 @@ def page(title, path, body, *, active="", dyn=False, need="", ptype="static", ex
 {sources_block(dyn, src_extra)}
 <footer class="ft"><div class="w"><img class="flock" src="/assets/brand/logo/kicktip-media-lockup-transparent.png" width="220" height="97" alt="KickTip Media" loading="lazy"><p><b>Information and entertainment only, not advice or a guarantee. Use at your own risk.</b></p>
 <p><a href="/disclaimer/">Full disclaimer</a><a href="/privacy/">Privacy</a><a href="/method/">Method</a><a href="/playoff/">Playoff picture</a><a href="/top25/">Top 25</a><a href="/games/">This week&#8217;s games</a></p>
-<p><span class="cred">{logos.CREDIT}.</span> Logos are shown unaltered next to the team, conference or league name; a logo is removed on request.</p><p>from the team behind Mtn Sports Media</p></div></footer>
+<p><span class="cred">{logos.CREDIT}.</span> Logos are shown unaltered next to the team, conference or league name; a logo is removed on request.</p><p>{FOOT_MSM}</p></div></footer>
 {pillbtn}{script}</body></html>'''
 
 def hero_html(h1, p, kick="", crumbs="", head=None, after=""):
@@ -261,8 +276,8 @@ def games_page():
     body = (hero_html("This week's games", "Every FBS-vs-FBS game that has not started and kicks off within a week of the last data refresh, with KickTip's expected margin and, when one has been posted, ESPN's spread.", "Game slate") +
             f'<section class="sec"><div class="w">{banner(True)}<div class="card">{CRED}<p class="note">{len(gl)} games. Sorted by date and time unless you choose another sort. Sorting only reorders the list; nothing is ranked or highlighted.</p>{ctl}'
             f'<div data-slate>{game_cards(gl, slate=True)}{table}</div>' + LINE_NOTE + '<p class="note">Lines usually appear within about a day of kickoff. Games against FCS opponents and games that have started are not listed here.</p></div></div></section>')
-    return page("This week's games", "/games/", body, active="", dyn=True, need="pred-teams,pred-games,pred-lines", ptype="slate",
-                desc="This week's FBS games with KickTip's expected margin and ESPN's spread when one has been posted. Information only, not betting advice.")
+    return page("This week's games", "/games/", body, full_title="This week's FBS games | KickTip Media", active="", dyn=True, need="pred-teams,pred-games,pred-lines", ptype="slate",
+                desc="This week's FBS games with KickTip's expected margin and each team's win chance, from KickTip Media's college football playoff simulator.")
 
 # ---------------------------------------------------------------- plain-English tiebreak steps
 STEP = {"h2h2": "Head-to-head result between the two teams", "common_pct": "Record against all common conference opponents",
@@ -384,7 +399,7 @@ def home_page():
             f'<section class="sec" style="padding-top:0" id="conferences"><div class="w"><h2>Conference races</h2><div class="grid">{cards}</div></div></section>'
             + states +
             f'<section class="sec" style="padding-top:0"><div class="w"><h2>How it works</h2>{how}<p class="cta"><a href="/method/">Read the full method</a></p></div></section>').replace(' style="padding-top:0"', ' data-pt="0"')
-    return page("Every conference race, one playoff picture", "/", body, active="Home", dyn=True, need="pred-teams", ptype="home", ex=("BYU Cougars", "Utah Utes"))
+    return page("Every conference race, one playoff picture", "/", body, full_title="KickTip Media | College football playoff simulator", ld=ORG_LD, desc="KickTip Media is a free college football playoff simulator: Playoff chances, conference races and tiebreaker paths for every FBS team, updated through game day.", active="Home", dyn=True, need="pred-teams", ptype="home", ex=("BYU Cougars", "Utah Utes"))
 
 def conf_page(ck, cname, cs):
     R = rules.RULES[ck]; S = STAND[ck]; n = len(S); fmt = R["fmt"]
@@ -426,7 +441,7 @@ def conf_page(ck, cname, cs):
             f'<section class="sec" style="padding-bottom:0"><div class="w"><h2 class="h2s">All 11 conferences</h2><nav class="tabs" aria-label="All 11 conferences">{pills(cs)}</nav><p class="hint">Swipe the conference list sideways &rarr;</p></div></section>'
             f'<section class="sec" data-pt="8"><div class="w">{banner(True)}</div><div class="w two"><div><h2>Standings</h2>{CCGDEF if fmt != "none" else ""}{CRED}{tbl(head, rows, kind="n")}<p class="note">{E(note)} Chances: share of {SEASONS} simulated seasons (model).</p>{rem_html}</div><div>{side}</div></div></section>')
     body = body.replace(' style="padding-bottom:0"', ' data-pb="0"')
-    return page(f"{cname} race", f"/conference/{cs}/", body, active="Conferences", dyn=True, need="pred-teams,pred-games,pred-lines", ptype="conference", conf=cs, ex=(members[0]["full"], members[min(1, len(members) - 1)]["full"]), desc=f"{cname} standings, remaining games and chances to reach the conference championship game and make the 12-team playoff.")
+    return page(f"{cname} race", f"/conference/{cs}/", body, full_title=f"{cname} race and playoff chances | KickTip Media", active="Conferences", dyn=True, need="pred-teams,pred-games,pred-lines", ptype="conference", conf=cs, ex=(members[0]["full"], members[min(1, len(members) - 1)]["full"]), desc=f"{cname} standings, remaining games and Playoff chances for every team, from KickTip Media's free college football playoff simulator.")
 
 def team_page(full, v):
     ck = v["conf"]; cname = CNAME[ck]; cs = CSLUG[ck]; R = rules.RULES[ck]; S = STAND[ck]
@@ -453,8 +468,8 @@ def team_page(full, v):
             '<button type="button" class="rb-run" data-run>Run Rootables</button>' + terms_copy.RUN_FULL_HTML + '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript></section></div></section>'
             f'<section class="sec" data-pt="0"><div class="w two"><div>{games_card}</div><div>{pathcard}'
             f'<div class="card"><h2>More in the {E(cname)}</h2><ul class="chips">{others}</ul></div></div></div></section>')
-    return page(f"{v['short']} path", f"/team/{v['slug']}/", body, active="Conferences", dyn=True, need="pred-teams,pred-games,pred-paths,pred-lines", ptype="team", team=v["slug"], conf=cs, rb=True, ex=(full, full),
-                desc=f"{v['short']}: conference standing, remaining games with KickTip's expected margin and ESPN's spread, and chances to reach the conference championship game and make the playoff field.")
+    return page(f"{v['short']} path", f"/team/{v['slug']}/", body, full_title=f"{v['short']} playoff chances and path | KickTip Media", active="Conferences", dyn=True, need="pred-teams,pred-games,pred-paths,pred-lines", ptype="team", team=v["slug"], conf=cs, rb=True, ex=(full, full),
+                desc=f"{v['short']}: Playoff chances, conference standing, remaining games and the path to the conference championship game, from KickTip Media's college football playoff simulator.")
 
 # ---------------------------------------------------------------- full bracket (b9). Static markup only: seeds and format text, never a team or a number. kt.js fills [data-seed] on arrival.
 def bk_team(i, bye=False):
@@ -522,7 +537,7 @@ def sim_page(ck, cname, cs):
             f'<h1 id="ttl">Conference championship game simulator</h1><p class="lab" id="lab">{E(label)}</p>{CCGDEF}'
             f'<div id="sim-app"><noscript><p class="xhow">Turn on JavaScript to use the simulator. It needs no sign-in and stores nothing.</p></noscript></div>'
             f'<p class="ns"><a href="/conference/{cs}/">Back to the {E(cname)} race</a></p></div></div></section>')
-    return page(f"{cname} conference championship game simulator", f"/conference/{cs}/simulator/", body, active="Conferences", dyn=False, ptype="ccgsim",
+    return page(f"{cname} conference championship game simulator", f"/conference/{cs}/simulator/", body, full_title=f"{cname} championship game simulator | KickTip Media", active="Conferences", dyn=False, ptype="ccgsim",
                 desc=f"Set the remaining {cname} games and see who would play in the conference championship game under the conference's published tiebreaker rules. Rules walkthrough only.",
                 src_extra=f"Tiebreaker rules: {E(CCG_RULES[ck]['doc']['title'])} (link on the page). Starting results: ESPN's pre-game favorite where listed, otherwise the team with the better record (or the home team when records are level): overall record first, then conference record; no number is shown.")
 
@@ -568,7 +583,7 @@ def method_page():
 <h2 id="privacy">Privacy and saved teams</h2><p>{PRIVACY_LINE}</p><p>What KickTip keeps in your browser, and only when you choose to: the model you pick (if it is not the default), the bracket view you pick on the playoff page (Fit to screen or By round; Full bracket, the default, saves nothing), and, if you tap Save on My teams, your followed teams and your headline-number choices. Nothing is stored before you choose, tapping Run saves nothing, and there is no analytics. My teams has a Clear button that removes your saved teams and headline numbers. If you sign in, we also keep, on our server, the account id, email and name (if shared) that your sign-in gives us, plus your followed teams and headline-number choices, until you delete your account (My teams, Delete my account). Nothing else about you is stored except a short-lived counter, a keyed hash of your connection address and never the address itself, that limits sign-in attempts and saves. The <a href="/privacy/">privacy page</a> has the full detail. See the <a href="/disclaimer/">full terms and disclaimer</a>.</p>
 <h2>Known limitations</h2><ul>{c("Steps that rely on other public rating systems, CFP rank or computer composites are approximated by KickTip's rating. Check each conference page for its flags.")}{c("The MAC has published no 2026 tiebreaker revision, so we use its Nov. 2025 official text; the Mountain West's steps follow a published report of its rules.")}{c("The simulation does not model injuries, suspensions, weather or postseason ineligibility.")}{c("Early in the season the KickTip blend leans on each team's final strength from last year, and that weight fades as games are played, so teams that changed a lot since last year are rated less accurately until they have played.")}{c("Every chance, win probability and line on KickTip is an estimate from a model, not a result.")}{c("Scores are not simulated, only wins and losses, so scoring-margin tiebreakers use the rating instead.")}{c("Playoff rule for 2026-27: the champions of the ACC, Big Ten, Big 12 and SEC, the highest-ranked team from the other six conferences (champion or not), Notre Dame if ranked in the top 12, and the next highest-ranked teams fill the 12. The model uses this one rule for every number on the site, and uses the rating rank as a stand-in for the selection committee.")}{c("A 'conference leader' stands in for the champion in the 'if the season ended today' bracket.")}{c("Games against FCS opponents are counted in the simulation but shown without a win probability or line.")}</ul>
 </div></section>'''
-    return page("Method", "/method/", body, active="Method", desc="How KickTip simulates the season, works out its expected margin, and where its data comes from.")
+    return page("Method", "/method/", body, active="Method", full_title="How the college football playoff simulator works | KickTip Media", desc="How KickTip Media's college football playoff simulator rates teams, simulates the season and sources its data.")
 
 PRIVACY_LINE = privacy_copy.COOKIE_LONG   # LONG cookie line (Creative, sha 0dfdf2668896): /method/, /disclaimer/. The SHORT line (privacy_copy.COOKIE_SHORT) is in the sign-in sheet footer and the My teams line
 def disclaimer_page():
@@ -670,7 +685,7 @@ def build():
     w("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /data/\nDisallow: /api/\n\nSitemap: {BASE}/sitemap.xml\n")
     w("site.webmanifest", json.dumps(dict(name="KickTip Media", short_name="KickTip", start_url="/", display="browser", background_color="#121519", theme_color="#262B31",
         icons=[dict(src="/assets/brand/icon/kicktip-icon-192.png", sizes="192x192", type="image/png"), dict(src="/assets/brand/icon/kicktip-icon-512.png", sizes="512x512", type="image/png")]), indent=1) + "\n")
-    w("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}{u}</loc></url>\n" for u in urls) + "</urlset>\n")
+    w("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{BASE}{u}</loc><lastmod>{SITEMAP_LASTMOD}</lastmod></url>\n" for u in urls) + "</urlset>\n")
     w("_headers", "/*\n  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; worker-src 'self'\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n/assets/*\n  Cache-Control: public, max-age=86400\n/data/*\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: public, max-age=300\n")
     hash_assets()
     if os.environ.get("KT_HDR", "p") != "off":   # sticky slim header (src/header-kit/): post-processes the finished site tree; KT_HDR=q builds option Q, KT_HDR=off skips it

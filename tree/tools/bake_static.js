@@ -16,8 +16,12 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   '<noscript><p class="h25-js0">Turn on JavaScript to see the KickTip Top 25.</p></noscript>',
   'Turn on JavaScript to see the chances. Without it this page shows no simulation numbers.',
   '<tr><td colspan="3"><span class="lk">Loading</span></td></tr>',
-  'Spreads: ESPN, numbers only, shown when one has been posted.'];
-const NOJS_TXT = 'Turn on JavaScript to see game numbers and switch models.';
+  'Spreads: ESPN, numbers only, shown when one has been posted.',
+  '<span class="lk">Loading</span>',   /* 8: audit2 game cells (wp/kl/mk/ln) on /games/, conference and team pages */
+  '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript>',   /* 9: audit2 Rootables phase 2 (no-JS list) */
+  '',   /* 10: reserved */
+  '<li><span class="lk">Loading</span></li>'];   /* 11: audit2 conference 'Who controls their destiny' */
+const NOJS_TXT = 'Turn on JavaScript to switch models and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
 const mk = (n, s) => '<!--bk:' + n + '-->' + s + '<!--/bk-->';
 function unbake(t) { return t.replace(MK, (m, n) => { if (DEF[+n] === undefined) die('unknown marker ' + n); return DEF[+n]; }); }
@@ -77,8 +81,75 @@ function t25row(e, kt, lazy) {
 const mtS = (s) => { s = String(s); return /\d:\d\d|[ap]\.?m\b/i.test(s) && !/\bMT$/.test(s) ? s + ' MT' : s; };
 const t25asof = () => { const one = (k) => ps[k].on ? PN[k] + ' poll as of ' + esc(mtS(ps[k].asof)) + '.' : PN[k] + ' poll: not released yet.'; return '<span>' + one('ap') + ' ' + one('coaches') + '</span>'; };
 
+
+/* ---- audit2: game cells, ported 1:1 from assets/kt.js fillGame/lineInfo/mkCell/lnBlock (default model = data/pred-games.json).
+   'now' is the data as-of time (deterministic): a spread is 'no longer current' when the game had started or the read was over 24 h old at the as-of. ---- */
+const RB = require(path.resolve(SITE, 'assets/rootables.js'));
+const ASOF_MS = RB.mtMs(ASOF), NOW = ASOF_MS / 1000; if (!ASOF_MS) die('as_of not parseable for games: ' + ASOF);
+const PG = J('data/pred-games.json').g || {}; let LN = {}; try { LN = J('data/pred-lines.json').l || {}; } catch (e) { LN = {}; }
+const lineS = (s, h, a) => s === null || s === undefined ? null : s === 0 ? 'Even' : (s < 0 ? h : a) + ' ' + MINUS + Math.abs(s).toFixed(1);
+const margS = (s, h, a) => s === null || s === undefined ? null : s === 0 ? 'Even' : (s < 0 ? h : a) + ' by ' + Math.abs(s).toFixed(1);
+const sayS = (s, h, a) => s === 0 ? 'Even' : (s < 0 ? h : a) + ' minus ' + Math.abs(s).toFixed(1);
+const tmS = (sec) => NBSP(K.fmt(new Date(sec * 1000).toISOString().replace(/\.\d+Z$/, 'Z')) || '');
+const lval = (s, h, a) => '<span aria-hidden="true">' + esc(lineS(s, h, a)) + '</span><span class="vh">' + esc(sayS(s, h, a)) + '</span>';
+function gInfo(at, g) {
+  const L = LN[at.gk] || null, k = +at.k || 0, ks = g && g[0] !== null && g[0] !== undefined ? g[1] : null;
+  const r = { h: at.h, a: at.a, ks: ks, L: L, closed: false, started: k > 0 && NOW >= k };
+  if (L) r.closed = (L[2] > 0 && NOW >= L[2]) || (NOW - L[1] > 86400);
+  return r;
+}
+const CLT = '<span class="cl" title="ESPN&#39;s spread is no longer current, because the game has started or the number is over 24 hours old.">Spread no longer current</span>';
+function mkCellS(i, tbl) {
+  if (i.L && !i.closed) return [lval(i.L[0], i.h, i.a) + (tbl ? '<small>' + tmS(i.L[1]) + '</small>' : ''), 'Spread (ESPN): ' + lineS(i.L[0], i.h, i.a)];
+  if (i.L) return [CLT + '<small>Last spread: ' + esc(lineS(i.L[0], i.h, i.a)) + ', ' + tmS(i.L[1]) + '</small>', 'Spread no longer current'];
+  if (i.started) return ['<span class="nm">No spread was listed before kickoff.</span>', 'No spread was listed before kickoff'];
+  return ['<span class="nm">No spread listed yet.</span>' + (tbl ? '' : '<span class="nm2">Spreads usually appear within about a day of kickoff.</span>'), 'No spread listed yet'];
+}
+function lnBlockS(id, i) {   /* closed (mobile default); the summary in the button carries the numbers, so nothing is hidden behind JS */
+  const m = mkCellS(i, false), sum = [m[1]]; let rows = '<div class="r"><dt>Spread (ESPN)' + (i.L && !i.closed ? '<small>' + tmS(i.L[1]) + '</small>' : i.L ? '<small>Last spread: ' + esc(lineS(i.L[0], i.h, i.a)) + ', ' + tmS(i.L[1]) + '</small>' : '') + '</dt><dd' + (i.L && !i.closed ? '' : ' class="nm"') + '>' + (i.L && i.closed ? CLT : m[0]) + '</dd></div>';
+  if (i.ks !== null) { rows += '<div class="r"><dt>KickTip&#39;s expected margin</dt><dd>' + esc(margS(i.ks, i.h, i.a)) + '</dd></div>'; sum.push('KickTip\'s expected margin: ' + margS(i.ks, i.h, i.a)); }
+  return '<button type="button" class="gbt" aria-expanded="false" aria-controls="ln-' + id + '"><span>Spread and margin</span><span class="gsm">' + esc(sum.join(' \u00B7 ')) + '</span><i class="gcv" aria-hidden="true"></i></button><div class="gnb" id="ln-' + id + '" hidden><dl>' + rows + '</dl></div>';
+}
+function gameCell(at, kind, tag) {
+  const g = PG[at.gk], i = gInfo(at, g), h = at.h, a = at.a;
+  if (kind === 'wp') { if (g && g[0] !== null && g[0] !== undefined) { const hp = g[0] >= 0.5; return tag === 'td' ? esc(hp ? h : a) + ' ' + pct(hp ? g[0] : 1 - g[0]) : '<span class="gwl">KickTip win chance</span><span class="gwr"><span>' + esc(a) + ' ' + pct(1 - g[0]) + '</span><span>' + esc(h) + ' ' + pct(g[0]) + '</span></span><span class="gpb" aria-hidden="true"><i data-pw="' + Math.round(g[0] * 1000) / 10 + '"></i></span>'; }
+    return g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">Not modeled (FCS opponent)</span>'; }
+  if (kind === 'kl') return i.ks !== null ? esc(margS(i.ks, h, a)) : '<span class="lk">n/a</span>';
+  if (kind === 'mk') return mkCellS(i, true)[0];
+  if (kind === 'ln') return g === undefined && !i.L ? '' : lnBlockS(at.id, i);
+  die('cell kind ' + kind);
+}
+const attr = (s, n) => { const m = new RegExp(' data-' + n + '="([^"]*)"').exec(s); return m ? m[1].replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'") : null; };
+function bakeGames(t, rel) {
+  return t.replace(/<(article|tr)\b([^>]*\bdata-gk="[^"]+"[^>]*)>([\s\S]*?)<\/\1>/g, (all, tg, as, body) => {
+    const at = { gk: attr(as, 'gk'), id: attr(as, 'id'), h: attr(as, 'h'), a: attr(as, 'a'), k: attr(as, 'k') };
+    if (!body.includes('data-c="')) return all; if (!at.h || !at.a || !at.id) die('game attrs missing ' + at.gk + ' in ' + rel);
+    const nb = body.replace(/(<(td|div)\b[^>]*\bdata-c="(wp|kl|mk|ln)"[^>]*>)<span class="lk">Loading<\/span>(<\/\2>)/g, (x, o, tag, kind, c) => { stats.gcells++; return o + mk(8, gameCell(at, kind, tag)) + c; });
+    return '<' + tg + as + '>' + nb + '</' + tg + '>';
+  });
+}
+/* ---- audit2: Rootables phase 2 (no-JS): the default-model list for the page's team, computed by assets/rootables.js's own compute() at the data as-of ---- */
+let RBX = null;
+function rbCtx() {
+  if (RBX) return RBX; const idx = J('data/whatif/index.json'), bun = J('data/sim-bundle.json'), games = RB.buildGames(idx, bun), sh = {}, by = {};
+  (bun.teams || []).forEach((t) => { if (t.n) by[t.n] = t; });
+  return (RBX = { index: idx, games: games, asOfMs: RB.mtMs(idx.as_of), by: by, shard: (w, id) => { if (!(w in sh)) { const f = idx.shards[w]; sh[w] = f ? J('data/whatif/' + f) : null; } return (sh[w] && sh[w][id]) || null; } });
+}
+function rbHtml(slug) {
+  const c = rbCtx(); let nmK = null; Object.keys(c.by).forEach((k) => { if (c.by[k].g === slug) nmK = k; });
+  const tn = c.index.team_names.indexOf(nmK); if (tn < 0) return null;
+  const nm = (i) => { const n = c.index.team_names[i], t = c.by[n]; return (t && (t.s || t.n)) || n; };
+  const team = nm(tn), res = RB.compute(tn, 'cfp12', c, c.asOfMs);
+  const st = '<p class="rb-simn"><span class="bl">Simulation analysis, not advice. Data as of ' + NBSP(esc(K.fmt(c.index.as_of.replace(/ MT$/, '')) || RB.stampText(c.index.as_of))) + '.</span></p>';
+  if (!res.nWindow) return '<p class="rb-msg">No games in the next 7 days.</p>' + st;
+  if (!res.rows.length) return '<p class="rb-msg none">No game this week moves ' + esc(team) + '&#8217;s chance to make the 12-team playoff field by 1% or more.</p>' + st;
+  const li = res.rows.map((r) => { const s = nm(r.root), o = nm(r.other), where = r.neutral || r.root === r.h ? 'vs' : 'at';
+    return '<li class="rb-row rb-cd"><div class="rb-cw"><span class="rb-who">' + esc(s) + '</span><span class="rb-gn">+' + Math.max(1, Math.round(r.gap / 10)) + '%<small>' + esc(team) + ' gain</small></span></div><p class="rb-wn"><span class="rb-tag">Root&nbsp;for</span> ' + where + ' ' + esc(o) + ' \u00B7 ' + NBSP(esc(RB.whenShort(r))) + '</p></li>'; }).join('');
+  return '<p class="rb-sub">For ' + esc(team) + '&#8217;s chance to make the 12-team playoff field (KickTip blend):</p><ol class="rb-list">' + li + '</ol>' + st;
+}
+
 /* ---- page edits ---- */
-let stats = { files: 0, asof: 0, home: 0, team: 0, conf: 0, cells: 0, spreads: 0 };
+let stats = { files: 0, asof: 0, home: 0, team: 0, conf: 0, cells: 0, spreads: 0, gcells: 0, slate: 0, rb: 0 };
 function rep1(t, re, fn, what, f) { let n = 0; const o = t.replace(re, (...a) => { n++; return fn(...a); }); if (n !== 1) die(what + ' anchor found ' + n + 'x in ' + f); return o; }
 const SCRIPT = (t) => { const m = /\/assets\/stamp\.js\?v=([0-9a-f]{10})/.exec(t); return m ? m[1] : null; };
 const stampTok = require('crypto').createHash('sha256').update(fs.readFileSync(path.join(SITE, 'assets/stamp.js'))).digest('hex').slice(0, 10);
@@ -104,6 +175,8 @@ for (const f of files) {
   }
   const page = (/<main[^>]*data-page="([^"]+)"/.exec(t) || [])[1];
   let baked = false;
+  if (t.includes('data-c="')) t = bakeGames(t, rel);
+  if (/data-c="(wp|kl|mk|ln)"[^>]*><span class="lk">Loading/.test(t)) die('game Loading cell left in ' + rel);
   if (rel === 'index.html') {
     t = rep1(t, /(<p class="h25-eb" data-t25eb>)(<\/p>)/, (m, a, b) => a + mk(0, esc('Rating: ' + (PT.model && (PT.model.btn || PT.model.name)))) + b, 't25eb', rel);
     t = rep1(t, /<noscript><p class="h25-js0">Turn on JavaScript to see the KickTip Top 25\.<\/p><\/noscript>/, () => mk(4, ''), 't25 noscript', rel);
@@ -124,10 +197,20 @@ for (const f of files) {
     const pp = PP.t && PP.t[k];
     if (pp && t.includes('<b data-wo>&ndash;</b>')) t = t.replace('<b data-wo>&ndash;</b>', '<b data-wo>' + mk(1, pp.wo === null || pp.wo === undefined ? 'n/a' : pct(pp.wo)) + '</b>');
     const pr = pathRows(k); if (pr) t = t.replace(/(<table id="paths" class="fld">[\s\S]*?<tbody>)<tr><td colspan="3"><span class="lk">Loading<\/span><\/td><\/tr>(<\/tbody>)/, (x, a, b) => a + mk(6, pr) + b);
+    if (t.includes(DEF[9])) { const rh = rbHtml(k); if (rh) { t = rep1(t, /<noscript><p class="rb-msg">Turn on JavaScript to run Rootables\.<\/p><\/noscript>/, () => mk(9, '<noscript>' + rh + '</noscript>'), 'rootables', rel); stats.rb++; } }
     stats.team++; baked = true;
+  } else if (page === 'slate') {
+    t = rep1(t, /(<\/tbody><\/table><\/div><\/div>)(<p class="note"><b>How to read)/, (x, a, b) => a + upd() + b, 'slate stamp', rel);
+    stats.slate++; baked = true;
   } else if (page === 'conference' && t.includes(' data-f="')) {
     t = t.replace(/(<td class="n" data-f="([cwpb])" data-t="([^"]+)">)<span class="lk">Loading<\/span>(<\/td>)/g, (x, a, fk, k, b) => { const tm = T[k]; if (!tm) die('conf team ' + k + ' missing (' + rel + ')'); stats.cells++; return a + mk(2, cellPct(tm[fk])) + b; });
     if (/data-f="[cwpb]"[^>]*><span class="lk">Loading/.test(t)) die('conf Loading cell left in ' + rel);
+    const cs = (/<main[^>]*data-conf="([^"]+)"/.exec(t) || [])[1];
+    if (cs && t.includes('<ul class="dest" id="dest">' + DEF[11])) {   /* ported 1:1 from kt.js destiny() */
+      const rows = Object.values(T).filter((x) => x.cs === cs && x.x !== null && x.x !== undefined).sort((a, b) => b.x - a.x).filter((x) => x.x >= 0.02);
+      const h = rows.length ? rows.map((x) => { const c = x.x >= 0.9 ? ['p1', 'IN WITH WINS'] : ['p2', 'NEEDS HELP']; return '<li><span class="pill ' + c[0] + '">' + c[1] + '</span>' + esc(x.n) + ': if it wins out, ' + pct(x.x) + ' to reach the conference championship game.</li>'; }).join('') : '<li>No team has a better than 2% chance to reach the conference championship game by winning out.</li>';
+      t = t.replace('<ul class="dest" id="dest">' + DEF[11], '<ul class="dest" id="dest">' + mk(11, h));
+    }
     t = afterVroot(t, rel);
     stats.conf++; baked = true;
   }

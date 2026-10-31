@@ -160,9 +160,9 @@ def RBV(name):   # content-hash cache-busting token for the Rootables assets (fi
 CV = ""                                          # asset URLs carry a content hash added at the end of build() (hash_assets): no hand-set cache-busting tokens
 # audit2 SEO: ONE place for the head/footer extras (titles + descriptions are passed by each page function; see SEO-PLAN.md)
 SEO_IMG_ALT = "KickTip Media, college football playoff simulator"
-def rb_share(slug):   # R2 Rootables Share: no-JS = this plain link to the anchor; assets/rootables.js (SHARE) draws the same markup and adds Web Share / copy link
-    return (f'<a class="rb-share" href="/team/{slug}/#rootables" data-share><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="M12 3v12M7 8l5-5 5 5M5 13v6h14v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Share</span></a>'
-            '<span class="rb-cp" role="status" aria-live="polite"></span>')
+def rb_share(slug, name):   # R2 Rootables Share (SHARE-SPEC 6a68db1c): no-JS = this plain link to the anchor; assets/rootables.js shareHtml() draws the same markup and adds Web Share / copy link
+    return (f'<a class="rb-share" href="/team/{slug}/#rootables" data-share aria-label="Share {E(name)} Rootables"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18"><path d="M12 15V3M7 8l5-5 5 5M5 13v6h14v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="rb-sl">Share</span></a>'
+            '<span class="rb-cp vh" aria-live="polite"></span>')
 MSM_URL = "https://mtnsportsmedia.com/"
 FOOT_MSM = f'<a href="{MSM_URL}" rel="noopener">from the Mtn Sports Media team</a>'
 # SITEMAP_LASTMOD dropped (audit2 R2): no <lastmod>, a fixed date goes stale and a per-refresh one is outside apply_data's allow-list.
@@ -468,7 +468,7 @@ def team_page(full, v):
     crumbs = f'<p class="crumbs"><a href="/conference/{cs}/">{E(cname)}</a></p>'
     body = (hero_html(v["short"], E(standing), "Team path", crumbs, head=("thd", M.team(full, 80), None), after=f'<div class="mt-svw on-dark" data-mtsave data-slug="{v["slug"]}" data-name="{E(v["short"])}" hidden></div>') +
             f'<section class="sec"><div class="w">{banner(True)}<h2>Chances</h2>{CCGDEF if fmt != "none" else ""}{tiles}<p class="note">Chances come from {SEASONS} simulated seasons, using the model selected in the model control. Not a guarantee.</p></div></section>'
-            f'<section class="sec rbs"><div class="w"><section class="card rb" id="rootables" aria-labelledby="rbh" data-rb="idle" data-name="{E(v["short"])}"{" data-noccg=" + chr(34) + "1" + chr(34) if fmt == "none" else ""}><div class="rb-hd"><h2 id="rbh">Rootables</h2>{rb_share(v["slug"])}</div><p class="rb-sub">Who to cheer for this week, for {E(v["short"])}\u2019s make-the-12 chance.</p>'
+            f'<section class="sec rbs"><div class="w"><section class="card rb" id="rootables" aria-labelledby="rbh" data-rb="idle" data-name="{E(v["short"])}"{" data-noccg=" + chr(34) + "1" + chr(34) if fmt == "none" else ""}><div class="rb-hd"><h2 id="rbh">Rootables</h2>{rb_share(v["slug"], v["short"])}</div><p class="rb-sub">Who to cheer for this week, for {E(v["short"])}\u2019s make-the-12 chance.</p>'
             '<button type="button" class="rb-run" data-run>Run Rootables</button>' + terms_copy.RUN_FULL_HTML + '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript></section></div></section>'
             f'<section class="sec" data-pt="0"><div class="w two"><div>{games_card}</div><div>{pathcard}'
             f'<div class="card"><h2>More in the {E(cname)}</h2><ul class="chips">{others}</ul></div></div></div></section>')

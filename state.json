@@ -11,7 +11,7 @@
  "base_release_tag": "base",
  "note": "base/kicktip-site.zip and base/s0/site come from the GitHub release 'base' (assets kicktip-site.zip, s0-site.tar.gz); sha checked against live_sha",
  "recorded_at": "2026-10-31T19:34:31+00:00",
- "s0_asset": "s0-site-v2.tar.gz",
+ "s0_asset": "s0-site.tar.gz",
  "lines_fp": "32ea4ddfc1f72448",
  "lines_epoch": 1793460610
 }

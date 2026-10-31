@@ -86,9 +86,9 @@ No cron is installed. See the recommendation in the latest report. When the go c
 Why: every refresh 3-way-merges live + (S0 -> S1). S0/S1 are rendered by `tree/src/build.py`; feature ships edit the live HTML directly.
 If a feature changes HTML that the pipeline also regenerates (games table/rows/cards, Sources strip, method page, stamps), the data merge
 conflicts (Oct 30, 9:39 PM MT run 41165311294: live B5 games table had renamed headers + no Gap column; S1 added/removed rows next to them -> `games/index.html rc=3`).
-**S0 asset name:** `state.json` key `s0_asset` (now `s0-site-v2.tar.gz`; absent = `s0-site.tar.gz`). `fetch_base.sh`, `publish_base.sh` and
-`rebuild_s0.sh` all use it. The S0 must be rendered by the SAME `build.py` templates the branch runs: refreshfix templates use
-`s0-site-v2.tar.gz` (sha 9792844d…), main's old templates keep `s0-site.tar.gz` (a8b733c0…) until the merge, so neither branch reverts the other's copy.
+**S0 asset name:** `state.json` key `s0_asset` = `s0-site.tar.gz` (absent = the same default). `fetch_base.sh`, `publish_base.sh`,
+`rebuild_s0.sh`, Batch B `ship_b.sh` and `final_rebase_b.sh` all resolve it from state.json. Since Batch A (live 561c9524) the S0 is
+`s0-site.tar.gz` sha 5b375ecf… (Batch A templates). `s0-site-v2.tar.gz` (e18db99f…, pre-fix TBA) is OLD: never point s0_asset at it.
 Old S0 (e78fc637…, before Oct 30) is kept as `s0-site-backup-oct29.tar.gz` on release `base` and in `/workspace/hub/backups/`.
 
 **Rule for every feature ship that touches pipeline-generated HTML:**

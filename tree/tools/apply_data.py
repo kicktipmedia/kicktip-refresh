@@ -13,7 +13,7 @@ Method (same as toolbox9c, generalised):
  5b. nojs1 (if the base has assets/stamp.js): the base is unbaked before the merge; after step 5 tools/bake_static.js bakes numbers + 'Updated'
      stamps into HTML and --verify fails the run if any page is stale.
  5c. Batch B (base has og/rootables/): tools/og/og_cards.py redraws the per-team share cards whose Rootables list changed.
- 6. restamp ?v= tokens; allow-list check: every changed file is html, data/**, og/rootables/{slug}-1200x630|1080x1350.png, or a token-only change; _worker.js identical.
+ 6. restamp ?v= tokens; allow-list check (new files: og cards and data/rootables/<slug>.json only): every changed file is html, data/**, og/rootables/{slug}-1200x630|1080x1350.png, or a token-only change; _worker.js identical.
  7. deterministic zip (sorted, 2026-01-01 00:00, 0644, deflate) built twice, sha must match.
 Exit 0 ok; 2 merge conflict; 3 check failed; 4 non-deterministic."""
 import argparse, datetime, hashlib, json, os, re, shutil, subprocess, sys, tempfile, zipfile
@@ -79,6 +79,7 @@ def build_once(tmp, a, network):
     # 4. derived data
     T, P, S, Bn = HERE, a.pipeline, out, out + '/data/sim-bundle.json'; SIM = out + '/assets/ks/sim.js'; tb = out + '/data/tb'
     steps = [
+        (['node', T + '/gen_rootables.js', S], 'rootables'),   # rootables-shared: ONE per-team list for home, team page and share cards
         (['python3', T + '/build_tile_data.py', S], 'tile-data'),
         (['node', T + '/gen_conf_bids.js', '--sim', SIM, '--bundle', Bn, '--out', tb + '/conf-bids.json'], 'conf-bids'),
         (['node', T + '/gen_conf_outcome.js', '--sim', SIM, '--bundle', Bn, '--out', tb + '/conf-outcome.json'], 'conf-outcome'),
@@ -128,7 +129,8 @@ def build_once(tmp, a, network):
     bf = {rel: sha(rd(p)) for rel, p in walk(base)}; of = {rel: p for rel, p in walk(out)}
     new = sorted(set(of) - set(bf)); gone = sorted(set(bf) - set(of))
     OGRE = re.compile(r'^og/rootables/[a-z0-9-]+-(1200x630|1080x1350)\.png$')   # Batch B allow-list: share cards only, nothing else under og/
-    new = [r for r in new if not (OGC and OGRE.match(r))]
+    RBRE = re.compile(r'^data/rootables/[a-z0-9-]+\.json$')   # rootables-shared: a new team page gets its list file
+    new = [r for r in new if not (OGC and OGRE.match(r)) and not RBRE.match(r)]
     if new: die(3, 'unexpected new files %s' % new[:10])
     if gone != sorted(deleted): die(3, 'unexpected removed files %s' % gone[:10])
     TOK = re.compile(r'\?v=[0-9a-f]{10}'); changed = {}

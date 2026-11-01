@@ -56,7 +56,7 @@ def build(N=6000, seed=2026, procs=None, outdir=None, only=None, model="default"
                        p_home=int(round(1000 / (1 + np.exp(-(S.s_g[g["h"]] - S.s_g[g["a"]] + (0 if g["neutral"] else S.hfa_g)) / S.SIG_g))))))
     for wk, d in shards.items(): json.dump(d, open(f"{outdir}/w{wk}.json", "w"), separators=(",", ":"))
     names = [S.name.get(t, "FCS opponent") for t in range(S.n)]
-    idx = dict(label="Single-game what-ifs from 10,000 simulated seasons (KickTip estimates, for information only). Values are per-mille.",
+    idx = dict(label=f"Single-game what-ifs from {N:,} simulated seasons (KickTip estimates, for information only). Values are per-mille.",
                as_of=__import__("export_web").sim_as_of(), seasons=N, seed=seed, min_move_permille=MIN_MOVE, metrics=METRICS,
                team_names=names, baseline=base.tolist(), games=gl, shards={str(w): f"w{w}.json" for w in sorted(shards)})
     import models_registry as MR

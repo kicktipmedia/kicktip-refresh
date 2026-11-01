@@ -86,20 +86,7 @@ def main():
         pt = pred[t['g']]
         metric = 'cfp12' if (pt['p'] >= 0.01 or pt.get('c') is None) else 'ccg'
         col = metrics.index(metric) + 1
-        # --- rootables (rootables.js compute)
-        rows = []; end = as_of_ms + MS7
-        for g in games:
-            if g['ip'] or g['kick'] > end or started(g): continue
-            if not shard(g['week'], g['id']): continue
-            if any(not (by.get(names[x]) or {}).get('g') for x in (g['h'], g['a'])): continue   # refreshfix T3: FBS vs 'FCS opponent' games are not rootable rows (why2 needs both names; Oct 31 fresh data)
-            pH, pA = chance(g, 'h', tn, col), chance(g, 'a', tn, col)
-            own = g['h'] == tn or g['a'] == tn
-            rows.append(dict(id=g['id'], g=g, pH=pH, pA=pA, gap=abs(pH - pA), own=own,
-                             root=g['h'] if pH >= pA else g['a'], other=g['a'] if pH >= pA else g['h']))
-        big = [r for r in rows if r['gap'] >= THRESH and not r['own']]   # jared5: rooting for your own team is a given (same as rootables.js)
-        big.sort(key=lambda r: (-r['gap'], r['g']['kick'], r['id']))
-        roots = [{'a': name_of(r['root']), 'x': name_of(r['other']), 'g': r['gap'], 'k': r['g']['kick'], 't': int(r['g']['tba']),
-                  'd': when_short(r['g']['kick'], r['g']['tba']), 'o': int(r['own'])} for r in big[:MAXROWS]]
+        # rootables-shared (Nov 1): the Rootables rows ('r') moved to data/rootables/<slug>.json (tools/gen_rootables.js, the browser's own compute); the Python port is retired
         # --- next games with a what-if shard, soonest first; stops at the first game without a shard
         mine = sorted([g for g in games if (g['h'] == tn or g['a'] == tn) and not g['ip'] and not started(g)], key=lambda g: g['kick'])
         nxt = []
@@ -109,7 +96,7 @@ def main():
             pH, pA = chance(g, 'h', tn, col), chance(g, 'a', tn, col)
             nxt.append({'o': name_of(g['a'] if home else g['h']), 'h': 2 if g['neutral'] else (1 if home else 0), 'k': g['kick'], 't': int(g['tba']),
                         'd': when_short(g['kick'], g['tba']), 'w': pH if home else pA, 'l': pA if home else pH})
-        teams[t['g']] = {'m': metric, 'b': base[tn][col - 1], 'n': nxt, 'r': roots}
+        teams[t['g']] = {'m': metric, 'b': base[tn][col - 1], 'n': nxt}
     doc = {'v': 1, 'as_of': index['as_of'], 'seasons': index.get('seasons'), 'teams': teams}
     out = out or os.path.join(D, 'tile-data.json')
     os.makedirs(os.path.dirname(out), exist_ok=True)

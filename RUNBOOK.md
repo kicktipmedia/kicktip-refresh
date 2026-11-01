@@ -104,7 +104,7 @@ Old S0 (e78fc637…, before Oct 30) is kept as `s0-site-backup-oct29.tar.gz` on 
    Ships that only change JS/CSS/assets need neither step.
 4. Refresh runs keep `s0-inputs.tar.gz` current (`publish_base --s0-inputs tree`).
 
-**Spreads (ESPN):** `src/lines.py --pull` runs ONCE per run before the gate fingerprint (2 h minimum interval Thu-Sat MT, 12 h otherwise;
+**Spreads (ESPN):** `src/lines.py --pull` runs ONCE per run before the gate fingerprint (50 min minimum interval, so every hourly run pulls;
 the interval counts failed/empty attempts too, via `espn_lines.json.attempt`). The workflow sets `KT_LINES_PULLED=1` so `auto_refresh.sh`
 does not pull again: the gate fp equals the build fp. A new snapshot (`lines_fp`) triggers a full run. Safety:
 - Empty pull (no usable spreads) or network error: `espn_lines.json` is not touched (last good lines stay, `pulled_epoch` never 0).

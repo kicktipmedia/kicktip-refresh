@@ -11,8 +11,8 @@ import os, sys, json, time, re, glob, datetime as dt, urllib.request, urllib.err
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTD = f"{ROOT}/data/out"; STORE = f"{ROOT}/data/store/espn_lines.json"; OUT = f"{OUTD}/market_lines.json"
 SB = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=%s&groups=80&limit=300"
-MIN_INTERVAL = 12 * 3600; DAYS = 14
-GAMEDAY_INTERVAL = 2 * 3600   # Thu-Sat (MT): game days, re-read at most every 2 h
+MIN_INTERVAL = 50 * 60; DAYS = 14   # every scheduled run pulls (hourly cron; 50 min absorbs GitHub start jitter)
+GAMEDAY_INTERVAL = 50 * 60   # Thu-Sat (MT): same as MIN_INTERVAL (was 2 h; 12 h on other days)
 def min_interval():
     import zoneinfo
     return GAMEDAY_INTERVAL if dt.datetime.now(zoneinfo.ZoneInfo("America/Denver")).weekday() in (3, 4, 5) else MIN_INTERVAL
@@ -76,7 +76,7 @@ def pull(force=False):
     if last or att:
         age = time.time() - max(int((last or {}).get("pulled_epoch") or 0), att)
         iv = min_interval()
-        if age < iv and not force: print(f"last pull is {age/3600:.1f} h old (< {iv/3600:.0f} h): no request made"); return None
+        if age < iv and not force: print(f"last pull is {age/60:.0f} min old (< {iv/60:.0f} min): no request made"); return None
     rows, skip, today, t0 = [], {}, dt.datetime.now(dt.timezone.utc).date(), int(time.time())
     try:
         for i in range(DAYS):

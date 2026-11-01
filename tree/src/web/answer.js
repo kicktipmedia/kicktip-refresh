@@ -82,7 +82,7 @@
     return { header: header(N, asOf, bundle.model_label), model_label: bundle.model_label || "KickTip blend", footers: footers(bundle, null), team: team, team_name: tn(bundle, team), cells: METRICS.filter(function (m) { return applicable(bundle, team, m[0]); }).map(function (m) { return { key: m[0], label: m[1], value: base[m[0]][team], text: pct(base[m[0]][team]) }; }) };
   }
   var CLARIFY = {
-    ambiguous_team: "Which team do you mean?", not_modeled: "That school is not in the Division I FBS field KickTip covers. Pick an FBS team.", no_team: "I did not find a team name. Try something like: What if Utah beats BYU and Texas Tech loses to Arizona?",
+    ambiguous_team: "Which team do you mean?", not_modeled: "That school is not in the Division I FBS field KickTip covers. Choose an FBS team.", no_team: "I did not find a team name. Try something like: What if Utah beats BYU and Texas Tech loses to Arizona?",
     unparsed: "I could not turn part of that into a game result. Try: Team A beats Team B, Team A loses to Team B, Team A wins out, or Team A wins 2 of 3.", unsupported: "I can run what-if scenarios for game results and conference, playoff or bye chances. National title chances are not part of KickTip's simulation.",
     empty: "Type a what-if question.", already_played: "That game has already been played.", no_remaining_game: "There is no remaining regular-season game between those teams.", multiple_games: "Those teams play more than once. Say which game (home or away).",
     margin: "KickTip simulates wins and losses, not scores or margins.", title_scenario: "Conference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beats another in a regular-season game.",

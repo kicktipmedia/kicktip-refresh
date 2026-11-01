@@ -8,7 +8,7 @@
   var METRICS = { cfp12: { col: 'cfp12', short: 'Make the 12', full: 'Make the 12', phrase: 'make-the-12 chance' },
                   ccg: { col: 'ccg', short: 'Reach CCG', full: 'Reach CCG', aria: 'Reach the conference championship game', phrase: 'chance to reach the conference championship game' } };
   var SHORT = '__RUN_SHORT_HTML__';   /* the SHORT under-Run line under Run Rootables again (built from src/terms_copy.py); the FULL line is static HTML in the card */
-  var MODEL_NAME = { blend: 'KickTip blend', elo: 'Elo-style', eff: 'Efficiency model' };
+  var MODEL_NAME = { blend: 'KickTip blend', elo: 'Elo-style', eff: 'Efficiency' };
 
   /* ---------- pure part ---------- */
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -145,7 +145,7 @@
       '<p>Each game is tested on its own. Do not add the points together: results of different games overlap.</p>' +
       '<p>Games that move the chance by less than 1.0 point are not shown. Small differences can come from simulation noise.</p>' +
       '<p>These numbers use ' + ns + ' seasons, so they can differ by a few tenths from the 10,000-season chances shown above.</p>' +
-      '<p>Rootables uses the model selected above. Change the model and the list updates.</p>' +
+      '<p>Rootables uses the rating system selected above. Change the rating system and the list updates.</p>' +
       '<p><b>Information and entertainment only, not advice or a guarantee.</b></p></div>';
   }
   function rowHtml(ctx, r, team, metric) {

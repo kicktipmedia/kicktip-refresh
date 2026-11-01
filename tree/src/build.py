@@ -471,7 +471,7 @@ def team_page(full, v):
     games_card += results_card(full=full, title="Results")
     crumbs = f'<p class="crumbs"><a href="/conference/{cs}/">{E(cname)}</a></p>'
     body = (hero_html(v["short"], E(standing), "Team path", crumbs, head=("thd", M.team(full, 80), None), after=f'<div class="mt-svw on-dark" data-mtsave data-slug="{v["slug"]}" data-name="{E(v["short"])}" hidden></div>') +
-            f'<section class="sec"><div class="w">{banner(True)}<h2>Chances</h2>{CCGDEF if fmt != "none" else ""}{tiles}<p class="note">Chances come from {SEASONS} simulated seasons, using the model selected in the model control. Not a guarantee.</p></div></section>'
+            f'<section class="sec"><div class="w">{banner(True)}<h2>Chances</h2>{CCGDEF if fmt != "none" else ""}{tiles}<p class="note">Chances come from {SEASONS} simulated seasons, using the rating system selected in the rating system control. Not a guarantee.</p></div></section>'
             f'<section class="sec rbs"><div class="w"><section class="card rb" id="rootables" aria-labelledby="rbh" data-rb="idle" data-name="{E(v["short"])}"{" data-noccg=" + chr(34) + "1" + chr(34) if fmt == "none" else ""}><div class="rb-hd"><h2 id="rbh">Rootables</h2>{rb_share(v["slug"], v["short"])}</div><p class="rb-sub">Who to cheer for this week, for {E(v["short"])}\u2019s make-the-12 chance.</p>'
             '<button type="button" class="rb-run" data-run>Run Rootables</button>' + terms_copy.RUN_FULL_HTML + '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript></section></div></section>'
             f'<section class="sec" data-pt="0"><div class="w two"><div>{games_card}</div><div>{pathcard}'
@@ -501,7 +501,7 @@ def bracket_html():
             + rd("r1", "First round", r1) + rd("r2", "Quarterfinals", qf) + rd("r3", "Semifinals", sf) + rd("r4", "Championship", fin) + '</div></div>'
             '<p class="note">Seeds are 1 to 12 by rank. The higher seed hosts in the first round and byes go to seeds 1 to 4. Quarterfinals: 1 plays the 8/9 winner, 2 plays the 7/10 winner, 3 plays the 6/11 winner, 4 plays the 5/12 winner. The bracket is not reseeded. The percentages are each team\'s chance to make the 12 over '
             f'{SEASONS} simulated seasons, not the chance of winning a game. KickTip does not publish playoff-game probabilities. The full field is in the table below.</p>'
-            '<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every model.</p>')
+            '<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every rating system.</p>')
 def playoff_page():
     br = bracket_html()
     logic = ('<ul><li>The field has 12 teams. The champions of the ACC, Big Ten, Big 12 and SEC get automatic bids. The highest-ranked team from the American, Conference USA, MAC, Mountain West, Pac-12 and Sun Belt also gets one, whether or not it is a champion. Notre Dame gets one if it is ranked in the top 12. The remaining spots go to the next highest-ranked teams: seven in all when Notre Dame is not in the top 12, six when it is.</li>'
@@ -512,7 +512,7 @@ def playoff_page():
     body = (hero_html("Playoff picture", "If the season ended today: 12 teams, the top 4 seeds get byes, and seeds 5 to 8 host first-round games.", "12-team field", head=("phd", M.league(56), "NCAA Football")) +
             f'<section class="sec"><div class="w">{banner(True)}<div class="card"><h2>How the field is chosen</h2>{logic}<p class="cta"><a href="/top25/">See the KickTip Top 25</a></p></div>'
             f'<div class="card" id="bracket"><h2>Bracket if the season ended today</h2>{CRED}{br}</div>'
-            f'<div class="card"><h2>The field</h2>{tbl(fh, "", " id=\"field\" class=\"fld\"", kind="n")}<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every model.</p></div>'
+            f'<div class="card"><h2>The field</h2>{tbl(fh, "", " id=\"field\" class=\"fld\"", kind="n")}<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every rating system.</p></div>'
             f'<div class="card"><h2>Chances to make the 12</h2><p class="ccgdef">CCG = conference championship game</p>{tbl(f"""<th class="n">#</th><th>Team</th><th>Conference</th><th class="n">Make the 12<small>est.</small></th><th class="n">First-round bye<small>est.</small></th><th class="n">Reach CCG<small>est.</small></th><th class="n">Win conference<small>est.</small></th>""", "", " id=\"chances\"", kind="n")}'
             f'<p class="note">Top 25 teams by chance to make the 12. Chances come from {SEASONS} simulated seasons (KickTip estimates).</p></div></div></section>')
     return page("Playoff picture", "/playoff/", body, active="Playoff Picture", dyn=True, need="pred-teams", ptype="playoff", ex=("BYU Cougars", "Utah Utes"), desc="The 12-team playoff field, bracket logic and each team's chance to make the 12.")

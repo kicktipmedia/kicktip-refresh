@@ -166,7 +166,7 @@
       if (g && g[2] !== null && g[2] !== undefined) ml = lineText(g[2], ng.hName, ng.aName);
       box.innerHTML = '<p class="mt-tag">Next game</p><p class="mt-dt">' + (ng.ip ? 'In progress \u00B7 ' : '') + esc(when(ng.date)) + '</p>' +
         '<p class="mt-op">' + (ng.oppSlug ? logo(ng.oppSlug, 24) : '') + '<span>' + (ng.neutral ? 'vs' : ng.home ? 'vs' : 'at') + ' ' + esc(ng.opp) + '</span></p>' +
-        (pw === null ? '<p class="mt-kv"><span>KickTip win chance</span><b>' + (ng.ip ? 'Game in progress' : 'Not modeled') + '</b></p>' :
+        (pw === null ? '<p class="mt-kv"><span>KickTip win chance</span><b>' + (ng.ip ? 'Game in progress' : 'No estimate') + '</b></p>' :
           '<p class="mt-kv"><span>KickTip win chance</span><b>' + esc(me) + ' ' + pct(pw) + '</b></p><span class="mt-bar" aria-hidden="true"><i data-w="' + Math.round(pw * 100) + '"></i></span>') +
         (ml ? '<p class="mt-kv"><span>Market line</span><b>' + esc(ml) + '</b></p>' : '<p class="mt-kv"><span>Market line</span><b class="mt-no">No market line yet</b></p>');
       $$('.mt-bar i[data-w]', box).forEach(function (i) { i.style.width = i.getAttribute('data-w') + '%'; i.removeAttribute('data-w'); });

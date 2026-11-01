@@ -75,7 +75,7 @@
     var first = models.filter(function (m) { return m.default; }), more = models.filter(function (m) { return !m.default; });
     var el = D.createElement('section'); el.className = 'mdl'; el.setAttribute('data-mdl', ''); el.setAttribute('aria-label', 'Choose a rating system');
     el.innerHTML = '<div class="mdh"><b>Rating system</b><span class="mdb" data-mdb></span></div>' +
-      '<div class="mdt" role="group" aria-label="Rating system">' + first.map(btn).join('') + (more.length ? '<button type="button" class="mb mbm" data-more aria-expanded="false" aria-controls="mdmore">More rating systems<i class="chv" aria-hidden="true"></i></button>' : '') + '</div>' +
+      '<div class="mdt" role="group" aria-label="Rating system">' + first.map(btn).join('') + (more.length ? '<button type="button" class="mb mbm" data-more aria-expanded="false" aria-controls="mdmore" aria-label="More rating systems">More systems<i class="chv" aria-hidden="true"></i></button>' : '') + '</div>' +
       (more.length ? '<div class="mdt mdm" id="mdmore" role="group" aria-label="More rating systems" hidden>' + more.map(btn).join('') + '</div>' : '') +
       '<p class="mdd"><span data-mdd aria-live="polite"></span> <button type="button" class="mdw" data-why aria-expanded="false" aria-controls="mdfull">What\u2019s this?</button></p>' +
       '<div class="mdf" id="mdfull" hidden><p data-mdfull></p><p class="mdn">These are statistical estimates, not a market line and not a recommendation. <a href="/method/#models">How the rating systems differ</a> &middot; <a href="/method/#accuracy">How accurate are they?</a>' +

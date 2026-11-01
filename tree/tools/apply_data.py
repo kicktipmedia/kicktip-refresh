@@ -66,6 +66,13 @@ def build_once(tmp, a, network):
     for rel, p in list(walk(out)):
         if re.match(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$', rel) and os.path.exists(S0N + '/' + rel) and not os.path.exists(S1N + '/' + rel):
             os.remove(p); deleted.append(rel)
+    # drop deleted top-level shards from the toolbox data lists (tool modules + manifest), else every tool listing them fails with load_error
+    for nm in sorted({re.sub(r'^data/|\.json$', '', r) for r in deleted if r.startswith('data/whatif/')}):
+        q = re.escape('"' + nm + '"')
+        for rel, p in list(walk(out)):
+            if rel.startswith('assets/tb/') and rel.endswith('.js'):
+                t = open(p, encoding='utf-8').read(); t2 = re.sub(q + r':\{[^{}]*\},?', '', re.sub(q + r', ?', '', t))
+                if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
     # 3. post-fixes of the live builds
     for rel, p in walk(out):
         if rel.endswith(('.html', '.js', '.json')) and rel not in ('_worker.js', 'scnai.js') and os.path.exists(base + '/' + rel) and rd(p) != rd(base + '/' + rel):

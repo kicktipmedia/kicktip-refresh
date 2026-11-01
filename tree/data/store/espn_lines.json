@@ -1,6 +1,6 @@
 {
  "note": "ESPN public scoreboard pull; numbers only",
- "pulled_epoch": 1793498028,
+ "pulled_epoch": 1793543825,
  "lines": [
   {
    "id": "401866453",
@@ -8,7 +8,7 @@
    "away": "Ohio Bobcats",
    "kickoff": "2026-11-04T00:00Z",
    "s": 12.5,
-   "t": 1793498031
+   "t": 1793543828
   },
   {
    "id": "401866454",
@@ -16,7 +16,7 @@
    "away": "Buffalo Bulls",
    "kickoff": "2026-11-04T01:00Z",
    "s": -6.5,
-   "t": 1793498031
+   "t": 1793543828
   },
   {
    "id": "401866455",
@@ -24,15 +24,15 @@
    "away": "Ball State Cardinals",
    "kickoff": "2026-11-05T00:00Z",
    "s": -4.5,
-   "t": 1793498032
+   "t": 1793543829
   },
   {
    "id": "401866457",
    "home": "Sacramento State Hornets",
    "away": "Toledo Rockets",
    "kickoff": "2026-11-05T00:00Z",
-   "s": 26.5,
-   "t": 1793498032
+   "s": 27.5,
+   "t": 1793543829
   },
   {
    "id": "401866456",
@@ -40,7 +40,7 @@
    "away": "Central Michigan Chippewas",
    "kickoff": "2026-11-05T00:30Z",
    "s": -1.5,
-   "t": 1793498032
+   "t": 1793543829
   },
   {
    "id": "401862817",
@@ -48,15 +48,15 @@
    "away": "UTSA Roadrunners",
    "kickoff": "2026-11-06T00:30Z",
    "s": 6.5,
-   "t": 1793498033
+   "t": 1793543830
   },
   {
    "id": "401869964",
    "home": "Southern Miss Golden Eagles",
    "away": "James Madison Dukes",
    "kickoff": "2026-11-06T01:00Z",
-   "s": 15.5,
-   "t": 1793498033
+   "s": 14.0,
+   "t": 1793543830
   },
   {
    "id": "401858288",
@@ -64,7 +64,39 @@
    "away": "Virginia Tech Hokies",
    "kickoff": "2026-11-07T00:00Z",
    "s": -6.5,
-   "t": 1793498034
+   "t": 1793543831
+  },
+  {
+   "id": "401862818",
+   "home": "East Carolina Pirates",
+   "away": "South Florida Bulls",
+   "kickoff": "2026-11-07T00:30Z",
+   "s": 1.5,
+   "t": 1793543831
+  },
+  {
+   "id": "401858510",
+   "home": "Illinois Fighting Illini",
+   "away": "Nebraska Cornhuskers",
+   "kickoff": "2026-11-07T01:00Z",
+   "s": 6.0,
+   "t": 1793543831
+  },
+  {
+   "id": "401864533",
+   "home": "Nevada Wolf Pack",
+   "away": "New Mexico Lobos",
+   "kickoff": "2026-11-07T02:00Z",
+   "s": 12.5,
+   "t": 1793543831
+  },
+  {
+   "id": "401856855",
+   "home": "Arizona Wildcats",
+   "away": "TCU Horned Frogs",
+   "kickoff": "2026-11-07T03:15Z",
+   "s": -8.5,
+   "t": 1793543831
   },
   {
    "id": "401856849",
@@ -72,7 +104,31 @@
    "away": "BYU Cougars",
    "kickoff": "2026-11-07T17:00Z",
    "s": -4.5,
-   "t": 1793498036
+   "t": 1793543832
+  },
+  {
+   "id": "401858512",
+   "home": "Minnesota Golden Gophers",
+   "away": "UCLA Bruins",
+   "kickoff": "2026-11-07T17:00Z",
+   "s": 6.0,
+   "t": 1793543832
+  },
+  {
+   "id": "401856743",
+   "home": "Missouri Tigers",
+   "away": "Texas Longhorns",
+   "kickoff": "2026-11-07T17:00Z",
+   "s": 3.5,
+   "t": 1793543832
+  },
+  {
+   "id": "401858514",
+   "home": "Ohio State Buckeyes",
+   "away": "Oregon Ducks",
+   "kickoff": "2026-11-07T20:30Z",
+   "s": -10.5,
+   "t": 1793543832
   },
   {
    "id": "401856740",
@@ -80,7 +136,7 @@
    "away": "Alabama Crimson Tide",
    "kickoff": "2026-11-07T20:30Z",
    "s": -4.5,
-   "t": 1793498036
+   "t": 1793543832
   },
   {
    "id": "401856745",
@@ -88,7 +144,47 @@
    "away": "Kentucky Wildcats",
    "kickoff": "2026-11-07T23:15Z",
    "s": -5.5,
-   "t": 1793498036
+   "t": 1793543832
+  },
+  {
+   "id": "401858291",
+   "home": "Notre Dame Fighting Irish",
+   "away": "Miami Hurricanes",
+   "kickoff": "2026-11-08T00:30Z",
+   "s": -3.5,
+   "t": 1793543832
+  },
+  {
+   "id": "401856741",
+   "home": "Ole Miss Rebels",
+   "away": "Georgia Bulldogs",
+   "kickoff": "2026-11-08T00:30Z",
+   "s": 3.0,
+   "t": 1793543832
+  },
+  {
+   "id": "401858513",
+   "home": "Northwestern Wildcats",
+   "away": "Iowa Hawkeyes",
+   "kickoff": "2026-11-08T00:30Z",
+   "s": -1.5,
+   "t": 1793543832
+  },
+  {
+   "id": "401858511",
+   "home": "Michigan Wolverines",
+   "away": "Michigan State Spartans",
+   "kickoff": "2026-11-08T00:30Z",
+   "s": -14.0,
+   "t": 1793543832
+  },
+  {
+   "id": "401856739",
+   "home": "Florida Gators",
+   "away": "Oklahoma Sooners",
+   "kickoff": "2026-11-08T00:45Z",
+   "s": -5.5,
+   "t": 1793543832
   }
  ]
 }

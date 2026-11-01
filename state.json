@@ -1,17 +1,17 @@
 {
- "live_id": "aa2318b9-c5c7-454b-887b-24686cf688a7",
- "live_sha": "3c6470a7514c06517b2979818ef82a0133a69056d2b816ccd16fe5c1694eb553",
+ "live_id": "ca61f07b-7107-4681-a448-f3cc2bfdbda3",
+ "live_sha": "ece8a72ccf364c4a3717a17ad477626ad04b15fffcae1200acb1676031c3e5c0",
  "zip_path": "base/kicktip-site.zip",
- "as_of": "2026-10-31 09:30 MT",
+ "as_of": "2026-10-31 19:54 MT",
  "s0_pipeline_site": "base/s0/site",
  "pipeline_tree": "tree",
- "rollback_id": "9ab846f7-385a-4761-a770-1347a6ad3da6",
- "results_fp": "44fa4af155e7f5fe",
- "completed": 575,
+ "rollback_id": "aa2318b9-c5c7-454b-887b-24686cf688a7",
+ "results_fp": "51c5780bc420ec09",
+ "completed": 609,
  "base_release_tag": "base",
  "note": "base/kicktip-site.zip and base/s0/site come from the GitHub release 'base' (assets kicktip-site.zip, s0-site.tar.gz); sha checked against live_sha",
- "recorded_at": "2026-10-31T23:28:57+00:00",
+ "recorded_at": "2026-11-01T02:48:40+00:00",
  "s0_asset": "s0-site.tar.gz",
- "lines_fp": "32ea4ddfc1f72448",
- "lines_epoch": 1793460610
+ "lines_fp": "7447b7308013605a",
+ "lines_epoch": 1793498028
 }

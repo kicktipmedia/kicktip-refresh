@@ -10,7 +10,7 @@ html.hdjs{--kt-bar-h:var(--hh)}
 .hdjs main[id],.hdjs main [id],.hdjs footer [id],.hdjs .src [id]{scroll-margin-top:calc(var(--hh) + var(--kh-safe) + 12px)}   /* anchors/skip-link/focus scrolling land below the pinned bar + 12px air. Deliberately NOT html{scroll-padding-top}: scroll-padding makes the browser scroll the page when a control inside the sticky bar itself gets focus. */
 }
 /* base (no JS / any width): the extra controls stay hidden so the old header is untouched */
-.hd .khb,.hd .khn,.hd .khs{display:none}
+.hd .khb,.hd .khs{display:none}
 .hd .kht,.hd .khp{display:contents}   /* wrappers are layout-neutral, so with JS off the nav still sits in the old flex row */
 .hdjs .hd{position:sticky;top:var(--kh-safe);z-index:7;background:#262B31;color:#fff;border-bottom:1px solid rgba(255,255,255,.16);transition:box-shadow .18s ease-out}   /* 7 < Ask pill 8 < Ask scrim 9 < Ask panel 10 < skip link 20 */
 .hdjs .hd.kh-stuck{box-shadow:0 2px 10px rgba(0,0,0,.35)}
@@ -53,8 +53,6 @@ html.kh-lock{overflow:hidden}   /* html only: also hiding body would turn body i
 .hdjs .hd:not(.hd--q) .nav a[aria-current=page]{text-decoration:none}
 .hdjs .hd:not(.hd--q) .nav a[aria-current=page] span{color:var(--l);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-skip-ink:none}
 .hdjs .hd:not(.hd--q) .nav a[aria-current=page]::after{content:"Current page";position:absolute;right:0;top:50%;transform:translateY(-50%);font:600 13px 'Source Sans 3',Arial,sans-serif;color:#D5DBE0}
-.hdjs .hd:not(.hd--q) .khn{display:block;margin:6px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);color:#D5DBE0;font-size:14px;line-height:1.4}
-.hdjs .hd .khn b{color:#fff}.hdjs .hd .khn a{display:flex;width:max-content;align-items:center;min-height:44px;color:#fff;text-decoration:underline}
 .hdjs .hd--open:not(.hd--q) .khs{display:block;position:absolute;top:100%;left:0;width:100%;height:100vh;z-index:1;background:rgba(18,21,25,.62)}
 @media(prefers-reduced-motion:no-preference){.hdjs .hd .khp{animation:khin .16s ease-out}@keyframes khin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}}
 }

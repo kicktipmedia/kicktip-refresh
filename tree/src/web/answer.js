@@ -15,7 +15,7 @@
   }
   function header(N, asOf, model) { return "Simulation analysis (" + (model || "KickTip estimates") + "), not betting advice. Based on " + commas(N) + " simulated seasons as of " + asOfLabel(asOf) + "."; }
   /* c1: the model line and the standing footers (same wording in every answer) */
-  function modelLine(bundle) { return "Model: " + (bundle.model_label || "KickTip blend") + (bundle.model_default === false ? " (alternate model)" : " (default model)"); }
+  function modelLine(bundle) { return "Rating system: " + (bundle.model_label || "KickTip blend") + (bundle.model_default === false ? " (alternate rating system)" : " (default rating system)"); }
   var NOISE = "Before numbers come from a fresh run in your browser and can differ from the page by a point or two (random sampling).";
   var TIEBREAK = "Conference tiebreakers follow the published rules; steps that depend on other public rating systems use KickTip's rating as a stand-in, so this does not claim official tiebreaker results.";
   var INPROG = "A game in this scenario is in progress. Our data updates every few hours, so its live score is not used.";

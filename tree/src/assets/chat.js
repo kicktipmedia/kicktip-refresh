@@ -123,7 +123,7 @@
   }
   function viewEmpty() {
     var ex = staticExamples();
-    show('empty', '<h3>Ask a what-if</h3><p class="note">Tap a question to fill the box, or type your own, then tap Run. Each run re-simulates the season in your browser. It uses the model selected on this page (the KickTip blend unless you picked another).</p>' +
+    show('empty', '<h3>Ask a what-if</h3><p class="note">Tap a question to fill the box, or type your own, then tap Run. Each run re-simulates the season in your browser. It uses the rating system selected on this page (the KickTip blend unless you picked another).</p>' +
       ex.map(function (e) { return '<button type="button" class="q" data-q="' + esc(e[1]) + '"><small>' + esc(e[0]) + '</small>' + esc(e[1]) + '</button>'; }).join('') + LINKS);
   }
   function viewRefusal(t) {

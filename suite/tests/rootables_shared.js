@@ -26,6 +26,7 @@ tp.forEach((s,i)=>{const u=fs.readFileSync(`${T}/team/${s}/index.html`,'utf8'),b
  ok(!/data-run/.test(b),'no Run tap '+s);ok(!/not a betting site/.test(b.split('<!--bk:13-->')[1].split('<!--/bk-->')[0]),'no extra betting line in Rootables '+s);
  ok(!/[\u00A0]/.test(b.split('<!--bk:13-->')[1].split('<!--/bk-->')[0]),'no literal nbsp '+s);
  const ent=(b.split('<!--bk:13-->')[1].split('<!--/bk-->')[0].match(/&[a-z#0-9]+;/gi)||[]).every(e=>/^&(amp|lt|gt|quot|nbsp|ndash|rsquo|#39|#\d+);$/i.test(e));ok(ent,'entities valid '+s);});
+tp.forEach((s,i)=>{const d=JSON.parse(fs.readFileSync(`${S}/data/rootables/${s}.json`));const b=snap[i].split('<!--bk:13-->')[1].split('<!--/bk-->')[0];const nw=d.rows.filter(r=>r.why).length;ok((b.match(/<p class="rv-why"><strong>Why:<\/strong> /g)||[]).length===nw,'one why line per game with a why '+s);ok(!/\u2011/.test(b),'no literal U+2011 '+s);});
 r=run([TOOLS+'/bake_static.js',T]);
 ok(tp.every((s,i)=>fs.readFileSync(`${T}/team/${s}/index.html`,'utf8')===snap[i]),'unbake->bake round-trip byte-exact');
 fs.rmSync(T,{recursive:true,force:true});

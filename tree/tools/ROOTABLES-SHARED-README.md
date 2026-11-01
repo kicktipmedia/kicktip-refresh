@@ -1,8 +1,9 @@
-# rootables-shared (Nov 1 direction) — not merged, not deployed
-Team page: live card layout unchanged. Only changes: (1) logos centered in a fixed 52px square (grid, object-fit:contain; measured 0px offset),
-(2) auto-load (no Run tap) with the visible terms line in its place. bake_static DEF[13] bakes the LIVE ready-state markup
-(RB.readyHtml) from data/rootables/<slug>.json; the client sees the baked rows and only prunes started games (no redraw).
-Share cards (og/card3.py): live layout, outline OFF; logos centered in fixed square boxes; og_cards.py reports logo_offset_max_px (0 on both sizes).
-gen_rootables: ktwhy optional (why='' when absent). build_tile_data: unchanged vs main (home is HELD for rev f; home differs only by polish.css ?v).
-Tests: suite/tests/rootables_shared.js (gen --check, schema, bake verify/check/idempotent/unbake round-trip, one terms line, no Run tap).
-Variant A archived: /workspace/hub/kicktip-rootables-fix/wip/site-rootables-shared-wip.tar.gz.
+# rootables (rev f, Nov 1) — branch rootables-shared, not merged
+Front-end files shipped in the rev f build are snapshotted in kit/rootables-f/ (rootables.js, pk.js, rvhome.js, ktwhy.js, polish.css).
+Team page = live card layout + exactly three intended diffs: (1) logos centered in a fixed 52px square (0px offset),
+(2) auto-load (no Run tap) with the visible terms line in its place, (3) one <p class="rv-why"><strong>Why:</strong> … under every card's points block
+(Creative spec: 8px/8px, 1px #DDE3E6 top rule, 14px/1.4 #121519; 'championship-game' wrapped nowrap; omitted when a game has no why).
+bake_static DEF[13] bakes the live ready-state markup (RB.readyHtml) from data/rootables/<slug>.json; client prunes started games only.
+Home = rev f rows via rvhome.js row(); pk.js reads the same shared file. Share cards = rev e card3 (ROOT FOR + outline ring as in the rev e mock,
+3 games on the wide card) + whole-px logo snap; og_cards reports logo_offset_max_px (0 on both sizes).
+gen_rootables: ktwhy optional (why='' when absent). Tests: suite/tests/rootables_shared.js (in tools/suite_subset.sh).

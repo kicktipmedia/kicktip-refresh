@@ -20,7 +20,7 @@ def card_data(t, stamp):
     gs = []
     for g in t['games']:
         a, h = dict(g['away']), dict(g['home'])
-        gs.append(dict(ko=g['ko'], when=g['when'], day=g['day'], time=g['time'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], gain=g['gain'], color=g['color']))
+        gs.append(dict(ko=g['ko'], when=g['when'], day=g['day'], time=g['time'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], why=g.get('why',''), gain=g['gain'], color=g['color']))
     return dict(team=t['team'], asof=stamp, games=gs)
 def page_html(d, sz, site):
     h, n, x = card3.html(d, sz)
@@ -37,16 +37,21 @@ def page_html(d, sz, site):
 # Step 4 (r3 dates): if a row still overflows, every row's time drops ' MT' ('1:45 PM') and the card says 'Kickoff times MT' once. The date is never dropped.
 # Step 5 (r3 dates): a row that still overflows wraps its kickoff line at the ' · ' only (every other space there is &nbsp;): 'Sat Oct 31 ·' / '1:30 PM'.
 # Step 1: that tag drops to 18px. Step 2: the opponent name may wrap to 2 lines. Step 3: tag 16px, kickoff 18px. Anything still overflowing fails the run (no clipped text ships).
-FIT = """()=>{const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
+FIT = """()=>{for(const w of document.querySelectorAll('.wy .wt')){const o=x=>x.scrollHeight>x.clientHeight+1||x.scrollWidth>x.clientWidth+0.5;   /* rootables-shared: a long why first steps its font down 1px (to 85%), then drops its closing '(… chance A% to B%)' detail; never an ellipsis */
+ if(o(w)){const f0=parseFloat(getComputedStyle(w).fontSize);let f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}
+  if(o(w)){const x=w.querySelector('.wx');if(x){x.textContent=x.textContent.replace(/\\s*\\([^()]*\\)\\.?$/,'.');w.style.fontSize='';f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}
+   if(o(w)){const i=x.textContent.indexOf(', so ');if(i>0){const s=x.textContent.slice(i+5);x.textContent=s.charAt(0).toUpperCase()+s.slice(1);w.style.fontSize='';f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}}}}}}
+ if(w.scrollHeight>w.clientHeight+1||w.scrollWidth>w.clientWidth+0.5)w.classList.add('nmbad');}   /* rev b: the short-form why must fit one line; never an ellipsis. Overflow = fail (keeps previous card) */
+const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
  const gap=pn=>{const nm=pn.querySelector('.nm'),r=document.createRange();r.selectNodeContents(nm);return pn.getBoundingClientRect().right-Math.max(...[...r.getClientRects()].map(x=>x.right))};
  for(const pn of document.querySelectorAll('.pn')){const nm=pn.querySelector('.nm'),f0=parseFloat(getComputedStyle(nm).fontSize),fl=Math.round(f0*0.8);let f=f0;const bad=()=>ov(pn)||gap(pn)<12;
   while(bad()&&f>fl){f-=1;nm.style.fontSize=f+'px';}
   if(bad()){nm.textContent=nm.textContent.replace(/\u00a0/g,' ');Object.assign(nm.style,{whiteSpace:'normal',wordBreak:'normal',overflowWrap:'normal',hyphens:'none',lineHeight:'1.05'});const w=nm.parentElement;Object.assign(w.style,{minWidth:'0',flex:'1 1 auto',maxWidth:(pn.getBoundingClientRect().right-w.getBoundingClientRect().left-12)+'px'});}
   if(bad())pn.classList.add('nmbad');}
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),on=r.querySelector('.on'),tg=r.querySelector('.tg');const md=r.querySelector('.mid'),bad=()=>ov(op)||ov(md);if(!op||!bad())continue;
-  tg.style.fontSize='18px';tg.style.padding='6px 10px';if(!bad())continue;
+
   const b=on.querySelector('b');if(b)b.textContent=b.textContent.replace(/\u00a0/g,' ');on.style.whiteSpace='normal';on.style.lineHeight='1';if(!bad())continue;
-  tg.style.fontSize='16px';tg.style.padding='5px 8px';const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}
+  const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}
  if([...document.querySelectorAll('.r')].some(r=>ov(r.querySelector('.op'))||ov(r.querySelector('.mid'))))document.body.classList.add('nomt');
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),md=r.querySelector('.mid');if(!ov(op)&&!ov(md))continue;const kt=r.querySelector('.kt');kt.style.whiteSpace='normal';kt.style.lineHeight='1.1';kt.style.marginTop='2px';}}"""
 def main():

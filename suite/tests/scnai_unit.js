@@ -12,7 +12,8 @@ const GOOD = "In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 pla
 const why = (p, f) => { const v = V(p, f || F); return v.ok ? "OK" : v.why; };
 // ---- accepts
 ck(V(GOOD, F).ok === true && V(GOOD, F).prose === GOOD, "a good write-up passes and comes back unchanged");
-ck(V("In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show BYU's playoff chance (model) moves from 12.3% (model) to 45.6% (model), and the result depends on games the scenario does not set.", F).ok, "percentages from the card's own sim pair pass");
+ck(V("In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show BYU's playoff chance moves from 12.3% to 45.6%, and the result depends on games the scenario does not set.", F).ok, "plain percentages from the card's own sim pair pass (askmodel: no '(model)' tag)");
+{ const L = V("In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show BYU's playoff chance (model) moves from 12.3% (model) to 45.6% (model), and the result depends on games the scenario does not set.", F); ck(L.ok && !/model/.test(L.prose) && /from 12\.3% to 45\.6%,/.test(L.prose), "askmodel: an older reply's '(model)' tags pass and are dropped from the shown prose", L); }
 ck(V("On our reading of the rules, BYU finishes 8-1 in the Big 12. Utah can also reach 8-1. All of this depends on games the scenario does not set. The card counts ways, not chances.", F).ok, "'chances' and the three hedge forms pass");
 ck(V("In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. Their odds of a tie are not given in KickTip's numbers. The result depends on games the scenario does not set.", F).ok, "the word 'odds' is fine");
 ck(V("In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show the 12-team playoff field figure only for BYU. That depends on games the scenario does not set.", F).ok, "'12-team playoff field' passes");
@@ -20,7 +21,7 @@ ck(V("In this scenario, BYU and Texas Tech finish 8-1 in Big 12 play. The Big 12
 // ---- rejects: numbers
 for (const [p, lab] of [["In this scenario, BYU and Texas Tech both finish 9-0 in Big 12 play. KickTip's numbers show Utah can still reach 8-1. That depends on games the scenario does not set.", "hallucinated record 9-0"],
   ["In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show Utah has 40 ways to get there. That depends on games the scenario does not set.", "hallucinated count 40"],
-  ["In this scenario, BYU and Texas Tech both finish 8-1. KickTip's numbers show BYU's playoff chance (model) moves from 12.3% (model) to 60% (model). That depends on games the scenario does not set.", "a percent that is not on the card"],
+  ["In this scenario, BYU and Texas Tech both finish 8-1. KickTip's numbers show BYU's playoff chance moves from 12.3% to 60%. That depends on games the scenario does not set.", "a percent that is not on the card"],
   ["In this scenario, BYU and Texas Tech both finish 8-1. Step 9 is the coin toss, per KickTip's numbers. That depends on games the scenario does not set.", "a tiebreaker step number that is not in the facts"],
   ["In this scenario, BYU and Texas Tech both finish 8-1. KickTip's numbers show fourteen teams can reach 8-1. That depends on games the scenario does not set.", "a number word with a unit (fourteen teams)"],
   ["In this scenario, BYU and Texas Tech both finish 8-1. KickTip's numbers show the ninth place is open. That depends on games the scenario does not set.", "an ordinal not in the facts (ninth place)"],
@@ -71,4 +72,12 @@ ck(why(GOOD.replace("Utah", "Utah\u2019s teammates")) !== "not_plain", "a curly 
 ck(why(GOOD.replace("BYU and", "BYU and the r\u00e9sum\u00e9 of")) === "not_plain" && why(GOOD.replace("Utah", "Caf\u00e9")) === "not_plain", "an accented letter is rejected as not plain, never folded and shown");
 ck(why(GOOD.replace(", and KickTip", " \u2014 and KickTip")) === "not_plain" && why(GOOD + " \ud83d\ude00") === "not_plain", "an em dash or an emoji is rejected as not plain");
 ck(V("On our reading of the rules, BYU and Texas Tech are 8-1 in this scenario. The result depends on games the scenario does not set.", F).ok === true, "the approved hedge 'on our reading of the rules' is not mistaken for injection text");
+// ---- askmodel rev2 (QA B1): every '(model...)' form is stripped, any case/spacing/suffix; '45.6 %' still rejected
+{ const PB = (mid) => "In this scenario, BYU and Texas Tech both finish 8-1 in Big 12 play. KickTip's numbers show BYU's playoff chance moves from 12.3% to " + mid + ", and the result depends on games the scenario does not set.";
+  for (const [tag, lab] of [["45.6% (Model)", "'(Model)'"], ["45.6% (MODEL)", "'(MODEL)'"], ["45.6% ( model )", "'( model )'"], ["45.6% (model est.)", "'(model est.)'"], ["45.6% (model) (model)", "doubled '(model) (model)'"], ["45.6% (Model)(MODEL)", "doubled mixed-case glued"], ["45.6%(model)", "glued '45.6%(model)'"]]) {
+    const v = V(PB(tag), F); ck(v.ok && v.prose === PB("45.6%"), "rev2 B1: " + lab + " is stripped to plain '45.6%'", v); }
+  ck(why(PB("45.6 %")) === "percent_without_model", "rev2 B1: '45.6 %' still rejected", why(PB("45.6 %")));
+  ck(why(PB("45.6% (model")) === "model_label", "rev2 B1: an unclosed '(model' is rejected (model_label)", why(PB("45.6% (model")));
+  ck(V(PB("45.6%"), F).ok && !/model/i.test(V(PB("45.6% (Model est.)"), F).prose), "rev2 B1: no 'model' tag text ever reaches the shown prose");
+}
 console.log(n + " checks, " + bad + " failed"); process.exit(bad ? 1 : 0);

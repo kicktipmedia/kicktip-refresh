@@ -22,7 +22,7 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   '',   /* 10: audit2 polish2 next-game What If card (baked; unbake removes it) */
   '<li><span class="lk">Loading</span></li>',   /* 11: audit2 conference 'Who controls their destiny' */
   'What if BYU loses?'];   /* 12: Lab chip sample text (hardcoded in the Lab rollout); team pages bake their own team */
-const NOJS_TXT = 'Turn on JavaScript to switch models and sort.';   /* audit2: the numbers are in the HTML now */
+const NOJS_TXT = 'Turn on JavaScript to switch rating systems and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
 const mk = (n, s) => '<!--bk:' + n + '-->' + String(s).replace(/\u00A0/g, '&nbsp;') + '<!--/bk-->';   /* HTML entities only: no literal NBSP in baked HTML (shared RB.* strings use \u00A0 for the DOM) */
 function unbake(t) { return t.replace(MK, (m, n) => { if (DEF[+n] === undefined) die('unknown marker ' + n); return DEF[+n]; }); }
@@ -114,7 +114,7 @@ function lnBlockS(id, i) {   /* closed (mobile default); the summary in the butt
 function gameCell(at, kind, tag) {
   const g = PG[at.gk], i = gInfo(at, g), h = at.h, a = at.a;
   if (kind === 'wp') { if (g && g[0] !== null && g[0] !== undefined) { const hp = g[0] >= 0.5; return tag === 'td' ? esc(hp ? h : a) + ' ' + pct(hp ? g[0] : 1 - g[0]) : '<span class="gwl">KickTip win chance</span><span class="gwr"><span>' + esc(a) + ' <b>' + pct(1 - g[0]) + '</b></span><span>' + esc(h) + ' <b>' + pct(g[0]) + '</b></span></span><span class="gpb" aria-hidden="true"><i data-pw="' + Math.round(g[0] * 1000) / 10 + '"></i></span>'; }
-    return g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">Not modeled (FCS opponent)</span>'; }
+    return g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">No estimate (FCS opponent)</span>'; }
   if (kind === 'kl') return i.ks !== null ? esc(margS(i.ks, h, a)) : '<span class="lk">n/a</span>';
   if (kind === 'mk') return mkCellS(i, true)[0];
   if (kind === 'ln') return g === undefined && !i.L ? '' : lnBlockS(at.id, i);

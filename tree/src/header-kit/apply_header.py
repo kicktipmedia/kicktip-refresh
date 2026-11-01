@@ -31,7 +31,7 @@ def build_header(old, banner, variant, has_icon):
     links = re.sub(r'(<a [^>]*>)([^<]+)(</a>)', lambda m: f'{m.group(1)}<span>{m.group(2)}</span>{m.group(3)}', nav_m.group(1))   # label in a span: the current-page underline sits under the word only
     nav = f'<nav class="nav" aria-label="Main">{links}</nav>'
     note = ""
-    if banner and not q: note = f'<p class="khn"><b>{banner[0]}</b>{banner[1]} <a href="/disclaimer/">Full disclaimer</a></p>'
+    # terms pass (SPEC a0a084ab 2c): no header-drawer disclaimer (p.khn); each page keeps its own single banner
     btn = ('<button type="button" class="khb" id="kh-btn" aria-expanded="false" aria-controls="kh-panel">'
            '<svg class="b" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>'
            '<svg class="x" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>'

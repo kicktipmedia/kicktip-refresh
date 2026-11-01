@@ -73,21 +73,21 @@
     var by = {}; models.forEach(function (m) { by[m.id] = m; });
     function btn(m) { return '<button type="button" class="mb" data-m="' + esc(m.id) + '" aria-pressed="false">' + esc(m.btn || m.name) + '</button>'; }
     var first = models.filter(function (m) { return m.default; }), more = models.filter(function (m) { return !m.default; });
-    var el = D.createElement('section'); el.className = 'mdl'; el.setAttribute('data-mdl', ''); el.setAttribute('aria-label', 'Choose a model');
-    el.innerHTML = '<div class="mdh"><b>Model</b><span class="mdb" data-mdb></span></div>' +
-      '<div class="mdt" role="group" aria-label="Model">' + first.map(btn).join('') + (more.length ? '<button type="button" class="mb mbm" data-more aria-expanded="false" aria-controls="mdmore">More models<i class="chv" aria-hidden="true"></i></button>' : '') + '</div>' +
-      (more.length ? '<div class="mdt mdm" id="mdmore" role="group" aria-label="More models" hidden>' + more.map(btn).join('') + '</div>' : '') +
+    var el = D.createElement('section'); el.className = 'mdl'; el.setAttribute('data-mdl', ''); el.setAttribute('aria-label', 'Choose a rating system');
+    el.innerHTML = '<div class="mdh"><b>Rating system</b><span class="mdb" data-mdb></span></div>' +
+      '<div class="mdt" role="group" aria-label="Rating system">' + first.map(btn).join('') + (more.length ? '<button type="button" class="mb mbm" data-more aria-expanded="false" aria-controls="mdmore">More rating systems<i class="chv" aria-hidden="true"></i></button>' : '') + '</div>' +
+      (more.length ? '<div class="mdt mdm" id="mdmore" role="group" aria-label="More rating systems" hidden>' + more.map(btn).join('') + '</div>' : '') +
       '<p class="mdd"><span data-mdd aria-live="polite"></span> <button type="button" class="mdw" data-why aria-expanded="false" aria-controls="mdfull">What\u2019s this?</button></p>' +
-      '<div class="mdf" id="mdfull" hidden><p data-mdfull></p><p class="mdn">These are estimates from a statistical model, not a market line and not a recommendation. <a href="/method/#models">How the models differ</a> &middot; <a href="/method/#accuracy">How accurate are they?</a>' +
-      (main.getAttribute('data-page') === 'playoff' ? ' The order of the bracket is the same for every model; the chances beside each team follow the model you pick.' : '') + '</p>' +
-      '<p class="mdr"><button type="button" class="mdu" data-reset hidden>Use the default model</button></p></div>';
+      '<div class="mdf" id="mdfull" hidden><p data-mdfull></p><p class="mdn">These are statistical estimates, not a market line and not a recommendation. <a href="/method/#models">How the rating systems differ</a> &middot; <a href="/method/#accuracy">How accurate are they?</a>' +
+      (main.getAttribute('data-page') === 'playoff' ? ' The order of the bracket is the same under every rating system; the chances beside each team follow the rating system you choose.' : '') + '</p>' +
+      '<p class="mdr"><button type="button" class="mdu" data-reset hidden>Use the default rating system</button></p></div>';
     var anchor = D.querySelector('[data-loadbar]'), host = anchor ? anchor.parentNode : main.querySelector('.w') || main;
     host.insertBefore(el, anchor ? anchor.nextSibling : host.firstChild); card = el;
     var moreBtn = el.querySelector('[data-more]'), moreRow = el.querySelector('.mdm'), why = el.querySelector('[data-why]'), full = el.querySelector('.mdf'), reset = el.querySelector('[data-reset]');
     function show(id, msg) {
       var m = by[id]; [].forEach.call(el.querySelectorAll('[data-m]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-m') === id ? 'true' : 'false'); });
       if (moreBtn && !m.default && moreRow.hidden) { moreRow.hidden = false; moreBtn.setAttribute('aria-expanded', 'true'); }   /* a pick that lives under More opens that row so the selected (dark, checked) button is visible */
-      el.querySelector('[data-mdb]').textContent = m.default ? 'Default model' : 'Alternate model'; el.setAttribute('data-model', id);
+      el.querySelector('[data-mdb]').textContent = m.default ? 'Default rating system' : 'Alternate rating system'; el.setAttribute('data-model', id);
       el.querySelector('[data-mdd]').innerHTML = esc(m.short || m.blurb) + (msg ? ' <span class="mdx">' + esc(msg) + '</span>' : '');
       el.querySelector('[data-mdfull]').innerHTML = '<b>' + esc(m.name) + '.</b> ' + esc(m.blurb); reset.hidden = !!m.default;
     }
@@ -102,7 +102,7 @@
       if (cache[id]) { apply(id); return; }
       el.setAttribute('aria-busy', 'true');
       fetchSet(id).then(function (d) { cache[id] = d; if (my === tok) apply(id); })
-        .catch(function () { if (my !== tok) return; el.removeAttribute('aria-busy'); show(cur, 'That model could not load, so the page still shows the one above.'); });
+        .catch(function () { if (my !== tok) return; el.removeAttribute('aria-busy'); show(cur, 'That rating system could not load, so the page still shows the one above.'); });
     }
     [].forEach.call(el.querySelectorAll('[data-m]'), function (b) { b.addEventListener('click', function () { pick(b.getAttribute('data-m')); }); });
     if (moreBtn) moreBtn.addEventListener('click', function () { var o = moreRow.hidden; moreRow.hidden = !o; moreBtn.setAttribute('aria-expanded', String(o)); });
@@ -147,7 +147,7 @@
       var k = c.getAttribute('data-c'), hh = '';
       if (k === 'wp') {
         if (g && g[0] !== null && g[0] !== undefined) { var hp = g[0] >= 0.5; hh = c.tagName === 'TD' ? esc(hp ? h : a) + ' ' + pct(hp ? g[0] : 1 - g[0]) : '<span class="gwl">KickTip win chance</span><span class="gwr"><span>' + esc(a) + ' ' + pct(1 - g[0]) + '</span><span>' + esc(h) + ' ' + pct(g[0]) + '</span></span><span class="gpb" aria-hidden="true"><i data-pw="' + Math.round(g[0] * 1000) / 10 + '"></i></span>'; }
-        else hh = g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">Not modeled (FCS opponent)</span>';
+        else hh = g === undefined ? '<span class="lk">n/a</span>' : '<span class="lk">No estimate (FCS opponent)</span>';
       } else if (k === 'kl') hh = i.ks !== null ? lval(i.ks, h, a) : '<span class="lk">n/a</span>';
       else if (k === 'mk') hh = mkCell(i, true)[0];
       else if (k === 'gap') hh = i.gap !== null ? i.gap + ' points' : '<span class="lk" aria-label="No gap">\u2013</span>';

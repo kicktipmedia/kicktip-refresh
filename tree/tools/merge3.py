@@ -113,7 +113,8 @@ for f in changed:
     lp=L+'/'+f
     if not os.path.exists(lp): rep['missing_live'].append(f); continue
     l,a,b=rd(lp),rd(S0+'/'+f),rd(S1+'/'+f)
-    if a is None or b is None: rep['conflict'].append(f+' (only in one of S0/S1)'); continue
+    if a is None and b is not None: open(OUT+'/'+f,'wb').write(b); rep['taken'].append(f+' (new in S1)'); continue   # one-sided: add, not a conflict
+    if b is None: rep['skipped'].append(f+' (only in S0: live kept)'); continue
     l=livefix(f,l,a)
     if l==a: open(OUT+'/'+f,'wb').write(b); rep['taken'].append(f); continue
     if f.endswith('.json'):

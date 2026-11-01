@@ -231,7 +231,7 @@ def tbl(head, rows, cls="", minw="", kind=""):
     return f'<p class="hint">Swipe the table sideways &rarr;</p><div class="tw{" tk-" + kind if kind else ""}"><table{cls}><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
 PENDING = '<span class="lk">Loading</span>'   # placeholder in the static HTML until kt.js fills the numbers (static pages carry no model number)
 LINE_NOTE = ('<p class="note"><b>How to read these numbers.</b> The ESPN spread shows the team ESPN expects to win and by how many points, with a minus sign: '
-             'Utah −3.0 means ESPN has Utah winning by 3.0. KickTip&#39;s expected margin is our own number from the model: the team KickTip expects to win and by how many points, '
+             'Utah −3.0 means ESPN has Utah winning by 3.0. KickTip&#39;s expected margin is our own estimate: the team KickTip expects to win and by how many points, '
              'for example “Utah by 3.5” (rounded to 0.5 on the page). The ESPN spread is shown with the time it was read (MT) and only when ESPN has posted one. Neither number is a recommendation. Information only.</p>')   # merged revb (Creative): no 'line'/'favored'/'pick'; 'spread' only as 'the ESPN spread'
 def game_cards(games, focus=None, slate=False):
     """Game list as cards (Creative D1-D4). Static HTML carries only facts (date, teams, status); every number (win chance, KickTip line, market line, gap) is drawn by assets/kt.js after the data loads
@@ -402,7 +402,7 @@ def home_page():
     body = (hero_html("Every conference race. One playoff picture.", "Standings, tiebreakers and paths to the conference championship game for all 11 FBS groups, plus the 12-team field, refreshed daily.", "KickTip Media") +
             '<section class="sec mtsec" id="my-teams" aria-label="My teams" hidden><div class="w" id="mt-root"></div></section>' +
             f'<section class="sec"><div class="w">{banner(True)}<div class="card"><h2>Top chances to make the 12</h2><p class="ccgdef">CCG = conference championship game</p>{CRED}'
-            + tbl('<th class="n">#</th><th>Team</th><th>Conference</th><th class="n">Make the 12<small>model</small></th><th class="n">First-round bye<small>model</small></th><th class="n">Reach CCG<small>model</small></th><th class="n">Win conference<small>model</small></th>', "", ' id="top12"', kind="n")
+            + tbl('<th class="n">#</th><th>Team</th><th>Conference</th><th class="n">Make the 12<small>est.</small></th><th class="n">First-round bye<small>est.</small></th><th class="n">Reach CCG<small>est.</small></th><th class="n">Win conference<small>est.</small></th>', "", ' id="top12"', kind="n")
             + '<p class="note">Chances come from ' + SEASONS + ' simulated seasons. Teams in a conference with no conference championship game show n/a for those columns.</p><p class="cta"><a href="/playoff/">See the 12-team field and bracket</a> &middot; <a href="/games/">See this week&#8217;s games</a></p><p class="cta"><a href="/top25/">See the KickTip Top 25</a></p></div></div></section>'
             f'<section class="sec" style="padding-top:0" id="conferences"><div class="w"><h2>Conference races</h2><div class="grid">{cards}</div></div></section>'
             + states +
@@ -417,11 +417,11 @@ def conf_page(ck, cname, cs):
     else: lead = f"{n} teams with no conference championship game. Their playoff chances come from {SEASONS} simulated seasons."
     divcol = fmt == "div"
     if fmt == "none":
-        head = '<th class="n">#</th><th>Team</th><th class="n">Overall</th><th class="n">Make the 12<small>model</small></th>'
+        head = '<th class="n">#</th><th>Team</th><th class="n">Overall</th><th class="n">Make the 12<small>est.</small></th>'
         rows = "".join(f'<tr><td class="n">{i+1}</td><td>{tcell(r["team"], i >= 8)}</td><td class="n">{r["overall"]}</td><td class="n" data-f="p" data-t="{SLUG[r["team"]]}">{PENDING}</td></tr>' for i, r in enumerate(S))
         note = "Independents have no conference standings. Order here is by overall record."
     else:
-        head = ('<th class="n">#</th><th>Team</th>' + ("<th>Division</th>" if divcol else "") + '<th class="n">Conf</th><th class="n">Overall</th><th class="n">Reach CCG<small>model</small></th><th class="n">Win conference<small>model</small></th><th class="n">Make the 12<small>model</small></th>')
+        head = ('<th class="n">#</th><th>Team</th>' + ("<th>Division</th>" if divcol else "") + '<th class="n">Conf</th><th class="n">Overall</th><th class="n">Reach CCG<small>est.</small></th><th class="n">Win conference<small>est.</small></th><th class="n">Make the 12<small>est.</small></th>')
         rows = "".join(f'<tr><td class="n">{i+1}</td><td>{tcell(r["team"], i >= 8)}</td>' + (f'<td>{BELT_DIV.get(r["team"], "")}</td>' if divcol else "") +
                        f'<td class="n">{r["conf_w"]}-{r["conf_l"]}</td><td class="n">{r["overall"]}</td>' + "".join(f'<td class="n" data-f="{f}" data-t="{SLUG[r["team"]]}">{PENDING}</td>' for f in "cwp") + '</tr>' for i, r in enumerate(S))
         note = "Listed by conference win percentage, then conference wins, then overall record, then name. Official tiebreakers are applied inside the simulation, not in this table."
@@ -460,11 +460,11 @@ def team_page(full, v):
     tiles = ""
     labels = [("c", "Reach CCG"), ("w", "Win the conference"), ("p", "Make the 12"), ("b", "First-round bye")]
     if fmt == "none": labels = labels[2:]
-    tiles = '<div class="tiles">' + "".join(f'<div class="tile"><b data-tile="{k}">&ndash;</b><span>{l} (model)</span></div>' for k, l in labels) + '</div>'
+    tiles = '<div class="tiles">' + "".join(f'<div class="tile"><b data-tile="{k}">&ndash;</b><span>{l}</span></div>' for k, l in labels) + '</div>'
     pathcard = ""
     if fmt != "none":
         pathcard = ('<div class="card"><h2>Paths to the conference championship game</h2><p class="ccgdef">CCG = conference championship game</p><p>Chance to reach the conference championship game by number of conference wins, from the same simulated seasons. If the team wins out, its chance is <b data-wo>&ndash;</b>.</p>'
-                    + tbl('<th class="n">Final conference wins</th><th class="n">Share of seasons<small>model</small></th><th class="n">Reach CCG<small>model</small></th>', f'<tr><td colspan="3">{PENDING}</td></tr>', ' id="paths" style="min-width:0"').replace(' style="min-width:0"', ' class="fld"').replace('<div class="tw">', '<div class="tw tk-p">') + '</div>')
+                    + tbl('<th class="n">Final conference wins</th><th class="n">Share of seasons<small>est.</small></th><th class="n">Reach CCG<small>est.</small></th>', f'<tr><td colspan="3">{PENDING}</td></tr>', ' id="paths" style="min-width:0"').replace(' style="min-width:0"', ' class="fld"').replace('<div class="tw">', '<div class="tw tk-p">') + '</div>')
     others = "".join(f'<li><a href="/team/{TEAMS[r["team"]]["slug"]}/">{E(SHORT[r["team"]])}</a></li>' for r in S if r["team"] != full)
     games_card = (f'<div class="card"><h2>Remaining games</h2>{CRED}' + game_cards(games, full) + LINE_NOTE +
                   '<p class="note">Games against FCS opponents are counted in the simulation but have no line.</p></div>') if games else '<div class="card"><h2>Remaining games</h2><p>No regular-season games remain in our schedule data.</p></div>'
@@ -500,26 +500,26 @@ def bracket_html():
             '<div class="bkw" tabindex="0" role="region" aria-label="Playoff bracket, scrolls sideways on small screens"><div class="bk" data-bk="full">'
             + rd("r1", "First round", r1) + rd("r2", "Quarterfinals", qf) + rd("r3", "Semifinals", sf) + rd("r4", "Championship", fin) + '</div></div>'
             '<p class="note">Seeds are 1 to 12 by rank. The higher seed hosts in the first round and byes go to seeds 1 to 4. Quarterfinals: 1 plays the 8/9 winner, 2 plays the 7/10 winner, 3 plays the 6/11 winner, 4 plays the 5/12 winner. The bracket is not reseeded. The percentages are each team\'s chance to make the 12 over '
-            f'{SEASONS} simulated seasons (model), not the chance of winning a game. KickTip does not publish playoff-game probabilities. The full field is in the table below.</p>'
+            f'{SEASONS} simulated seasons, not the chance of winning a game. KickTip does not publish playoff-game probabilities. The full field is in the table below.</p>'
             '<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every model.</p>')
 def playoff_page():
     br = bracket_html()
     logic = ('<ul><li>The field has 12 teams. The champions of the ACC, Big Ten, Big 12 and SEC get automatic bids. The highest-ranked team from the American, Conference USA, MAC, Mountain West, Pac-12 and Sun Belt also gets one, whether or not it is a champion. Notre Dame gets one if it is ranked in the top 12. The remaining spots go to the next highest-ranked teams: seven in all when Notre Dame is not in the top 12, six when it is.</li>'
              '<li>Teams are seeded 1 to 12 by rank. Seeds 1 to 4 get a first-round bye. Seeds 5 to 8 host first-round games against seeds 12 to 9.</li>'
              '<li>The first-round winners meet seeds 4, 3, 2 and 1 in the quarterfinals, then the bracket runs to the national championship game.</li></ul>'
-             '<p class="note">The field below is "if the season ended today": current conference leaders stand in for champions and KickTip\'s rating rank stands in for the selection committee. It is a model view, not the committee\'s ranking. Automatic qualifiers ranked outside the top 12 are seeded after the at-large teams, and only the four highest seeds get byes. Sources: the College Football Playoff\'s Jan. 23, 2026 format announcement (12 teams, byes, home first-round games); for the automatic-bid breakdown, its <a href="https://collegefootballplayoff.com/news/2026/8/6/sc-aug-2627" rel="noopener">Aug. 6, 2026 announcement</a> and <a href="https://www.ncaa.com/news/football/article/2026-02-03/how-college-football-playoff-automatic-qualifiers-work-byes-seeds" rel="noopener">NCAA.com\'s explainer</a>.</p>')
+             '<p class="note">The field below is "if the season ended today": current conference leaders stand in for champions and KickTip\'s rating rank stands in for the selection committee. It is a KickTip estimate, not the committee\'s ranking. Automatic qualifiers ranked outside the top 12 are seeded after the at-large teams, and only the four highest seeds get byes. Sources: the College Football Playoff\'s Jan. 23, 2026 format announcement (12 teams, byes, home first-round games); for the automatic-bid breakdown, its <a href="https://collegefootballplayoff.com/news/2026/8/6/sc-aug-2627" rel="noopener">Aug. 6, 2026 announcement</a> and <a href="https://www.ncaa.com/news/football/article/2026-02-03/how-college-football-playoff-automatic-qualifiers-work-byes-seeds" rel="noopener">NCAA.com\'s explainer</a>.</p>')
     fh = '<th class="n">Seed</th><th>Team</th><th>Conference</th><th>Path</th>'
     body = (hero_html("Playoff picture", "If the season ended today: 12 teams, the top 4 seeds get byes, and seeds 5 to 8 host first-round games.", "12-team field", head=("phd", M.league(56), "NCAA Football")) +
             f'<section class="sec"><div class="w">{banner(True)}<div class="card"><h2>How the field is chosen</h2>{logic}<p class="cta"><a href="/top25/">See the KickTip Top 25</a></p></div>'
             f'<div class="card" id="bracket"><h2>Bracket if the season ended today</h2>{CRED}{br}</div>'
             f'<div class="card"><h2>The field</h2>{tbl(fh, "", " id=\"field\" class=\"fld\"", kind="n")}<p class="note bkcue">Bracket order uses the MSM team rank as a committee stand-in, under every model.</p></div>'
-            f'<div class="card"><h2>Chances to make the 12</h2><p class="ccgdef">CCG = conference championship game</p>{tbl(f"""<th class="n">#</th><th>Team</th><th>Conference</th><th class="n">Make the 12<small>model</small></th><th class="n">First-round bye<small>model</small></th><th class="n">Reach CCG<small>model</small></th><th class="n">Win conference<small>model</small></th>""", "", " id=\"chances\"", kind="n")}'
+            f'<div class="card"><h2>Chances to make the 12</h2><p class="ccgdef">CCG = conference championship game</p>{tbl(f"""<th class="n">#</th><th>Team</th><th>Conference</th><th class="n">Make the 12<small>est.</small></th><th class="n">First-round bye<small>est.</small></th><th class="n">Reach CCG<small>est.</small></th><th class="n">Win conference<small>est.</small></th>""", "", " id=\"chances\"", kind="n")}'
             f'<p class="note">Top 25 teams by chance to make the 12. Chances come from {SEASONS} simulated seasons (KickTip estimates).</p></div></div></section>')
     return page("Playoff picture", "/playoff/", body, active="Playoff Picture", dyn=True, need="pred-teams", ptype="playoff", ex=("BYU Cougars", "Utah Utes"), desc="The 12-team playoff field, bracket logic and each team's chance to make the 12.")
 
 def top25_page():
     th = ('<th class="n">KickTip rank</th><th>Team</th><th class="n">AP rank</th><th class="n">Coaches rank</th><th class="n">KickTip vs AP</th><th class="n">KickTip vs Coaches</th>'
-          '<th>Conference</th><th class="n">Record</th><th class="n">Make the 12<small>model</small></th>')
+          '<th>Conference</th><th class="n">Record</th><th class="n">Make the 12<small>est.</small></th>')
     lst = lambda tid, lid, cap: f'<div class="tw t25-tw"><table id="{tid}"><caption class="vh">{cap}</caption><thead><tr>{th}</tr></thead><tbody></tbody></table></div><ol class="t25-cards" id="{lid}"></ol>'
     hero = hero_html("KickTip Top 25", "The KickTip Top 25, compared with the AP and Coaches polls. A computer rating, not a poll.</p><p>KickTip ranks teams by a computer rating built from game results, with no voters, so it can differ from the polls.", "KickTip rating")
     body = (hero + f'<section class="sec t25"><div class="w">{banner(True)}<p class="t25-asof" data-t25asof></p>'

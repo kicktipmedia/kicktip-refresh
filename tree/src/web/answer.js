@@ -76,14 +76,14 @@
     rows.sort(function (x, y) { return y.swing - x.swing; });
     var sc = []; if (runs) ["wins_out", "loses_out"].forEach(function (k) { if (runs[k]) sc.push({ scenario: k === "wins_out" ? "Wins out" : "Loses out", value: runs[k][G[0]][team], text: pct(runs[k][G[0]][team]) }); });
     return { header: header(N, asOf, bundle.model_label), model_label: bundle.model_label || "KickTip blend", footers: footers(bundle, null), goal: goal, goal_label: G[1], team: team, team_name: tn(bundle, team), baseline: b, baseline_text: pct(b), games: rows, scenarios: sc,
-             notes: ["Games are listed by how much the result moves the chance of this outcome, largest swing first.", "Each number comes from rerunning the full model with that single game decided; other games play out as simulated."] };
+             notes: ["Games are listed by how much the result moves the chance of this outcome, largest swing first.", "Each number comes from rerunning the full simulation with that single game decided; other games play out as simulated."] };
   }
   function baselineAnswer(bundle, base, team, N, asOf) {
     return { header: header(N, asOf, bundle.model_label), model_label: bundle.model_label || "KickTip blend", footers: footers(bundle, null), team: team, team_name: tn(bundle, team), cells: METRICS.filter(function (m) { return applicable(bundle, team, m[0]); }).map(function (m) { return { key: m[0], label: m[1], value: base[m[0]][team], text: pct(base[m[0]][team]) }; }) };
   }
   var CLARIFY = {
-    ambiguous_team: "Which team do you mean?", not_modeled: "That school is not in the Division I FBS field this model covers. Pick an FBS team.", no_team: "I did not find a team name. Try something like: What if Utah beats BYU and Texas Tech loses to Arizona?",
-    unparsed: "I could not turn part of that into a game result. Try: Team A beats Team B, Team A loses to Team B, Team A wins out, or Team A wins 2 of 3.", unsupported: "I can run what-if scenarios for game results and conference, playoff or bye chances. National title chances are not part of this model.",
+    ambiguous_team: "Which team do you mean?", not_modeled: "That school is not in the Division I FBS field KickTip covers. Pick an FBS team.", no_team: "I did not find a team name. Try something like: What if Utah beats BYU and Texas Tech loses to Arizona?",
+    unparsed: "I could not turn part of that into a game result. Try: Team A beats Team B, Team A loses to Team B, Team A wins out, or Team A wins 2 of 3.", unsupported: "I can run what-if scenarios for game results and conference, playoff or bye chances. National title chances are not part of KickTip's simulation.",
     empty: "Type a what-if question.", already_played: "That game has already been played.", no_remaining_game: "There is no remaining regular-season game between those teams.", multiple_games: "Those teams play more than once. Say which game (home or away).",
     margin: "KickTip simulates wins and losses, not scores or margins.", title_scenario: "Conference-title scenarios are not supported yet. Try asking what happens if a team wins out, or if one team beats another in a regular-season game.",
     too_many_items: "That is more than 8 game results in one question. Try up to 8.", site_conflict: "That does not match where the game is scheduled.", conflict: "Those results contradict each other. Remove one.", invalid_count: "That win count does not fit the number of games.", too_many_games: "That is more games than the team has left."

@@ -42,4 +42,4 @@ def changed_html(asof_date, mv=None):
     mover = (f' On the same data, Utah\'s chance to make the 12 is {ut[1]*100:.1f}% now against {ut[0]*100:.1f}% under the earlier percentages, and BYU\'s is {by[1]*100:.1f}% against {by[0]*100:.1f}%.' if ut and by else "")
     return (f'<h2 id="changed">What changed in this version</h2><p>Earlier versions of KickTip showed the MSM rating\'s own percentages. In the replay above those ran too confident, so the default is now the KickTip blend, and the chances on every page moved. '
             f'Heavy favorites drop and underdogs rise, so some teams move a lot.{mover} '
-            f'The MSM rating is still part of the blend and still sets the committee stand-in, but its own percentages are no longer shown. Model numbers recalculated {E(asof_date)}.</p>')
+            f'The MSM rating is still part of the blend and still sets the committee stand-in, but its own percentages are no longer shown. Chances recalculated {E(asof_date)}.</p>')

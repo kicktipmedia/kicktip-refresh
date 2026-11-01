@@ -7,7 +7,7 @@ usage: build_tile_data.py <tree> [--now ISO8601] [--out FILE]
           The page itself drops any game whose kickoff has passed in the visitor's clock, so a later "now" is never required.
   --out   default <tree>/data/tile-data.json
 Faithful Python port of assets/rootables.js (buildGames, compute, whenShort, mtMs) as run by Creative's prototype-data/compute.js, with two differences:
-  * per team it keeps the top 5 rootables rows and the next up-to-3 unstarted games (the page shows 3 / 1 and skips any that have started in its own clock);
+  * per team it keeps the top 8 rootables rows (never the team's own game; jared5) and the next up-to-3 unstarted games (the page shows 3 / 1 and skips any that have started in its own clock);
   * numbers are kept as integers (per-mille) and the page formats them (whole percent in What if cells, one decimal in rootables points).
 No network, no Odds API, no secrets: reads only the published data files above."""
 import sys, os, json, datetime, re
@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 MT = ZoneInfo('America/Denver'); UTC = datetime.timezone.utc
 MS7 = 7 * 864000 * 100  # 7 days in ms
 DAY = 864000 * 100
-THRESH, MAXROWS, NEXTN = 10, 5, 3
+THRESH, MAXROWS, NEXTN = 10, 8, 3   # jared5 (CEO go Oct 31 8:04 PM MT): up to 8 rootables rows, own game left off
 WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -96,7 +96,7 @@ def main():
             own = g['h'] == tn or g['a'] == tn
             rows.append(dict(id=g['id'], g=g, pH=pH, pA=pA, gap=abs(pH - pA), own=own,
                              root=g['h'] if pH >= pA else g['a'], other=g['a'] if pH >= pA else g['h']))
-        big = [r for r in rows if r['gap'] >= THRESH]
+        big = [r for r in rows if r['gap'] >= THRESH and not r['own']]   # jared5: rooting for your own team is a given (same as rootables.js)
         big.sort(key=lambda r: (-r['gap'], r['g']['kick'], r['id']))
         roots = [{'a': name_of(r['root']), 'x': name_of(r['other']), 'g': r['gap'], 'k': r['g']['kick'], 't': int(r['g']['tba']),
                   'd': when_short(r['g']['kick'], r['g']['tba']), 'o': int(r['own'])} for r in big[:MAXROWS]]

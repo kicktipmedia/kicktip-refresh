@@ -88,7 +88,7 @@
   var LINKS = '<p class="lk"><a href="/disclaimer/">Full disclaimer</a> &middot; <a href="/method/">Method</a></p>';
   var REQ = '<span class="req">Simulation analysis, not betting advice</span>';
   function bubble(t) { return '<div class="ub">' + esc(t) + '</div>'; }
-  var ONBROWSER = 'Calculated in your browser from public model data. Your question is not sent to any server.';
+  var ONBROWSER = 'Calculated in your browser from public KickTip data. Your question is not sent to any server.';
 
   /* ---------- views ---------- */
   function viewStart() { viewEmpty(); }   /* nothing is fetched when the panel opens: the example cards are plain text from the page (data-exa / data-exb) */

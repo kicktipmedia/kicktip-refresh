@@ -92,7 +92,7 @@
   function build() {
     scrim = D.createElement('div'); scrim.className = 'bks-scrim'; scrim.hidden = true;
     scrim.innerHTML = '<div class="bks" role="dialog" aria-modal="true" aria-labelledby="bks-t" tabindex="-1"><div class="bks-h"><div><p class="bks-r" id="bks-r"></p><h2 id="bks-t"></h2></div><button type="button" class="bks-x" aria-label="Close game details">Close</button></div><div class="bks-b"></div>'
-      + '<p class="bks-n">Percentages are each team\u2019s chance to make the 12 (model), not the chance of winning this game. KickTip does not publish playoff-game probabilities.</p></div>';
+      + '<p class="bks-n">Percentages are each team\u2019s chance to make the 12-team playoff field, not the chance of winning this game. KickTip does not publish playoff-game probabilities.</p></div>';
     D.body.appendChild(scrim); dlg = scrim.firstChild; sbody = dlg.querySelector('.bks-b'); stitle = dlg.querySelector('#bks-t'); sround = dlg.querySelector('#bks-r'); sx = dlg.querySelector('.bks-x');
     sx.addEventListener('click', function () { closeSheet(true); });
     scrim.addEventListener('click', function (e) { if (e.target === scrim) closeSheet(true); });

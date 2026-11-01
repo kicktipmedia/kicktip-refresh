@@ -271,7 +271,7 @@
     function nm(i) { return seed[i] ? seed[i].t.n : 'seed ' + i; }
     [].forEach.call(D.querySelectorAll('[data-seed]'), function (el) {
       var i = +el.getAttribute('data-seed'), e = seed[i]; if (!e) return; var t = e.t, bye = i <= 4;
-      var info = esc(t.cn) + (e.lead ? ' &middot; conference leader' : '') + '<br>Make the 12: ' + pct(t.p) + ' (model)' + (bye ? '<br>First-round bye: ' + pct(t.b) + ' (model)' : '');
+      var info = esc(t.cn) + (e.lead ? ' &middot; conference leader' : '') + '<br>Make the 12-team field: ' + pct(t.p) + '' + (bye ? '<br>First-round bye: ' + pct(t.b) + '' : '');
       el.innerHTML = LG().team(e.k, 28, false) + '<a class="tl" href="/team/' + e.k + '/"><span class="tn">' + esc(t.n) + '</span><span class="ti">' + info + '</span></a>';
     });
     [].forEach.call(D.querySelectorAll('[data-win]'), function (el) {

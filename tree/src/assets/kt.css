@@ -282,3 +282,6 @@ th[aria-sort=descending] .sb::after{border-top:5px solid var(--l)}
   .gcl.gcm{display:none}
   .gtbl{display:block}
 }
+
+/* terms rev2: rating strip trailing room */
+@media(max-width:899px){.mdl{scroll-padding-inline-end:16px}.mdl::after{content:"";flex:0 0 16px;align-self:stretch}}

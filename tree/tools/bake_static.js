@@ -21,7 +21,8 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   '<noscript><p class="rb-msg">Turn on JavaScript to run Rootables.</p></noscript>',   /* 9: audit2 Rootables phase 2 (no-JS list) */
   '',   /* 10: audit2 polish2 next-game What If card (baked; unbake removes it) */
   '<li><span class="lk">Loading</span></li>',   /* 11: audit2 conference 'Who controls their destiny' */
-  'What if BYU loses?'];   /* 12: Lab chip sample text (hardcoded in the Lab rollout); team pages bake their own team */
+  'What if BYU loses?',   /* 12 */
+  '<div class="rn rtg rb-terms">Information only. Don&#39;t make decisions based on this material. <a href="/disclaimer/">Full terms</a></div><noscript><p class="rb-msg">Turn on JavaScript to see Rootables.</p></noscript>'];   /* 13: rootables-shared (Nov 1): no Run tap; the visible terms line + the live Rootables list, baked from data/rootables/<slug>.json */   /* 12: Lab chip sample text (hardcoded in the Lab rollout); team pages bake their own team */
 const NOJS_TXT = 'Turn on JavaScript to switch models and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
 const mk = (n, s) => '<!--bk:' + n + '-->' + String(s).replace(/\u00A0/g, '&nbsp;') + '<!--/bk-->';   /* HTML entities only: no literal NBSP in baked HTML (shared RB.* strings use \u00A0 for the DOM) */
@@ -170,6 +171,15 @@ function rbHtml(slug) {
   return '<p class="rb-sub">For ' + esc(team) + '&#8217;s ' + (conf ? 'playoff and ' + esc(conf) + '&nbsp;championship' : 'playoff') + ' chances (KickTip blend):</p><ol class="rb-list">' + top + '</ol>' + (more ? '<details class="rb-more"><summary>Show ' + (L.length - 2) + ' more game' + (L.length === 3 ? '' : 's') + '</summary><ol class="rb-list" start="3">' + more + '</ol></details>' : '') + st;
 }
 
+/* rootables-shared (Nov 1): the team page list = RB.readyHtml(), the SAME live markup the browser draws, fed by the shared per-team file (tools/gen_rootables.js) */
+const ENT = (s) => s.replace(/\u00A0/g, '&nbsp;').replace(/[^\x00-\x7f]/g, (c) => '&#' + c.codePointAt(0) + ';');   /* entities only: no literal NBSP / U+2011 */
+function rbReady(slug) {
+  const f = path.join(SITE, 'data/rootables', slug + '.json'); if (!fs.existsSync(f)) die('data/rootables/' + slug + '.json missing (run tools/gen_rootables.js first)');
+  const d = JSON.parse(fs.readFileSync(f, 'utf8')); if (d.v !== 1 || d.slug !== slug) die('bad rootables file ' + slug);
+  const now = RB.mtMs(d.as_of); if (now === null) die('as_of unparseable in ' + slug);
+  if (!RB.readyHtml) die('assets/rootables.js has no readyHtml (rootables-shared site required)');
+  return ENT(RB.readyHtml(d, { logo: (s) => (s ? LG.team(s, 52, true) : ''), how: false, now: now, noHead: true }));
+}
 /* ---- page edits ---- */
 let stats = { files: 0, asof: 0, home: 0, team: 0, conf: 0, cells: 0, spreads: 0, gcells: 0, slate: 0, rb: 0 };
 function rep1(t, re, fn, what, f) { let n = 0; const o = t.replace(re, (...a) => { n++; return fn(...a); }); if (n !== 1) die(what + ' anchor found ' + n + 'x in ' + f); return o; }
@@ -219,7 +229,8 @@ for (const f of files) {
     const pp = PP.t && PP.t[k];
     if (pp && t.includes('<b data-wo>&ndash;</b>')) t = t.replace('<b data-wo>&ndash;</b>', '<b data-wo>' + mk(1, pp.wo === null || pp.wo === undefined ? 'n/a' : pct(pp.wo)) + '</b>');
     const pr = pathRows(k); if (pr) t = t.replace(/(<table id="paths" class="fld">[\s\S]*?<tbody>)<tr><td colspan="3"><span class="lk">Loading<\/span><\/td><\/tr>(<\/tbody>)/, (x, a, b) => a + mk(6, pr) + b);
-    if (t.includes(DEF[9])) { const rh = rbHtml(k); if (rh) { t = rep1(t, /<noscript><p class="rb-msg">Turn on JavaScript to run Rootables\.<\/p><\/noscript>/, () => mk(9, '<noscript>' + rh + '</noscript>'), 'rootables', rel); stats.rb++; } }
+    if (t.includes(DEF[13])) { t = t.split(DEF[13]).join(mk(13, rbReady(k))); stats.rb++; }
+    else if (t.includes(DEF[9])) { const rh = rbHtml(k); if (rh) { t = rep1(t, /<noscript><p class="rb-msg">Turn on JavaScript to run Rootables\.<\/p><\/noscript>/, () => mk(9, '<noscript>' + rh + '</noscript>'), 'rootables', rel); stats.rb++; } }
     if (t.includes('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">')) { const nh = nwHtml(k); if (nh) { t = t.replace('<section id="what-if" aria-label="What if"><ul class="pk-tiles pk-one">', '<section id="what-if" aria-label="What if">' + mk(10, nh) + '<ul class="pk-tiles pk-one">'); stats.nw = (stats.nw || 0) + 1; } }
     /* Creative 11:21 A: the floating Lab chip carried a hardcoded sample ("What if BYU loses?") pasted on every page by the Lab rollout; on team pages it must name the page's own team. Marked bake (DEF[12]): unbake restores the shared sample, every bake/refresh writes the page's team. */
     { const nm = (/<section class="card rb" id="rootables"[^>]*data-name="([^"]+)"/.exec(t) || [])[1] || (tm.n ? esc(tm.n) : null);

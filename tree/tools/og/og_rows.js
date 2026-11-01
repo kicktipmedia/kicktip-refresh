@@ -5,7 +5,7 @@
    Built from batchB/og/og_data.js (audit2 parked top-3 version). usage: node og_rows.js <site> */
 const fs = require('fs'), path = require('path'); const SITE = path.resolve(process.argv[2] || '.');
 const J = (r) => JSON.parse(fs.readFileSync(path.join(SITE, r), 'utf8'));
-const RB = require(path.join(SITE, 'assets/rootables.js'));
+const RB = require(path.join(SITE, 'assets/rootables.js'));   /* rootables-shared: rows come from data/rootables/<slug>.json (tools/gen_rootables.js), the ONE source home and the team page also read */
 const idx = J('data/whatif/index.json'), bun = J('data/sim-bundle.json'), games = RB.buildGames(idx, bun), sh = {}, by = {};
 (bun.teams || []).forEach((t) => { if (t.n) by[t.n] = t; });
 const ctx = { index: idx, games, asOfMs: RB.mtMs(idx.as_of), by, shard: (w, id) => { if (!(w in sh)) { const f = idx.shards[w]; sh[w] = f ? J('data/whatif/' + f) : null; } return (sh[w] && sh[w][id]) || null; } };
@@ -23,10 +23,12 @@ const iso = (ms) => new Date(ms).toISOString().slice(0, 16);
 const out = { as_of: idx.as_of, stamp: RB.stampText(idx.as_of), teams: {} };
 fs.readdirSync(path.join(SITE, 'team')).sort().forEach((slug) => {
   if (!fs.existsSync(path.join(SITE, 'team', slug, 'index.html'))) return;
-  const key = Object.keys(by).find((k) => by[k].g === slug); const tn = idx.team_names.indexOf(key); if (tn < 0) return;
-  const conf = confName[(by[key] || {}).c] || '', res = RB.compute(tn, 'blend', ctx, ctx.asOfMs); res.rows = res.rows.filter((r) => slugOf(r.h) && slugOf(r.a));   /* belt and braces: never a share-card row against a non-FBS side */
-  const rows = res.rows.map((r) => { const rootAway = r.root === r.a; return { ko: iso(r.kick), ...(() => { const w = when(r); return { day: w.day, time: w.time, when: w.day + ' \u00b7 ' + (w.time ? w.time + ' MT' : 'time TBD') }; })(), away: side(r.a), home: side(r.h), root: rootAway ? 'away' : 'home', neutral: !!r.neutral,
-    race: RB.tagText(r.race, conf).replace(/\u00a0/g, ' '), gain: Math.round(r.gap) / 10, gain_txt: RB.pts(r.gap), color: TC[slugOf(r.root)] || '#121519' }; });
-  out.teams[slug] = { team: nm(tn), n_big: res.nBig, n_window: res.nWindow, games: rows };
+  const f = path.join(SITE, 'data/rootables', slug + '.json'); if (!fs.existsSync(f)) return;
+  const d = JSON.parse(fs.readFileSync(f, 'utf8')); if (d.as_of !== idx.as_of) { console.error('og_rows: stale data/rootables/' + slug + '.json'); process.exit(3); }
+  const S = (g, n) => { const l = (LG[g] || [])[0]; return { name: n, id: l ? +l : null, slug: g, rank: CFP[g] || null }; };
+  const rows = d.rows.map((r) => { const rootH = r.root.g === r.h, home = rootH ? S(r.root.g, r.root.n) : S(r.other.g, r.other.n), away = rootH ? S(r.other.g, r.other.n) : S(r.root.g, r.root.n), w = when({ kick: r.k, tba: !!r.t });
+    return { ko: iso(r.k), day: w.day, time: w.time, when: w.day + ' \u00b7 ' + (w.time ? w.time + ' MT' : 'time TBD'), away, home, root: rootH ? 'home' : 'away', neutral: !!r.neutral,
+      race: r.tag.replace(/\u00a0/g, ' '), gain: Math.round(r.g) / 10, gain_txt: r.pts, color: TC[r.root.g] || '#121519', why: r.why }; });
+  out.teams[slug] = { team: d.team, n_big: d.n_big, n_window: d.n_window, games: rows };
 });
 process.stdout.write(JSON.stringify(out));

@@ -1,0 +1,199 @@
+/* KickTip polish (Creative mock 668c0b30). Home how-to strip + team-page chances card. Team colors (tc.css) only on stripes and bars on white or paper. */
+/* ---- home: how-to strip (ink hero) ---- */
+main[data-page=home] .hero .ph-pos{margin:6px 0 0;font-size:17px;line-height:1.4;color:var(--p)}
+.ph-how{display:grid;gap:10px;margin:16px 0 0;padding:0;list-style:none}
+.ph-how li{background:var(--f);border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;margin:0}
+.ph-n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--l);color:var(--ink);font:700 18px/30px 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;text-align:center}
+.ph-how b{display:block;font:700 21px/1.1 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;color:var(--p)}
+.ph-how span:not(.ph-n){display:block;font-size:15px;line-height:1.4;color:#D5DADD}
+.ph-ex{margin:10px 0 0}
+main[data-page=home] .hero a.ph-chip,.ph-chip{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:44px;padding:8px 14px;border-radius:22px;background:var(--p);color:var(--ink);font-weight:700;font-size:15px;line-height:1.25;border:2px solid var(--l);text-decoration:none;text-align:center}
+.hero a.ph-chip:hover span{text-decoration:underline}
+.ph-chip:focus-visible{outline:3px solid var(--p);outline-offset:2px}
+.ph-chip img{width:22px;height:22px;flex:none;object-fit:contain}
+html.pc-col main[data-page=home] .hero .ph-pos,html.pc-col .ph-how,html.pc-col .ph-ex{display:none}
+@media(min-width:900px){.ph-how{grid-template-columns:repeat(3,1fr)}.ph-chip{display:inline-flex;width:auto}}
+/* ---- team page: chances card ---- */
+.pc{background:#fff;border-radius:14px;box-shadow:0 1px 0 rgba(18,21,25,.12);border:1px solid #DDE3E6;overflow:hidden;margin:0 0 12px}
+.pc-tm{display:flex;align-items:center;gap:10px;padding:12px 14px;border-left:6px solid var(--tc,#4C5560)}
+.pc-lg img{width:40px;height:40px;object-fit:contain;display:block}
+.pc-nm{margin:0;font:700 28px/1.05 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;color:var(--ink)}
+.pc-sub{margin:2px 0 0;font-size:14px;color:var(--s)}
+.tiles.pc-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#DDE3E6;border-top:1px solid #DDE3E6}
+.pc-g .tile{background:#fff;border:0;border-radius:0;padding:10px 14px;min-width:0}
+.pc-g .tile b{display:block;font:700 44px/1 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-g .tile span{font-size:14px;line-height:1.35;color:var(--s)}
+.pc-g .tile .pc-bar{display:block;height:10px;border-radius:5px;border:1px solid #4C5560;background:#C9D0D4;margin-top:6px;overflow:hidden}
+.pc-g .tile .pc-bar>span{display:block;height:8px;border-radius:4px;background:var(--tc,#4C5560);width:0}
+.pc .note.pc-nt{margin:0;padding:8px 14px 0;font-size:13px;color:var(--s)}
+.pc-st{margin:0;padding:2px 14px 12px;min-height:32px;font-size:13px;line-height:1.4;color:var(--s)}
+.pc-more{border-top:1px solid #DDE3E6}
+.pc-more>summary{display:block;padding:12px 14px;min-height:44px;color:var(--ink);font-weight:700;text-decoration:underline;cursor:pointer;list-style:none}
+.pc-more>summary::-webkit-details-marker{display:none}
+.pc-mb{padding:0 14px 12px}
+.pc-mb .tw{max-width:100%}
+.pc-g .tile:last-child:nth-child(odd){grid-column:1/-1}
+.pc-g .tile[hidden]{display:none}
+
+/* revb: chip left-aligned (Creative); home stamp on ink stays light for contrast */
+main[data-page=home] .hero a.ph-chip,.ph-chip{justify-content:flex-start;text-align:left}
+.pk-fresh[hidden]{display:none}
+
+/* audit2 polish2: example chip label + arrow (Creative mock) */
+.ph-ct{flex:1;min-width:0}.ph-ct small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4C5560}.ph-ar{flex:none;font:800 22px/1 system-ui,sans-serif;color:var(--ink)}.ph-chip:hover .ph-ct small{text-decoration:none}
+
+/* ===== audit2 polish-2 (Creative mock, Oct 31) ===== */
+/* 1 bigger key percentages: playoff + conference title first at 44px/800, championship game + bye 28px; one row on desktop */
+.pc{border-left:4px solid var(--tc,#4C5560)}
+.pc-g .tile:has(b[data-tile="p"]){order:1}.pc-g .tile:has(b[data-tile="w"]){order:2}.pc-g .tile:has(b[data-tile="c"]){order:3}.pc-g .tile:has(b[data-tile="b"]){order:4}
+.pc-g .tile b[data-tile="p"],.pc-g .tile b[data-tile="w"]{font-weight:800;font-size:44px}
+.pc-g .tile b[data-tile="c"],.pc-g .tile b[data-tile="b"]{font-size:28px;font-weight:800}
+.pc-g .tile:has(b[data-tile="c"]) .pc-bar,.pc-g .tile:has(b[data-tile="b"]) .pc-bar{display:none}
+@media(min-width:900px){.tiles.pc-g{grid-template-columns:repeat(4,1fr)}}
+/* 3 game cards: one meta line, two team rows with right-aligned whole percents, ESPN numbers folded */
+.gc:has(.gm) .gct{display:grid;grid-template-columns:1fr auto;column-gap:10px;align-items:start}
+.gc:has(.gm) .gct>.gtag{grid-column:1/-1;font-size:13px;color:#4C5560}
+.gc:has(.gm) .gtm{grid-column:1}.gc:has(.gm) .gwc{grid-column:2;align-self:stretch}
+.gc:has(.gm) .gtm .gm{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.gc:has(.gm) .gtm .gm>span:not(.gu){font-size:12px;line-height:1;color:#4C5560;padding-left:30px}
+.gc:has(.gm) .gtm .gu{display:flex;align-items:center;gap:6px;min-height:30px;font-size:15px}
+.gc:has(.gm) .gwc .gwl,.gc:has(.gm) .gwc .gpb{display:none}
+.gc:has(.gm) .gwc .gwr{display:flex;flex-direction:column;align-items:flex-end;gap:0}
+.gc:has(.gm) .gwc .gwr>span{font-size:0;line-height:1;min-height:30px;display:flex;align-items:center}
+.gc:has(.gm) .gwc .gwr>span:first-child{margin-bottom:12px}
+.gc:has(.gm) .gwc .gwr b{font:700 17px/1 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519;font-variant-numeric:tabular-nums}
+.gc:has(.gm) .gln .gsm{display:none}
+.gc:has(.gm) .gln .gbt{font-size:13px;color:#4C5560}
+/* 4 What If / Lab delta pill: solid ink up, outlined slate down */
+span.w2d.w2d{display:inline-block;font:700 15px/1.2 'Source Sans 3','KT Source Fallback',Arial,sans-serif;padding:2px 8px;border-radius:999px;background:#121519;color:#fff;border:1.5px solid #121519;margin:4px 0 0;vertical-align:middle}
+span.w2d.w2d.dn{background:#fff;color:#121519;border-color:#4C5560}
+span.w2d.w2d:not(.up):not(.dn){background:#fff;color:#4C5560;border-color:#C9CED3}
+.nw{background:#fff;border:1px solid #C9CED3;border-radius:12px;padding:12px 14px;margin:0 0 12px}
+.nw-h{margin:0 0 4px}.nw-m,.nw-was,.nw-st{font-size:13px;color:#4C5560;margin:0}
+.nw-r{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.nw-l{font-weight:700}.nw-v{white-space:nowrap}.nw-v b{font:800 26px/1 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;font-variant-numeric:tabular-nums}
+.nw-was{text-align:right}.nw-st{margin-top:10px}
+/* 5 Rootables: small 'Root for' label on top, matchup bold with team swatch, large +N% */
+.rb-more>summary{font-weight:700;cursor:pointer;padding:10px 0;text-decoration:underline}
+/* 6 mobile density: conference table top 3 + 'Show all N teams' (phones only; desktop shows every row) */
+.ct-more>summary{font-weight:700;cursor:pointer;padding:10px 0;text-decoration:underline;list-style:none}
+@media(max-width:899px){
+ .sec:has(.ct-more:not([open])) table tbody tr:nth-child(n+4),.sec:has(.ct-more:not([open])) .kc-list>li:nth-child(n+4){display:none}
+ .ct-more[open]>summary{display:none}
+ /* model control collapsed to one line */
+ .mdl{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;padding:6px 10px;overflow-x:auto}
+ .mdl .mdh{flex:none;margin:0}.mdl .mdh .mdb{display:none}
+ .mdl .mdt{flex-wrap:nowrap;margin:0}.mdl .mdt .mb{min-height:40px;white-space:nowrap}
+ .mdl .mdd,.mdl .mdf{display:none}
+ .mdl .mdm:not([hidden]){display:flex}
+}
+@media(min-width:900px){.ct-more{display:none}}
+.w2v span.w2d.w2d.dn::before{content:"\2212"}
+.nw p,.nw span{white-space:normal}.nw .nw-v,.nw .w2d{white-space:nowrap}
+.pc>.kt-upd,.pc .kt-upd{padding:8px 14px 0;margin:0;font-size:12px;color:#4C5560}
+@media(max-width:899px){.mdl{padding:6px 8px;gap:6px}.mdl .mdh b{font-size:15px}.mdl .mdt .mb{font-size:13px;padding:0 10px;min-height:40px}.mdl .mdt .mb .mbs{display:none}}
+/* ===== audit2 R2: Rootables v2 (Creative mock b0e9bf54) + Share (SHARE-SPEC 6a68db1c) ===== */
+.rb .rb-hd{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rb-share{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:2px solid #121519;border-radius:999px;background:#fff;color:#121519;font:700 15px/1 'Source Sans 3','KT Source Fallback',Arial,sans-serif;text-decoration:none;white-space:nowrap;flex:none}
+.rb-share:hover{background:#F1F3F4}.rb-share:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.rb-url{display:block;width:100%;margin:8px 0;font:15px 'Source Sans 3','KT Source Fallback',Arial,sans-serif;padding:8px;border:1px solid #4C5560;border-radius:8px}
+.rb ol.rb-list{list-style:none;padding:0;margin:0}
+.rb .rv-cd{display:block;background:#fff;border:1px solid #C9CED3;border-left:4px solid var(--tc,#4C5560);border-radius:14px;padding:12px;margin:0 0 12px}
+.rb .rv-cd::before,.rb .rv-cd::after{content:none}
+.rv-when{font-size:13px;color:#4C5560;margin:0}
+.rv-mu{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:6px;margin:8px 0}
+.rv-sd{border:2px solid transparent;border-radius:12px;padding:26px 4px 8px;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
+.rv-sd.on{border-color:var(--tc,#4C5560)}
+.rv-sd .lg,.rv-sd>img{width:52px;height:52px}
+.rv-sd .lg{display:grid;place-items:center;margin:0 auto}.rv-sd .lg>img{width:100%;height:100%;object-fit:contain;object-position:50% 50%}   /* rootables-shared: logo centered in its fixed square slot (was: img forced to 52px inside a padded 52px box) */
+.rv-nm{font:600 15px/1.2 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#4C5560;word-break:normal;overflow-wrap:normal;hyphens:none}.rv-sd.on .rv-nm{font-weight:700;color:#121519}
+.rv-tag{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--tc,#4C5560);color:#fff;font:800 11px/1 'Source Sans 3','KT Source Fallback',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:0 0 8px 8px;white-space:nowrap}
+.rv-vs{align-self:center;font-size:12px;color:#4C5560;font-weight:700}
+.rv-gn{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-top:1px solid #DDE1E4;padding-top:8px}
+.rv-gn span{font-size:13px;color:#4C5560;font-weight:700}.rv-gn b{font:800 34px/1 'Barlow Condensed','KT Barlow Fallback',Arial,sans-serif;color:#121519;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rb-more>summary,.rb-all{font-weight:800}
+@media(min-width:900px){.rb ol.rb-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.rb .rv-cd{margin:0}.rb ol.rb-list>[hidden]{display:none}}
+
+/* audit2: blended Rootables (Oct 31) race tag + second line (13px slate under the big gain) */
+.rv-race{display:inline-block;margin:0 0 4px;padding:3px 8px;border:1px solid #4C5560;border-radius:999px;font:700 12px/1.2 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#4C5560;background:#fff}
+.rv-race.rv-cfp12{background:#121519;border-color:#121519;color:#fff}
+.rv-race.rv-ccg{background:#fff;border-color:#4C5560;color:#4C5560}
+/* Creative 11:21 B: room under Rootables for the floating Lab chip (chip height 52px + 16px; + its bottom offset and safe area) so it never sits on the footnote or How this works */
+@media(max-width:700px){.has-ask #rootables{padding-bottom:calc(52px + 16px + var(--pillb,12px) + env(safe-area-inset-bottom,0px))}}
+.rv-gn{flex-wrap:wrap}
+.rv-gn .rv-also{flex:0 0 100%;text-align:right;font-size:13px;font-weight:400;color:#4C5560;margin-top:-2px}
+
+/* Batch B r3: the 'What if' chip hides while the Rootables card is on screen (rootables.js IntersectionObserver) */
+html.rb-in .askpill{display:none}
+/* rev f (Nov 1): team page why line, Creative spec. One <p class="rv-why"> under the points block of every live game card. */
+.rv-cd>.rv-why{margin:8px 0 0;padding:8px 0 0;border-top:1px solid #DDE3E6;font:400 14px/1.4 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519;max-height:none;overflow:visible;word-break:normal;overflow-wrap:normal;hyphens:none}
+.rv-cd>.rv-why strong{font-weight:700}
+.rv-why .rv-nw,.rv-nw{white-space:nowrap}
+/* rev f (Nov 1): home rows (rvhome.js row()). Scoped to .rv-rw/.rv-rows/.rv-root; none of these classes appear on team pages. */
+/* rootables-fix: one component, full (team page) + condensed modifier (home) */
+.rv-list--c{list-style:none;margin:0;padding:0}
+.pk-tile .rv-list--c>li{margin:0 0 8px}
+/* rev c: the why is never cut; condensed shows it in full (2 lines at desktop widths, 3-4 at 390 is reported) */
+/* rev d: compact row (home + team variant B). Logo slots use the shared .lg rule (kt.css). */
+.rv-rows{list-style:none;margin:0;padding:0}
+.rv-rw{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px;align-items:center;padding:6px 0;border-top:1px solid #DDE1E4}
+.rv-rw:first-child{border-top:0}
+.rv-rw p{margin:0}
+.rv-ro{font:600 16px/1.25 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519;word-break:normal;overflow-wrap:normal;hyphens:none}
+.rv-ro b{font-weight:700}
+.rv-tn{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;vertical-align:middle}
+.rv-ov{display:inline-block}
+.rv-rt{margin-top:2px;font:400 14px/1.3 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#4C5560}
+.rv-rt b{font-weight:700;color:#121519;white-space:nowrap}
+.rv-wb{display:inline-flex;align-items:center;gap:6px;min-height:44px;min-width:44px;padding:0 4px 0 8px;margin:0;border:0;background:none;cursor:pointer;font:600 14px/1 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519;border-radius:8px}
+.rv-wb::after{content:'';width:7px;height:7px;margin-top:-4px;border:solid #4C5560;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.rv-wb[aria-expanded="true"]::after{margin-top:3px;transform:rotate(-135deg)}
+.rv-wb:focus-visible{outline:3px solid #121519;outline-offset:2px}
+.rv-wp{grid-column:1/-1;padding:4px 0 6px}
+.rv-wp[hidden]{display:none}
+.rv-wp .rv-race{margin:0 0 6px}
+.rv-wp .rv-why{margin:0;font:400 14px/1.4 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519}
+.pk-tile .rv-rows p.rv-ro{font-size:16px;line-height:1.25;margin:0}.pk-tile .rv-rows p.rv-rt{font-size:14px;margin:2px 0 0;color:#4C5560}.pk-tile .rv-rows p.rv-why{font-size:14px;margin:0;color:#121519}.pk-tile .rv-rows p.rv-race{font-size:12px;margin:0 0 6px}
+/* rev d option B: Rootables swipe carousel, styled on Bragging Rights (brag.css: ink cards, 80% snap, 12px radius) */
+.rv-rw[hidden]{display:none}
+.rv-rw{padding:4px 0}.rv-tn{gap:4px}
+.rv-ro,.pk-tile .rv-rows p.rv-ro{line-height:1.2}
+.rv-nw{white-space:nowrap}
+/* rev e: root-for outline, used everywhere (root-for team only). Ink on paper and white; cyan only on ink or field surfaces. */
+.rv-root{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 3px;border:2px solid #121519;border-radius:999px;background:transparent;white-space:nowrap;vertical-align:middle;font-weight:700}
+.rv-root b,.rv-root .rv-nm{font-weight:700}
+.rv-root>.lg{width:20px;height:20px;flex:0 0 20px}
+/* rev e: home row, three stacked lines */
+.rv-rw{display:block;padding:8px 0 0}
+.rv-rw .rv-ro{display:flex;flex-wrap:wrap;align-items:center;column-gap:6px;row-gap:4px}
+.rv-l1{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.rv-rw .rv-tn{gap:6px}
+.rv-rw .rv-rt,.rv-rw .rv-rt b,.pk-tile .rv-rows p.rv-rt{color:#4C5560;margin-top:4px}
+.rv-rw .rv-wb{display:flex;width:100%;justify-content:space-between;min-height:44px;margin-top:6px;padding:0 6px 0 0;border-top:1px solid #DDE1E4;border-radius:0}
+.rv-rw .rv-wb::after{margin-right:6px}
+.rv-rw .rv-wp{padding:2px 0 10px}
+/* rev e.1: home rows read as one game each. No hairline on Why; games separated by spacing (both proposed dividers measure under 3:1 on white). */
+.rv-rows .rv-rw,.rv-rw{border-top:0;padding:0;margin:0 0 16px}
+.rv-rows .rv-rw:last-child{margin-bottom:4px}
+.rv-rw .rv-rt,.pk-tile .rv-rows p.rv-rt{margin-top:2px;line-height:16px}
+.rv-rw .rv-wb{border-top:0;margin:0;min-height:44px;padding:0;font:700 14px/1 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519}
+.rv-rw .rv-wb::after{margin-right:8px}
+.rv-rw .rv-wp{padding:0 0 4px}
+/* rev e.1: team page root box. Rounded rectangle, 48px logo slot, the name wraps between words and the box grows. */
+.rv-rw .rv-wb:focus-visible{outline-offset:-3px}
+.rv-rw .rv-wb{padding:0 8px;margin:0 -8px;width:calc(100% + 16px)}.rv-rw .rv-wb::after{margin-right:0}
+/* rev f: home rows as tight as live .pt-r. Separator copied from live (.pt-r: 1px solid #DDE3E6 between rows). Overrides the rev e/e.1 row rules. */
+.rv-rows .rv-rw,.rv-rw{display:block;margin:0;padding:8px 0;border-top:0}
+.rv-rows .rv-rw+.rv-rw{border-top:1px solid #DDE3E6}
+.rv-rows .rv-rw:last-child{margin-bottom:0}
+.rv-rw .rv-ro{display:flex;flex-wrap:wrap;align-items:center;column-gap:6px;row-gap:2px;line-height:24px}
+.rv-rw .rv-rt,.pk-tile .rv-rows p.rv-rt{display:flex;flex-wrap:wrap;align-items:center;margin:2px 0 0;font:400 14px/18px 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#4C5560}
+.rv-rw .rv-mt{white-space:nowrap}
+.rv-rw .rv-mt b{color:#4C5560;font-weight:700}
+.rv-rw .rv-wb{display:inline-flex;align-items:center;gap:6px;width:auto;min-width:44px;min-height:44px;margin:-13px -8px -13px auto;padding:13px 8px;border:0;border-radius:0;background:none;font:700 14px/18px 'Source Sans 3','KT Source Fallback',Arial,sans-serif;color:#121519;justify-content:flex-end}
+.rv-rw .rv-wb::after{margin:-3px 0 0 0}
+.rv-rw .rv-wb[aria-expanded="true"]::after{margin-top:4px}
+.rv-rw .rv-wb:focus-visible{outline:none}
+.rv-rw .rv-wb:focus-visible .rv-wl{outline:3px solid #121519;outline-offset:1px;border-radius:2px}
+.rv-rw .rv-wp{padding:6px 0 0}
+.rv-rw .rv-wb::after{border-color:#121519;margin-right:0}

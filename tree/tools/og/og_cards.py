@@ -20,7 +20,7 @@ def card_data(t, stamp):
     gs = []
     for g in t['games']:
         a, h = dict(g['away']), dict(g['home'])
-        gs.append(dict(ko=g['ko'], when=g['when'], day=g['day'], time=g['time'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], why=g.get('why',''), gain=g['gain'], color=g['color']))
+        gs.append(dict(ko=g['ko'], when=g['when'], day=g['day'], time=g['time'], away=a, home=h, root=g['root'], neutral=g['neutral'], race=g['race'], gain=g['gain'], color=g['color']))
     return dict(team=t['team'], asof=stamp, games=gs)
 def page_html(d, sz, site):
     h, n, x = card3.html(d, sz)
@@ -37,21 +37,16 @@ def page_html(d, sz, site):
 # Step 4 (r3 dates): if a row still overflows, every row's time drops ' MT' ('1:45 PM') and the card says 'Kickoff times MT' once. The date is never dropped.
 # Step 5 (r3 dates): a row that still overflows wraps its kickoff line at the ' · ' only (every other space there is &nbsp;): 'Sat Oct 31 ·' / '1:30 PM'.
 # Step 1: that tag drops to 18px. Step 2: the opponent name may wrap to 2 lines. Step 3: tag 16px, kickoff 18px. Anything still overflowing fails the run (no clipped text ships).
-FIT = """()=>{for(const w of document.querySelectorAll('.wy .wt')){const o=x=>x.scrollHeight>x.clientHeight+1||x.scrollWidth>x.clientWidth+0.5;   /* rootables-shared: a long why first steps its font down 1px (to 85%), then drops its closing '(… chance A% to B%)' detail; never an ellipsis */
- if(o(w)){const f0=parseFloat(getComputedStyle(w).fontSize);let f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}
-  if(o(w)){const x=w.querySelector('.wx');if(x){x.textContent=x.textContent.replace(/\\s*\\([^()]*\\)\\.?$/,'.');w.style.fontSize='';f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}
-   if(o(w)){const i=x.textContent.indexOf(', so ');if(i>0){const s=x.textContent.slice(i+5);x.textContent=s.charAt(0).toUpperCase()+s.slice(1);w.style.fontSize='';f=f0;while(o(w)&&f>f0*0.85){f-=1;w.style.fontSize=f+'px';}}}}}}
- if(w.scrollHeight>w.clientHeight+1||w.scrollWidth>w.clientWidth+0.5)w.classList.add('nmbad');}   /* rev b: the short-form why must fit one line; never an ellipsis. Overflow = fail (keeps previous card) */
-const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
+FIT = """()=>{const ov=e=>e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+1;
  const gap=pn=>{const nm=pn.querySelector('.nm'),r=document.createRange();r.selectNodeContents(nm);return pn.getBoundingClientRect().right-Math.max(...[...r.getClientRects()].map(x=>x.right))};
  for(const pn of document.querySelectorAll('.pn')){const nm=pn.querySelector('.nm'),f0=parseFloat(getComputedStyle(nm).fontSize),fl=Math.round(f0*0.8);let f=f0;const bad=()=>ov(pn)||gap(pn)<12;
   while(bad()&&f>fl){f-=1;nm.style.fontSize=f+'px';}
   if(bad()){nm.textContent=nm.textContent.replace(/\u00a0/g,' ');Object.assign(nm.style,{whiteSpace:'normal',wordBreak:'normal',overflowWrap:'normal',hyphens:'none',lineHeight:'1.05'});const w=nm.parentElement;Object.assign(w.style,{minWidth:'0',flex:'1 1 auto',maxWidth:(pn.getBoundingClientRect().right-w.getBoundingClientRect().left-12)+'px'});}
   if(bad())pn.classList.add('nmbad');}
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),on=r.querySelector('.on'),tg=r.querySelector('.tg');const md=r.querySelector('.mid'),bad=()=>ov(op)||ov(md);if(!op||!bad())continue;
-
+  tg.style.fontSize='18px';tg.style.padding='6px 10px';if(!bad())continue;
   const b=on.querySelector('b');if(b)b.textContent=b.textContent.replace(/\u00a0/g,' ');on.style.whiteSpace='normal';on.style.lineHeight='1';if(!bad())continue;
-  const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}
+  tg.style.fontSize='16px';tg.style.padding='5px 8px';const kt=r.querySelector('.kt');if(kt)kt.style.fontSize='18px';}
  if([...document.querySelectorAll('.r')].some(r=>ov(r.querySelector('.op'))||ov(r.querySelector('.mid'))))document.body.classList.add('nomt');
  for(const r of document.querySelectorAll('.r')){const op=r.querySelector('.op'),md=r.querySelector('.mid');if(!ov(op)&&!ov(md))continue;const kt=r.querySelector('.kt');kt.style.whiteSpace='normal';kt.style.lineHeight='1.1';kt.style.marginTop='2px';}}"""
 def main():
@@ -85,7 +80,7 @@ def main():
             ck = os.path.join(cache, f'{key}-{sha(stamp.encode())[:8]}.png') if cache else None
             if ck and os.path.exists(ck): shutil.copyfile(ck, dst); kept += 0; continue
             todo.append((slug, sz, px, dst, ck, page_html(card_data(t, stamp), sz, S)[0]))
-    tr = time.time(); times = []; warns = []; kept_prev = 0
+    tr = time.time(); times = []; warns = []; kept_prev = 0; LOFF = {}
     if todo:
         from playwright.sync_api import sync_playwright
         from PIL import Image
@@ -100,6 +95,9 @@ def main():
                     open(f, 'w', encoding='utf-8').write(h.replace('src="LOGO/', 'src="' + logo).replace('src="BRAND"', 'src="' + brand + '"').replace('url("FONT")', 'url("' + font + '")'))
                     pg = pages[sz]; pg.goto('file://' + f, wait_until='load'); pg.evaluate('document.fonts.ready.then(()=>Promise.all([...document.images].map(i=>i.decode().catch(()=>0))))')
                     pg.evaluate(FIT)
+                    lo = pg.evaluate("()=>{let m=0;for(const i of document.querySelectorAll('.dc>img,.ob>img')){const b=i.parentElement.getBoundingClientRect(),r=i.getBoundingClientRect();m=Math.max(m,Math.abs((b.left+b.width/2)-(r.left+r.width/2)),Math.abs((b.top+b.height/2)-(r.top+r.height/2)))}return m}")   # rootables-shared: logo centering, measured on every card
+                    LOFF[px] = max(LOFF.get(px, 0), lo)
+                    if lo > 0.01: warns.append(f'{slug} {px}: logo off-center {lo:.2f}px')
                     over = pg.evaluate("()=>{const bd=document.querySelector('.bd');return [bd.scrollHeight-bd.clientHeight].concat([...document.querySelectorAll('.r,.pn,.op,.mid,.nmbad')].filter(e=>e.classList.contains('nmbad')||e.scrollWidth>e.clientWidth+1||e.scrollHeight>e.clientHeight+2).map(e=>e.className+' '+e.scrollWidth+'x'+e.scrollHeight+'/'+e.clientWidth+'x'+e.clientHeight+' '+e.textContent.slice(0,40)))}")
                     if os.environ.get('KT_OG_FORCE_OVERFLOW') == slug: over = [1, 'forced (test)']   # test hook only
                     if over[0] > 0 or len(over) > 1:   # QA r3 item 4: one bad card never fails the refresh. Keep the previous card; with none, draw the safe no-rows card. No clipped text ships.
@@ -126,6 +124,7 @@ def main():
     tot = sum(os.path.getsize(os.path.join(od, f)) for f in os.listdir(od))
     rep = {'teams': stats['teams'], 'rendered': len(todo) - kept_prev, 'kept': kept + kept_prev, 'render_s': round(time.time() - tr, 2), 'per_card_s': round(sum(times) / len(times), 3) if times else 0,
            'total_s': round(time.time() - t0, 2), 'bytes': tot, 'max_rows': max(stats['rows'].values() or [0])}
+    rep['logo_offset_max_px'] = LOFF
     rep['warnings'] = warns
     for w in warns: print('OG_CARDS WARNING:', w, file=sys.stderr)
     print('og_cards', json.dumps(rep))

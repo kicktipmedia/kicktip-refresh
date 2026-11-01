@@ -20,4 +20,5 @@ run qbank_scn_b env KT_SCN_DATA=$(pwd)/tests/fixtures/scn_575 node tests/qbank_s
 run set3m3_cfpno node tests/set3m3_cfpno.js $T
 run why2 node tests/why2.js $T
 run final3_unit node tests/final3_unit.mjs $T
+run rootables_shared node tests/rootables_shared.js $T
 echo SUITE_DONE fail=$fail; exit $fail

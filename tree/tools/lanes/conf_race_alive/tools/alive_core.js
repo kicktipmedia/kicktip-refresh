@@ -19,7 +19,7 @@ function makeCtx(K, R, conf, opts) {
     fin: base.G.map((g, i) => g + base.left[i]),
     slots: R.fmt === "div" ? 1 : 2,
     tg: R.tie_group || "equal",
-    leafCap: opts.leafCap || 200000, nodeCap: opts.nodeCap || 4000000,
+    leafCap: opts.leafCap || 2000000, nodeCap: opts.nodeCap || 40000000,   // 10x (Oct 31): big10 17:29 needed 1.56M leaves / 28.8M nodes to prove Penn State out
     small: { leafCap: opts.smallLeafCap || 4000, nodeCap: opts.smallNodeCap || 120000 },   // clinched / "sure" searches: bounded, an unfinished one is reported as unknown (null), never guessed
     stats: { leaves: 0, nodes: 0, tooMany: 0 },
     wit: { any: new Array(n).fill(null), notAll: new Array(n).fill(null), all: new Array(n).fill(null) },   // best-known witnesses per team (bit arrays over `unset`)

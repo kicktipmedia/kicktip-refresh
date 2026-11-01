@@ -4,6 +4,7 @@ T=$(realpath "$1"); L=$(realpath -m "$2"); B=$(realpath "${3:-$1}"); mkdir -p $L
 run() { n=$1; shift; "$@" > $L/$n.log 2>&1; rc=$?; [ $rc = 0 ] || fail=1; echo "$n rc=$rc :: $(grep -E '[0-9]+ checks, [0-9]+ failed' $L/$n.log | tail -1)"; }
 run set2b_matcher node tests/set2b_matcher.js $T
 run set2b_data node tests/set2b_data.js $T
+run alive_gate node ../tree/tools/lanes/conf_race_alive/tools/alive_gate.js --root $T   # exit 5 = a conference has an unproven (unknown) team status
 run set2c node tests/set2c.js $T
 run set9_polish node tests/set9_polish.js $T
 run worker_dark10 node tests/worker_dark10.mjs $T

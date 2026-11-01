@@ -138,6 +138,7 @@ for f in changed:
         for k,fn in enumerate((rg_tbody,rg_gcl)):
             rl,ra,rb=fn(lt),fn(at),fn(bt)
             if not (rl and ra and rb): continue
+            if k==0 and any(x[x.find('<table'):x.find('</table>')].count('<tbody')!=1 for x in (lt,at,bt)): rep.setdefault('resolver_skipped',[]).append(f+' r0 multiple/no tbody'); continue
             if TOK.sub('?v=X',lt[rl[0]:rl[1]])!=TOK.sub('?v=X',at[ra[0]:ra[1]]): rep.setdefault('resolver_skipped',[]).append(f+' r%d live-edited'%k); continue
             mk='<!--KTR%d-->'%k; REG.append((mk,TOK.sub('?v=X',bt[rb[0]:rb[1]])))
             lt=lt[:rl[0]]+mk+lt[rl[1]:]; at=at[:ra[0]]+mk+at[ra[1]:]; bt=bt[:rb[0]]+mk+bt[rb[1]:]
@@ -145,7 +146,6 @@ for f in changed:
             rep.setdefault('resolved',{})[f]=[m for m,_ in REG]
             l,a,b=lt.encode('utf-8'),at.encode('utf-8'),bt.encode('utf-8')
     def nz(c,new=0):
-        if REG: c=c.decode('utf-8').encode('utf-8')   # already pre()-normalised: pre() is idempotent on @@ASOF markers
 
         t=pre(c,new).decode('utf-8')
         if ish: t=TOK.sub('?v=X',t).replace('><','>\n@@<'); t='\n\u00a7\n'.join(t.split('\n'))
@@ -163,8 +163,9 @@ for f in changed:
                 r=subprocess.CompletedProcess([],0,t1.encode('utf-8'),b''); rep.setdefault('deletions_accepted',{})[f]=n[0]
         if r.returncode==0:
             t=r.stdout.decode('utf-8')
-            for mk,rt in REG:
-                assert t.count(mk)==1, (f,mk); t=t.replace(mk,rt)
+            bad=[mk for mk,_ in REG if t.count(mk)!=1]
+            if bad: rep['conflict'].append(f+' resolver marker count '+','.join(bad)); continue
+            for mk,rt in REG: t=t.replace(mk,rt)
             if ish:
                 t=t.replace('\n\u00a7\n','\n').replace('>\n@@<','><')
                 lt=l.decode('utf-8'); lm={}

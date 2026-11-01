@@ -212,8 +212,9 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
   a = await X.answer("team_compare", { teams: ["utah", "byu"] }); cardOk("fixture no games left: tc utah/byu", a); ok(/Games left 0 \d/.test(a.card.text) && /Remaining opponents' average KickTip rating None \d+\.\d/.test(a.card.text), "fixture no games left: tc games-left row", a.card && a.card.text.slice(500, 900));
   const FC = B.fcs, bbyu = idx.byu;
   X = mk((n, d) => { if (n === "sim-bundle") { d.games.forEach(g => { if (g.h === U) g.a = FC; else if (g.a === U) g.h = FC; }); } });
+  const NU = B.games.filter(g => g.h === U || g.a === U).length;   // Utah games left in the data (was a fixed 5; 4 after Oct 31)
   a = await X.answer("schedule_strength", { team: "utah", view: "remaining" }); cardOk("fixture FCS-only games left: ss utah", a);
-  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.fcs === 5 && /No FBS games left\./.test(a.card.text) && /FCS games left, not counted \(5\)\./.test(a.card.text), "fixture FCS-only games left: notes", a.card && a.card.text.slice(0, 500));
+  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.fcs === NU && /No FBS games left\./.test(a.card.text) && new RegExp("FCS games left, not counted \\(" + NU + "\\)\\.").test(a.card.text), "fixture FCS-only games left: notes", a.card && a.card.text.slice(0, 500));
   X = mk((n, d) => { if (n === "sim-bundle") d.played = d.played.filter(g => g[0] !== U && g[1] !== U); });
   a = await X.answer("schedule_strength", { team: "utah", view: "played" }); cardOk("fixture no games played: ss utah", a); ok(/No games played\./.test(a.card.text), "fixture no games played: note", a.card && a.card.text.slice(0, 400));
   a = await X.answer("quality_wins", { team: "utah", view: "both" }); cardOk("fixture no games played: qw utah", a); ok(/No wins over FBS teams yet\./.test(a.card.text) && /No losses yet\./.test(a.card.text), "fixture no games played: qw empty texts", a.card && a.card.text.slice(0, 500));

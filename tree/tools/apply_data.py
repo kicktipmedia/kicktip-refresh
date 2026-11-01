@@ -65,7 +65,7 @@ def build_once(tmp, a, network):
     deleted = []
     for rel, p in list(walk(out)):
         if re.match(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$', rel) and os.path.exists(S0N + '/' + rel) and not os.path.exists(S1N + '/' + rel):
-            os.remove(p); deleted.append(rel)
+            pass   # KEEP stale shards: assets/tb tools + manifest.js still list them (removing them broke slate_this_week with load_error)
     # 3. post-fixes of the live builds
     for rel, p in walk(out):
         if rel.endswith(('.html', '.js', '.json')) and rel not in ('_worker.js', 'scnai.js') and os.path.exists(base + '/' + rel) and rd(p) != rd(base + '/' + rel):

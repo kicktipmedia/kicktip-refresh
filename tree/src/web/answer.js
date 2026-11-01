@@ -13,7 +13,7 @@
     var h = parseInt(m[4], 10), ap = h >= 12 ? "PM" : "AM", h12 = h % 12 === 0 ? 12 : h % 12;
     return MONTHS[parseInt(m[2], 10) - 1] + " " + parseInt(m[3], 10) + ", " + m[1] + ", " + h12 + ":" + m[5] + " " + ap + " MT";
   }
-  function header(N, asOf, model) { return "Simulation analysis (" + (model || "KickTip model") + "), not betting advice. Based on " + commas(N) + " simulated seasons as of " + asOfLabel(asOf) + "."; }
+  function header(N, asOf, model) { return "Simulation analysis (" + (model || "KickTip estimates") + "), not betting advice. Based on " + commas(N) + " simulated seasons as of " + asOfLabel(asOf) + "."; }
   /* c1: the model line and the standing footers (same wording in every answer) */
   function modelLine(bundle) { return "Model: " + (bundle.model_label || "KickTip blend") + (bundle.model_default === false ? " (alternate model)" : " (default model)"); }
   var NOISE = "Before numbers come from a fresh run in your browser and can differ from the page by a point or two (random sampling).";
@@ -61,7 +61,7 @@
     return {
       header: header(N, asOf, bundle.model_label), model_label: bundle.model_label || "KickTip blend", footers: footers(bundle, resolved), scenario_lines: describe(bundle, resolved),
       table: { columns: ["Team"].concat(METRICS.map(function (m) { return m[1]; })), metrics: METRICS.map(function (m) { return m[0]; }), rows: rows },
-      notes: ["Each cell shows the chance before the scenario, after it, and the change in percentage points.", "Changes smaller than about " + (noise * 100).toFixed(1) + " points are within simulation noise at this many seasons.", "Games not named in the scenario play out as simulated. Conference tiebreaks and the 12-team field follow the KickTip model."]
+      notes: ["Each cell shows the chance before the scenario, after it, and the change in percentage points.", "Changes smaller than about " + (noise * 100).toFixed(1) + " points are within simulation noise at this many seasons.", "Games not named in the scenario play out as simulated. Conference tiebreaks and the 12-team field follow KickTip's simulated seasons."]
     };
   }
   /* need answer: per remaining game of `team`, the chance for the chosen goal if the team wins vs loses it (precomputed single-game what-ifs), plus optional wins-out / loses-out runs. */

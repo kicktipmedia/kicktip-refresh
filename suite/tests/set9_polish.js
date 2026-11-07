@@ -33,9 +33,28 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
   const t1 = nm(tough), e1 = nm(easy); ck(t1.length > 3 && JSON.stringify(t1.slice().reverse()) === JSON.stringify(e1), "easiest is the exact reverse order of toughest (" + t1.length + " teams)");
   { const m = await T.match("Easiest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && m.params.order === "easiest" && m.params.conference === "big12", "match carries order=easiest for a conference: " + JSON.stringify(m && m.params)); }
   { const m = await T.match("Toughest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && !m.params.order, "toughest has no order param (default)"); }
-  // 5. biggest games on an empty day
-  for (const day of ["sunday", "monday"]) { const a = await T.answer("slate_this_week", { view: "biggest", day }); const b = await T.answer("slate_this_week", { view: "all", day }); ck(a.card && /No games on that day this week/.test(a.card.text) && !/tracked effect/.test(a.card.text), "biggest " + day + " (truly empty day) says no games that day: " + (a.card ? a.card.text.slice(-120) : "")); ck(b.card && /No games on that day this week/.test(b.card.text), "all-games " + day + " keeps the true no-games text"); }
-  { const a = await T.answer("slate_this_week", { view: "biggest", day: "tuesday" }); ck(a.card && /tracked effect/.test(a.card.text) || (a.card && /Biggest games/.test(a.card.text)), "biggest tuesday: " + (a.card ? a.card.text.slice(-130) : "")); }
+  // 5. empty days vs days that still have games. The current week is whatever is still in sim-bundle.games
+  // (lowest week). Sunday/Monday empty and Tuesday occupied was this week's shape; week 13 has a Monday
+  // game and some weeks have no Tuesday left. Classify each weekday from the card's own facts.
+  const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+  let emptyDays = 0, busyDays = 0;
+  for (const day of DAYS) {
+    const all = await T.answer("slate_this_week", { view: "all", day });
+    const big = await T.answer("slate_this_week", { view: "biggest", day });
+    if (!all.card || !big.card || !all.r || !all.r.facts || !big.r || !big.r.facts) { ck(false, "slate " + day + " no card"); continue; }
+    const n = all.r.facts.any;
+    if (n === 0) {
+      emptyDays++;
+      ck(/No games on that day this week/.test(all.card.text), "all-games " + day + " (no games left that day) says no games that day");
+      ck(/No games on that day this week/.test(big.card.text) && !/tracked effect/.test(big.card.text), "biggest " + day + " (no games left that day) says no games, not the tracked-effect line");
+    } else {
+      busyDays++;
+      ck(!/No games on that day this week/.test(all.card.text), "all-games " + day + " lists the " + n + " games still on that day");
+      if (big.r.facts.total === 0) ck(/tracked effect/.test(big.card.text) && !/No games on that day this week/.test(big.card.text), "biggest " + day + " has games but none with a tracked effect");
+      else ck(/Biggest games/.test(big.card.text) && !/No games on that day this week/.test(big.card.text), "biggest " + day + " lists games that move chances");
+    }
+  }
+  ck(emptyDays + busyDays === DAYS.length, "every weekday classified from the current week's remaining games (" + emptyDays + " empty, " + busyDays + " with games)");
   // 6. TBD
   for (const [id, p] of [["team_schedule", { team: "utah", view: "remaining" }], ["team_schedule", { team: "byu", view: "both" }], ["head_to_head", { teams: ["utah", "byu"] }], ["team_compare", { teams: ["texas", "lsu"], aspect: "all" }], ["slate_this_week", { view: "all" }]]) { const a = await T.answer(id, p); if (!a.card) { ck(false, id + " no card"); continue; } ck(!/\bTBA\b/.test(a.card.text), id + " " + JSON.stringify(p) + " has no TBA" + (/time TBD/.test(a.card.text) ? " (shows time TBD)" : "")); }
   console.log(n + " checks, " + bad + " failed"); process.exit(bad ? 1 : 0);

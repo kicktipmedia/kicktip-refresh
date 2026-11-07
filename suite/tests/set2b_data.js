@@ -167,7 +167,9 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
     ok(f.teams[0].name !== f.teams[1].name, "tc " + sa + "/" + sb + " two distinct display names", [f.teams[0].name, f.teams[1].name]);
   }
   console.log("team_compare: all", nTC, "pairs; fully linted", nSamp, "| independent team-cells", indepPairs, "| pairs with a played meeting", meetPlayed, "| with an upcoming meeting", meetUp, "(time TBA:", nTba + ")");
-  ok(nTC === 138 * 137 / 2, "team_compare ran every unordered pair", nTC); ok(meetPlayed > 0 && meetUp > 0 && indepPairs > 0, "data exercises played, upcoming and independent paths");
+  ok(nTC === 138 * 137 / 2, "team_compare ran every unordered pair", nTC);
+  ok(meetPlayed > 0 && indepPairs > 0, "data exercises played meetings and independent teams");
+  ok(meetUp > 0 || !B.games.some(g => rec2[g.h] && rec2[g.a]), "upcoming-meeting path runs whenever two FBS teams still have a game; an empty remaining slate is a valid season");
   /* aspects on a sample of pairs */
   const ASP = { chances: [/Chance to reach/, /Chance of a first-round bye/], record: [/Record/, /Conference record/], rank: [/KickTip rank/], schedule: [/Games left/, /Remaining opponents' average/] };
   let nA = 0;
@@ -208,8 +210,25 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
   X = mk((n, d) => { if (n === "sim-bundle") d.games = d.games.filter(g => g.h !== U && g.a !== U); });
   let a = await X.answer("schedule_strength", { team: "utah", view: "both" }); cardOk("fixture no games left: ss utah", a);
   ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.mean === null && a.r.facts.remaining.rank === null && /No games left\./.test(a.card.text) && /Opponents left \(0 FBS games\) None None/.test(a.card.text), "fixture no games left: ss utah card text", a.card && a.card.text.slice(0, 400));
-  a = await X.answer("schedule_strength", { conference: "big12", view: "remaining" }); cardOk("fixture no games left: ss big12", a); ok(/Utah 0 None None/.test(a.card.text) && a.r.facts.rows[a.r.facts.rows.length - 1].slug === "utah", "fixture no games left: the Utah row is last with None", a.card && a.card.text.slice(0, 300));
-  a = await X.answer("team_compare", { teams: ["utah", "byu"] }); cardOk("fixture no games left: tc utah/byu", a); ok(/Games left 0 \d/.test(a.card.text) && /Remaining opponents' average KickTip rating None \d+\.\d/.test(a.card.text), "fixture no games left: tc games-left row", a.card && a.card.text.slice(500, 900));
+  a = await X.answer("schedule_strength", { conference: "big12", view: "remaining" }); cardOk("fixture no games left: ss big12", a);
+  { /* Utah's remaining games are removed in this fixture. Other Big 12 teams keep theirs, so Utah is last only while it is the only team with no FBS games left. Order is the tool's: national rank (null last), then slug. */
+    const Bm = JSON.parse(JSON.stringify(B)); Bm.games = Bm.games.filter(g => g.h !== U && g.a !== U);
+    const big = fbs.filter(t => B.teams[t].c === "big12"), fbsSet = new Set(fbs);
+    const rem = {}; big.forEach(t => rem[t] = { s: 0, n: 0 });
+    Bm.games.forEach(g => { const add = (t, o) => { if (rem[t] === undefined || o === F) return; if (fbsSet.has(o)) { rem[t].s += rt[o]; rem[t].n++; } }; add(g.h, g.a); add(g.a, g.h); });
+    const ranked = big.filter(t => rem[t].n > 0).sort((x, y) => rem[y].s / rem[y].n - rem[x].s / rem[x].n || sl(B.teams[x].g, B.teams[y].g));
+    const none = big.filter(t => rem[t].n === 0).sort((x, y) => sl(B.teams[x].g, B.teams[y].g));
+    const expect = ranked.concat(none).map(t => B.teams[t].g), got = a.r.facts.rows.map(r => r.slug);
+    const urow = a.r.facts.rows.find(r => r.slug === "utah");
+    ok(!!urow && urow.games === 0 && urow.mean === null && urow.rank === null && JSON.stringify(got) === JSON.stringify(expect), "fixture no games left: Utah is a None row, placed by rank then slug", [got, expect]);
+    ok(/Utah 0 None None/.test(a.card.text), "fixture no games left: Utah row text is 0 / None / None", a.card && a.card.text.slice(0, 300));
+  }
+  a = await X.answer("team_compare", { teams: ["utah", "byu"] }); cardOk("fixture no games left: tc utah/byu", a);
+  { const by = idx.byu, t0 = a.r.facts.teams[0], t1 = a.r.facts.teams[1], bN = sch[by].remaining.n, bMean = bN ? sch[by].remaining.s / bN : null;
+    const show = m => m === null ? "None" : Math.abs(m).toFixed(1);
+    ok(t0.games_left === 0 && t0.sched.mean === null && t1.games_left === rec2[by].left && (bMean === null ? t1.sched.mean === null : Math.abs(t1.sched.mean - bMean) < 1e-9), "fixture no games left: Utah 0/None, BYU follows its own remaining schedule", [t0.games_left, t0.sched.mean, t1.games_left, t1.sched.mean, rec2[by].left, bMean]);
+    ok(a.card.text.indexOf("Games left " + t0.games_left + " " + t1.games_left) >= 0 && a.card.text.indexOf("Remaining opponents' average KickTip rating " + show(t0.sched.mean) + " " + show(t1.sched.mean)) >= 0, "fixture no games left: tc games-left row matches those facts", a.card && a.card.text.slice(500, 900));
+  }
   const FC = B.fcs, bbyu = idx.byu;
   X = mk((n, d) => { if (n === "sim-bundle") { d.games.forEach(g => { if (g.h === U) g.a = FC; else if (g.a === U) g.h = FC; }); } });
   const NU = B.games.filter(g => g.h === U || g.a === U).length;   // Utah games left in the data (was a fixed 5; 4 after Oct 31)

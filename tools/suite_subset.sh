@@ -6,7 +6,11 @@ run set2b_matcher node tests/set2b_matcher.js $T
 run set2b_data node tests/set2b_data.js $T
 run alive_gate node ../tree/tools/lanes/conf_race_alive/tools/alive_gate.js --root $T   # exit 5 = a conference has an unproven (unknown) team status
 # set2c and set_router2 stay in the repo but are not part of this pre-deploy gate.
-# Their fixtures still assume pre-Holy-War BYU/Utah records and were blocking Saturday publish.
+# Their fixtures still assume pre-Holy-War BYU/Utah records (BYU 1 loss, Utah 0, the game still to play)
+# and were blocking Saturday publish. Do not add them back, and do not add any other check that
+# hardcodes a loss count, an unbeaten flag, or a leftover matchup against the live tree.
+# Expected records in this gate come from that tree's played and remaining games.
+# Replays pinned to tests/fixtures/scn_575 stay here: that snapshot does not move when this week's games finish.
 run set9_polish node tests/set9_polish.js $T
 run worker_dark10 node tests/worker_dark10.mjs $T
 run set_router1 node tests/set_router1.js $T

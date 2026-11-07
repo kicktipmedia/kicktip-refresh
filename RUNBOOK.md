@@ -39,6 +39,8 @@ Steps and exit codes:
 7. Apex and www byte-compare (Accept `*/*`, cache-bust, redirects followed, GET only). Cloudflare's zone email obfuscation strips `<!--email_off-->` on the custom domains, and the compare allows for that. A mismatch gives **22**: FREEZE is written and you roll back to `rollback_id`.
 8. `state.json` is updated atomically (the previous copy goes to `state.prev.json`).
 
+The pre-deploy gate (`tools/suite_subset.sh`) must not include a frozen record fixture. A hardcoded loss count, an "unbeaten" flag, or a leftover matchup (BYU still to play Utah, last week's loss totals) goes stale the moment a game goes final and then blocks kicktipmedia.com. A blocking check has to derive those numbers from the tree's played and remaining games. `set2c` and `set_router2` stay out of this gate until they do that. Replaying a named question against the frozen `suite/tests/fixtures/scn_575` bundle is fine, because that snapshot does not move when this week's games finish. Point those banks at that snapshot only. A weekly handwritten record snapshot is not a deploy blocker.
+
 ## Rollback
 Dashboard → Pages → kicktip → Deployments → `state.rollback_id` → Rollback. You can also use the Pages API rollback endpoint. After a rollback, restore `state.prev.json` to `state.json`.
 

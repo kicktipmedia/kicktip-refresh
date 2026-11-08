@@ -1,6 +1,6 @@
 {
  "note": "ESPN public scoreboard pull; numbers only",
- "pulled_epoch": 1794102806,
+ "pulled_epoch": 1794109308,
  "lines": [
   {
    "id": "401866458",
@@ -8,7 +8,7 @@
    "away": "Western Michigan Broncos",
    "kickoff": "2026-11-11T00:00Z",
    "s": 13.5,
-   "t": 1794102809
+   "t": 1794109311
   },
   {
    "id": "401866459",
@@ -16,7 +16,7 @@
    "away": "Kent State Golden Flashes",
    "kickoff": "2026-11-11T00:00Z",
    "s": -5.5,
-   "t": 1794102809
+   "t": 1794109311
   },
   {
    "id": "401866460",
@@ -24,7 +24,7 @@
    "away": "Ohio Bobcats",
    "kickoff": "2026-11-11T01:00Z",
    "s": -1.5,
-   "t": 1794102809
+   "t": 1794109311
   },
   {
    "id": "401866463",
@@ -32,7 +32,7 @@
    "away": "Massachusetts Minutemen",
    "kickoff": "2026-11-12T00:30Z",
    "s": -14.0,
-   "t": 1794102810
+   "t": 1794109312
   },
   {
    "id": "401866461",
@@ -40,7 +40,7 @@
    "away": "Buffalo Bulls",
    "kickoff": "2026-11-12T00:30Z",
    "s": 3.0,
-   "t": 1794102810
+   "t": 1794109312
   },
   {
    "id": "401866462",
@@ -48,7 +48,7 @@
    "away": "Sacramento State Hornets",
    "kickoff": "2026-11-12T00:30Z",
    "s": -15.5,
-   "t": 1794102810
+   "t": 1794109312
   },
   {
    "id": "401858526",
@@ -56,7 +56,7 @@
    "away": "Illinois Fighting Illini",
    "kickoff": "2026-11-14T02:00Z",
    "s": -9.5,
-   "t": 1794102812
+   "t": 1794109315
   },
   {
    "id": "401858518",
@@ -64,7 +64,7 @@
    "away": "USC Trojans",
    "kickoff": "2026-11-14T20:30Z",
    "s": -7.0,
-   "t": 1794102814
+   "t": 1794109316
   }
  ]
 }

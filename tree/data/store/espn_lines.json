@@ -1,6 +1,6 @@
 {
  "note": "ESPN public scoreboard pull; numbers only",
- "pulled_epoch": 1794109308,
+ "pulled_epoch": 1794116356,
  "lines": [
   {
    "id": "401866458",
@@ -8,7 +8,7 @@
    "away": "Western Michigan Broncos",
    "kickoff": "2026-11-11T00:00Z",
    "s": 13.5,
-   "t": 1794109311
+   "t": 1794116359
   },
   {
    "id": "401866459",
@@ -16,7 +16,7 @@
    "away": "Kent State Golden Flashes",
    "kickoff": "2026-11-11T00:00Z",
    "s": -5.5,
-   "t": 1794109311
+   "t": 1794116359
   },
   {
    "id": "401866460",
@@ -24,7 +24,7 @@
    "away": "Ohio Bobcats",
    "kickoff": "2026-11-11T01:00Z",
    "s": -1.5,
-   "t": 1794109311
+   "t": 1794116359
   },
   {
    "id": "401866463",
@@ -32,7 +32,7 @@
    "away": "Massachusetts Minutemen",
    "kickoff": "2026-11-12T00:30Z",
    "s": -14.0,
-   "t": 1794109312
+   "t": 1794116360
   },
   {
    "id": "401866461",
@@ -40,7 +40,7 @@
    "away": "Buffalo Bulls",
    "kickoff": "2026-11-12T00:30Z",
    "s": 3.0,
-   "t": 1794109312
+   "t": 1794116360
   },
   {
    "id": "401866462",
@@ -48,7 +48,31 @@
    "away": "Sacramento State Hornets",
    "kickoff": "2026-11-12T00:30Z",
    "s": -15.5,
-   "t": 1794109312
+   "t": 1794116360
+  },
+  {
+   "id": "401862824",
+   "home": "South Florida Bulls",
+   "away": "Memphis Tigers",
+   "kickoff": "2026-11-13T01:00Z",
+   "s": 6.5,
+   "t": 1794116362
+  },
+  {
+   "id": "401869969",
+   "home": "UL Monroe Warhawks",
+   "away": "Louisiana Ragin' Cajuns",
+   "kickoff": "2026-11-13T02:00Z",
+   "s": 10.5,
+   "t": 1794116362
+  },
+  {
+   "id": "401858293",
+   "home": "Pittsburgh Panthers",
+   "away": "Florida State Seminoles",
+   "kickoff": "2026-11-14T00:00Z",
+   "s": -3.0,
+   "t": 1794116363
   },
   {
    "id": "401858526",
@@ -56,7 +80,103 @@
    "away": "Illinois Fighting Illini",
    "kickoff": "2026-11-14T02:00Z",
    "s": -9.5,
-   "t": 1794109315
+   "t": 1794116363
+  },
+  {
+   "id": "401856860",
+   "home": "Colorado Buffaloes",
+   "away": "Houston Cougars",
+   "kickoff": "2026-11-14T03:15Z",
+   "s": 10.5,
+   "t": 1794116363
+  },
+  {
+   "id": "401856883",
+   "home": "Georgia Bulldogs",
+   "away": "Missouri Tigers",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": -13.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856864",
+   "home": "Arizona Wildcats",
+   "away": "Utah Utes",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": 2.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856884",
+   "home": "Kentucky Wildcats",
+   "away": "Florida Gators",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": -2.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856885",
+   "home": "LSU Tigers",
+   "away": "Texas Longhorns",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": -4.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856858",
+   "home": "BYU Cougars",
+   "away": "Baylor Bears",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": -6.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856887",
+   "home": "Oklahoma Sooners",
+   "away": "Ole Miss Rebels",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": 2.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856888",
+   "home": "Texas A&M Aggies",
+   "away": "Tennessee Volunteers",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": 3.0,
+   "t": 1794116364
+  },
+  {
+   "id": "401858298",
+   "home": "North Carolina Tar Heels",
+   "away": "Louisville Cardinals",
+   "kickoff": "2026-11-14T05:00Z",
+   "s": 2.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401858296",
+   "home": "Miami Hurricanes",
+   "away": "Duke Blue Devils",
+   "kickoff": "2026-11-14T17:00Z",
+   "s": -15.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401858301",
+   "home": "SMU Mustangs",
+   "away": "Wake Forest Demon Deacons",
+   "kickoff": "2026-11-14T17:00Z",
+   "s": 2.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401856889",
+   "home": "Vanderbilt Commodores",
+   "away": "Alabama Crimson Tide",
+   "kickoff": "2026-11-14T17:45Z",
+   "s": 19.5,
+   "t": 1794116364
   },
   {
    "id": "401858518",
@@ -64,7 +184,31 @@
    "away": "USC Trojans",
    "kickoff": "2026-11-14T20:30Z",
    "s": -7.0,
-   "t": 1794109316
+   "t": 1794116364
+  },
+  {
+   "id": "401858523",
+   "home": "Oregon Ducks",
+   "away": "Michigan Wolverines",
+   "kickoff": "2026-11-14T20:30Z",
+   "s": -8.5,
+   "t": 1794116364
+  },
+  {
+   "id": "401858524",
+   "home": "Penn State Nittany Lions",
+   "away": "Minnesota Golden Gophers",
+   "kickoff": "2026-11-15T00:00Z",
+   "s": -7.0,
+   "t": 1794116364
+  },
+  {
+   "id": "401856882",
+   "home": "Arkansas Razorbacks",
+   "away": "South Carolina Gamecocks",
+   "kickoff": "2026-11-15T00:45Z",
+   "s": 8.5,
+   "t": 1794116364
   }
  ]
 }

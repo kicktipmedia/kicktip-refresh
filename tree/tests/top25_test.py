@@ -59,7 +59,7 @@ shortn = {v["slug"]: v["short"] for v in kb.TEAMS.values()}
 ok("tie on strength: higher Make the 12 first, then name", got[0] == c and got[1:] == sorted([a, d], key=lambda s: shortn[s]), got)
 mk = lambda wk, pub: dict(released=True, week=wk, published=pub, ranks=[dict(r=1, espn=str(next(iter(kb.TEAMS.values()))["espn"]), rec="1-0")])
 mix = kb.build_polls({"polls": {"ap": mk("9", "2026-10-25T19:00Z"), "coaches": mk("8", "2026-10-18T20:00Z")}})["polls"]
-ok("stale rule: AP week 9 + Coaches still week 8 -> Coaches is 'not released yet' (week 8 rank never shown under week 9)", mix["ap"]["released"] and not mix["coaches"]["released"] and "ranks" not in mix["coaches"])
+ok("older week stays visible: AP week 9 and Coaches week 8 are both released, each with its own as-of (a dash would hide the last good Coaches ranks)", mix["ap"]["released"] and mix["coaches"]["released"] and mix["coaches"]["week"] == "8" and "ranks" in mix["coaches"])
 same = kb.build_polls({"polls": {"ap": mk("8", "2026-10-18T21:15Z"), "coaches": mk("8", "2026-10-18T20:00Z")}})["polls"]
 ok("same week: both shown, each with its own MT time (AP Oct 18, 3:15 PM; Coaches Oct 18, 2:00 PM)", same["ap"]["asof"] == "Oct 18, 3:15 PM" and same["coaches"]["asof"] == "Oct 18, 2:00 PM")
 none = kb.build_polls({"polls": {}})["polls"]; ok("no polls file: both 'not released yet'", not none["ap"]["released"] and not none["coaches"]["released"])

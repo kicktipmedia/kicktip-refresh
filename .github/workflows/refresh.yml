@@ -167,8 +167,9 @@ jobs:
       - name: Commit FREEZE if a post-deploy check failed
         if: failure()
         run: |
+          # --autostash: this run leaves other tracked files modified. pull --rebase refuses then, and FREEZE never reaches the remote (same approach as tools/publish_base.sh).
           if [ -e FREEZE ] && ! git ls-files --error-unmatch FREEZE >/dev/null 2>&1; then
-            git add FREEZE && git -c user.name=kicktipmedia -c user.email=kicktipmedia@users.noreply.github.com commit -m "FREEZE after failed post-deploy check" && git pull --rebase && git push; fi
+            git add FREEZE && git -c user.name=kicktipmedia -c user.email=kicktipmedia@users.noreply.github.com commit -m "FREEZE after failed post-deploy check" && git -c user.name=kicktipmedia -c user.email=kicktipmedia@users.noreply.github.com pull --rebase --autostash && git push; fi
       - name: Keep fetched ESPN inputs (box replay with KT_SKIP_FETCH=1)
         if: always() && steps.gate.outputs.changed == '1'
         uses: actions/upload-artifact@v4

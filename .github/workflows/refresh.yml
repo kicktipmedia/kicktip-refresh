@@ -14,6 +14,14 @@ on:
         description: "run even if no result changed"
         type: boolean
         default: false
+      polls_url:
+        description: "Manual dry-run/preview only. Empty uses the real ESPN rankings URL. An unreachable host simulates a failed read and must still publish."
+        type: string
+        default: ""
+      polls_baseline:
+        description: "Manual dry-run/preview only. Set to week10 to pretend the live polls file is week 10. Ignored for production."
+        type: string
+        default: ""
       inputs_run:
         description: "replay the frozen ESPN inputs of this earlier run id (no fetch)"
         type: string
@@ -56,6 +64,8 @@ jobs:
         run: if [ -e FREEZE ]; then echo "FREEZE present:"; cat FREEZE; exit 1; fi
       - uses: actions/setup-python@v5
         with: { python-version: "3.13", cache: pip, cache-dependency-path: tools/requirements.txt }
+      - name: Poll refresh unit tests (offline; a failure does not block publish)
+        run: python3 tree/tests/poll_refresh_test.py || echo "::warning::poll refresh unit tests failed; publish is not blocked"
       - uses: actions/setup-node@v4
         with: { node-version: "20.19.2" }
       - name: Fetch base (live zip + S0) and check sha
@@ -77,6 +87,13 @@ jobs:
       - name: Failed-input hold (restore)
         uses: actions/cache/restore@v4
         with: { path: hold, key: "refresh-hold-${{ github.run_id }}", restore-keys: "refresh-hold-" }
+      # AP / Coaches. Always exits 0. A newer poll can start a run when scores did not change; a bad read never does.
+      - name: Polls (ESPN, last good, never fails)
+        id: polls
+        env:
+          KT_POLLS_URL: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_url || '' }}
+          KT_POLLS_BASELINE: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_baseline || '' }}
+        run: tools/polls_step.sh
       - name: Pull ESPN and decide (cheap gate)
         id: gate
         run: |
@@ -97,6 +114,8 @@ jobs:
           echo "fp $OLD -> $FP; lines fp $LFP0 -> $LFP (pulled epoch $LEP, live $LEP0, changed=$LCHG)"
           if [ "$FP" = "$OLD" ] && [ $LCHG = 0 ] && [ "${{ inputs.force }}" != "true" ]; then
             if [ "${{ steps.ranks.outputs.ranks_force }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
+            elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ] && [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ]; then echo "changed=0" >> $GITHUB_OUTPUT; echo "Polls are newer, but inputs $INHASH already failed once; waiting for new results or force=true." >> $GITHUB_STEP_SUMMARY
+            elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "polls_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; polls are newer: run." >> $GITHUB_STEP_SUMMARY
             else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff/spread: skip." >> $GITHUB_STEP_SUMMARY; fi
           elif [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ] && [ "${{ inputs.force }}" != "true" ]; then
             echo "changed=0" >> $GITHUB_OUTPUT; echo "Held: inputs $INHASH already failed once; waiting for new results or spreads (force=true overrides)." >> $GITHUB_STEP_SUMMARY
@@ -115,10 +134,13 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          KT_POLLS_URL: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_url || '' }}
+          KT_POLLS_BASELINE: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_baseline || '' }}
         run: |
           A=""; case "${{ inputs.deploy_target || 'production' }}" in preview) A="--preview-only";; none) A="--no-deploy";; esac
           [ "${{ inputs.force }}" = "true" ] && A="$A --force"
           [ "${{ steps.gate.outputs.ranks_only }}" = "1" ] && A="$A --force"
+          [ "${{ steps.gate.outputs.polls_only }}" = "1" ] && A="$A --force"
           export KT_RANKS="${{ steps.ranks.outputs.ranks_out }}"
           tools/auto_refresh.sh $A
       - name: Record new live base
@@ -164,5 +186,6 @@ jobs:
             runs/*/*.log
             runs/*/*.txt
             runs/*/*.json
+            polls/cur/step.log
             tree/data/out/run_meta.json
             runs/*/crops-*/*-top.png

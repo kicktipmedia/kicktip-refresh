@@ -1,5 +1,7 @@
-"""KickTip Top 25 refresh step: AP Top 25 and Coaches Poll ranks from ESPN's free public rankings feed.
+"""Manual writer for data/out/polls.json (the build.py input). The scheduled refresh does not call this file.
     python3 src/polls.py && python3 src/build.py
+The publish path is src/poll_refresh.py, run from tools/auto_refresh.sh before apply_data. That path writes the
+page shape, compares it to the live data/polls.json, and never blocks a publish.
 Writes data/out/polls.json (static; the browser never calls ESPN). Fail-soft: if the feed is down or a poll is missing, the previous file is kept and
 nothing is invented; a poll the feed does not carry is written as released=false (the page then says "not released yet").
 Each poll keeps its OWN publication time (ESPN's lastUpdated, UTC) and week: the page prints that, never our refresh time, and never carries a rank from a

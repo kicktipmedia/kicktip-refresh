@@ -374,15 +374,14 @@ def build_top25(mid, pt_):
     return dict(model=mid, rank_by=TOP25_RANK_BY, asof=MODEL_ASOF.strftime("%b %-d, %-I:%M %p"), teams=[r[3] for r in rows])
 def build_polls(src=None):
     """data/polls.json for the page, from data/out/polls.json (python3 src/polls.py): ESPN ids become our slugs and each poll's own publication time is turned into an MT label. A poll that is missing or
-    unreleased is written released=false, and the page then shows 'not released yet' and dashes (it never shows another week's poll under this one)."""
+    unreleased is written released=false. An older week than the other poll is still written: the page shows each poll's own as-of, and hiding it would replace the last good ranks with a dash.
+    The scheduled refresh does not use this function's file. src/poll_refresh.py writes the live shape and apply_data merges it, with the live file as the baseline."""
     if src is None: src = json.load(open(f"{OUTD}/polls.json")) if os.path.exists(f"{OUTD}/polls.json") else {"polls": {}}
-    wk = [int(q["week"]) for q in src["polls"].values() if q.get("released") and q.get("week")]
     if not src["polls"]: print("WARNING: data/out/polls.json missing; run python3 src/polls.py. The page will say the polls are not released yet.")
     esp = {str(v["espn"]): v["slug"] for v in TEAMS.values()}; out = {}
     for k, label in (("ap", "AP Top 25"), ("coaches", "Coaches Poll")):
         q = src["polls"].get(k)
-        if not q or not q.get("released") or not q.get("published") or (wk and int(q["week"]) < max(wk)):   # an older week than the other poll's is "not released yet": last week's rank never sits in this week's column
-            if q and q.get("released") and wk and int(q["week"]) < max(wk): print(f"NOTE: {label} is still week {q['week']} while the other poll is week {max(wk)}: shown as not released yet")
+        if not q or not q.get("released") or not q.get("published"):
             out[k] = dict(name=label, released=False); continue
         pub = dt.datetime.strptime(q["published"], "%Y-%m-%dT%H:%MZ").replace(tzinfo=dt.timezone.utc).astimezone(MT)
         un = [x for x in q["ranks"] if str(x["espn"]) not in esp]

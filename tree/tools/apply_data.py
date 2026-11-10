@@ -5,6 +5,9 @@ usage: apply_data.py --base-zip Z [--base-sha SHA] --s0 <pipeline site built fro
 Method (same as toolbox9c, generalised):
  1. extract base; old as-of = base data/sim-bundle as_of (must equal S0's), new = S1's.
  2. 3-way merge live + (S0 -> S1) per file (tools/merge3.py: JSON leaf-wise, HTML git merge-file); any conflict = exit 2.
+    Polls: data/polls.json is pinned so the live file is the comparison baseline (S0). --polls replaces S1 only when
+    that candidate is newer and valid (src/poll_refresh.py). A bad or missing candidate keeps the live file and never fails the run.
+    --polls-baseline is a dry-run hook and is ignored unless KT_ALLOW_POLLS_BASELINE=1.
  3. post-fixes the live builds apply: ' (model)' strip, 'time TBA' -> 'time TBD'.
  4. regenerate derived data: tile-data, data/tb/* (conf-bids, conf-outcome, team-stats, history, resume, ccg-games, needs-by-record,
     path-by-stage, trend, ccg-alive, ccg-paths + per-conf split, cfp-rankings).
@@ -42,6 +45,17 @@ def build_once(tmp, a, network):
     with zipfile.ZipFile(a.base_zip) as z: names = z.namelist(); z.extractall(base)
     BAKE = os.path.exists(base + '/assets/stamp.js')   # nojs1: base carries baked numbers -> unbake so the 3-way merge sees pipeline-shaped HTML; re-baked after step 4
     if BAKE: run(['node', HERE + '/bake_static.js', base, '--unbake'], env, 'unbake')
+    # Dry-run only: pretend the live polls file is an older baseline so a pickup can be proved without touching the zip.
+    if a.polls_baseline:
+        if os.environ.get('KT_ALLOW_POLLS_BASELINE') != '1':
+            print('WARNING polls: --polls-baseline ignored (allowed only on a dry run or preview)')
+        elif not os.path.isfile(a.polls_baseline):
+            print('WARNING polls: --polls-baseline file missing; using the real live file')
+        elif not os.path.isfile(base + '/data/polls.json'):
+            print('WARNING polls: live data/polls.json missing; baseline override skipped')
+        else:
+            print('polls: DRY-RUN baseline override; the live zip on disk is not modified')
+            shutil.copyfile(a.polls_baseline, base + '/data/polls.json')
     shutil.copytree(base, out)
     B0 = json.load(open(base + '/data/sim-bundle.json'))['as_of']; S0a = json.load(open(a.s0 + '/data/sim-bundle.json'))['as_of']; S1a = json.load(open(a.s1 + '/data/sim-bundle.json'))['as_of']
     if B0 != S0a: die(3, 'base as_of %s != s0 as_of %s (wrong S0 pipeline site)' % (B0, S0a))
@@ -56,6 +70,14 @@ def build_once(tmp, a, network):
                 if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
         return dst
     S0N = norm(a.s0, os.path.join(tmp, 's0n')); S1N = norm(a.s1, os.path.join(tmp, 's1n'))   # locals: build_once runs twice on the same args
+    # Polls ride the 3-way merge: S0 becomes the live file (the baseline) and S1 the accepted update.
+    # The pipeline build's released=false copy is not the baseline. A poll problem is a warning, never a failed publish.
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(HERE), 'src'))
+        import poll_refresh
+        poll_refresh.inject_polls(base, S0N, S1N, a.polls)
+    except Exception as e:
+        print('WARNING polls: could not stage polls for the merge (%s); the pipeline copies are left as built' % e)
     # 2. merge
     rep_p = os.path.join(tmp, 'merge.json')
     run([sys.executable, HERE + '/merge3.py', base, S0N, S1N, out, rep_p, json.dumps(list(zip(F0[:4], F1[:4])))], env, 'merge3')
@@ -159,7 +181,10 @@ def build_once(tmp, a, network):
     return z_out, {'base_asof': B0, 'new_asof': S1a, 'changed': changed, 'deleted': deleted, 'merge': {k: len(v) for k, v in rep.items()}, 'entries': len(of)}, out
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('--base-zip', required=True); ap.add_argument('--base-sha'); ap.add_argument('--s0', required=True); ap.add_argument('--s1', required=True)
-    ap.add_argument('--pipeline', required=True); ap.add_argument('--out', required=True); ap.add_argument('--report'); ap.add_argument('--site-out'); ap.add_argument('--no-network', action='store_true'); ap.add_argument('--ranks'); a = ap.parse_args()
+    ap.add_argument('--pipeline', required=True); ap.add_argument('--out', required=True); ap.add_argument('--report'); ap.add_argument('--site-out'); ap.add_argument('--no-network', action='store_true'); ap.add_argument('--ranks')
+    ap.add_argument('--polls', help='page-shaped polls.json; applied only when newer than the live file, per poll')
+    ap.add_argument('--polls-baseline', help='dry-run only (KT_ALLOW_POLLS_BASELINE=1): replace the extracted live polls before the merge')
+    a = ap.parse_args()
     if a.base_sha and sha(rd(a.base_zip)) != a.base_sha: die(3, 'base zip sha %s != expected' % sha(rd(a.base_zip)))
     res = []; OG_CACHE = tempfile.mkdtemp(prefix='kt-og-cache-')
     for tag in 'AB':

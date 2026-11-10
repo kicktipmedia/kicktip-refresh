@@ -48,9 +48,22 @@ timeout 600 python3 src/build.py > $RD/build.log 2>&1 || fail 15 "build.py faile
 ASOF=$(python3 -c "import json;print(json.load(open('build/site/data/sim-bundle.json'))['as_of'])")
 [ "$ASOF" != "$OLD_ASOF" ] || fail 15 "new build as_of equals live as_of ($ASOF)"
 SNAP=$R/pipeline/$(echo "$ASOF" | sed 's/ MT//;s/ /_/;s/://'); rm -rf $SNAP; mkdir -p $SNAP; cp -r build/site $SNAP/site
+# 2c. AP / Coaches polls. Never blocks: a timeout, bad feed, or unmapped team keeps the last good file and the scores still publish.
+POLL_CAND=""; POLL_BASE=""; PA=""
+timeout 50 python3 src/poll_refresh.py --zip "$ZIP" --out $RD/polls.json --baseline-out $RD/polls-baseline.json > $RD/polls.log 2>&1 || say "WARNING polls: step crashed; keeping the last good polls file"
+cat $RD/polls.log
+if grep -q '^POLLS_CHANGED=1$' $RD/polls.log && [ -f $RD/polls.json ]; then POLL_CAND=$RD/polls.json; fi
+if grep -q '^POLLS_BASELINE=' $RD/polls.log && [ -f $RD/polls-baseline.json ]; then POLL_BASE=$RD/polls-baseline.json; fi
+[ -n "$POLL_CAND" ] && PA="$PA --polls $POLL_CAND"
+if [ -n "$POLL_BASE" ]; then
+  if [ $NODEPLOY = 1 ] || [ $PREVONLY = 1 ]; then PA="$PA --polls-baseline $POLL_BASE"; export KT_ALLOW_POLLS_BASELINE=1
+  else say "WARNING polls: baseline override ignored on a production deploy"; fi
+fi
 # 3. apply onto live
 python3 $TREE/tools/apply_data.py --base-zip "$ZIP" --base-sha "$LIVE_SHA" --s0 "$S0" --s1 $SNAP/site --pipeline $TREE \
-  --out $RD/kicktip-site.zip --report $RD/report.json --site-out $RD/site ${KT_RANKS:+--ranks "$KT_RANKS"} > $RD/apply.log 2>&1 || fail 16 "apply_data: $(grep -h 'APPLY_DATA FAIL' $RD/apply.log | tail -n 1)"
+  --out $RD/kicktip-site.zip --report $RD/report.json --site-out $RD/site ${KT_RANKS:+--ranks "$KT_RANKS"} $PA > $RD/apply.log 2>&1 || fail 16 "apply_data: $(grep -h 'APPLY_DATA FAIL' $RD/apply.log | tail -n 1)"
+grep -E '^(polls:|WARNING polls:)' $RD/apply.log || true
+python3 src/poll_refresh.py --check-site "$RD/site" || say "WARNING polls: baked-HTML check could not run"
 NEW_SHA=$(sha256sum $RD/kicktip-site.zip | cut -d' ' -f1)
 rm -rf $RD/deploy; mkdir $RD/deploy; (cd $RD/deploy && unzip -q ../kicktip-site.zip) || fail 16 "unzip"
 diff -rq $RD/deploy $RD/site >/dev/null || fail 16 "deploy dir != zip"

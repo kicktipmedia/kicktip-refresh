@@ -6,7 +6,7 @@
 #   --no-deploy    build + all checks, no Cloudflare calls except the read-only guard GET (dry run)
 #   --force        run even if results did not change
 # exit: 0 ok/skip, 10 locked, 11 FREEZE, 12 state/base bad, 13 ESPN pull, 14 models, 15 build, 16 apply_data, 17 checks,
-#       18 preview, 20 guard, 21 prod deploy, 22 post-deploy byte-compare (FREEZE written; rollback = state.rollback_id)
+#       18 preview, 20 guard, 21 prod deploy, 22 pages.dev byte-compare mismatch (FREEZE; edge lag records the base, rollback = state.rollback_id)
 set -uo pipefail
 R=${KT_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}; TOOLS=$R/tools; NODEPLOY=0; FORCE=0; PREVONLY=0
 for a in "$@"; do case $a in --no-deploy) NODEPLOY=1;; --force) FORCE=1;; --preview-only) PREVONLY=1;; *) echo "unknown arg $a"; exit 2;; esac; done
@@ -99,20 +99,16 @@ C=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.c
 timeout 900 $WR pages deploy $RD/deploy --project-name $PROJ --branch main --commit-dirty=true > $RD/prod.log 2>&1 || fail 21 "prod deploy (no retry): $(tail -n 3 $RD/prod.log)"
 NEW_ID=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts/$ACCT/pages/projects/$PROJ | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
 grep -q "${NEW_ID:0:8}" $RD/prod.log || fail 21 "canonical $NEW_ID is not this deploy"
-# 7. verify
-sleep 20
-for H in https://kicktipmedia.com https://www.kicktipmedia.com; do
-  python3 $TOOLS/bytecmp.py $RD/deploy $H >> $RD/bytecmp-live.txt || { echo "byte-compare failed after deploy $NEW_ID run $RUN; rollback to $LIVE_ID" > $R/FREEZE; fail 22 "live byte-compare $H failed; FREEZE written; rollback id $LIVE_ID"; }
-done
+# 7. verify. A custom-domain edge can serve the previous deploy for a couple of minutes.
+# Retry cache-busted compares over that window. Only a pages.dev mismatch writes FREEZE;
+# when pages.dev matches, the deploy is good and step 8 records the live base (the next guard needs it).
+PAGES=$(grep -o 'https://[0-9a-f]\{8\}\.kicktip\.pages\.dev' $RD/prod.log | grep -F "${NEW_ID:0:8}" | head -n 1 || true)
+[ -n "$PAGES" ] || PAGES="https://${NEW_ID:0:8}.kicktip.pages.dev"
+TAG=$(bash $TOOLS/live_verify.sh $RD/deploy $RD/bytecmp-live.txt "$PAGES" $R/FREEZE "$NEW_ID" "$RUN" "$LIVE_ID") || fail 22 "live byte-compare failed; FREEZE written; rollback id $LIVE_ID"
+if [ "$TAG" != ok ] && [ "$TAG" != edge-lag ]; then fail 22 "live byte-compare failed; FREEZE written; rollback id $LIVE_ID"; fi
+if [ "$TAG" = edge-lag ]; then say "WARNING: apex/www still mismatched after retries; $PAGES matches the build; recording the live base, no FREEZE"; fi
 python3 $TOOLS/crops.py https://kicktipmedia.com $RD/crops-live > $RD/crops-live.txt 2>&1
-# 8. state
-python3 - <<P || fail 22 "state.json write failed"
-import json,os
-s=json.load(open('$R/state.json')); json.dump(s,open('$R/state.prev.json','w'),indent=1)
-rel=lambda x: os.path.relpath(x,'$R') if os.environ.get('KT_RELATIVE') else x
-s.update(live_id='$NEW_ID',live_sha='$NEW_SHA',zip_path=rel('$RD/kicktip-site.zip'),site_dir=rel('$RD/deploy'),as_of='$ASOF',s0_pipeline_site=rel('$SNAP/site'),
-         results_fp='$FP1',lines_fp='$LFP1',lines_epoch=int('$LEP1'),completed=int('$DONE'),rollback_id='$LIVE_ID',deployed_at=__import__('datetime').datetime.now().astimezone().isoformat(timespec='seconds'),run='$RUN')
-json.dump(s,open('$R/state.json.tmp','w'),indent=1); os.replace('$R/state.json.tmp','$R/state.json')
-P
+# 8. state (same write on a clean compare and on edge-lag)
+export KT_ROOT=$R RD NEW_ID NEW_SHA ASOF FP1 DONE LFP1 LEP1 SNAP LIVE_ID RUN
+bash $TOOLS/record_live.sh || fail 22 "state.json write failed"
 say "LIVE $NEW_ID sha $NEW_SHA as_of $ASOF (rollback $LIVE_ID)"
-echo "{\"run\":\"$RUN\",\"exit\":0,\"live_id\":\"$NEW_ID\",\"sha\":\"$NEW_SHA\",\"as_of\":\"$ASOF\",\"fp\":\"$FP1\",\"lines_fp\":\"$LFP1\",\"lines_epoch\":$LEP1,\"completed\":$DONE,\"zip\":\"$RD/kicktip-site.zip\",\"s0\":\"$SNAP/site\"}" > $RD/result.json

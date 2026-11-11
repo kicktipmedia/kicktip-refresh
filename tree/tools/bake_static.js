@@ -69,19 +69,21 @@ function pathRows(k) { const pp = PP.t && PP.t[k]; if (!pp || !pp.rows.length) r
 /* ---- ported 1:1 from assets/top25.js ---- */
 const PN = { ap: 'AP', coaches: 'Coaches' };
 const pctSay = (s) => s === '<1%' ? 'less than 1%' : s === '>99%' ? 'more than 99%' : s;
-function pollState(k) { const p = POLLS && POLLS.polls && POLLS.polls[k]; if (!p || !p.released) return { on: false, rank: {}, asof: '' }; const m = {}; p.ranks.forEach((x) => { m[x[1]] = x[0]; }); return { on: true, rank: m, asof: p.asof }; }
-const ps = { ap: pollState('ap'), coaches: pollState('coaches') };
+function pollState(k) { const p = POLLS && POLLS.polls && POLLS.polls[k]; if (!p || !p.released || !Array.isArray(p.ranks)) return { on: false, rank: {}, asof: '' }; const m = {}; p.ranks.forEach((x) => { m[x[1]] = x[0]; }); return { on: true, rank: m, asof: p.asof }; }
+const ps = { ap: pollState('ap'), coaches: pollState('coaches'), cfp: pollState('cfp') };
 const pv = (s, slug) => !s.on ? '\u2014' : s.rank[slug] === undefined ? 'NR' : String(s.rank[slug]);
 const say = (s, k, slug) => !s.on ? PN[k] + ' not released yet' : s.rank[slug] === undefined ? 'not ranked by ' + PN[k] : PN[k] + ' ' + s.rank[slug];
-const label = (nm, kt, rec, slug, p) => nm + ', KickTip rank ' + kt + '. Record ' + rec + '. ' + say(ps.ap, 'ap', slug) + ', ' + say(ps.coaches, 'coaches', slug) + '. Chance to make the 12-team playoff field ' + pctSay(p) + '.';
+function cfpBit(slug) { const s = ps.cfp; if (!s.on) return ''; return ' \u00b7 CFP ' + (s.rank[slug] === undefined ? '\u2014' : String(s.rank[slug])); }
+function cfpSay(slug) { const s = ps.cfp; if (!s.on) return ''; return s.rank[slug] === undefined ? ', outside the CFP 25' : ', CFP ' + s.rank[slug]; }
+const label = (nm, kt, rec, slug, p) => nm + ', KickTip rank ' + kt + '. Record ' + rec + '. ' + say(ps.ap, 'ap', slug) + ', ' + say(ps.coaches, 'coaches', slug) + cfpSay(slug) + '. Chance to make the 12-team playoff field ' + pctSay(p) + '.';
 function t25row(e, kt, lazy) {
   const slug = e[0], t = T[slug], nm = t.n, rec = e[1] + '-' + e[2], p = pct(t.p);
   return '<li><a class="h25-r" href="/team/' + slug + '/" aria-label="' + esc(label(nm, kt, rec, slug, p)) + '"><span class="h25-rk" aria-hidden="true">' + kt + '</span>' + LG.team(slug, 44, lazy) +
-    '<span class="h25-tx" aria-hidden="true"><span class="h25-nm">' + esc(nm) + '</span><span class="h25-sb">' + rec + ' \u00b7 AP ' + pv(ps.ap, slug) + ' \u00b7 Coaches ' + pv(ps.coaches, slug) + '</span></span>' +
+    '<span class="h25-tx" aria-hidden="true"><span class="h25-nm">' + esc(nm) + '</span><span class="h25-sb">' + rec + ' \u00b7 AP ' + pv(ps.ap, slug) + ' \u00b7 Coaches ' + pv(ps.coaches, slug) + cfpBit(slug) + '</span></span>' +
     '<span class="h25-pc" aria-hidden="true"><b>' + p + '</b><small>playoff field</small></span></a></li>';
 }
 const mtS = (s) => { s = String(s); return /\d:\d\d|[ap]\.?m\b/i.test(s) && !/\bMT$/.test(s) ? s + ' MT' : s; };
-const t25asof = () => { const one = (k) => ps[k].on ? PN[k] + ' poll as of ' + esc(mtS(ps[k].asof)) + '.' : PN[k] + ' poll: not released yet.'; return '<span>' + one('ap') + ' ' + one('coaches') + '</span>'; };
+const t25asof = () => { const one = (k) => ps[k].on ? PN[k] + ' poll as of ' + esc(mtS(ps[k].asof)) + '.' : PN[k] + ' poll: not released yet.'; const cfp = ps.cfp.on && ps.cfp.asof ? ' CFP, ' + esc(mtS(ps.cfp.asof)) + '.' : ''; return '<span>' + one('ap') + ' ' + one('coaches') + cfp + '</span>'; };
 
 
 /* ---- audit2: game cells, ported 1:1 from assets/kt.js fillGame/lineInfo/mkCell/lnBlock (default model = data/pred-games.json).
@@ -216,6 +218,10 @@ for (const f of files) {
     t = rep1(t, /(<ol class="h25-l h25-ph" data-t25l[^>]*>)(<\/ol>)/, (m, a, b) => a + mk(0, top.slice(0, 5).map((e, i) => t25row(e, i + 1, false)).join('')) + b, 't25l', rel);
     t = rep1(t, /(<ol class="h25-l" start="6"[^>]*data-t25r>)(<\/ol>)/, (m, a, b) => a + mk(0, top.slice(5).map((e, i) => t25row(e, i + 6, true)).join('')) + b, 't25r', rel);
     t = rep1(t, /(<p class="h25-asof" data-t25asof>)(<\/p>)/, (m, a, b) => upd('h25-upd') + a + mk(0, t25asof()) + b, 't25asof', rel);
+    if (ps.cfp.on) {
+      t = t.replace('Compared with the AP and Coaches polls.', 'Compared with the AP and Coaches polls and the CFP rankings.');
+      t = t.replace('NR means not ranked by that poll.', 'NR means not ranked by that poll. A dash means not in the CFP 25.');
+    }
     t = rep1(t, /(<table id="top12">[\s\S]*?<tbody>)(<\/tbody>)/, (m, a, b) => a + mk(0, topRows()) + b, 'top12', rel);
     t = rep1(t, /(<table id="fieldseeds" class="fld">[\s\S]*?<tbody>)(<\/tbody>)(<\/table><\/div>)/, (m, a, b, c) => a + mk(0, fieldRows()) + b + c, 'fieldseeds', rel);
     t = afterVroot(t, rel);

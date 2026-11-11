@@ -1,0 +1,33 @@
+{
+  "source": "https://collegefootballplayoff.com/news/2026/11/10/rankings",
+  "date": "2026-11-10",
+  "asof": "Nov 10",
+  "note": "Copied from the official CFP selection committee rankings table on that page: current rank, team name and overall record, as printed. Used only when a later fetch fails and the live file has nothing newer.",
+  "ranks": [
+    [1, "Georgia", "8-1"],
+    [2, "Utah", "9-0"],
+    [3, "Alabama", "7-2"],
+    [4, "UCLA", "9-0"],
+    [5, "Notre Dame", "8-1"],
+    [6, "Texas", "7-2"],
+    [7, "Miami", "8-1"],
+    [8, "Tennessee", "7-2"],
+    [9, "Indiana", "8-1"],
+    [10, "BYU", "7-2"],
+    [11, "Kentucky", "7-2"],
+    [12, "Texas Tech", "8-1"],
+    [13, "Wake Forest", "8-1"],
+    [14, "Houston", "7-2"],
+    [15, "Iowa", "7-2"],
+    [16, "Oregon", "6-3"],
+    [17, "South Carolina", "6-3"],
+    [18, "USC", "7-2"],
+    [19, "Ole Miss", "6-3"],
+    [20, "Ohio State", "6-3"],
+    [21, "LSU", "6-3"],
+    [22, "Missouri", "6-3"],
+    [23, "Arizona", "7-2"],
+    [24, "Boise State", "8-1"],
+    [25, "Oklahoma State", "6-3"]
+  ]
+}

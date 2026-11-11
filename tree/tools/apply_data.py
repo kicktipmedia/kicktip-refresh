@@ -136,6 +136,13 @@ def build_once(tmp, a, network):
             if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
     # 5a. merged build: re-derive the polish chances-card record line from the merged page text (else a refresh leaves it stale)
     if os.path.exists(out + '/assets/polish.js'): run([sys.executable, HERE + '/polish_refresh.py', out], env, 'polish-refresh')
+    # CFP ranks on the home Top 25 block. The home script is not the pipeline copy, so the patch runs on the merged site.
+    # A missing marker is a warning. It does not fail the publish.
+    try:
+        import cfp_refresh
+        cfp_refresh.patch_site(out)
+    except Exception as e:
+        print('WARNING polls: CFP display patch failed (%s)' % e)
     # 5b. nojs1: bake default-model numbers + exact 'Updated' stamps into static HTML from the regenerated data (after step 5 so every data-asof is already new), then verify nothing is stale
     if BAKE:
         run(['node', HERE + '/bake_static.js', out, '--check'], env, 'bake-static')
@@ -159,6 +166,16 @@ def build_once(tmp, a, network):
     for rel in sorted(of):
         if rel in bf and sha(rd(of[rel])) == bf[rel]: continue
         if rel == '_worker.js': die(3, '_worker.js changed')
+        if rel in ('assets/top25.js', 'assets/top25.css'):
+            try:
+                import cfp_refresh
+                base_t = open(base + '/' + rel, encoding='utf-8').read()
+                out_t = open(of[rel], encoding='utf-8').read()
+                if out_t == cfp_refresh.patch_text(rel, base_t):
+                    changed[rel] = 'cfp display'
+                    continue
+            except Exception as e:
+                print('WARNING polls: CFP display allow check failed (%s)' % e)
         if rel.endswith('.html'): changed[rel] = 'html: data/stamps/tokens'
         elif rel.startswith('data/'): changed[rel] = 'data'
         elif OGC and OGRE.match(rel): changed[rel] = 'og card'

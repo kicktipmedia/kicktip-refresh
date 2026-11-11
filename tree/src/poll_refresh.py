@@ -1,4 +1,4 @@
-"""Scheduled AP Top 25 and Coaches Poll refresh.
+"""Scheduled AP Top 25, Coaches Poll, and CFP committee rankings refresh.
 
 Reads ESPN's free public rankings feed and writes data/polls.json in the shape the
 site already ships: name, released, week, asof, pub, ranks [place, slug, record].
@@ -229,6 +229,8 @@ def apply_feed(live, ids, feed):
             continue
         logs.append("polls: %s updated %s -> week %s pub %s" % (label, brief(old), new["week"], new["pub"]))
         out[key] = new
+    import cfp_refresh
+    cfp_refresh.preserve(live_polls, out)
     merged = {"polls": out}
     return merged, merged != live, logs
 
@@ -293,6 +295,11 @@ def merge_candidate(live, cand):
             continue
         logs.append("polls: %s candidate accepted, %s -> week %s pub %s" % (label, brief(old), new["week"], new["pub"]))
         out[key] = new
+    import cfp_refresh
+    cfp_val, cfp_logs = cfp_refresh.merge_key(live_polls, cand.get("polls") if isinstance(cand, dict) else None)
+    logs.extend(cfp_logs)
+    if cfp_val is not None:
+        out["cfp"] = cfp_val
     merged = {"polls": out}
     return merged, merged != live, logs
 
@@ -355,7 +362,9 @@ def degrade_to_week(live, week="10"):
     """A copy of a page file rewound one publication, for a dry-run pickup proof. Does not touch the live zip."""
     o = copy.deepcopy(live)
     target = int(week)
-    for p in (o.get("polls") or {}).values():
+    for key, p in list((o.get("polls") or {}).items()):
+        if key == "cfp":
+            continue
         if not isinstance(p, dict) or p.get("released") is not True:
             continue
         pub = parse_pub(str(p.get("pub") or ""))
@@ -377,7 +386,14 @@ def asof_line(polls):
         if re.search(r"\d:\d\d|[ap]\.?m\b", stamp, re.I) and not stamp.endswith(" MT"):
             stamp += " MT"
         return "%s poll as of %s." % (nm, stamp)
-    return one("ap", "AP") + " " + one("coaches", "Coaches")
+    line = one("ap", "AP") + " " + one("coaches", "Coaches")
+    cfp = (polls.get("polls") or {}).get("cfp") or {}
+    if cfp.get("released") and str(cfp.get("asof") or "").strip():
+        stamp = str(cfp.get("asof") or "")
+        if re.search(r"\d:\d\d|[ap]\.?m\b", stamp, re.I) and not stamp.endswith(" MT"):
+            stamp += " MT"
+        line += " CFP, %s." % stamp
+    return line
 
 
 def cell(polls, slug):
@@ -389,7 +405,16 @@ def cell(polls, slug):
             if isinstance(row, list) and len(row) >= 2 and row[1] == slug:
                 return str(row[0])
         return "NR"
-    return "AP %s \u00b7 Coaches %s" % (pv("ap"), pv("coaches"))
+    bit = "AP %s \u00b7 Coaches %s" % (pv("ap"), pv("coaches"))
+    cfp = (polls.get("polls") or {}).get("cfp") or {}
+    if cfp.get("released"):
+        rank = None
+        for row in cfp.get("ranks") or []:
+            if isinstance(row, list) and len(row) >= 2 and row[1] == slug:
+                rank = str(row[0])
+                break
+        bit += " \u00b7 CFP %s" % (rank if rank else "\u2014")
+    return bit
 
 
 def check_baked(site):
@@ -458,6 +483,7 @@ def _main(argv):
     ap.add_argument("--fail", default="", help="timeout or http; off unless set")
     ap.add_argument("--ids", default="")
     ap.add_argument("--check-site", help="compare baked home HTML to data/polls.json; always exits 0")
+    ap.add_argument("--cfp", action="store_true", help="also refresh the CFP committee rankings; a failure stays a warning")
     ap.add_argument("--timeout", type=float, default=15)
     a = ap.parse_args(argv)
     if a.check_site:
@@ -537,6 +563,30 @@ def _main(argv):
                 _write(a.baseline_out, base)
                 wrote_base = True
                 print("POLLS_BASELINE=%s" % os.path.abspath(a.baseline_out))
+    if a.cfp or os.environ.get("KT_CFP") == "1":
+        try:
+            import cfp_refresh
+            names = cfp_refresh.load_names(a.ids or None)
+            fail_cfp = (os.environ.get("KT_CFP_FAIL") or "").strip()
+            html = html_url = feed_cfp = None
+            html_path = (os.environ.get("KT_CFP_HTML") or "").strip()
+            feed_path = (os.environ.get("KT_CFP_FEED") or "").strip()
+            if html_path and not fail_cfp:
+                html = open(html_path, encoding="utf-8").read()
+                html_url = (os.environ.get("KT_CFP_URL") or "").strip()
+            if feed_path and not fail_cfp:
+                feed_cfp = json.load(open(feed_path, encoding="utf-8"))
+            elif feed is not None and not fail_cfp and not (a.url or os.environ.get("KT_POLLS_URL")):
+                feed_cfp = feed
+            src = cfp_refresh.read_sources(
+                names, ids, cfp_refresh.denver_today(), html=html, html_url=html_url, feed=feed_cfp,
+                fail=fail_cfp, timeout=8, network=not fail_cfp and html is None)
+            use, cfp_changed, cfp_logs = cfp_refresh.apply(use, names, ids, **src)
+            for line in cfp_logs:
+                print(line)
+            use_changed = use_changed or cfp_changed
+        except Exception as e:
+            print("WARNING polls: CFP step failed (%s); keeping the last good rankings" % e)
     if use_changed and a.out:
         _write(a.out, use)
         print("POLLS_OUT=%s" % os.path.abspath(a.out))

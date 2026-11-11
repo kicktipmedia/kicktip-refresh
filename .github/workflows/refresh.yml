@@ -66,6 +66,8 @@ jobs:
         with: { python-version: "3.13", cache: pip, cache-dependency-path: tools/requirements.txt }
       - name: Poll refresh unit tests (offline; a failure does not block publish)
         run: python3 tree/tests/poll_refresh_test.py || echo "::warning::poll refresh unit tests failed; publish is not blocked"
+      - name: CFP refresh unit tests (offline; a failure does not block publish)
+        run: python3 tools/tests/cfp_refresh_test.py || echo "::warning::CFP refresh unit tests failed; publish is not blocked"
       - uses: actions/setup-node@v4
         with: { node-version: "20.19.2" }
       - name: Fetch base (live zip + S0) and check sha
@@ -87,8 +89,9 @@ jobs:
       - name: Failed-input hold (restore)
         uses: actions/cache/restore@v4
         with: { path: hold, key: "refresh-hold-${{ github.run_id }}", restore-keys: "refresh-hold-" }
-      # AP / Coaches. Always exits 0. A newer poll can start a run when scores did not change; a bad read never does.
-      - name: Polls (ESPN, last good, never fails)
+      # AP / Coaches and the CFP committee rankings. Always exits 0. A newer poll can start a run when scores did not change; a bad read never does.
+      # CFP is not a failed input and does not write the hold file. Before the first committee release the step is a no-op.
+      - name: Polls and CFP (last good, never fails)
         id: polls
         env:
           KT_POLLS_URL: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_url || '' }}

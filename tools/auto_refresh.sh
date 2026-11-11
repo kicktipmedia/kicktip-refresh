@@ -48,9 +48,10 @@ timeout 600 python3 src/build.py > $RD/build.log 2>&1 || fail 15 "build.py faile
 ASOF=$(python3 -c "import json;print(json.load(open('build/site/data/sim-bundle.json'))['as_of'])")
 [ "$ASOF" != "$OLD_ASOF" ] || fail 15 "new build as_of equals live as_of ($ASOF)"
 SNAP=$R/pipeline/$(echo "$ASOF" | sed 's/ MT//;s/ /_/;s/://'); rm -rf $SNAP; mkdir -p $SNAP; cp -r build/site $SNAP/site
-# 2c. AP / Coaches polls. Never blocks: a timeout, bad feed, or unmapped team keeps the last good file and the scores still publish.
+# 2c. AP / Coaches polls and the CFP committee rankings. Never blocks: a timeout, bad feed, or unmapped team keeps the last good file and the scores still publish.
+# CFP is inside the same command. Its own reads are short, and a failure here is a warning (exit stays 0). It is not part of the failed-input hold.
 POLL_CAND=""; POLL_BASE=""; PA=""
-timeout 50 python3 src/poll_refresh.py --zip "$ZIP" --out $RD/polls.json --baseline-out $RD/polls-baseline.json > $RD/polls.log 2>&1 || say "WARNING polls: step crashed; keeping the last good polls file"
+timeout 80 python3 src/poll_refresh.py --zip "$ZIP" --out $RD/polls.json --baseline-out $RD/polls-baseline.json --cfp > $RD/polls.log 2>&1 || say "WARNING polls: step crashed; keeping the last good polls file"
 cat $RD/polls.log
 if grep -q '^POLLS_CHANGED=1$' $RD/polls.log && [ -f $RD/polls.json ]; then POLL_CAND=$RD/polls.json; fi
 if grep -q '^POLLS_BASELINE=' $RD/polls.log && [ -f $RD/polls-baseline.json ]; then POLL_BASE=$RD/polls-baseline.json; fi

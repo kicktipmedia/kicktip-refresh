@@ -13,7 +13,7 @@ GO=${GITHUB_OUTPUT:-/dev/null}
 SUM=${GITHUB_STEP_SUMMARY:-/dev/null}
 mkdir -p "$D"
 rm -f "$OUT" "$BASE"
-timeout 50 python3 "$R/tree/src/poll_refresh.py" --zip "$ZIP" --out "$OUT" --baseline-out "$BASE" > "$LOG" 2>&1 || echo "WARNING polls: step crashed; keeping the last good polls file" >> "$LOG"
+timeout 80 python3 "$R/tree/src/poll_refresh.py" --zip "$ZIP" --out "$OUT" --baseline-out "$BASE" --cfp > "$LOG" 2>&1 || echo "WARNING polls: step crashed; keeping the last good polls file" >> "$LOG"
 cat "$LOG"
 CH=0
 grep -q '^POLLS_CHANGED=1$' "$LOG" && CH=1

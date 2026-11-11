@@ -26,5 +26,5 @@ grep -q '^POLLS_CHANGED=1$' "$LOG" && CH=1
   echo "### Polls"
   echo "- changed vs the comparison baseline: $CH"
   grep -E '^(polls:|WARNING polls:)' "$LOG" | head -n 20
-} >> "$SUM"
+} >> "$SUM" || echo "::warning::polls step summary write failed"
 exit 0

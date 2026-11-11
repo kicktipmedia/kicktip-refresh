@@ -2,6 +2,8 @@ name: refresh
 # KickTip data refresh on GitHub's runners. tools/auto_refresh.sh skips (exit 0) when no final/score/kickoff changed.
 # Guard: Production deploy only if Cloudflare's canonical deployment == state.json live_id (feature builds deploy from the box
 # and must run tools/publish_base.sh afterwards). FREEZE file in the repo root stops all deploys.
+# Job email: tools/report_outcome.py classifies the exit (RUNBOOK "Job result and email"). Test runs and transient
+# failures finish green and do not write the failed-input hold. Real main Production failures still fail the job.
 on:
   workflow_dispatch:
     inputs:
@@ -56,84 +58,156 @@ jobs:
       KT_WRANGLER: /home/runner/wr/node_modules/.bin/wrangler
       KT_WRANGLER_DIR: /home/runner/wr
       TZ: America/Toronto
+      # schedule has no input; an empty dispatch target is production. report_outcome.py reads this.
+      KT_DEPLOY_TARGET: ${{ inputs.deploy_target || 'production' }}
     steps:
       - uses: actions/checkout@v4
         # check out the branch tip at run start, not the commit pinned when the run was queued (a queued run otherwise reads a stale state.json and exits 12)
         with: { ref: "${{ github.ref_name }}" }
       - name: Stop if frozen
-        run: if [ -e FREEZE ]; then echo "FREEZE present:"; cat FREEZE; exit 1; fi
+        run: |
+          if [ -e FREEZE ]; then
+            echo "FREEZE present:"
+            cat FREEZE
+            printf '%s\n' "FREEZE present:" > "$RUNNER_TEMP/freeze.txt"
+            cat FREEZE >> "$RUNNER_TEMP/freeze.txt"
+            python3 tools/report_outcome.py --exit 11 --step "Stop if frozen" --log "$RUNNER_TEMP/freeze.txt" --reason "FREEZE present: $(cat FREEZE)"
+            exit $?
+          fi
       - uses: actions/setup-python@v5
+        if: env.KT_HALT != '1'
         with: { python-version: "3.13", cache: pip, cache-dependency-path: tools/requirements.txt }
       - name: Poll refresh unit tests (offline; a failure does not block publish)
+        if: env.KT_HALT != '1'
         run: python3 tree/tests/poll_refresh_test.py || echo "::warning::poll refresh unit tests failed; publish is not blocked"
       - name: CFP refresh unit tests (offline; a failure does not block publish)
         run: python3 tools/tests/cfp_refresh_test.py || echo "::warning::CFP refresh unit tests failed; publish is not blocked"
       - uses: actions/setup-node@v4
+        if: env.KT_HALT != '1'
         with: { node-version: "20.19.2" }
       - name: Fetch base (live zip + S0) and check sha
-        run: tools/fetch_base.sh
+        if: env.KT_HALT != '1'
+        run: |
+          set +e
+          tools/fetch_base.sh > "$RUNNER_TEMP/fetch_base.log" 2>&1
+          rc=$?
+          set -e
+          cat "$RUNNER_TEMP/fetch_base.log"
+          if [ "$rc" -ne 0 ]; then
+            python3 tools/report_outcome.py --exit "$rc" --step "Fetch base (live zip + S0) and check sha" --log "$RUNNER_TEMP/fetch_base.log"
+            exit $?
+          fi
       # National ranks (NCAA.com): last-good cache, fetch at most once per 20 h (failure retry 6 h), never older than live,
       # one ranks-only forced run per ranks version per 20 h and none on Saturday (tools/ranks_step.sh); never fails the run
       - name: National ranks cache (restore last good)
+        if: env.KT_HALT != '1'
         uses: actions/cache/restore@v4
         with: { path: natranks/last, key: "natranks-${{ github.run_id }}", restore-keys: "natranks-" }
       - name: National ranks (fetch cap 20h, last-good fallback)
         id: ranks
+        if: env.KT_HALT != '1'
         continue-on-error: true
         run: tools/ranks_step.sh
       - name: National ranks cache (save when its state changed)
-        if: steps.ranks.outputs.ranks_save == '1'
+        if: steps.ranks.outputs.ranks_save == '1' && env.KT_HALT != '1'
         continue-on-error: true
         uses: actions/cache/save@v4
         with: { path: natranks/last, key: "natranks-${{ github.run_id }}" }
       - name: Failed-input hold (restore)
+        if: env.KT_HALT != '1'
         uses: actions/cache/restore@v4
         with: { path: hold, key: "refresh-hold-${{ github.run_id }}", restore-keys: "refresh-hold-" }
       # AP / Coaches and the CFP committee rankings. Always exits 0. A newer poll can start a run when scores did not change; a bad read never does.
       # CFP is not a failed input and does not write the hold file. Before the first committee release the step is a no-op.
       - name: Polls and CFP (last good, never fails)
         id: polls
+        if: env.KT_HALT != '1'
         env:
           KT_POLLS_URL: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_url || '' }}
           KT_POLLS_BASELINE: ${{ (inputs.deploy_target == 'none' || inputs.deploy_target == 'preview') && inputs.polls_baseline || '' }}
         run: tools/polls_step.sh
       - name: Pull ESPN and decide (cheap gate)
         id: gate
+        if: env.KT_HALT != '1'
         run: |
           if [ -n "${{ inputs.inputs_run }}" ]; then
+            set +e
             gh run download "${{ inputs.inputs_run }}" -n "inputs-${{ inputs.inputs_run }}" -D /tmp/inp && tar xzf $(ls /tmp/inp/*/inputs.tgz) -C tree
-            if [ ! -e tree/data/out/refresh_log.json ]; then gh run download "${{ inputs.inputs_run }}" -n "run-${{ inputs.inputs_run }}" -D /tmp/runart && mkdir -p tree/data/out && cp $(ls /tmp/runart/runs/*/refresh.json | head -n 1) tree/data/out/refresh_log.json; fi
+            replay_rc=$?
+            if [ "$replay_rc" -eq 0 ] && [ ! -e tree/data/out/refresh_log.json ]; then
+              gh run download "${{ inputs.inputs_run }}" -n "run-${{ inputs.inputs_run }}" -D /tmp/runart && mkdir -p tree/data/out && cp $(ls /tmp/runart/runs/*/refresh.json | head -n 1) tree/data/out/refresh_log.json
+              replay_rc=$?
+            fi
+            set -e
+            if [ "$replay_rc" -ne 0 ]; then
+              python3 tools/report_outcome.py --exit 13 --step "Pull ESPN and decide" --reason "replaying inputs of run ${{ inputs.inputs_run }} failed"
+              exit $?
+            fi
             echo "KT_SKIP_FETCH=1" >> $GITHUB_ENV; echo "changed=1" >> $GITHUB_OUTPUT; echo "replaying inputs of run ${{ inputs.inputs_run }}"; exit 0
           fi
-          python3 -m pip install -q numpy==2.5.4
-          cd tree && python3 src/refresh.py > /tmp/refresh.json && cd ..
-          (cd tree && timeout 180 python3 src/lines.py --pull --no-merge) || echo "lines pull failed (kept last snapshot)"
-          echo "KT_LINES_PULLED=1" >> $GITHUB_ENV   # auto_refresh reuses this pull: the gate fp is the build fp (one ESPN pull per run)
-          FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")
-          read LFP LEP <<< "$(python3 tools/lines_fp.py tree)"; read LFP0 LEP0 <<< "$(python3 -c "import json;s=json.load(open('state.json'));print(s.get('lines_fp') or '-', s.get('lines_epoch',0))")"
-          [[ "$LEP" =~ ^[0-9]+$ ]] || LEP=0; [[ "$LEP0" =~ ^[0-9]+$ ]] || LEP0=0
-          LCHG=0; { [ "$LFP" != "none" ] && [ "$LFP" != "$LFP0" ]; } && LCHG=1; [ "$LEP" -gt $(( LEP0 + 72000 )) ] && LCHG=1
-          INHASH="$FP-$LFP"; echo "inhash=$INHASH" >> $GITHUB_OUTPUT   # refreshfix B2: one failed attempt per input hash (same pattern as ranks N2)
-          echo "fp $OLD -> $FP; lines fp $LFP0 -> $LFP (pulled epoch $LEP, live $LEP0, changed=$LCHG)"
-          if [ "$FP" = "$OLD" ] && [ $LCHG = 0 ] && [ "${{ inputs.force }}" != "true" ]; then
-            if [ "${{ steps.ranks.outputs.ranks_force }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
-            elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ] && [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ]; then echo "changed=0" >> $GITHUB_OUTPUT; echo "Polls are newer, but inputs $INHASH already failed once; waiting for new results or force=true." >> $GITHUB_STEP_SUMMARY
-            elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "polls_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; polls are newer: run." >> $GITHUB_STEP_SUMMARY
-            else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff/spread: skip." >> $GITHUB_STEP_SUMMARY; fi
-          elif [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ] && [ "${{ inputs.force }}" != "true" ]; then
-            echo "changed=0" >> $GITHUB_OUTPUT; echo "Held: inputs $INHASH already failed once; waiting for new results or spreads (force=true overrides)." >> $GITHUB_STEP_SUMMARY
-          else echo "changed=1" >> $GITHUB_OUTPUT; fi
-          cp tree/data/store/espn_lines.json /tmp/espn_lines.json 2>/dev/null || true
-          git checkout -- tree/data/store
-          cp /tmp/espn_lines.json tree/data/store/espn_lines.json 2>/dev/null || true
+          set +e
+          python3 -m pip install -q numpy==2.5.4 >"$RUNNER_TEMP/gate-pip.log" 2>&1
+          pip_rc=$?
+          set -e
+          if [ "$pip_rc" -ne 0 ]; then
+            cat "$RUNNER_TEMP/gate-pip.log"
+            python3 tools/report_outcome.py --exit "$pip_rc" --step "Pull ESPN and decide" --log "$RUNNER_TEMP/gate-pip.log" --reason "numpy install failed"
+            exit $?
+          fi
+          set +e
+          ( cd tree && python3 src/refresh.py > /tmp/refresh.json )
+          fetch_rc=$?
+          set -e
+          if [ "$fetch_rc" -ne 0 ]; then
+            python3 tools/report_outcome.py --exit 13 --step "Pull ESPN and decide" --log /tmp/refresh.json --reason "refresh.py failed"
+            exit $?
+          fi
+          set +e
+          (
+            set -e
+            (cd tree && timeout 180 python3 src/lines.py --pull --no-merge) || echo "lines pull failed (kept last snapshot)"
+            echo "KT_LINES_PULLED=1" >> $GITHUB_ENV   # auto_refresh reuses this pull: the gate fp is the build fp (one ESPN pull per run)
+            FP=$(python3 tools/results_fp.py tree | cut -d' ' -f1); OLD=$(python3 -c "import json;print(json.load(open('state.json'))['results_fp'])")
+            read LFP LEP <<< "$(python3 tools/lines_fp.py tree)"; read LFP0 LEP0 <<< "$(python3 -c "import json;s=json.load(open('state.json'));print(s.get('lines_fp') or '-', s.get('lines_epoch',0))")"
+            [[ "$LEP" =~ ^[0-9]+$ ]] || LEP=0; [[ "$LEP0" =~ ^[0-9]+$ ]] || LEP0=0
+            LCHG=0; { [ "$LFP" != "none" ] && [ "$LFP" != "$LFP0" ]; } && LCHG=1; [ "$LEP" -gt $(( LEP0 + 72000 )) ] && LCHG=1
+            INHASH="$FP-$LFP"; echo "inhash=$INHASH" >> $GITHUB_OUTPUT   # refreshfix B2: one failed attempt per input hash (same pattern as ranks N2)
+            echo "fp $OLD -> $FP; lines fp $LFP0 -> $LFP (pulled epoch $LEP, live $LEP0, changed=$LCHG)"
+            if [ "$FP" = "$OLD" ] && [ $LCHG = 0 ] && [ "${{ inputs.force }}" != "true" ]; then
+              if [ "${{ steps.ranks.outputs.ranks_force }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "ranks_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; national ranks changed: run." >> $GITHUB_STEP_SUMMARY
+              elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ] && [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ]; then echo "changed=0" >> $GITHUB_OUTPUT; echo "Polls are newer, but inputs $INHASH already failed once; waiting for new results or force=true." >> $GITHUB_STEP_SUMMARY
+              elif [ "${{ steps.polls.outputs.polls_changed }}" = "1" ]; then echo "changed=1" >> $GITHUB_OUTPUT; echo "polls_only=1" >> $GITHUB_OUTPUT; echo "Results unchanged; polls are newer: run." >> $GITHUB_STEP_SUMMARY
+              else echo "changed=0" >> $GITHUB_OUTPUT; echo "No new final/score/kickoff/spread: skip." >> $GITHUB_STEP_SUMMARY; fi
+            elif [ "$(cat hold/failed 2>/dev/null)" = "$INHASH" ] && [ "${{ inputs.force }}" != "true" ]; then
+              echo "changed=0" >> $GITHUB_OUTPUT; echo "Held: inputs $INHASH already failed once; waiting for new results or spreads (force=true overrides)." >> $GITHUB_STEP_SUMMARY
+            else echo "changed=1" >> $GITHUB_OUTPUT; fi
+            cp tree/data/store/espn_lines.json /tmp/espn_lines.json 2>/dev/null || true
+            git checkout -- tree/data/store
+            cp /tmp/espn_lines.json tree/data/store/espn_lines.json 2>/dev/null || true
+          )
+          gate_rc=$?
+          set -e
+          if [ "$gate_rc" -ne 0 ]; then
+            python3 tools/report_outcome.py --exit "$gate_rc" --step "Pull ESPN and decide" --reason "gate failed"
+            exit $?
+          fi
       - name: Install tools (pinned)
-        if: steps.gate.outputs.changed == '1'
+        id: install
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
         run: |
-          python3 -m pip install -q -r tools/requirements.txt
-          python3 -m playwright install --with-deps chromium > /dev/null
-          mkdir -p $KT_WRANGLER_DIR && cd $KT_WRANGLER_DIR && echo '{}' > package.json && npm i -s --no-audit --no-fund wrangler@3.114.17
+          set +e
+          tools/retry_cmd.sh --tries 3 --backoff 20 --log "$RUNNER_TEMP/install-tools.log" -- \
+            bash -e -o pipefail -c 'python3 -m pip install -q -r tools/requirements.txt && python3 -m playwright install --with-deps chromium > /dev/null && mkdir -p "$KT_WRANGLER_DIR" && cd "$KT_WRANGLER_DIR" && echo "{}" > package.json && npm i -s --no-audit --no-fund wrangler@3.114.17'
+          rc=$?
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            cat "$RUNNER_TEMP/install-tools.log"
+            python3 tools/report_outcome.py --kind install --exit "$rc" --step "Install tools (pinned)" --log "$RUNNER_TEMP/install-tools.log" --reason "Install tools (pinned) failed after 3 tries (apt, DNS, or network)"
+            exit $?
+          fi
       - name: Refresh
-        if: steps.gate.outputs.changed == '1'
+        id: refresh
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -145,30 +219,49 @@ jobs:
           [ "${{ steps.gate.outputs.ranks_only }}" = "1" ] && A="$A --force"
           [ "${{ steps.gate.outputs.polls_only }}" = "1" ] && A="$A --force"
           export KT_RANKS="${{ steps.ranks.outputs.ranks_out }}"
+          set +e
           tools/auto_refresh.sh $A
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "shipped=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          python3 tools/report_outcome.py --exit "$rc" --step Refresh --detect-production
+          exit $?
       - name: Record new live base
-        if: steps.gate.outputs.changed == '1' && (inputs.deploy_target || 'production') == 'production'
+        if: steps.gate.outputs.changed == '1' && steps.refresh.outputs.shipped == '1' && (inputs.deploy_target || 'production') == 'production' && env.KT_HALT != '1'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          R=$(ls -d runs/* | tail -n 1)/result.json; cat $R
-          if python3 -c "import json,sys;sys.exit(0 if 'live_id' in json.load(open('$R')) else 1)"; then
-            git checkout -- state.json
-            eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('ZIP=%s ID=%s S0=%s ASOF=%s FP=%s DONE=%s'%tuple(shlex.quote(str(r[k])) for k in ('zip','live_id','s0','as_of','fp','completed')))")"
-            eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('LFP=%s LEP=%s'%(shlex.quote(str(r.get('lines_fp',''))),shlex.quote(str(r.get('lines_epoch','')))))")"
-            tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE" --s0-inputs tree ${LFP:+--lines-fp "$LFP"} ${LEP:+--lines-epoch "$LEP"}
+          set +e
+          (
+            set -e
+            R=$(ls -d runs/* | tail -n 1)/result.json; cat $R
+            if python3 -c "import json,sys;sys.exit(0 if 'live_id' in json.load(open('$R')) else 1)"; then
+              git checkout -- state.json
+              eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('ZIP=%s ID=%s S0=%s ASOF=%s FP=%s DONE=%s'%tuple(shlex.quote(str(r[k])) for k in ('zip','live_id','s0','as_of','fp','completed')))")"
+              eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('LFP=%s LEP=%s'%(shlex.quote(str(r.get('lines_fp',''))),shlex.quote(str(r.get('lines_epoch','')))))")"
+              tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE" --s0-inputs tree ${LFP:+--lines-fp "$LFP"} ${LEP:+--lines-epoch "$LEP"}
+            fi
+          )
+          rc=$?
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            python3 tools/report_outcome.py --exit 22 --step "Record new live base" --reason "state.json publish failed"
+            exit $?
           fi
       - name: Failed-input hold (record this input hash)
-        if: failure() && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
+        if: failure() && env.KT_HOLD == '1' && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
         run: mkdir -p hold && echo "${{ steps.gate.outputs.inhash }}" > hold/failed
       - name: Failed-input hold (save)
-        if: failure() && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
+        if: failure() && env.KT_HOLD == '1' && steps.gate.outputs.changed == '1' && steps.gate.outputs.inhash != ''
         continue-on-error: true
         uses: actions/cache/save@v4
         with: { path: hold, key: "refresh-hold-${{ github.run_id }}" }
       - name: Commit FREEZE if a post-deploy check failed
-        if: failure()
+        if: failure() || env.KT_COMMIT_FREEZE == '1'
         run: |
           # --autostash: this run leaves other tracked files modified. pull --rebase refuses then, and FREEZE never reaches the remote (same approach as tools/publish_base.sh).
           if [ -e FREEZE ] && ! git ls-files --error-unmatch FREEZE >/dev/null 2>&1; then
@@ -181,7 +274,7 @@ jobs:
           retention-days: 7
           path: runs/*/inputs.tgz
       - name: Keep run logs
-        if: always() && steps.gate.outputs.changed == '1'
+        if: always() && (steps.gate.outputs.changed == '1' || hashFiles('runs/0-report/result.json') != '')
         uses: actions/upload-artifact@v4
         with:
           name: run-${{ github.run_id }}

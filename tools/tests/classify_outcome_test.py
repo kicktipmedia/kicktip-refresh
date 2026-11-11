@@ -375,5 +375,71 @@ check("timeout 80 python3 src/poll_refresh.py" in auto and "--cfp" in auto,
       "auto_refresh.sh still runs the CFP poll read inside the non-blocking polls command")
 check("> $R/FREEZE" not in auto, "auto_refresh.sh still does not write FREEZE itself")
 
+# Artifact uploads and report writes stay non-fatal. A CreateArtifact HTML error must not email.
+for title, sid in (("Keep fetched ESPN inputs", "inputs_artifact"), ("Keep run logs", "logs_artifact")):
+    step = wf.split("- name: " + title, 1)[1].split("- name:", 1)[0]
+    check("continue-on-error: true" in step and ("id: " + sid) in step and "uses: actions/upload-artifact@v4" in step,
+          "%s upload is continue-on-error" % title)
+note = wf.split("- name: Record artifact upload", 1)[1]
+check(note.strip().startswith("if: always()") and "--note-artifacts" in note and "\n        run:" in note,
+      "artifact note always runs and does not depend on the upload succeeding")
+check('>> $GITHUB_STEP_SUMMARY || echo "::warning::step summary write failed"' in wf,
+      "gate step-summary writes are non-fatal")
+check('>> "$SUM" || echo "::warning::polls step summary write failed"' in (ROOT / "tools/polls_step.sh").read_text(encoding="utf-8"),
+      "polls step summary write is non-fatal")
+check('>> "$SUM" || echo "::warning::ranks step summary write failed"' in (ROOT / "tools/ranks_step.sh").read_text(encoding="utf-8"),
+      "ranks step summary write is non-fatal")
+
+d, env = fresh()
+(d / "summary.md").write_text("", encoding="utf-8")
+proc = run_report(["--note-artifacts", "--artifact", "Keep fetched ESPN inputs=failure", "--artifact", "Keep run logs=failure"], env, d)
+result = json.loads((d / "runs/0-report/result.json").read_text(encoding="utf-8"))
+summary = (d / "summary.md").read_text(encoding="utf-8")
+logged = (d / "runs/0-report/outcome.log").read_text(encoding="utf-8")
+check(proc.returncode == 0 and "::warning::" in proc.stdout and "Keep run logs" in proc.stdout and "does not email" in proc.stdout,
+      "artifact failure warns and exits 0 (rc=%s)" % proc.returncode)
+check(result["job"] == "green" and result["exit"] == 0 and result["artifact_upload"] == "failed"
+      and "CreateArtifact" in result["fail"] and "CreateArtifact" in summary and "CreateArtifact" in logged,
+      "a clean run still gets a 0-report and step summary when the upload fails")
+check(not (d / "hold/failed").exists(), "an artifact failure does not write the failed-input hold")
+
+d, env = fresh()
+proc = run_report(["--note-artifacts", "--artifact", "Keep fetched ESPN inputs=success", "--artifact", "Keep run logs=skipped"], env, d)
+check(proc.returncode == 0 and "::warning::" not in proc.stdout and not (d / "runs/0-report/result.json").exists(),
+      "successful and skipped uploads write no warning and no report")
+
+d, env = fresh()
+out = d / "runs/0-report"
+out.mkdir(parents=True)
+(out / "result.json").write_text(json.dumps({"exit": 17, "job": "red", "hold": True, "class": "real", "fail": "FAIL(17): suite"}) + "\n", encoding="utf-8")
+proc = run_report(["--note-artifacts", "--artifact", "Keep run logs=failure"], env, d)
+result = json.loads((out / "result.json").read_text(encoding="utf-8"))
+check(proc.returncode == 0 and result["job"] == "red" and result["exit"] == 17 and result["hold"] is True
+      and result["artifact_upload"] == "failed" and "CreateArtifact" in result["artifact_notes"][0],
+      "an artifact note keeps a real red classification")
+
+# A report-file write error does not change the classified exit.
+blocked = Path(tempfile.mkdtemp(prefix="kt-block-"))
+(blocked / "notdir").write_text("x", encoding="utf-8")
+env = {
+    "GITHUB_STEP_SUMMARY": str(blocked / "notdir"),
+    "GITHUB_ENV": str(blocked / "env.txt"),
+    "GITHUB_OUTPUT": str(blocked / "output.txt"),
+    "KT_REF_NAME": "main",
+    "GITHUB_EVENT_NAME": "schedule",
+    "KT_DEPLOY_TARGET": "production",
+    "KT_ROOT": str(blocked / "notdir"),
+}
+(blocked / "env.txt").write_text("", encoding="utf-8")
+(blocked / "output.txt").write_text("", encoding="utf-8")
+proc = run_report(["--exit", "13", "--step", "Refresh", "--reason", "ESPN errors: timeout"], env, blocked / "notdir")
+check(proc.returncode == 0 and "::warning::" in proc.stdout, "a report write failure stays green for exit 13 (rc=%s)" % proc.returncode)
+proc = run_report(["--exit", "17", "--step", "Refresh", "--reason", "suite subset failed"], env, blocked / "notdir")
+env_txt = (blocked / "env.txt").read_text(encoding="utf-8")
+check(proc.returncode == 17 and "::warning::" in proc.stdout and "KT_HOLD=1" in env_txt,
+      "a report write failure still fails the job for exit 17 and requests the hold (rc=%s)" % proc.returncode)
+proc = run_report(["--note-artifacts", "--artifact", "Keep run logs=failure"], env, blocked / "notdir")
+check(proc.returncode == 0 and "::warning::" in proc.stdout, "an artifact note stays exit 0 when the report file cannot be written")
+
 print("SUITE_DONE fail=%d" % fail)
 sys.exit(fail)

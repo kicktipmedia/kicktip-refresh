@@ -149,4 +149,6 @@ Exit 22 sets `KT_COMMIT_FREEZE=1` on every run type. The existing FREEZE commit 
 
 The install step runs `tools/retry_cmd.sh --tries 3 --backoff 20`. After the first failure it waits 20s, after the second 40s. If the third try still fails, the reporter writes `FAIL(install)` and the log tail, the job stays green, and the hold is not written. The next run retries normally.
 
+**Artifact upload does not email.** `actions/upload-artifact` can fail after a clean Production publish when GitHub returns an HTML page instead of JSON (`Failed to CreateArtifact: Unexpected token '<'`). Run 43091940348 did that on both "Keep fetched ESPN inputs" and "Keep run logs" after Refresh exit 0 and Production `f2227f03`. Both upload steps use `continue-on-error`. The following "Record artifact upload" step always runs, writes `::warning::`, and adds a line to the step summary and `runs/0-report` (creating that report when the refresh itself exited 0). That note exits 0. A failed step-summary or report write is also a warning and does not change the classified exit. The job stays green unless `report_outcome.py` classified a real Production failure.
+
 A green non-zero outcome sets `KT_HALT=1` so later build, deploy, and publish steps are skipped. Exit 0 does not halt. The record step runs only when `auto_refresh.sh` itself exited 0 (`steps.refresh.outputs.shipped == '1'`).

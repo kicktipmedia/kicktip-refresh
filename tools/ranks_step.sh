@@ -65,7 +65,7 @@ TD=$(python3 -c "import datetime as d,sys
 try: print((d.date.today()-d.date.fromisoformat(sys.argv[1])).days)
 except Exception: print(-1)" "$CT")
 { echo "### National ranks"; echo "- thru: $CT (live $LT), ${TD} days old"; echo "- last good fetch: $([ $FA = 0 ] && echo never || echo "${AGE}h ago"); mode: $MODE${NOTE:+; $NOTE}"
-  echo "- changed vs live: $CH; ranks-only force: $FORCE"; } >> "$SUM"
+  echo "- changed vs live: $CH; ranks-only force: $FORCE"; } >> "$SUM" || echo "::warning::ranks step summary write failed"
 [ "$TD" -gt 7 ] 2>/dev/null && echo "::warning::national ranks thru $CT is $TD days old (row hides after 10)"
 echo "ranks: thru $CT, $TD days old, mode $MODE"
 rm -rf "$T"; exit 0

@@ -22,7 +22,7 @@ cd /workspace/kicktip-refresh && setsid nohup tools/auto_refresh.sh > /dev/null 
 - Agent shells kill background children, so always `setsid nohup`. Watch `runs/<latest>/run.log`. The result is in `runs/<latest>/result.json`.
 - `--no-deploy` is a dry run: everything up to the checks, plus a read-only guard GET. `--force` runs even with no data change. `--preview-only` stops after Preview.
 
-Steps and exit codes:
+Steps and exit codes (the script exit; the GitHub job is green or red from the table under **Job result and email**, and `auto_refresh.sh` itself is unchanged):
 0. A lock (`.auto_refresh.lock`, flock) means only one run at a time; a second run exits **10**. FREEZE gives **11**. Bad state, base zip sha ≠ `live_sha`, or a missing S0 gives **12**.
 1. `refresh.py` (ESPN, about 3 s). Any ESPN error gives **13**. Then `results_fp.py` compares finals, scores, kickoffs and postponements with `state.results_fp`. **If they are unchanged: exit 0, skipped, nothing deployed.**
 2. `run_all.py --no-refresh --whatif --whatif-all`. It uses 8 threads when load < 2, otherwise 1 thread under nice. About 6 min idle and 15 min contended. Then `build.py`. Failure gives **14** or **15**. The new pipeline site is snapshotted to `pipeline/<as_of>/site`.
@@ -113,6 +113,40 @@ does not pull again: the gate fp equals the build fp. A new snapshot (`lines_fp`
 - Corrupt `espn_lines.json`: `lines_fp.py` prints `none 0`; the merge keeps the previous `market_lines.json` and logs it; never a hard failure.
 - The `lines.py` merge failing is a warning, not a failed run.
 
-**Failed-input hold (no loop on a red suite):** when a full run fails (suite exit 17 or anything else), the workflow stores the input
-hash `<results_fp>-<lines_fp>` in the Actions cache `refresh-hold-*`. The next scheduled run with the SAME inputs stops at the gate
+**Failed-input hold (no loop on a red suite):** when a Production run is classified **red** and the gate recorded an input
+hash `<results_fp>-<lines_fp>`, the workflow stores that hash in the Actions cache `refresh-hold-*`. The next scheduled run with the SAME inputs stops at the gate
 ("Held: …" in the summary) instead of rerunning the 15-min models. New results or new spreads give a new hash: one retry. `force=true` overrides.
+A green classification does not write the hold, so the next run retries the same inputs. `tools/report_outcome.py` never writes `hold/failed` itself. The hold steps run only when the reporter set `KT_HOLD=1` (a red class) and the step actually failed.
+
+### Job result and email
+
+GitHub emails the account owner when the **job** fails. `tools/auto_refresh.sh` still exits with the same codes, and guard, FREEZE, and byte-compare behavior on a real failure is unchanged. `tools/report_outcome.py` (using `tools/classify_outcome.py`) writes the job step summary plus `runs/0-report/result.json` and `runs/0-report/outcome.log`. Those files show `FAIL(code)` and the log tail, and the run-log artifact uploads them. `runs/0-report` sorts before a timestamped run directory, so the record step's `ls -d runs/* | tail` still picks the real run.
+
+**Test run** (green, no hold, including exit 12 from a stale branch `state.json` / base zip sha): `deploy_target` is `none` or `preview`, and this run did not write a Production deploy log. The git ref does not matter. Exit 12 stays green only in that case.
+
+**Production** (the columns below) is everything else, on any ref: a schedule, `deploy_target=production`, an empty target, or a run that wrote a non-empty Production deploy log. A `workflow_dispatch` with `production` on a branch still deploys to Cloudflare Production, so a real failure there is red and writes the hold.
+
+| Exit | What it means | Production job | Hold on Production | Test run (`none` / `preview` only) |
+|---|---|---|---|---|
+| 0 | clean ship or skip | green | no | green, no hold |
+| 10 | lock held by another run | green | no | green, no hold |
+| 11 | FREEZE present | red | yes, if the gate has an input hash | green, no hold |
+| 12 | broken state, or base zip sha ≠ `live_sha` (includes a stale branch) | red | yes, if the gate has an input hash | green, no hold |
+| 13 | ESPN or other fetch error (`refresh.py`, replay, or ESPN errors in the log) | green | no | green, no hold |
+| 14 | `run_all` failed | red | yes | green, no hold |
+| 15 | `build.py` failed, or `as_of` equals live | red | yes | green, no hold |
+| 16 | `apply_data`, unzip, or zip-vs-site mismatch | red | yes | green, no hold |
+| 17 | sanity or suite failed | red | yes | green, no hold |
+| 18 | preview deploy flake, and Production was not attempted | green | no | green, no hold |
+| 18 | preview code but a Production deploy log was written | red | yes | not a test run; the log makes it Production (red, hold) |
+| 20 | guard: someone else deployed, or the zip changed after preview | red | yes | green, no hold |
+| 21 | Production deploy failed | red | yes | green, no hold |
+| 22 | live byte-compare failed (FREEZE written) or `state.json` write failed | red | yes | green, no hold |
+| any other code | unexpected or unknown | red | yes | green, no hold |
+| install | `Install tools (pinned)` still failing after 3 tries (apt, DNS, network) | green | no | green, no hold |
+
+Exit 22 sets `KT_COMMIT_FREEZE=1` on every run type. The existing FREEZE commit step still runs and pushes `FREEZE` when that file is present, including when a test run stays green. Other green outcomes do not run that step.
+
+The install step runs `tools/retry_cmd.sh --tries 3 --backoff 20`. After the first failure it waits 20s, after the second 40s. If the third try still fails, the reporter writes `FAIL(install)` and the log tail, the job stays green, and the hold is not written. The next run retries normally.
+
+A green non-zero outcome sets `KT_HALT=1` so later build, deploy, and publish steps are skipped. Exit 0 does not halt. The record step runs only when `auto_refresh.sh` itself exited 0 (`steps.refresh.outputs.shipped == '1'`).

@@ -160,6 +160,27 @@ def main():
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
+    # The home intro and the NR note sit outside the old bake markers. They have to be their own
+    # markers, or bake --check dies with "unbake not exact" and the refresh exits 16.
+    bake_src = open(os.path.join(ROOT, "tree", "tools", "bake_static.js"), encoding="utf-8").read()
+    chk = subprocess.run(["node", "-e", r"""
+const fs = require('fs');
+const src = fs.readFileSync(process.argv[1], 'utf8');
+const m = src.match(/const DEF = (\[[\s\S]*?\]);/);
+if (!m) process.exit(2);
+const DEF = eval(m[1]);
+const unbake = (t) => t.replace(/<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g, (mm, n) => DEF[+n]);
+const orig = 'Compared with the AP and Coaches polls. NR means not ranked by that poll.';
+const baked = orig
+  .replace(DEF[14], '<!--bk:14-->Compared with the AP and Coaches polls and the CFP rankings.<!--/bk-->')
+  .replace(DEF[15], '<!--bk:15-->NR means not ranked by that poll. A dash means not in the CFP 25.<!--/bk-->');
+if (DEF[14] !== 'Compared with the AP and Coaches polls.') process.exit(3);
+if (DEF[15] !== 'NR means not ranked by that poll.') process.exit(4);
+if (unbake(baked) !== orig) process.exit(5);
+if (!src.includes("mk(14, 'Compared with the AP and Coaches polls and the CFP rankings.')")) process.exit(6);
+""" , bake_src and os.path.join(ROOT, "tree", "tools", "bake_static.js")], capture_output=True, text=True)
+    ok("CFP sentences unbake back to the original home copy", chk.returncode == 0, (chk.returncode, chk.stderr))
+
     print("cfp_refresh_test: %d checks, %d failures" % (res["n"], len(res["failures"])))
     return 1 if res["failures"] else 0
 

@@ -22,7 +22,9 @@ const DEF = ['', '&ndash;', '<span class="lk">Loading</span>', 'recently',
   '',   /* 10: audit2 polish2 next-game What If card (baked; unbake removes it) */
   '<li><span class="lk">Loading</span></li>',   /* 11: audit2 conference 'Who controls their destiny' */
   'What if BYU loses?',   /* 12 */
-  '<div class="rn rtg rb-terms">Information only. Don&#39;t make decisions based on this material. <a href="/disclaimer/">Full terms</a></div><noscript><p class="rb-msg">Turn on JavaScript to see Rootables.</p></noscript>'];   /* 13: rootables-shared (Nov 1): no Run tap; the visible terms line + the live Rootables list, baked from data/rootables/<slug>.json */   /* 12: Lab chip sample text (hardcoded in the Lab rollout); team pages bake their own team */
+  '<div class="rn rtg rb-terms">Information only. Don&#39;t make decisions based on this material. <a href="/disclaimer/">Full terms</a></div><noscript><p class="rb-msg">Turn on JavaScript to see Rootables.</p></noscript>',   /* 13: rootables-shared (Nov 1): no Run tap; the visible terms line + the live Rootables list, baked from data/rootables/<slug>.json */
+  'Compared with the AP and Coaches polls.',   /* 14: home Top 25 intro. Unbake restores this sentence. */
+  'NR means not ranked by that poll.'];   /* 15: home Top 25 note. Unbake restores this sentence. */
 const NOJS_TXT = 'Turn on JavaScript to switch rating systems and sort.';   /* audit2: the numbers are in the HTML now */
 const MK = /<!--bk:(\d+)-->[\s\S]*?<!--\/bk-->/g;
 const mk = (n, s) => '<!--bk:' + n + '-->' + String(s).replace(/\u00A0/g, '&nbsp;') + '<!--/bk-->';   /* HTML entities only: no literal NBSP in baked HTML (shared RB.* strings use \u00A0 for the DOM) */
@@ -219,8 +221,8 @@ for (const f of files) {
     t = rep1(t, /(<ol class="h25-l" start="6"[^>]*data-t25r>)(<\/ol>)/, (m, a, b) => a + mk(0, top.slice(5).map((e, i) => t25row(e, i + 6, true)).join('')) + b, 't25r', rel);
     t = rep1(t, /(<p class="h25-asof" data-t25asof>)(<\/p>)/, (m, a, b) => upd('h25-upd') + a + mk(0, t25asof()) + b, 't25asof', rel);
     if (ps.cfp.on) {
-      t = t.replace('Compared with the AP and Coaches polls.', 'Compared with the AP and Coaches polls and the CFP rankings.');
-      t = t.replace('NR means not ranked by that poll.', 'NR means not ranked by that poll. A dash means not in the CFP 25.');
+      t = t.replace(DEF[14], mk(14, 'Compared with the AP and Coaches polls and the CFP rankings.'));
+      t = t.replace(DEF[15], mk(15, 'NR means not ranked by that poll. A dash means not in the CFP 25.'));
     }
     t = rep1(t, /(<table id="top12">[\s\S]*?<tbody>)(<\/tbody>)/, (m, a, b) => a + mk(0, topRows()) + b, 'top12', rel);
     t = rep1(t, /(<table id="fieldseeds" class="fld">[\s\S]*?<tbody>)(<\/tbody>)(<\/table><\/div>)/, (m, a, b, c) => a + mk(0, fieldRows()) + b + c, 'fieldseeds', rel);

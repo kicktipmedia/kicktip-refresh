@@ -81,6 +81,7 @@ jobs:
         if: env.KT_HALT != '1'
         run: python3 tree/tests/poll_refresh_test.py || echo "::warning::poll refresh unit tests failed; publish is not blocked"
       - name: CFP refresh unit tests (offline; a failure does not block publish)
+        if: env.KT_HALT != '1'
         run: python3 tools/tests/cfp_refresh_test.py || echo "::warning::CFP refresh unit tests failed; publish is not blocked"
       - uses: actions/setup-node@v4
         if: env.KT_HALT != '1'

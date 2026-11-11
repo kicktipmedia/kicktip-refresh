@@ -329,11 +329,19 @@ for needle in ("Held: inputs", "polls_only=1", "ranks_only=1", "KT_LINES_PULLED=
 check("--exit 11" in wf.split("- name: Stop if frozen", 1)[1].split("- uses:", 1)[0], "FREEZE present is reported as exit 11")
 check("tools/fetch_base.sh" in wf and "report_outcome.py --exit \"$rc\"" in wf, "fetch base failures go through the reporter")
 check("continue-on-error: true" in wf.split("- name: National ranks (fetch", 1)[1].split("- name:", 1)[0], "ranks stay continue-on-error")
+cfp_step = wf.split("- name: CFP refresh unit tests", 1)[1].split("- uses:", 1)[0]
+check("env.KT_HALT != '1'" in cfp_step and "tools/tests/cfp_refresh_test.py" in cfp_step,
+      "CFP unit tests stay in the workflow and halt with the classifier")
+polls_step = wf.split("- name: Polls and CFP (last good, never fails)", 1)[1].split("- name:", 1)[0]
+check("id: polls" in polls_step and "env.KT_HALT != '1'" in polls_step and "tools/polls_step.sh" in polls_step,
+      "Polls and CFP step stays and halts with the classifier")
 
 # auto_refresh.sh exit codes were not retargeted by this change.
 auto = (ROOT / "tools/auto_refresh.sh").read_text(encoding="utf-8")
 check("fail 22 \"live byte-compare failed; FREEZE written;" in auto and "|| fail 22 \"state.json write failed\"" in auto,
       "auto_refresh.sh still fails 22 on byte-compare and state.json")
+check("timeout 80 python3 src/poll_refresh.py" in auto and "--cfp" in auto,
+      "auto_refresh.sh still runs the CFP poll read inside the non-blocking polls command")
 check("> $R/FREEZE" not in auto, "auto_refresh.sh still does not write FREEZE itself")
 
 print("SUITE_DONE fail=%d" % fail)

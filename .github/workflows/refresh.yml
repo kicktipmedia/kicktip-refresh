@@ -2,8 +2,8 @@ name: refresh
 # KickTip data refresh on GitHub's runners. tools/auto_refresh.sh skips (exit 0) when no final/score/kickoff changed.
 # Guard: Production deploy only if Cloudflare's canonical deployment == state.json live_id (feature builds deploy from the box
 # and must run tools/publish_base.sh afterwards). FREEZE file in the repo root stops all deploys.
-# Job email: tools/report_outcome.py classifies the exit (RUNBOOK "Job result and email"). Test runs and transient
-# failures finish green and do not write the failed-input hold. Real main Production failures still fail the job.
+# Job email: tools/report_outcome.py classifies the exit (RUNBOOK "Job result and email"). Only a none or preview
+# dispatch is a test run. A production or empty target deploys to Production on any ref and real failures stay red.
 on:
   workflow_dispatch:
     inputs:

@@ -113,7 +113,7 @@ does not pull again: the gate fp equals the build fp. A new snapshot (`lines_fp`
 - Corrupt `espn_lines.json`: `lines_fp.py` prints `none 0`; the merge keeps the previous `market_lines.json` and logs it; never a hard failure.
 - The `lines.py` merge failing is a warning, not a failed run.
 
-**Failed-input hold (no loop on a red suite):** when a main Production run is classified **red** and the gate recorded an input
+**Failed-input hold (no loop on a red suite):** when a Production run is classified **red** and the gate recorded an input
 hash `<results_fp>-<lines_fp>`, the workflow stores that hash in the Actions cache `refresh-hold-*`. The next scheduled run with the SAME inputs stops at the gate
 ("Held: …" in the summary) instead of rerunning the 15-min models. New results or new spreads give a new hash: one retry. `force=true` overrides.
 A green classification does not write the hold, so the next run retries the same inputs. `tools/report_outcome.py` never writes `hold/failed` itself. The hold steps run only when the reporter set `KT_HOLD=1` (a red class) and the step actually failed.
@@ -122,11 +122,11 @@ A green classification does not write the hold, so the next run retries the same
 
 GitHub emails the account owner when the **job** fails. `tools/auto_refresh.sh` still exits with the same codes, and guard, FREEZE, and byte-compare behavior on a real failure is unchanged. `tools/report_outcome.py` (using `tools/classify_outcome.py`) writes the job step summary plus `runs/0-report/result.json` and `runs/0-report/outcome.log`. Those files show `FAIL(code)` and the log tail, and the run-log artifact uploads them. `runs/0-report` sorts before a timestamped run directory, so the record step's `ls -d runs/* | tail` still picks the real run.
 
-**Test run** (green, no hold, for every exit including 12 from a stale branch `state.json` / base zip sha): any ref other than `main`, or `workflow_dispatch` with `deploy_target=none` or `preview`. A scheduled run is on `main`. An empty dispatch target is production.
+**Test run** (green, no hold, including exit 12 from a stale branch `state.json` / base zip sha): `deploy_target` is `none` or `preview`, and this run did not write a Production deploy log. The git ref does not matter. Exit 12 stays green only in that case.
 
-**Main Production** is `main` and not a none/preview dispatch (the schedule, or `workflow_dispatch` with `production`).
+**Production** (the columns below) is everything else, on any ref: a schedule, `deploy_target=production`, an empty target, or a run that wrote a non-empty Production deploy log. A `workflow_dispatch` with `production` on a branch still deploys to Cloudflare Production, so a real failure there is red and writes the hold.
 
-| Exit | What it means | Main Production job | Hold on main Production | Test run |
+| Exit | What it means | Production job | Hold on Production | Test run (`none` / `preview` only) |
 |---|---|---|---|---|
 | 0 | clean ship or skip | green | no | green, no hold |
 | 10 | lock held by another run | green | no | green, no hold |
@@ -138,7 +138,7 @@ GitHub emails the account owner when the **job** fails. `tools/auto_refresh.sh` 
 | 16 | `apply_data`, unzip, or zip-vs-site mismatch | red | yes | green, no hold |
 | 17 | sanity or suite failed | red | yes | green, no hold |
 | 18 | preview deploy flake, and Production was not attempted | green | no | green, no hold |
-| 18 | preview code but a Production deploy log was written | red | yes | green, no hold |
+| 18 | preview code but a Production deploy log was written | red | yes | not a test run; the log makes it Production (red, hold) |
 | 20 | guard: someone else deployed, or the zip changed after preview | red | yes | green, no hold |
 | 21 | Production deploy failed | red | yes | green, no hold |
 | 22 | live byte-compare failed (FREEZE written) or `state.json` write failed | red | yes | green, no hold |

@@ -31,58 +31,62 @@ def expect(code, ref, event, target, attempted, kind, job, hold, commit_freeze=N
         check(got["commit_freeze"] is commit_freeze, "%s commit_freeze %s (got %s)" % (label, commit_freeze, got["commit_freeze"]))
     return got
 
-# Main Production: schedule on main, and a production dispatch on main. Empty target is production.
+# Production on any ref: schedule, production target, or an empty target.
 PROD = [
     ("main", "schedule", "production"),
     ("main", "schedule", ""),
+    ("main", "schedule", "none"),
     ("main", "workflow_dispatch", "production"),
     ("main", "workflow_dispatch", ""),
     ("refs/heads/main", "schedule", "production"),
+    ("cursor/cfp-top25-8c29", "workflow_dispatch", "production"),
+    ("cursor/cfp-top25-8c29", "workflow_dispatch", ""),
+    ("cursor/cfp-top25-8c29", "schedule", "production"),
+    ("feature", "workflow_dispatch", "production"),
 ]
-# Test runs: non-main ref (even with a production target), or a none/preview dispatch on main.
+# Test runs are only none/preview dispatches that did not write a Production log.
 TEST = [
     ("main", "workflow_dispatch", "none"),
     ("main", "workflow_dispatch", "preview"),
     ("main", "workflow_dispatch", "NONE"),
-    ("cursor/cfp-top25-8c29", "workflow_dispatch", "production"),
     ("cursor/cfp-top25-8c29", "workflow_dispatch", "none"),
     ("cursor/cfp-top25-8c29", "workflow_dispatch", "preview"),
-    ("cursor/cfp-top25-8c29", "schedule", "production"),
+    ("feature", "workflow_dispatch", "preview"),
 ]
 
 REAL = [11, 12, 14, 15, 16, 17, 20, 21, 22]
 GREEN_TRANSIENT = [10, 13]
 UNKNOWN = [1, 2, 19, 23, 99, None, "nope"]
 
+def expect_production(code, ref, event, target, attempted, kind="exit"):
+    if kind == "install" or code == 0 or code in (10, 13) or (code == 18 and not attempted):
+        expect(code, ref, event, target, attempted, kind, "green", False, False)
+    else:
+        expect(code, ref, event, target, attempted, kind, "red", True, code == 22)
+
 for ref, event, target in PROD:
-    expect(0, ref, event, target, False, "exit", "green", False, False)
-    expect(0, ref, event, target, True, "exit", "green", False, False)
-    for code in GREEN_TRANSIENT:
-        expect(code, ref, event, target, False, "exit", "green", False, False)
-        expect(code, ref, event, target, True, "exit", "green", False, False)
-    expect(18, ref, event, target, False, "exit", "green", False, False)
-    expect(18, ref, event, target, True, "exit", "red", True, False)
-    for code in REAL:
-        freeze = code == 22
-        expect(code, ref, event, target, False, "exit", "red", True, freeze)
-        expect(code, ref, event, target, True, "exit", "red", True, freeze)
-    for code in UNKNOWN:
-        expect(code, ref, event, target, False, "exit", "red", True, False)
-        expect(code, ref, event, target, True, "exit", "red", True, False)
-    for code in (0, 12, 18, 22, 100, None):
-        expect(code, ref, event, target, False, "install", "green", False, False)
-        expect(code, ref, event, target, True, "install", "green", False, False)
+    for attempted in (False, True):
+        expect_production(0, ref, event, target, attempted)
+        for code in GREEN_TRANSIENT:
+            expect_production(code, ref, event, target, attempted)
+        expect_production(18, ref, event, target, attempted)
+        for code in REAL:
+            expect_production(code, ref, event, target, attempted)
+        for code in UNKNOWN:
+            expect_production(code, ref, event, target, attempted)
+        for code in (0, 12, 18, 22, 100, None):
+            expect_production(code, ref, event, target, attempted, "install")
 
 for ref, event, target in TEST:
     for code in [0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 1, 2, 19, 99, None]:
-        for attempted in (False, True):
-            freeze = code == 22
-            # exit 0 is a clean ship on every run type, not a test-run failure
-            if code == 0:
-                expect(code, ref, event, target, attempted, "exit", "green", False, False)
-            else:
-                expect(code, ref, event, target, attempted, "exit", "green", False, freeze)
+        if code == 0:
+            expect(code, ref, event, target, False, "exit", "green", False, False)
+        else:
+            expect(code, ref, event, target, False, "exit", "green", False, code == 22)
+        # A non-empty Production log makes the same dispatch a Production run.
+        expect_production(code, ref, event, target, True)
     expect(100, ref, event, target, False, "install", "green", False, False)
+    expect(100, ref, event, target, True, "install", "green", False, False)
 
 # Literal rows from the runbook table, so a swapped rule fails even if the loops agree with each other.
 rows = [
@@ -91,7 +95,15 @@ rows = [
     (11, "main", "schedule", "production", False, "exit", "red", True),
     (12, "main", "workflow_dispatch", "production", False, "exit", "red", True),
     (12, "cursor/cfp-top25-8c29", "workflow_dispatch", "none", False, "exit", "green", False),
-    (12, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", False, "exit", "green", False),
+    (12, "cursor/cfp-top25-8c29", "workflow_dispatch", "preview", False, "exit", "green", False),
+    (11, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", False, "exit", "red", True),
+    (12, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", False, "exit", "red", True),
+    (16, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", False, "exit", "red", True),
+    (21, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", True, "exit", "red", True),
+    (22, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", True, "exit", "red", True),
+    (99, "cursor/cfp-top25-8c29", "workflow_dispatch", "production", False, "exit", "red", True),
+    (12, "cursor/cfp-top25-8c29", "workflow_dispatch", "", False, "exit", "red", True),
+    (16, "feature", "workflow_dispatch", "", False, "exit", "red", True),
     (13, "main", "schedule", "production", False, "exit", "green", False),
     (14, "main", "schedule", "production", False, "exit", "red", True),
     (15, "main", "schedule", "production", False, "exit", "red", True),
@@ -100,22 +112,30 @@ rows = [
     (17, "main", "schedule", "production", False, "exit", "red", True),
     (18, "main", "schedule", "production", False, "exit", "green", False),
     (18, "main", "schedule", "production", True, "exit", "red", True),
-    (18, "main", "workflow_dispatch", "preview", True, "exit", "green", False),
+    (18, "main", "workflow_dispatch", "preview", False, "exit", "green", False),
+    (18, "main", "workflow_dispatch", "preview", True, "exit", "red", True),
     (20, "main", "schedule", "production", False, "exit", "red", True),
     (21, "main", "schedule", "production", True, "exit", "red", True),
     (22, "main", "schedule", "production", True, "exit", "red", True),
-    (22, "feature", "workflow_dispatch", "production", True, "exit", "green", False),
+    (22, "feature", "workflow_dispatch", "production", True, "exit", "red", True),
     (99, "main", "schedule", "production", False, "exit", "red", True),
-    (99, "feature", "schedule", "production", False, "exit", "green", False),
+    (99, "feature", "schedule", "production", False, "exit", "red", True),
+    (12, "main", "schedule", "none", False, "exit", "red", True),
     (1, "main", "schedule", "production", False, "install", "green", False),
 ]
 for row in rows:
     expect(*row)
 
-check(classify_outcome.is_test_run("", "schedule", "production") is False, "empty ref is not a test run")
+check(classify_outcome.is_test_run("", "schedule", "production") is False, "schedule is not a test run")
 check(classify_outcome.is_test_run("main", "schedule", "none") is False, "schedule ignores a none target")
-got22 = classify_outcome.classify(22, "feature", "workflow_dispatch", "production", True, "exit")
-check(got22["commit_freeze"] is True and got22["job"] == "green" and got22["hold"] is False, "test-run exit 22 stays green, no hold, still commits FREEZE")
+check(classify_outcome.is_test_run("cursor/cfp-top25-8c29", "workflow_dispatch", "production") is False, "non-main production dispatch is Production")
+check(classify_outcome.is_test_run("cursor/cfp-top25-8c29", "workflow_dispatch", "") is False, "non-main empty target is Production")
+check(classify_outcome.is_test_run("cursor/cfp-top25-8c29", "workflow_dispatch", "none") is True, "non-main none target is a test run")
+check(classify_outcome.is_test_run("main", "workflow_dispatch", "preview", True) is False, "a Production deploy log is Production even on preview")
+got22 = classify_outcome.classify(22, "feature", "workflow_dispatch", "none", False, "exit")
+check(got22["commit_freeze"] is True and got22["job"] == "green" and got22["hold"] is False, "none-target exit 22 stays green, no hold, still commits FREEZE")
+got22p = classify_outcome.classify(22, "feature", "workflow_dispatch", "production", True, "exit")
+check(got22p["commit_freeze"] is True and got22p["job"] == "red" and got22p["hold"] is True, "branch production exit 22 is red, hold, commits FREEZE")
 got22m = classify_outcome.classify(22, "main", "schedule", "production", True, "exit")
 check(got22m["commit_freeze"] is True and got22m["job"] == "red" and got22m["hold"] is True, "main exit 22 is red, hold, commits FREEZE")
 
@@ -250,7 +270,7 @@ check("FAIL(install):" in summary and "Unable to fetch some archives" in summary
       "install report shows FAIL(install) and the apt tail")
 check(not (d / "hold/failed").exists(), "install report does not write hold/failed")
 
-# Exit 22 on a test run: process stays green, FREEZE commit is requested, hold is not.
+# Branch + production exit 22 is a real Production failure: red, hold, FREEZE commit.
 d, env = fresh()
 env["KT_REF_NAME"] = "feature"
 env["GITHUB_EVENT_NAME"] = "workflow_dispatch"
@@ -259,8 +279,19 @@ log = d / "live.log"
 log.write_text("byte-compare failed\n", encoding="utf-8")
 proc = run_report(["--exit", "22", "--step", "Refresh", "--log", str(log), "--reason", "live byte-compare failed; FREEZE written"], env, d)
 env_txt = (d / "env.txt").read_text(encoding="utf-8")
+check(proc.returncode == 22 and "KT_COMMIT_FREEZE=1" in env_txt and "KT_HOLD=1" in env_txt and "KT_HALT=" not in env_txt,
+      "branch production exit 22 fails the job, requests the hold, and commits FREEZE")
+# none/preview still stays green, including exit 22, and does not request the hold.
+d, env = fresh()
+env["KT_REF_NAME"] = "feature"
+env["GITHUB_EVENT_NAME"] = "workflow_dispatch"
+env["KT_DEPLOY_TARGET"] = "none"
+log = d / "live-none.log"
+log.write_text("byte-compare failed\n", encoding="utf-8")
+proc = run_report(["--exit", "22", "--step", "Refresh", "--log", str(log), "--reason", "live byte-compare failed; FREEZE written"], env, d)
+env_txt = (d / "env.txt").read_text(encoding="utf-8")
 check(proc.returncode == 0 and "KT_COMMIT_FREEZE=1" in env_txt and "KT_HOLD=" not in env_txt and "KT_HALT=1" in env_txt,
-      "test-run exit 22 exits 0, requests FREEZE commit, no hold")
+      "none-target exit 22 exits 0, requests FREEZE commit, no hold")
 
 # 0-report sorts before a timestamped run, so tail picks the real directory.
 order = sorted(["0-report", "20261111-122841"])

@@ -4,10 +4,13 @@
 auto_refresh.sh exit codes are unchanged. This only decides the job result and
 whether the failed-input hold is warranted. See RUNBOOK "Job result and email".
 
-A test run is any ref other than main, or a workflow_dispatch whose deploy_target
-is none or preview. Test runs are green and never warrant the hold.
+A test run is only a dispatch whose deploy_target is none or preview, and which
+did not write a Production deploy log. The git ref does not matter. A production
+or empty target is Production on any ref. A schedule is Production. A non-empty
+prod deploy log is Production. Test runs are green and never warrant the hold.
+Exit 12 from a stale branch stays green only for none or preview.
 
-On a main Production run (schedule, or workflow_dispatch with production):
+On a Production run:
   green, no hold: exit 0, 10, 13, 18 when Production was not attempted, and an
   install-tools failure after retries.
   red, hold: 11, 12, 14, 15, 16, 17, 20, 21, 22, 18 when Production was attempted,
@@ -20,23 +23,19 @@ import argparse, json, sys
 REAL_EXITS = (11, 12, 14, 15, 16, 17, 20, 21, 22)
 
 
-def normalize_ref(ref):
-    ref = (ref or "").strip()
-    if ref.startswith("refs/heads/"):
-        ref = ref[len("refs/heads/"):]
-    return ref
+def is_test_run(ref_name, event_name, deploy_target, production_attempted=False):
+    """True only for a none/preview dispatch that did not deploy to Production.
 
-
-def is_test_run(ref_name, event_name, deploy_target):
-    """True when this run must not fail the job and must not warrant a hold."""
-    ref = normalize_ref(ref_name)
-    event = (event_name or "").strip()
+    ref_name is the checkout ref and does not change the class. A production or
+    empty target is Production on every ref. A schedule is Production. A
+    non-empty Production deploy log is Production.
+    """
+    if production_attempted:
+        return False
+    if (event_name or "").strip() == "schedule":
+        return False
     target = (deploy_target or "").strip().lower()
-    if ref and ref != "main":
-        return True
-    if ref == "main" and event == "workflow_dispatch" and target in ("none", "preview"):
-        return True
-    return False
+    return target in ("none", "preview")
 
 
 def classify(exit_code, ref_name, event_name, deploy_target, production_attempted=False, kind="exit"):
@@ -56,7 +55,7 @@ def classify(exit_code, ref_name, event_name, deploy_target, production_attempte
     commit_freeze = code == 22
     if code == 0:
         return {"job": "green", "hold": False, "commit_freeze": False, "class": "ok"}
-    if is_test_run(ref_name, event_name, deploy_target):
+    if is_test_run(ref_name, event_name, deploy_target, attempted):
         return {"job": "green", "hold": False, "commit_freeze": commit_freeze, "class": "test-run"}
     if code == 10:
         return {"job": "green", "hold": False, "commit_freeze": False, "class": "transient-lock"}
@@ -96,7 +95,7 @@ def main(argv):
     out = classify(parse_exit(args.exit), args.ref_name, args.event, args.deploy_target, attempted, args.kind)
     out["exit"] = parse_exit(args.exit)
     out["kind"] = args.kind
-    out["test_run"] = is_test_run(args.ref_name, args.event, args.deploy_target)
+    out["test_run"] = is_test_run(args.ref_name, args.event, args.deploy_target, attempted)
     print(json.dumps(out, sort_keys=True))
     return 0
 

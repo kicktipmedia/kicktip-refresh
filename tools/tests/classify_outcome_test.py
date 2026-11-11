@@ -375,6 +375,16 @@ check("timeout 80 python3 src/poll_refresh.py" in auto and "--cfp" in auto,
       "auto_refresh.sh still runs the CFP poll read inside the non-blocking polls command")
 check("> $R/FREEZE" not in auto, "auto_refresh.sh still does not write FREEZE itself")
 
+# Pending runs wait. A running Production deploy is not cancelled. The refresh job
+# itself must still fail the workflow, so a real exit stays red.
+conc = wf.split("concurrency:", 1)[1].split("permissions:", 1)[0]
+check("group: refresh" in conc and "cancel-in-progress: false" in conc and "queue: max" in conc,
+      "concurrency queues pending runs and does not cancel the one in progress")
+check("cancel-in-progress: true" not in conc, "concurrency does not cancel an in-progress refresh")
+job_head = wf.split("jobs:", 1)[1].split("steps:", 1)[0]
+check("continue-on-error" not in job_head and "timeout-minutes: 120" in job_head,
+      "the refresh job still fails the workflow on a real error and keeps the 120 minute timeout")
+
 # Artifact uploads and report writes stay non-fatal. A CreateArtifact HTML error must not email.
 for title, sid in (("Keep fetched ESPN inputs", "inputs_artifact"), ("Keep run logs", "logs_artifact")):
     step = wf.split("- name: " + title, 1)[1].split("- name:", 1)[0]

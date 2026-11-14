@@ -1,5 +1,5 @@
 """Game data for the official-rules conference title-game simulator -> data/ccg-sim.json (all ten FBS conferences).
-Pure results data: conference games that count in the standings (played: w 1 = home won, 0 = away won; remaining: w null), each team's non-conference record, divisions.
+Pure results data: conference games that count in the standings (played: w 1 = home won, 0 = away won, plus the final score hs/as; remaining: w null), each team's non-conference record, divisions.
 No rating, model number or line is in this file. The ESPN-line pre-fill is done in the browser from /data/pred-lines.json (see src/assets/ccgsim-ui.js)."""
 import os, sys, json, re, unicodedata
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, f"{ROOT}/src")
@@ -30,7 +30,11 @@ def make(cmap, sched, cut_weeks=None, divisions=None, asof=""):
             counts = hin and ain and g["espn_conf"] and g["week"] <= cut and g["id"] not in NOT_CONF
             if counts:
                 w = (1 if g["hs"] > g["as_"] else 0) if g["done"] else None
-                games.append(dict(id=g["id"], h=ix[h], a=ix[a], w=w, wk=g["week"], date=g["date"], neu=bool(g["neutral"]), k=f"{slugify(cmap[h]['loc'])}~{slugify(cmap[a]['loc'])}"))
+                row = dict(id=g["id"], h=ix[h], a=ix[a], w=w, wk=g["week"], date=g["date"], neu=bool(g["neutral"]), k=f"{slugify(cmap[h]['loc'])}~{slugify(cmap[a]['loc'])}")
+                # wkfinal1: final score of a played game (hs home, as away), so the simulator's week panel can say "Final: Colorado 42, Houston 32 (Fri)"
+                # for a Tue-Fri game already played in a week that still has games left. Absent for remaining games.
+                if w is not None and isinstance(g.get("hs"), int) and isinstance(g.get("as_"), int): row.update({"hs": g["hs"], "as": g["as_"]})
+                games.append(row)
             else:
                 for t, o, hs, as_ in ((h, a, g["hs"], g["as_"]), (a, h, g["as_"], g["hs"])):
                     if t not in ix: continue

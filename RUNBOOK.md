@@ -156,3 +156,13 @@ The install step runs `tools/retry_cmd.sh --tries 3 --backoff 20`. After the fir
 **Artifact upload does not email.** `actions/upload-artifact` can fail after a clean Production publish when GitHub returns an HTML page instead of JSON (`Failed to CreateArtifact: Unexpected token '<'`). Run 43091940348 did that on both "Keep fetched ESPN inputs" and "Keep run logs" after Refresh exit 0 and Production `f2227f03`. Both upload steps use `continue-on-error`. The following "Record artifact upload" step always runs, writes `::warning::`, and adds a line to the step summary and `runs/0-report` (creating that report when the refresh itself exited 0). That note exits 0. A failed step-summary or report write is also a warning and does not change the classified exit. The job stays green unless `report_outcome.py` classified a real Production failure.
 
 A green non-zero outcome sets `KT_HALT=1` so later build, deploy, and publish steps are skipped. Exit 0 does not halt. The record step runs only when `auto_refresh.sh` itself exited 0 (`steps.refresh.outputs.shipped == '1'`).
+
+## wkfinal1: games already final in a week that still has games left (Nov 14, 2026)
+Bug (Jared, Nov 14 1:20 AM MT): the simulator week panel listed only remaining games, so a team whose game in that week was already final (Tue-Fri) showed as
+"No Big 12 game: Colorado and Houston." (Houston at Colorado, Fri Nov 13, final 42-32). Standings, records, tiebreakers and the simulation always counted
+the game; only the week panel text was wrong. Fix:
+- `assets/ccgsim-ui.js` (live-only JS ship, `tools/hotfix/wkfinal1_patch.py`; rebuild on any base with `tools/hotfix/wkfinal1_build.sh <zip> <dir>`):
+  finals of the shown week print as "Final: Colorado 42, Houston 32 (Fri)" (or "Final: Colorado beat Houston (Fri)" when the data has no score),
+  their teams are never in the "No <conf> game" line, the week date range and tab labels include them, and a week whose games are all final
+  says "6 games final" instead of "No games". `tree/src/assets/ccgsim-ui.js` is older than live and is intentionally not edited (the 3-way merge keeps the live file).
+- `tree/src/ccgsim_data.py`: played games carry `hs`/`as` (final score) in `data/ccg-sim.json`, so the score shows from the first refresh after this merges.

@@ -1,6 +1,6 @@
 {
  "note": "ESPN public scoreboard pull; numbers only",
- "pulled_epoch": 1794707618,
+ "pulled_epoch": 1794713420,
  "lines": [
   {
    "id": "401856887",
@@ -8,7 +8,7 @@
    "away": "Ole Miss Rebels",
    "kickoff": "2026-11-15T18:00Z",
    "s": -2.5,
-   "t": 1794707618
+   "t": 1794713420
   },
   {
    "id": "401856879",
@@ -16,7 +16,7 @@
    "away": "TCU Horned Frogs",
    "kickoff": "2026-11-27T01:00Z",
    "s": -16.5,
-   "t": 1794707632
+   "t": 1794713434
   }
  ]
 }

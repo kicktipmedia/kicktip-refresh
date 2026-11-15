@@ -51,6 +51,26 @@ def summary(g):
     g["box"] = s; g["q3"] = list(q3) if d.get("scoringPlays") is not None else None
     return g
 
+def correct_scores(rated, sched):
+    """scorefix1 (Nov 14, 2026, run 43661584986 FAIL 16 in gen_team_stats): ESPN corrected Jacksonville State at Western Kentucky from 35-24 to 34-24
+    (home-away: Western Kentucky first) after it was rated. A rated game was never re-read, so games_rated.json kept the old score while schedule.json
+    (and sim-bundle.played) had the new one, and the fail-closed team-stats check stopped every run.
+    A saved final is corrected ONLY when ESPN's status name is STATUS_FINAL, the new score is not 0-0, and the winner does not change (a tie counts as
+    a change). Anything else (cancelled/postponed/forfeit status, 0-0, winner flip) leaves the saved row unchanged, so team-stats still fails closed,
+    and is logged as "held: <id> <reason>". box/q3 are kept. Scores are logged home-away.
+    Returns (fixed, held): lists of log strings for refresh_log.json (score_corrections, score_corrections_held)."""
+    fixed, held = [], []
+    sg = lambda d: (d > 0) - (d < 0)
+    for gid, r in rated.items():
+        s = sched.get(gid)
+        if not s or not s.get("done") or s.get("home") != r.get("home") or s.get("away") != r.get("away"): continue
+        if s.get("hs") is None or s.get("as_") is None or (s["hs"], s["as_"]) == (r["hs"], r["as_"]): continue
+        what = "%s %s at %s (home-away): %s-%s -> %s-%s" % (gid, s.get("an"), s.get("hn"), r["hs"], r["as_"], s["hs"], s["as_"])
+        if s.get("status") != "STATUS_FINAL": held.append("held: %s status %s: %s" % (gid, s.get("status"), what)); continue
+        if (s["hs"], s["as_"]) == (0, 0): held.append("held: %s new score 0-0: %s" % (gid, what)); continue
+        if sg(s["hs"] - s["as_"]) != sg(r["hs"] - r["as_"]): held.append("held: %s winner changes: %s" % (gid, what)); continue
+        fixed.append(what); r["hs"], r["as_"] = s["hs"], s["as_"]
+    return fixed, held
 def main():
     os.makedirs(f"{ROOT}/data/out", exist_ok=True)
     t0 = datetime.datetime.now()
@@ -68,11 +88,12 @@ def main():
     for g in new:
         rated[g["id"]] = dict(id=g["id"], date=g["date"][:10], home=g["home"], away=g["away"], hn=g["hn"], an=g["an"], hs=g["hs"], as_=g["as_"],
                               neutral=g["neutral"], box=g.get("box", {}), q3=g.get("q3"))
+    fixed, held = correct_scores(rated, sched)
     json.dump(sorted(rated.values(), key=lambda g: g["date"]), open(f"{ROOT}/data/store/games_rated.json", "w"))
     json.dump(sorted(sched.values(), key=lambda g: g["date"]), open(sp, "w"))
     now = datetime.datetime.now(__import__('zoneinfo').ZoneInfo('America/Denver'))
     log = dict(refreshed_mt=now.strftime("%Y-%m-%d %H:%M MT"), year=YEAR, schedule_games=len(sched), completed=sum(g["done"] for g in sched.values()),
-               new_rated_games=len(new), rated_total=len(rated), errors=espn.LOG, seconds=round((datetime.datetime.now() - t0).total_seconds(), 1))
+               new_rated_games=len(new), rated_total=len(rated), score_corrections=fixed, score_corrections_held=held, errors=espn.LOG, seconds=round((datetime.datetime.now() - t0).total_seconds(), 1))
     json.dump(log, open(f"{ROOT}/data/out/refresh_log.json", "w"), indent=1); print(json.dumps(log, indent=1))
 if __name__ == "__main__":
     main()

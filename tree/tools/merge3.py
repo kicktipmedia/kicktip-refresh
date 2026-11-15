@@ -98,6 +98,7 @@ def anchored(l,a,b):
     return lt.encode('utf-8'),bad
 STALE_GAP=b'<td data-c="gap"><span class="lk">Loading</span></td>'
 CNT=re.compile(rb'Right now that is \d+ of the \d+ games that have not started')
+SPR=re.compile(rb'<b>Spreads last read:</b> [^<]*? MT\.')   # stampfix1: pipeline data stamp (lines pull time), never a live edit
 def livefix(f,l,a):
     """Live-only leftovers that the templates can never reproduce (Oct 31 refreshfix):
     games/index.html: stray <td data-c="gap"> cells left in a few live rows after the Gap column was removed (header has no Gap column);
@@ -108,6 +109,11 @@ def livefix(f,l,a):
         m=CNT.search(a)
         if m and CNT.search(l) and m.group(0) not in l:
             rep.setdefault('livefix',[]).append(f+' count '+CNT.search(l).group(0).decode()+' -> S0'); l=CNT.sub(lambda _:m.group(0),l,count=1)
+        # stampfix1 (Nov 14 4:43 PM MT run 43653016423): the 'Spreads last read' stamp is lines data. When it equalled the previous as-of
+        # (3:00 PM) the as-of restamp rewrote it on live (3:37 PM) while S0 kept 3:00 PM, so every later S1 conflicted here. Live takes S0's value.
+        m=SPR.search(a); ml=SPR.search(l)
+        if m and ml and ml.group(0)!=m.group(0):
+            rep.setdefault('livefix',[]).append(f+' spreads stamp '+ml.group(0).decode()+' -> S0'); l=l[:ml.start()]+m.group(0)+l[ml.end():]
     return l
 for f in changed:
     lp=L+'/'+f

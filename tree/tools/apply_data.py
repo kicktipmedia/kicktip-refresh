@@ -35,6 +35,17 @@ def forms(asof):
     return [('%s, %s, %d, %s MT' % (d.strftime('%a'), md, d.year, tm)), ('%s, %d, %s MT' % (md, d.year, tm)), ('%s, %s MT' % (md, tm)),
             d.strftime('%Y-%m-%d %H:%M') + ' MT', 'data-asof="%s"' % d.strftime('%Y-%m-%d %H:%M'), ('"%s, %s"' % (md, tm)),
             'recalculated %s, %d.' % (md, d.year), d.strftime('%Y-%m-%d_%H%M')]
+# stampfix1: spans that look like an as-of form but are not the as-of: the spreads pull stamp, and kickoff labels ("Sat Nov 14, 3:00 PM MT",
+# weekday + date without a year). When the previous as-of minute equals one of them, the plain old->new replace corrupted them (Nov 14: a 3:00 PM
+# kickoff showed 3:37 PM and the method page spreads stamp changed, then the next run conflicted). They are masked during the restamp and the left-check.
+PROT = re.compile(r'<b>Spreads last read:</b> [^<]*? MT\.|\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),? [A-Z][a-z]{2} \d{1,2}, \d{1,2}:\d{2} [AP]M MT')
+def restamp_text(t, F0, F1):
+    keep = []
+    def m(x): keep.append(x.group(0)); return '\x00P%d\x00' % (len(keep) - 1)
+    t = PROT.sub(m, t)
+    for o, n in zip(F0, F1): t = t.replace(o, n)
+    return re.sub(r'\x00P(\d+)\x00', lambda x: keep[int(x.group(1))], t)
+def unprot(t): return PROT.sub('', t)
 def run(cmd, env, what):
     r = subprocess.run(cmd, capture_output=True, text=True, env=env)
     if r.returncode != 0: die(3, '%s failed rc=%d: %s' % (what, r.returncode, (r.stdout + r.stderr)[-1500:]))
@@ -132,7 +143,7 @@ def build_once(tmp, a, network):
         for rel, p in walk(out):
             if rel == '_worker.js' or not rel.endswith(('.html', '.json', '.js')): continue
             t = open(p, encoding='utf-8').read(); t2 = t
-            for o, n in zip(F0, F1): t2 = t2.replace(o, n)
+            t2 = restamp_text(t2, F0, F1)
             if t2 != t: open(p, 'w', encoding='utf-8').write(t2)
     # 5a. merged build: re-derive the polish chances-card record line from the merged page text (else a refresh leaves it stale)
     if os.path.exists(out + '/assets/polish.js'): run([sys.executable, HERE + '/polish_refresh.py', out], env, 'polish-refresh')
@@ -189,7 +200,7 @@ def build_once(tmp, a, network):
         except ValueError: die(3, 'unparseable output %s (%d bytes)' % (k, os.path.getsize(of[k])))
         v = j.get('as_of') or j.get('asof')
         if v != S1a: die(3, 'as-of mismatch %s: %s != %s' % (k, v, S1a))
-    left = [rel for rel, p in of.items() if B0 != S1a and rel.endswith(('.html', '.json')) and any(f in open(p, encoding='utf-8', errors='ignore').read() for f in F0[:5])]
+    left = [rel for rel, p in of.items() if B0 != S1a and rel.endswith(('.html', '.json')) and any(f in unprot(open(p, encoding='utf-8', errors='ignore').read()) for f in F0[:5])]
     if left: die(3, 'old as-of left in %s' % left[:10])
     z_out = os.path.join(tmp, 'site.zip')
     with zipfile.ZipFile(z_out, 'w', zipfile.ZIP_DEFLATED) as z:

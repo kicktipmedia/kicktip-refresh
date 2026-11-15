@@ -1,6 +1,6 @@
 {
  "note": "ESPN public scoreboard pull; numbers only",
- "pulled_epoch": 1794713420,
+ "pulled_epoch": 1794717910,
  "lines": [
   {
    "id": "401856887",
@@ -8,7 +8,55 @@
    "away": "Ole Miss Rebels",
    "kickoff": "2026-11-15T18:00Z",
    "s": -2.5,
-   "t": 1794713420
+   "t": 1794717910
+  },
+  {
+   "id": "401866465",
+   "home": "Western Michigan Broncos",
+   "away": "Eastern Michigan Eagles",
+   "kickoff": "2026-11-17T23:00Z",
+   "s": -14.5,
+   "t": 1794717913
+  },
+  {
+   "id": "401866464",
+   "home": "Ohio Bobcats",
+   "away": "Ball State Cardinals",
+   "kickoff": "2026-11-18T00:00Z",
+   "s": -9.5,
+   "t": 1794717913
+  },
+  {
+   "id": "401866466",
+   "home": "Kent State Golden Flashes",
+   "away": "Miami (OH) RedHawks",
+   "kickoff": "2026-11-18T00:00Z",
+   "s": 8.5,
+   "t": 1794717913
+  },
+  {
+   "id": "401866467",
+   "home": "Massachusetts Minutemen",
+   "away": "Akron Zips",
+   "kickoff": "2026-11-19T00:00Z",
+   "s": -3.5,
+   "t": 1794717914
+  },
+  {
+   "id": "401866469",
+   "home": "Buffalo Bulls",
+   "away": "Central Michigan Chippewas",
+   "kickoff": "2026-11-19T00:30Z",
+   "s": -1.5,
+   "t": 1794717914
+  },
+  {
+   "id": "401858531",
+   "home": "Nebraska Cornhuskers",
+   "away": "Ohio State Buckeyes",
+   "kickoff": "2026-11-21T05:00Z",
+   "s": 4.5,
+   "t": 1794717917
   },
   {
    "id": "401856879",
@@ -16,7 +64,7 @@
    "away": "TCU Horned Frogs",
    "kickoff": "2026-11-27T01:00Z",
    "s": -16.5,
-   "t": 1794713434
+   "t": 1794717923
   }
  ]
 }

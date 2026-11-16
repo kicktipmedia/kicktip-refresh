@@ -106,6 +106,7 @@ def _parse_args(argv):
     step = "refresh"
     detect = False
     attempted = None
+    workflow = "refresh"
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -125,24 +126,28 @@ def _parse_args(argv):
             step = need(); i += 2
         elif a == "--production-attempted":
             attempted = _flag(need()); i += 2
+        elif a == "--workflow":
+            workflow = need(); i += 2
         elif a == "--detect-production":
             detect = True; i += 1
         else:
             raise SystemExit("unknown arg %s" % a)
     if exit_text is None:
         raise SystemExit("--exit is required")
-    return exit_text, kind, log, reason, step, detect, attempted
+    return exit_text, kind, log, reason, step, detect, attempted, workflow
 
 
-def report(exit_text, kind, ref_name, event_name, deploy_target, production_attempted_flag, step, reason, log_text):
+def report(exit_text, kind, ref_name, event_name, deploy_target, production_attempted_flag, step, reason, log_text, workflow="refresh"):
     """Build the classification and the on-disk report bodies. Does not touch the hold."""
     kind = (kind or "exit").strip().lower()
+    workflow = (workflow or "refresh").strip().lower()
     code = classify_outcome.parse_exit(exit_text)
-    decision = classify_outcome.classify(code, ref_name, event_name, deploy_target, production_attempted_flag, kind)
+    decision = classify_outcome.classify(code, ref_name, event_name, deploy_target, production_attempted_flag, kind, workflow)
     shown = _fail_code(kind, code)
     why = (reason or "").strip() or "(no reason recorded)"
     fail = "FAIL(%s): %s" % (shown, why)
     tail = log_text if log_text is not None else ""
+    title = "Fast scores outcome" if workflow == "fast" else "Refresh outcome"
     job_word = "green" if decision["job"] == "green" else "red"
     if decision["job"] == "green":
         mail = "This job stays green, so GitHub does not email."
@@ -151,7 +156,7 @@ def report(exit_text, kind, ref_name, event_name, deploy_target, production_atte
     hold_word = "yes" if decision["hold"] else "no"
     fence = tail.replace("```", "'''")
     summary = "\n".join([
-        "### Refresh outcome: %s" % job_word,
+        "### %s: %s" % (title, job_word),
         "",
         mail,
         "",
@@ -185,6 +190,7 @@ def report(exit_text, kind, ref_name, event_name, deploy_target, production_atte
         "event": event_name or "",
         "deploy_target": deploy_target or "",
         "production_attempted": bool(production_attempted_flag),
+        "workflow": workflow,
         "log_tail": tail,
     }
     log_body = fail + "\n\n" + tail + ("\n" if tail and not tail.endswith("\n") else "")
@@ -300,7 +306,7 @@ def main(argv):
         except Exception as e:
             warn("artifact note failed: %s" % e)
             return 0
-    exit_text, kind, log, reason, step, detect, attempted = _parse_args(argv)
+    exit_text, kind, log, reason, step, detect, attempted, workflow = _parse_args(argv)
     root = Path(os.environ.get("KT_ROOT") or Path(__file__).resolve().parent.parent)
     ref = os.environ.get("KT_REF_NAME") or os.environ.get("GITHUB_REF_NAME") or ""
     event = os.environ.get("GITHUB_EVENT_NAME") or ""
@@ -320,7 +326,7 @@ def main(argv):
                 last = line.strip()
         reason = last or ("command exit %s" % exit_text)
     decision, summary, body, log_body, halt = report(
-        exit_text, kind, ref, event, target, attempted, step, reason, tail)
+        exit_text, kind, ref, event, target, attempted, step, reason, tail, workflow)
 
     def write_report():
         out_dir = root / "runs" / REPORT_DIR

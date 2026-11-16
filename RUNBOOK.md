@@ -156,3 +156,40 @@ The install step runs `tools/retry_cmd.sh --tries 3 --backoff 20`. After the fir
 **Artifact upload does not email.** `actions/upload-artifact` can fail after a clean Production publish when GitHub returns an HTML page instead of JSON (`Failed to CreateArtifact: Unexpected token '<'`). Run 43091940348 did that on both "Keep fetched ESPN inputs" and "Keep run logs" after Refresh exit 0 and Production `f2227f03`. Both upload steps use `continue-on-error`. The following "Record artifact upload" step always runs, writes `::warning::`, and adds a line to the step summary and `runs/0-report` (creating that report when the refresh itself exited 0). That note exits 0. A failed step-summary or report write is also a warning and does not change the classified exit. The job stays green unless `report_outcome.py` classified a real Production failure.
 
 A green non-zero outcome sets `KT_HALT=1` so later build, deploy, and publish steps are skipped. Exit 0 does not halt. The record step runs only when `auto_refresh.sh` itself exited 0 (`steps.refresh.outputs.shipped == '1'`).
+
+## Fast scores path
+
+Final scores do not wait for the sim rebuild. `.github/workflows/fast-scores.yml` runs on its own cron, every 5 minutes in the Saturday window (`*/5 16-23 * * 6` and `*/5 0-7 * * 0` UTC), and only when the repo variable `KT_FAST` is `on`. That switch is not `KT_SCHEDULE`. `gh variable set KT_FAST --body off` pauses the fast path and leaves the full refresh alone.
+
+The job is concurrency group `kt-fast` with `cancel-in-progress: false`. It does not wait behind group `refresh`. A newer tick replaces a pending one. A run that is already deploying is not cancelled. `timeout-minutes` is 15. Wrangler stays pinned at 3.114.17 and is cached.
+
+`tools/fast_scores.sh` reads the live zip from release `base` (sha checked against `state.live_sha`; it does not download the S0 tarball). It pulls ESPN once through `tree/src/refresh.py`, including the score-correction rule from that file. If the finals fingerprint `state.scores_fp` and the pages already show those scores, it exits 0. A second run on the same scores is a no-op even when the pull's clock moved.
+
+The patch is `tools/fast_patch.py`. It does not run `build.py` or `apply_data`. Those rewrite model stamps and, on the next full run, `tree/tools/merge3.py` conflicts if the live file and the new pipeline site both change a results line, a standings cell, or `sim-bundle.json` `played`. A conflict there is exit 16 and the site stops. The fast card is one new line inserted after `<a class="skip" href="#main">Skip to content</a>`. The next full merge keeps that line and still applies the pipeline's own score and record update. The card has the final, the results row, and the W-L and conference record taken from the page's current sentence plus the finals the page does not show yet. `data-asof` / `kt-asof`, `pred-teams.json`, what-if files, and the sim bundle are byte-identical. `Scores updated <time> MT` sits on that card (`class="kt-scores"`), not in a model stamp.
+
+Before a deploy the patch refuses anything outside that card (exit 31) and any record that is not the hero sentence plus those finals (exit 32). `pred-teams.json` must still sum to 12/4/10/20. A winner flip or a 0-0 correction is held, same as `refresh.py`, and is not shown.
+
+Preview goes to branch `refresh-fast`, then bytecmp. Right before Production, `tools/fast_guard.sh` fetches `origin/main` and re-reads `state.json`. The canonical deployment must still be `live_id`, and `live_sha` must still be the zip that was patched. Otherwise the script prints `yield: another deploy landed; next tick retries` and exits 0. Production is one attempt. `tools/live_verify.sh` handles edge lag the same way as a full run. The fast path sets `KT_NO_FREEZE=1`, so a pages.dev mismatch does not write `FREEZE`. It rolls the project back to the pre-fast deployment with the Pages rollback API, compares that deployment to the pre-fast zip, and exits 22.
+
+`tools/publish_base.sh --fast` sets `live_id`, `live_sha`, `zip_path`, `rollback_id`, `scores_fp`, `scores_as_of`, and `fast_base_id`. It does not change `results_fp`, `as_of`, `s0_pipeline_site`, or `lines_*`, so the next full run still sees new results and rebuilds the sims. `fast_base_id` is the full-run deployment the fast cards are based on. Later fast publishes keep that same root. The push uses the same `git pull --rebase --autostash` retries. The full run's `record_live.sh` and `publish_base.sh` also set `scores_fp` and clear `fast_base_id`.
+
+If a full run reaches its guard and the canonical deploy is not the one it started from, `tools/fast_rebase.sh` reads `origin/main` `state.json`. When `fast_base_id` is that run's id, it downloads the new zip, runs `apply_data`, the sums and the suite, Preview and bytecmp, then the fast card again with a fresh scoreboard so a final cannot go backward, and checks the guard once more. Anything else is still exit 20. The fast path never writes `hold/failed`.
+
+| Exit | What it means | Fast job | Hold |
+|---|---|---|---|
+| 0 | shipped, skip, or yield | green | no |
+| 10 | fast lock held | green | no |
+| 11 | FREEZE present | green | no |
+| 12 | base zip sha ≠ `live_sha` | red | no |
+| 13 | ESPN or live-zip download | green | no |
+| 18 | preview flake, Production not attempted | green | no |
+| 21 | Production deploy failed | red | no |
+| 22 | pages.dev mismatch after rollback, or `state.json` write failed | red | no |
+| 31 | allowlist violation | red | no |
+| 32 | record or bytes outside the scores card | red | no |
+| install | wrangler install still failing after 3 tries | green | no |
+| any other code | unexpected | red | no |
+
+Exit 22 does not set `KT_COMMIT_FREEZE`. There is no FREEZE commit step on this workflow. A green non-zero fast exit sets `KT_HALT=1`. Exit 0 does not.
+
+`tools/fast_replay.sh <inputs.tgz> <base.zip>` runs the patch with `--check` and prints the changed files and score lines. No network and no deploy. On the Nov 14 scoreboard those lines are Utah 40-39 at Arizona (401856864), San Diego State 30-13 vs Utah State (401860915), and BYU 28-7 vs Baylor (401856858).

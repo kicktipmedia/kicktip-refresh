@@ -248,7 +248,8 @@ jobs:
               git checkout -- state.json
               eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('ZIP=%s ID=%s S0=%s ASOF=%s FP=%s DONE=%s'%tuple(shlex.quote(str(r[k])) for k in ('zip','live_id','s0','as_of','fp','completed')))")"
               eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('LFP=%s LEP=%s'%(shlex.quote(str(r.get('lines_fp',''))),shlex.quote(str(r.get('lines_epoch','')))))")"
-              tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE" --s0-inputs tree ${LFP:+--lines-fp "$LFP"} ${LEP:+--lines-epoch "$LEP"}
+              eval "$(python3 -c "import json,shlex;r=json.load(open('$R'));print('SFP=%s SAS=%s'%(shlex.quote(str(r.get('scores_fp') or '')),shlex.quote(str(r.get('scores_as_of') or ''))))")"
+              tools/publish_base.sh "$ZIP" "$ID" --s0 "$S0" --as-of "$ASOF" --fp "$FP" --completed "$DONE" --s0-inputs tree ${LFP:+--lines-fp "$LFP"} ${LEP:+--lines-epoch "$LEP"} ${SFP:+--scores-fp "$SFP"} ${SAS:+--scores-as-of "$SAS"}
             fi
           )
           rc=$?

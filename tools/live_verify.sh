@@ -34,5 +34,10 @@ for mark in "${marks[@]}"; do
 done
 echo "[live_verify] apex/www still mismatch; checking $PAGES" >&2
 if cmp_host "$PAGES"; then echo edge-lag; exit 0; fi
+# The fast scores path rolls back itself and must not leave a FREEZE file.
+if [ "${KT_NO_FREEZE:-}" = "1" ]; then
+  echo "[live_verify] pages.dev mismatch; FREEZE not written" >&2
+  exit 22
+fi
 echo "byte-compare failed after deploy $NEW_ID run $RUN; rollback to $OLD" > "$FREEZE"
 exit 22

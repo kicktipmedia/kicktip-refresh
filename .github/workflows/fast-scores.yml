@@ -1,0 +1,110 @@
+name: fast-scores
+# Scores-only publish. Separate from the full refresh: it does not wait on concurrency
+# group "refresh", and it never writes FREEZE or the failed-input hold.
+# Job email: tools/report_outcome.py --workflow fast (RUNBOOK "Fast scores path").
+# Green: skip, yield, FREEZE, lock, ESPN fetch, preview flake, install blip.
+# Red: allowlist, data mismatch, production deploy, pages.dev mismatch after rollback, state write.
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: "production | preview (branch refresh-fast, no Production) | none (dry run)"
+        type: choice
+        options: [production, preview, none]
+        default: production
+  schedule:
+    # UTC. Saturday game window only, every 5 minutes. The full sim refresh keeps its own cron.
+    - cron: "*/5 16-23 * * 6"
+    - cron: "*/5 0-7 * * 0"
+concurrency:
+  group: kt-fast
+  # Do not cancel a deploy that is already in progress. The pending queue stays the
+  # default, so a newer tick replaces a pending one instead of waiting behind it.
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  fast:
+    # gh variable set KT_FAST --body off pauses this path. The full refresh switch is separate.
+    if: vars.KT_FAST == 'on'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      KT_ROOT: ${{ github.workspace }}
+      KT_RELATIVE: "1"
+      KT_FAST_PREVIEW_BRANCH: refresh-fast
+      KT_WRANGLER: /home/runner/wr/node_modules/.bin/wrangler
+      KT_WRANGLER_DIR: /home/runner/wr
+      TZ: America/Toronto
+      KT_DEPLOY_TARGET: ${{ inputs.deploy_target || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: "${{ github.ref_name }}" }
+      - name: Stop if frozen
+        run: |
+          if [ -e FREEZE ]; then
+            echo "FREEZE present:"
+            cat FREEZE
+            printf '%s\n' "FREEZE present:" > "$RUNNER_TEMP/freeze.txt"
+            cat FREEZE >> "$RUNNER_TEMP/freeze.txt"
+            python3 tools/report_outcome.py --workflow fast --exit 11 --step "Stop if frozen" --log "$RUNNER_TEMP/freeze.txt" --reason "FREEZE present: $(cat FREEZE)"
+            exit $?
+          fi
+      - name: Score gate
+        id: gate
+        if: env.KT_HALT != '1'
+        run: |
+          set +e
+          tools/fast_scores.sh --gate > "$RUNNER_TEMP/fast-gate.txt" 2>&1
+          rc=$?
+          set -e
+          cat "$RUNNER_TEMP/fast-gate.txt"
+          if [ "$rc" -ne 0 ]; then
+            LOG=$(ls -d runs/fast-* 2>/dev/null | tail -n 1)/run.log
+            python3 tools/report_outcome.py --workflow fast --exit "$rc" --step "Score gate" --log "${LOG:-$RUNNER_TEMP/fast-gate.txt}"
+            exit $?
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
+        with: { node-version: "20.19.2" }
+      - name: Cache wrangler
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/wr
+          key: wrangler-3.114.17
+      - name: Install wrangler
+        id: install
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
+        run: |
+          if [ -x "$KT_WRANGLER" ]; then exit 0; fi
+          set +e
+          tools/retry_cmd.sh --tries 3 --backoff 20 --log "$RUNNER_TEMP/install-wrangler.log" -- \
+            bash -e -o pipefail -c 'mkdir -p "$KT_WRANGLER_DIR" && cd "$KT_WRANGLER_DIR" && echo "{}" > package.json && npm i -s --no-audit --no-fund wrangler@3.114.17'
+          rc=$?
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            cat "$RUNNER_TEMP/install-wrangler.log"
+            python3 tools/report_outcome.py --workflow fast --kind install --exit "$rc" --step "Install wrangler" --log "$RUNNER_TEMP/install-wrangler.log" --reason "Install wrangler failed after 3 tries (apt, DNS, or network)"
+            exit $?
+          fi
+      - name: Fast scores
+        id: fast
+        if: steps.gate.outputs.changed == '1' && env.KT_HALT != '1'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set +e
+          tools/fast_scores.sh --skip-fetch --deploy "${{ inputs.deploy_target || 'production' }}"
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            exit 0
+          fi
+          LOG=$(ls -d runs/fast-* | tail -n 1)/run.log
+          python3 tools/report_outcome.py --workflow fast --exit "$rc" --step "Fast scores" --log "$LOG" --detect-production
+          exit $?

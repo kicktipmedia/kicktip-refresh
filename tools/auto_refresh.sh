@@ -93,9 +93,19 @@ python3 $TOOLS/bytecmp.py $RD/deploy $PURL > $RD/bytecmp-preview.txt || fail 18 
 python3 $TOOLS/crops.py $PURL $RD/crops-preview > $RD/crops-preview.txt 2>&1 || fail 18 "preview crops"
 grep -q "errs \[\]" $RD/crops-preview.txt || fail 18 "preview page errors: $(head -n 2 $RD/crops-preview.txt)"
 [ $PREVONLY = 1 ] && { say "preview only: $PURL"; echo "{\"run\":\"$RUN\",\"exit\":0,\"preview\":\"$PURL\",\"sha\":\"$NEW_SHA\",\"as_of\":\"$ASOF\"}" > $RD/result.json; exit 0; }
-# 6. guard (one read, then exactly one deploy attempt)
+# 6. guard (one read, then exactly one deploy attempt).
+# A fast-scores deploy that landed on this run's base is not exit 20: re-apply onto that zip,
+# re-check, preview, and overlay a fresh scoreboard so finals do not go backward. Anything else stays exit 20.
 C=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts/$ACCT/pages/projects/$PROJ | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
-[ "$C" = "$LIVE_ID" ] || fail 20 "GUARD: canonical $C != state.live_id $LIVE_ID (someone else deployed; rebase needed)"
+if [ "$C" != "$LIVE_ID" ]; then
+  say "guard: canonical $C != this run's live_id $LIVE_ID; checking the fast-scores chain"
+  bash $TOOLS/fast_rebase.sh --canonical "$C" --live-id "$LIVE_ID" --run-dir "$RD" --tree "$TREE" --s0 "$S0" --s1 "$SNAP/site" || {
+    brc=$?
+    [ "$brc" = 20 ] && fail 20 "GUARD: canonical $C != state.live_id $LIVE_ID (someone else deployed; rebase needed)"
+    fail $brc "fast rebase failed"
+  }
+  NEW_SHA=$(python3 -c "import json;print(json.load(open('$RD/rebase.json'))['sha'])")
+fi
 [ "$(sha256sum $RD/kicktip-site.zip | cut -d' ' -f1)" = "$NEW_SHA" ] || fail 20 "GUARD: zip changed since preview"
 timeout 900 $WR pages deploy $RD/deploy --project-name $PROJ --branch main --commit-dirty=true > $RD/prod.log 2>&1 || fail 21 "prod deploy (no retry): $(tail -n 3 $RD/prod.log)"
 NEW_ID=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts/$ACCT/pages/projects/$PROJ | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
@@ -109,7 +119,10 @@ TAG=$(bash $TOOLS/live_verify.sh $RD/deploy $RD/bytecmp-live.txt "$PAGES" $R/FRE
 if [ "$TAG" != ok ] && [ "$TAG" != edge-lag ]; then fail 22 "live byte-compare failed; FREEZE written; rollback id $LIVE_ID"; fi
 if [ "$TAG" = edge-lag ]; then say "WARNING: apex/www still mismatched after retries; $PAGES matches the build; recording the live base, no FREEZE"; fi
 python3 $TOOLS/crops.py https://kicktipmedia.com $RD/crops-live > $RD/crops-live.txt 2>&1
-# 8. state (same write on a clean compare and on edge-lag)
-export KT_ROOT=$R RD NEW_ID NEW_SHA ASOF FP1 DONE LFP1 LEP1 SNAP LIVE_ID RUN
+# 8. state (same write on a clean compare and on edge-lag). scores_fp is the finals fingerprint
+# so a later fast tick can skip. fast_base_id is cleared: this deploy is a full base, not a fast card.
+SCORES_FP=$(python3 $TOOLS/fast_patch.py --fp "$TREE" 2>/dev/null || true)
+SCORES_ASOF=$(python3 -c "import json;print(json.load(open('$TREE/data/out/refresh_log.json')).get('refreshed_mt',''))" 2>/dev/null || true)
+export KT_ROOT=$R RD NEW_ID NEW_SHA ASOF FP1 DONE LFP1 LEP1 SNAP LIVE_ID RUN SCORES_FP SCORES_ASOF
 bash $TOOLS/record_live.sh || fail 22 "state.json write failed"
 say "LIVE $NEW_ID sha $NEW_SHA as_of $ASOF (rollback $LIVE_ID)"

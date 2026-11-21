@@ -9,16 +9,24 @@ cd "$(dirname "$0")/.."; ZIP=$1; ID=$2; shift 2; S0=""; ASOF=""; FP=""; DONE="";
 while [ $# -gt 0 ]; do case $1 in --s0) S0=$2; shift 2;; --as-of) ASOF=$2; shift 2;; --fp) FP=$2; shift 2;; --completed) DONE=$2; shift 2;; --lines-fp) LFP=$2; shift 2;; --lines-epoch) LEP=$2; shift 2;; --s0-inputs) S0IN=$2; shift 2;; --no-verify) VERIFY=0; shift;; *) echo "bad arg $1"; exit 2;; esac; done
 SHA=$(sha256sum "$ZIP" | cut -d' ' -f1)
 if [ $VERIFY = 1 ]; then
-  C=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID:-2b5bfb9838968d7cde32f13967e882e0}/pages/projects/kicktip" | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
+  C=$(curl -s -m 30 --retry 4 --retry-delay 10 --retry-all-errors -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID:-2b5bfb9838968d7cde32f13967e882e0}/pages/projects/kicktip" | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
   [ "$C" = "$ID" ] || { echo "canonical deployment is $C, not $ID: refusing to record"; exit 3; }
 fi
 TMP=$(mktemp -d); cp "$ZIP" $TMP/kicktip-site.zip
-gh release view base >/dev/null 2>&1 || gh release create base --title "Live base (do not delete)" --notes "Current live zip and S0 pipeline site for the refresh workflow." >/dev/null
+# GitHub API calls retry with backoff (KT_GH_TRIES, KT_GH_BACKOFF): a single api.github.com timeout after a good Production deploy
+# left state.json unrecorded on Nov 20 (run 44839183135) and every later run stopped at the guard (exit 20).
+GT=${KT_GH_TRIES:-4}; GB=${KT_GH_BACKOFF:-15}; RLOG=${TMPDIR:-/tmp}/publish_base.gh.log
+ghr() { tools/retry_cmd.sh --tries "$GT" --backoff "$GB" --log "$RLOG" -- "$@" || { echo "gh failed after $GT tries: $*"; tail -n 5 "$RLOG"; return 1; }; }
+# create 'base' only when GitHub says it does not exist (a timeout on view is not "missing")
+if ! ghr gh release view base --json tagName >/dev/null; then
+  if grep -q "release not found" "$RLOG"; then ghr gh release create base --title "Live base (do not delete)" --notes "Current live zip and S0 pipeline site for the refresh workflow." >/dev/null
+  else exit 5; fi
+fi
 OLD=$(python3 -c "import json;print(json.load(open('state.json'))['live_id'])")
-gh release upload base $TMP/kicktip-site.zip --clobber
-if [ -n "$S0" ]; then A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','s0-site.tar.gz'))"); tar czf "$TMP/$A" -C "$S0" .; gh release upload base "$TMP/$A" --clobber; fi
+ghr gh release upload base $TMP/kicktip-site.zip --clobber
+if [ -n "$S0" ]; then A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','s0-site.tar.gz'))"); tar czf "$TMP/$A" -C "$S0" .; ghr gh release upload base "$TMP/$A" --clobber; fi
 # pipeline inputs/outputs of this as-of, so tools/rebuild_s0.sh can re-render S0 with new templates (feature ships)
-if [ -n "$S0IN" ]; then tar czf $TMP/s0-inputs.tar.gz --exclude=data/store/forecast_log.jsonl --exclude=data/store/snapshots-archive -C "$S0IN" data/store data/out data/cache/scoreboard; gh release upload base $TMP/s0-inputs.tar.gz --clobber; fi
+if [ -n "$S0IN" ]; then tar czf $TMP/s0-inputs.tar.gz --exclude=data/store/forecast_log.jsonl --exclude=data/store/snapshots-archive -C "$S0IN" data/store data/out data/cache/scoreboard; ghr gh release upload base $TMP/s0-inputs.tar.gz --clobber; fi
 python3 - "$ID" "$SHA" "$OLD" "$ASOF" "$FP" "$DONE" "$LFP" "$LEP" <<'P'
 import json,sys,datetime
 i,sha,old,asof,fp,done,lfp,lep=sys.argv[1:9]; s=json.load(open('state.json'))
@@ -35,6 +43,6 @@ export GIT_AUTHOR_NAME=kicktipmedia GIT_AUTHOR_EMAIL=kicktipmedia@users.noreply.
 git add state.json; [ -n "$S0" ] && git add -A tree/data/store || true
 git -c user.name="kicktipmedia" -c user.email="kicktipmedia@users.noreply.github.com" commit -q -m "live: $ID (${SHA:0:12})" || true
 # --autostash: the refresh leaves other tracked pipeline files modified (not ours to commit); without it pull --rebase refuses and state.json is never pushed
-OK=0; for i in 1 2 3; do git pull -q --rebase --autostash && git push -q && { OK=1; break; }; sleep 5; done
-[ $OK = 1 ] || { echo "push of state.json failed after 3 tries: live $ID NOT recorded"; exit 4; }
+OK=0; for i in 1 2 3 4 5; do git pull -q --rebase --autostash && git push -q && { OK=1; break; }; sleep $(( 10 * i )); done
+[ $OK = 1 ] || { echo "push of state.json failed after 5 tries: live $ID NOT recorded"; exit 4; }
 echo "recorded live $ID sha $SHA"

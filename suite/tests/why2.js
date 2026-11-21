@@ -20,7 +20,10 @@ for(const s in TD.teams){const td=TD.teams[s];if(!T[s])continue;const ccgm=td.m=
  const mk=w.match(/is No\. (\d+) by playoff chances, just outside/);if(mk){let rk=1;for(const k in T)if(T[k].p>T[o.x].p)rk++;chk(tag+' rank claim',rk===+mk[1]&&!pos(o.x),[rk,mk[1]])}
  if(r.o===1)chk(tag+' own game says so',/own game/.test(w),w);
 });}
-chk('rows covered',rows>100,rows);chk('reasons vary (not one sentence for every row)',seen.size>=5,seen.size);
+// Row count comes from this tree's remaining rootable rows, not a mid-season floor of 100.
+let expect=0; for (const s in TD.teams) if (T[s]) expect+=(TD.teams[s].r||[]).length;
+const leftover=(B.games||[]).filter(g=>!g.fcs&&!g.ip).length;
+chk('rows covered',rows===expect&&(leftover===0||expect>0),{rows,expect,leftover});chk('reasons vary (not one sentence for every row)',seen.size>=5,seen.size);
 const fb=KTWhy.why({s:'byu',a:null,x:null,an:'Aa',xn:'Zed',own:false,T:{byu:T.byu,zz:{n:'Zed',cs:'x',p:0}},F:[],G:{},ccgm:false});chk('fallback line',fb==='Small ripple effect: a Zed loss slightly opens the at-large pool.',fb);
 const ar=KTWhy.why({s:'byu',a:null,x:null,an:'Aa',xn:'UCLA',own:false,T:{byu:T.byu,zz:{n:'UCLA',cs:'x',p:0}},F:[],G:{},ccgm:false});chk('article: a UCLA',/a UCLA loss/.test(ar),ar);
 console.log(n+' checks, '+f+' failed');process.exit(f?1:0);

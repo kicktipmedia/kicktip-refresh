@@ -290,6 +290,7 @@ jobs:
           retention-days: 14
           path: |
             runs/*/*.log
+            runs/*/suite/*.log
             runs/*/*.txt
             runs/*/*.json
             polls/cur/step.log

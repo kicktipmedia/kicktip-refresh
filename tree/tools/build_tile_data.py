@@ -68,7 +68,21 @@ def main():
         now = int(datetime.datetime.fromisoformat(now_arg).timestamp() * 1000)
     else: now = as_of_ms
     games = build_games(index, bundle)
-    shards = {w: ld('whatif/' + f) for w, f in index['shards'].items()}
+    # Load only shards that were actually written. A listed file for a week with no
+    # games is a leftover empty week and is skipped. A listed file for a week that
+    # still has games, but is missing on disk, is a publish bug (fail closed).
+    shards = {}
+    missing = []
+    weeks_with_games = {str(g.get('week')) for g in index.get('games') or []}
+    for w, f in (index.get('shards') or {}).items():
+        rel = 'whatif/' + os.path.basename(f)
+        if os.path.isfile(os.path.join(D, rel)):
+            shards[w] = ld(rel)
+            continue
+        if str(w) in weeks_with_games:
+            missing.append('%s (week %s has games in the index)' % (rel, w))
+    if missing:
+        sys.exit('whatif shard file missing: ' + '; '.join(missing))
     def shard(w, gid): return (shards.get(str(w)) or {}).get(gid)
     by = {t['n']: t for t in bundle['teams'] if t.get('n')}
     names = index['team_names']; metrics = index['metrics']; base = index['baseline']

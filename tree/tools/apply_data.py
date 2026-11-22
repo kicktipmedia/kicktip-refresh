@@ -16,7 +16,7 @@ Method (same as toolbox9c, generalised):
  5b. nojs1 (if the base has assets/stamp.js): the base is unbaked before the merge; after step 5 tools/bake_static.js bakes numbers + 'Updated'
      stamps into HTML and --verify fails the run if any page is stale.
  5c. Batch B (base has og/rootables/): tools/og/og_cards.py redraws the per-team share cards whose Rootables list changed.
- 6. restamp ?v= tokens; allow-list check (new files: og cards and data/rootables/<slug>.json only): every changed file is html, data/**, og/rootables/{slug}-1200x630|1080x1350.png, or a token-only change; _worker.js identical.
+ 6. restamp ?v= tokens; allow-list check (new files: og cards, data/rootables/<slug>.json, and data/(m/(elo|eff)/)?whatif/wN.json when the merged index lists that shard): every changed file is html, data/**, og/rootables/{slug}-1200x630|1080x1350.png, or a token-only change; _worker.js identical.
  7. deterministic zip (sorted, 2026-01-01 00:00, 0644, deflate) built twice, sha must match.
 Exit 0 ok; 2 merge conflict; 3 check failed; 4 non-deterministic."""
 import argparse, datetime, hashlib, json, os, re, shutil, subprocess, sys, tempfile, zipfile
@@ -31,6 +31,27 @@ def die(code, msg): print('APPLY_DATA FAIL:', msg, file=sys.stderr); sys.exit(co
 
 WHATIF_DIR = ('data/whatif', 'data/m/elo/whatif', 'data/m/eff/whatif')
 WHATIF_SHARD = re.compile(r'^w\d+\.json$')
+
+WSRE = re.compile(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$')
+def whatif_shard_listed(tree, rel):
+    """True when rel is a what-if week shard and that tree's index lists the file."""
+    if not WSRE.match(rel):
+        return False
+    ip = os.path.join(tree, os.path.dirname(rel), 'index.json')
+    try:
+        shards = json.load(open(ip, encoding='utf-8')).get('shards') or {}
+    except (OSError, ValueError):
+        return False
+    name = os.path.basename(rel)
+    return name in shards.values() or rel in shards.values()
+
+OGRE = re.compile(r'^og/rootables/[a-z0-9-]+-(1200x630|1080x1350)\.png$')   # Batch B allow-list: share cards only, nothing else under og/
+RBRE = re.compile(r'^data/rootables/[a-z0-9-]+\.json$')   # rootables-shared: a new team page gets its list file
+def unexpected_new_files(tree, base_rels, out_rels, ogc):
+    """New out paths that are not on the allow-list (og cards, rootables lists, or a what-if week shard the merged index lists)."""
+    new = sorted(set(out_rels) - set(base_rels))
+    return [r for r in new if not (ogc and OGRE.match(r)) and not RBRE.match(r) and not whatif_shard_listed(tree, r)]
+
 def reconcile_whatif_shards(tree, s1=None):
     """Copy any S1 what-if week shard that did not land in the merged tree, then make
     each index list only shards that were actually written. A listed week with games
@@ -209,10 +230,9 @@ def build_once(tmp, a, network):
     # 6. tokens + checks
     run([sys.executable, T + '/restamp.py', out, base], env, 'restamp')
     bf = {rel: sha(rd(p)) for rel, p in walk(base)}; of = {rel: p for rel, p in walk(out)}
-    new = sorted(set(of) - set(bf)); gone = sorted(set(bf) - set(of))
-    OGRE = re.compile(r'^og/rootables/[a-z0-9-]+-(1200x630|1080x1350)\.png$')   # Batch B allow-list: share cards only, nothing else under og/
-    RBRE = re.compile(r'^data/rootables/[a-z0-9-]+\.json$')   # rootables-shared: a new team page gets its list file
-    new = [r for r in new if not (OGC and OGRE.match(r)) and not RBRE.match(r)]
+    new = unexpected_new_files(out, bf, of, OGC); gone = sorted(set(bf) - set(of))
+    # A first remaining game in a new week writes wN.json, which live has never had
+    # (run 44964427509 / PR 14). unexpected_new_files accepts it only when the merged index lists that shard.
     if new: die(3, 'unexpected new files %s' % new[:10])
     if gone != sorted(deleted): die(3, 'unexpected removed files %s' % gone[:10])
     TOK = re.compile(r'\?v=[0-9a-f]{10}'); changed = {}

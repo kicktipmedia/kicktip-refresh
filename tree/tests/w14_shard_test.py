@@ -12,6 +12,11 @@ usage: python3 tests/w14_shard_test.py
 Set KT_W14_LIVE_DATA to a tree of today's live data/ files (whatif/index.json and
 shards, sim-bundle.json, pred-teams.json) to also exercise the merge against
 today's published index.
+
+Set KT_W14_APPLY_ROOT (default /workspace/qa-pr14-8b0ba2b/repro) with base.zip,
+s0, s1-w14, and tree-head to run a full apply_data.py through step 6. The old
+merge3 used for the repro is bundled at tests/fixtures/w14_shard/merge3_old.py
+and does not need git or a clone.
 """
 import json, os, shutil, subprocess, sys, tempfile
 
@@ -41,36 +46,12 @@ def run_merge3(live, s0, s1, out, rep):
     return r
 
 def run_old_merge3(live, s0, s1, out, rep):
-    """The merge3 at 6902202d: skip every changed file that is not already on live."""
-    src = open(os.path.join(TOOLS, 'merge3.py'), encoding='utf-8').read()
-    # Prefer the exact merge3 from the failing main sha; fall back to reversing this PR's block.
-    try:
-        old = subprocess.check_output(
-            ['git', 'show', '6902202d189b2a997623ed27679a0a50fd19d381:tree/tools/merge3.py'],
-            cwd=REPO, text=True)
-    except subprocess.CalledProcessError:
-        old = src.replace(
-            "WHATIF_SHARD=re.compile(r'^data/(m/(elo|eff)/)?whatif/w\\d+\\.json$')\n"
-            "for f in changed:\n"
-            "    lp=L+'/'+f\n"
-            "    if not os.path.exists(lp):\n"
-            "        b=rd(S1+'/'+f)\n",
-            "for f in changed:\n"
-            "    lp=L+'/'+f\n"
-            "    if not os.path.exists(lp): rep['missing_live'].append(f); continue\n"
-            "    # fallback-old: dropped the new-shard copy and the rest of the if-not-exists block\n")
-        # If the surgical replace missed, cut the new if-not-exists body back to the skip.
-        if 'new in S1, not on live' in old:
-            import re as _re
-            old = _re.sub(
-                r"if not os\.path\.exists\(lp\):\n(?:.*\n)*?        rep\['missing_live'\]\.append\(f\); continue\n",
-                "if not os.path.exists(lp): rep['missing_live'].append(f); continue\n",
-                old, count=1)
-    td = tempfile.mkdtemp()
-    path = os.path.join(td, 'merge3.py')
-    open(path, 'w').write(old)
+    """The merge3 at 6902202d: skip every changed file that is not already on live.
+
+    The script is bundled at tests/fixtures/w14_shard/merge3_old.py so this works
+    from a tarball or a depth-1 checkout (no git show)."""
+    path = os.path.join(HERE, 'fixtures', 'w14_shard', 'merge3_old.py')
     r = subprocess.run([sys.executable, path, live, s0, s1, out, rep], capture_output=True, text=True)
-    shutil.rmtree(td, ignore_errors=True)
     return r
 
 ASOF = '2026-11-21 15:18 MT'
@@ -265,6 +246,92 @@ if live_data and os.path.isfile(os.path.join(live_data, 'whatif/index.json')):
         shutil.rmtree(td, ignore_errors=True)
 else:
     print('note: KT_W14_LIVE_DATA not set; skipped today-live merge check')
+
+# --- 6. Bundled old merge3 parses without git ---
+old_merge3 = os.path.join(HERE, 'fixtures', 'w14_shard', 'merge3_old.py')
+ok(os.path.isfile(old_merge3), 'bundled merge3_old.py is present')
+rcomp = subprocess.run([sys.executable, '-m', 'py_compile', old_merge3], capture_output=True, text=True)
+ok(rcomp.returncode == 0, 'bundled merge3_old.py parses: %s' % rcomp.stderr[-300:])
+old_src = open(old_merge3, encoding='utf-8').read()
+ok('if not os.path.exists(lp): rep[\'missing_live\'].append(f); continue' in old_src,
+   'bundled merge3_old.py still skips files that are not on live')
+ok('new in S1, not on live' not in old_src, 'bundled merge3_old.py must not be the fixed merge3')
+
+# --- 7. apply_data step-6 allow-list: listed week shards pass; an unlisted shard does not ---
+sys.path.insert(0, TOOLS)
+import apply_data as AD
+td = tempfile.mkdtemp(prefix='w14allow_')
+try:
+    out = os.path.join(td, 'out')
+    for rel_dir in ('data/whatif', 'data/m/elo/whatif', 'data/m/eff/whatif'):
+        write_json(os.path.join(out, rel_dir, 'index.json'), mini_index({'13': 'w13.json', '14': 'w14.json'}))
+        write_json(os.path.join(out, rel_dir, 'w13.json'), SH13)
+        write_json(os.path.join(out, rel_dir, 'w14.json'), SH14)
+    base_rels = [
+        'data/whatif/index.json', 'data/whatif/w13.json',
+        'data/m/elo/whatif/index.json', 'data/m/elo/whatif/w13.json',
+        'data/m/eff/whatif/index.json', 'data/m/eff/whatif/w13.json',
+        'og/rootables/alpha-1200x630.png',
+    ]
+    out_rels = base_rels + [
+        'data/whatif/w14.json', 'data/m/elo/whatif/w14.json', 'data/m/eff/whatif/w14.json',
+        'og/rootables/alpha-1200x630.png',
+    ]
+    # Unfixed filter (8b0ba2b / main): only og cards and rootables lists.
+    OGC = True
+    unfixed = [r for r in sorted(set(out_rels) - set(base_rels))
+               if not (OGC and AD.OGRE.match(r)) and not AD.RBRE.match(r)]
+    ok(unfixed == ['data/m/eff/whatif/w14.json', 'data/m/elo/whatif/w14.json', 'data/whatif/w14.json'],
+       'unfixed step 6 rejects the three w14 paths: %s' % unfixed)
+    fixed = AD.unexpected_new_files(out, base_rels, out_rels, OGC)
+    ok(fixed == [], 'fixed step 6 accepts listed w14 shards, got %s' % fixed)
+    # A stray week shard not listed in the merged index is still rejected.
+    write_json(os.path.join(out, 'data/whatif/w99.json'), {})
+    stray = AD.unexpected_new_files(out, base_rels, out_rels + ['data/whatif/w99.json'], OGC)
+    ok(stray == ['data/whatif/w99.json'], 'unlisted w99.json is still unexpected: %s' % stray)
+    ok(AD.whatif_shard_listed(out, 'data/whatif/w14.json'), 'w14 is listed in the merged index')
+    ok(not AD.whatif_shard_listed(out, 'data/whatif/w99.json'), 'w99 is not listed')
+    ok(not AD.whatif_shard_listed(out, 'data/foo.json'), 'non-shard path is not allow-listed')
+finally:
+    shutil.rmtree(td, ignore_errors=True)
+
+# --- 8. Full apply_data.py: live base without w14, S1 with it ---
+def _apply_paths():
+    root = os.environ.get('KT_W14_APPLY_ROOT', '/workspace/qa-pr14-8b0ba2b/repro')
+    return {
+        'base_zip': os.environ.get('KT_W14_APPLY_BASE_ZIP', os.path.join(root, 'base.zip')),
+        's0': os.environ.get('KT_W14_APPLY_S0', os.path.join(root, 's0')),
+        's1': os.environ.get('KT_W14_APPLY_S1', os.path.join(root, 's1-w14')),
+        'pipeline': os.environ.get('KT_W14_APPLY_PIPELINE', os.path.join(root, 'tree-head')),
+    }
+
+ap = _apply_paths()
+if all(os.path.exists(ap[k]) for k in ap):
+    td = tempfile.mkdtemp(prefix='w14apply_')
+    try:
+        out_zip = os.path.join(td, 'out.zip')
+        site = os.path.join(td, 'site')
+        report = os.path.join(td, 'report.json')
+        logp = os.path.join(td, 'apply.log')
+        cmd = [sys.executable, os.path.join(TOOLS, 'apply_data.py'),
+               '--base-zip', ap['base_zip'], '--s0', ap['s0'], '--s1', ap['s1'],
+               '--pipeline', ap['pipeline'], '--out', out_zip, '--report', report,
+               '--site-out', site]
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        open(logp, 'w').write((r.stdout or '') + (r.stderr or ''))
+        ok(r.returncode == 0, 'full apply_data rc=0, got %s: %s' % (r.returncode, (r.stdout + r.stderr)[-500:]))
+        import zipfile
+        names = set(zipfile.ZipFile(out_zip).namelist()) if r.returncode == 0 and os.path.isfile(out_zip) else set()
+        for rel in ('data/whatif/w14.json', 'data/m/elo/whatif/w14.json', 'data/m/eff/whatif/w14.json'):
+            ok(rel in names, 'full apply_data zip contains %s' % rel)
+        if r.returncode == 0 and os.path.isfile(out_zip):
+            idx = json.loads(zipfile.ZipFile(out_zip).read('data/whatif/index.json'))
+            ok(idx.get('shards', {}).get('14') == 'w14.json',
+               'full apply_data index lists w14.json: %s' % idx.get('shards'))
+    finally:
+        shutil.rmtree(td, ignore_errors=True)
+else:
+    print('note: full apply_data fixture not found; skipped (set KT_W14_APPLY_ROOT)')
 
 print('%d checks, %d failed' % (n_checks[0], len(fails)))
 for f in fails:

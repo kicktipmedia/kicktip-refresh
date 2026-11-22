@@ -54,11 +54,15 @@ def build(N=6000, seed=2026, procs=None, outdir=None, only=None, model="default"
         shards.setdefault(g["week"], {})[g["id"]] = e
         gl.append(dict(id=g["id"], week=g["week"], h=int(g["h"]), a=int(g["a"]), neutral=bool(g["neutral"]),
                        p_home=int(round(1000 / (1 + np.exp(-(S.s_g[g["h"]] - S.s_g[g["a"]] + (0 if g["neutral"] else S.hfa_g)) / S.SIG_g))))))
-    for wk, d in shards.items(): json.dump(d, open(f"{outdir}/w{wk}.json", "w"), separators=(",", ":"))
+    written = []
+    for wk, d in shards.items():
+        path = f"{outdir}/w{wk}.json"
+        json.dump(d, open(path, "w"), separators=(",", ":"))
+        if os.path.isfile(path): written.append(wk)
     names = [S.name.get(t, "FCS opponent") for t in range(S.n)]
     idx = dict(label=f"Single-game what-ifs from {N:,} simulated seasons (KickTip estimates, for information only). Values are per-mille.",   # rev3.2 F3: the label states the real count
                as_of=__import__("export_web").sim_as_of(), seasons=N, seed=seed, min_move_permille=MIN_MOVE, metrics=METRICS,
-               team_names=names, baseline=base.tolist(), games=gl, shards={str(w): f"w{w}.json" for w in sorted(shards)})
+               team_names=names, baseline=base.tolist(), games=gl, shards={str(w): f"w{w}.json" for w in sorted(written)})
     import models_registry as MR
     mid = S.model; idx["model"] = mid; idx["model_label"] = MR.BY_ID[mid]["name"] if mid in MR.BY_ID else mid      # as_of above is already the shared sim_as_of() stamp
     json.dump(idx, open(f"{outdir}/index.json", "w"), separators=(",", ":"))

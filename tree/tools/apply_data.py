@@ -28,6 +28,44 @@ def walk(root):
         dn.sort()
         for f in sorted(fn): p = os.path.join(d, f); yield os.path.relpath(p, root).replace(os.sep, '/'), p
 def die(code, msg): print('APPLY_DATA FAIL:', msg, file=sys.stderr); sys.exit(code)
+
+WHATIF_DIR = ('data/whatif', 'data/m/elo/whatif', 'data/m/eff/whatif')
+WHATIF_SHARD = re.compile(r'^w\d+\.json$')
+def reconcile_whatif_shards(tree, s1=None):
+    """Copy any S1 what-if week shard that did not land in the merged tree, then make
+    each index list only shards that were actually written. A listed week with games
+    but no file is a publish bug (fail closed). An empty leftover week is dropped."""
+    for rel_dir in WHATIF_DIR:
+        ip = os.path.join(tree, rel_dir, 'index.json')
+        if not os.path.isfile(ip):
+            continue
+        if s1:
+            srcd = os.path.join(s1, rel_dir)
+            dstd = os.path.join(tree, rel_dir)
+            if os.path.isdir(srcd):
+                os.makedirs(dstd, exist_ok=True)
+                for name in os.listdir(srcd):
+                    if not WHATIF_SHARD.match(name):
+                        continue
+                    src, dst = os.path.join(srcd, name), os.path.join(dstd, name)
+                    if os.path.isfile(src) and not os.path.isfile(dst):
+                        shutil.copyfile(src, dst)
+        idx = json.load(open(ip, encoding='utf-8'))
+        shards = dict(idx.get('shards') or {})
+        weeks_with_games = {str(g.get('week')) for g in idx.get('games') or []}
+        new = {}
+        for w, f in shards.items():
+            fp = os.path.join(tree, rel_dir, os.path.basename(f))
+            if os.path.isfile(fp):
+                new[w] = f
+                continue
+            if str(w) in weeks_with_games:
+                die(3, 'whatif shard %s/%s is listed and week %s has games, but the file is missing' % (rel_dir, f, w))
+        if new != shards:
+            idx['shards'] = new
+            with open(ip, 'w', encoding='utf-8') as fh:
+                json.dump(idx, fh, separators=(',', ':'), ensure_ascii=False)
+
 def forms(asof):
     d = datetime.datetime.strptime(asof.replace(' MT', ''), '%Y-%m-%d %H:%M')
     h = d.strftime('%I').lstrip('0'); tm = '%s:%s %s' % (h, d.strftime('%M'), d.strftime('%p'))
@@ -99,6 +137,10 @@ def build_once(tmp, a, network):
     for rel, p in list(walk(out)):
         if re.match(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$', rel) and os.path.exists(S0N + '/' + rel) and not os.path.exists(S1N + '/' + rel):
             pass   # KEEP stale shards: assets/tb tools + manifest.js still list them (removing them broke slate_this_week with load_error)
+    # New week shards (first remaining game in that week) are often missing on live, so
+    # merge3 used to skip them. Copy any that S1 wrote, and never leave index.shards
+    # pointing at a file that is not in the merged tree (run 44964427509, w14.json).
+    reconcile_whatif_shards(out, S1N)
     # 3. post-fixes of the live builds
     for rel, p in walk(out):
         if rel.endswith(('.html', '.js', '.json')) and rel not in ('_worker.js', 'scnai.js') and os.path.exists(base + '/' + rel) and rd(p) != rd(base + '/' + rel):

@@ -115,9 +115,18 @@ def livefix(f,l,a):
         if m and ml and ml.group(0)!=m.group(0):
             rep.setdefault('livefix',[]).append(f+' spreads stamp '+ml.group(0).decode()+' -> S0'); l=l[:ml.start()]+m.group(0)+l[ml.end():]
     return l
+WHATIF_SHARD=re.compile(r'^data/(m/(elo|eff)/)?whatif/w\d+\.json$')
 for f in changed:
     lp=L+'/'+f
-    if not os.path.exists(lp): rep['missing_live'].append(f); continue
+    if not os.path.exists(lp):
+        b=rd(S1+'/'+f)
+        # New week shards (e.g. a conference championship once both teams are known) are not on
+        # live yet. The old skip left index.shards pointing at a file that was never copied
+        # (run 44964427509, apply_data exit 16, missing data/whatif/w14.json).
+        if b is not None and WHATIF_SHARD.match(f):
+            os.makedirs(os.path.dirname(OUT+'/'+f), exist_ok=True)
+            open(OUT+'/'+f,'wb').write(b); rep['taken'].append(f+' (new in S1, not on live)'); continue
+        rep['missing_live'].append(f); continue
     l,a,b=rd(lp),rd(S0+'/'+f),rd(S1+'/'+f)
     if a is None and b is not None: open(OUT+'/'+f,'wb').write(b); rep['taken'].append(f+' (new in S1)'); continue   # one-sided: add, not a conflict
     if b is None: rep['skipped'].append(f+' (only in S0: live kept)'); continue

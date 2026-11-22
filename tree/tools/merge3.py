@@ -12,6 +12,8 @@ for f in sorted(set(walk(S0))|set(walk(S1))):
 TOK=re.compile(r'\?v=[0-9a-f]{10}'); REF=re.compile(r'((?:/assets|/data)/[A-Za-z0-9_./-]+?\.(?:js|css|json|png|svg|webp|ico))\?v=([0-9a-f]{10})'); REF2=re.compile(r'((?:/assets|/data)/[A-Za-z0-9_./-]+?\.(?:js|css|json|png|svg|webp|ico))\?v=X')
 SKIP={'assets/lg.js'}; MANUAL={'method/index.html'}
 CONF_RE=re.compile(r'conference/[a-z0-9-]+/index\.html$')
+TEAM_RE=re.compile(r'^team/[a-z0-9-]+/index\.html$')
+REM_EMPTY='<p>No regular-season games remain in our schedule data.</p>'
 def rg_tbody(t):   # standings: the first <tbody> of the first <table>
     i=t.find('<table'); i=t.find('<tbody',i) if i>=0 else -1; j=t.find('</tbody>',i) if i>=0 else -1
     return (i,j+8) if i>=0 and j>=0 else None
@@ -23,6 +25,17 @@ def rg_gcl(t):     # Remaining conference games list: <div class="gcl"> .. its m
         d+=1 if m.group(0)!='</div>' else -1
         if d==0: return (i,i+m.end())
     return None
+def rg_remcard(t):  # team page Remaining games card (the <div class="card"> that starts with that h2)
+    i=t.find('<div class="card"><h2>Remaining games</h2>')
+    if i<0: return None
+    d=0
+    for m in re.finditer(r'<div\b|</div>',t[i:]):
+        d+=1 if m.group(0)!='</div>' else -1
+        if d==0: return (i,i+m.end())
+    return None
+def rem_exhausted(card):
+    """True when S1 replaced the card with the no-games-remain sentinel (last remaining game went final)."""
+    return REM_EMPTY in card and '<article' not in card and '<div class="gcl"' not in card
 GM={}
 for _f in walk(L):
     if _f.endswith('.html'):
@@ -159,6 +172,21 @@ for f in changed:
             mk='<!--KTR%d-->'%k; REG.append((mk,TOK.sub('?v=X',bt[rb[0]:rb[1]])))
             lt=lt[:rl[0]]+mk+lt[rl[1]:]; at=at[:ra[0]]+mk+at[ra[1]:]; bt=bt[:rb[0]]+mk+bt[rb[1]:]
         if REG:
+            rep.setdefault('resolved',{})[f]=[m for m,_ in REG]
+            l,a,b=lt.encode('utf-8'),at.encode('utf-8'),bt.encode('utf-8')
+    # Team pages: when the last remaining game goes final, S1 replaces the Remaining games
+    # card with a short sentinel (build.py: "No regular-season games remain in our schedule data.").
+    # Live has presentation leftovers in that card (the ionly disclaimer was removed; the FCS
+    # note was reworded) that S0 still has, so git merge-file conflicts on the sentinel swap
+    # (run 44992101679, apply_data exit 16, colorado-state / fresno-state / texas-state /
+    # washington-state). Sound: S1 has no remaining game cards left, so taking the sentinel
+    # cannot drop a predictor. Other remaining-games edits still go through merge-file (fail-closed).
+    if TEAM_RE.match(f) and not REG:
+        lt,at,bt=pre(l,0).decode('utf-8'),pre(a,0).decode('utf-8'),pre(b,1).decode('utf-8')
+        rl,ra,rb=rg_remcard(lt),rg_remcard(at),rg_remcard(bt)
+        if rl and ra and rb and rem_exhausted(bt[rb[0]:rb[1]]):
+            mk='<!--KTRREM-->'; REG.append((mk,bt[rb[0]:rb[1]]))
+            lt=lt[:rl[0]]+mk+lt[rl[1]:]; at=at[:ra[0]]+mk+at[ra[1]:]; bt=bt[:rb[0]]+mk+bt[rb[1]:]
             rep.setdefault('resolved',{})[f]=[m for m,_ in REG]
             l,a,b=lt.encode('utf-8'),at.encode('utf-8'),bt.encode('utf-8')
     def nz(c,new=0):

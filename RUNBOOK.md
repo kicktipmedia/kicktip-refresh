@@ -144,7 +144,7 @@ GitHub emails the account owner when the **job** fails. `tools/auto_refresh.sh` 
 | 18 | preview deploy flake, and Production was not attempted | green | no | green, no hold |
 | 18 | preview code but a Production deploy log was written | red | yes | not a test run; the log makes it Production (red, hold) |
 | 20 | guard: someone else deployed, or the zip changed after preview | red | yes | green, no hold |
-| 21 | Production deploy failed | red | yes | green, no hold |
+| 21 | Production deploy failed, or Cloudflare canonical did not become this deploy within ~3 min (`tools/wait_canonical.sh`) | red | yes | green, no hold |
 | 22 | live byte-compare failed (FREEZE written) or `state.json` write failed | red | yes | green, no hold |
 | any other code | unexpected or unknown | red | yes | green, no hold |
 | install | `Install tools (pinned)` still failing after 3 tries (apt, DNS, network) | green | no | green, no hold |
@@ -156,3 +156,10 @@ The install step runs `tools/retry_cmd.sh --tries 3 --backoff 20`. After the fir
 **Artifact upload does not email.** `actions/upload-artifact` can fail after a clean Production publish when GitHub returns an HTML page instead of JSON (`Failed to CreateArtifact: Unexpected token '<'`). Run 43091940348 did that on both "Keep fetched ESPN inputs" and "Keep run logs" after Refresh exit 0 and Production `f2227f03`. Both upload steps use `continue-on-error`. The following "Record artifact upload" step always runs, writes `::warning::`, and adds a line to the step summary and `runs/0-report` (creating that report when the refresh itself exited 0). That note exits 0. A failed step-summary or report write is also a warning and does not change the classified exit. The job stays green unless `report_outcome.py` classified a real Production failure.
 
 A green non-zero outcome sets `KT_HALT=1` so later build, deploy, and publish steps are skipped. Exit 0 does not halt. The record step runs only when `auto_refresh.sh` itself exited 0 (`steps.refresh.outputs.shipped == '1'`).
+
+## Canonical lag after a Production deploy (Nov 22)
+Cloudflare's project API can show the previous canonical for a few seconds after wrangler prints "Deployment complete".
+Run 45099256261 read it 3 s after the deploy, failed 21, and never recorded state.json, so every later run stopped at the guard (20)
+while the "held" runs in between were green skips. `tools/wait_canonical.sh` now re-reads canonical (18 reads, 10 s apart) until it is
+the deploy wrangler printed. Offline test: `bash tools/tests/wait_canonical_test.sh`. If a 21 ever leaves Production on a new id anyway,
+record that id with `tools/publish_base.sh` (exact zip, sha must match the run's "build OK" sha) before the next run.

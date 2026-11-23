@@ -98,8 +98,9 @@ C=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.c
 [ "$C" = "$LIVE_ID" ] || fail 20 "GUARD: canonical $C != state.live_id $LIVE_ID (someone else deployed; rebase needed)"
 [ "$(sha256sum $RD/kicktip-site.zip | cut -d' ' -f1)" = "$NEW_SHA" ] || fail 20 "GUARD: zip changed since preview"
 timeout 900 $WR pages deploy $RD/deploy --project-name $PROJ --branch main --commit-dirty=true > $RD/prod.log 2>&1 || fail 21 "prod deploy (no retry): $(tail -n 3 $RD/prod.log)"
-NEW_ID=$(curl -s -m 30 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/accounts/$ACCT/pages/projects/$PROJ | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])")
-grep -q "${NEW_ID:0:8}" $RD/prod.log || fail 21 "canonical $NEW_ID is not this deploy"
+# canonical can lag the deploy by a few seconds: wait for it (up to ~3 min) instead of failing on one read
+NEW_ID=$(KT_PROJ=$PROJ bash $TOOLS/wait_canonical.sh $RD/prod.log "$LIVE_ID" 2>$RD/canonical.log) || fail 21 "canonical is not this deploy: $(tail -n 1 $RD/canonical.log)"
+[ -s $RD/canonical.log ] && say "$(tail -n 1 $RD/canonical.log)"
 # 7. verify. A custom-domain edge can serve the previous deploy for a couple of minutes.
 # Retry cache-busted compares over that window. Only a pages.dev mismatch writes FREEZE;
 # when pages.dev matches, the deploy is good and step 8 records the live base (the next guard needs it).

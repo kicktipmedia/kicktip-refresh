@@ -6,5 +6,5 @@ A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','
 gh release download base -D base -p kicktip-site.zip -p "$A"
 tar xzf "base/$A" -C base/s0/site
 W=$(python3 -c "import json;print(json.load(open('state.json'))['live_sha'])"); H=$(sha256sum base/kicktip-site.zip | cut -d' ' -f1)
-[ "$W" = "$H" ] || { echo "base zip sha $H != state.live_sha $W"; exit 12; }
+[ "$W" = "$H" ] || { echo "base zip sha $H != state.live_sha $W"; echo "hint: if release 'base' was replaced but state.json was never committed (partial tools/publish_base.sh), see RUNBOOK \"Partial publish (exit 12 on fetch_base)\""; exit 12; }
 echo "base ok ${H:0:12} s0=$A"

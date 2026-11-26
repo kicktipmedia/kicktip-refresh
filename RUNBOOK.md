@@ -117,6 +117,15 @@ does not pull again: the gate fp equals the build fp. A new snapshot (`lines_fp`
 - Corrupt `espn_lines.json`: `lines_fp.py` prints `none 0`; the merge keeps the previous `market_lines.json` and logs it; never a hard failure.
 - The `lines.py` merge failing is a warning, not a failed run.
 
+**Partial publish (exit 12 on fetch_base):** `publish_base.sh` replaces release assets before it commits `state.json`. If it dies in between, the
+release holds the new live zip while `state.json` still names the previous deploy, and every later run stops at "Fetch base" with
+`base zip sha <new> != state.live_sha <old>` (exit 12, red). Nov 25 9:14 AM MT: run 45650845621 deployed 098a0e90 (sha 7b205984…), uploaded the zip and
+S0, then got HTTP 500 x4 on `s0-inputs.tar.gz`; 19 runs failed until state was repaired. Since then `s0-inputs` uploads after the state push and only warns.
+Recovery (no deploy needed): (1) Cloudflare canonical deployment == the deploy the failed run printed as `LIVE <id> sha <sha>`; (2) the release
+`kicktip-site.zip` sha == that sha; (3) `tools/bytecmp.py` of that zip against apex and www is all-match. Then set `state.json` exactly as publish_base
+would have (live_id, live_sha, rollback_id = the old live_id, as_of, results_fp, completed, lines_fp, lines_epoch from the run's result.json line,
+recorded_at) and land it on main through a PR. The run's `tree/data/store` snapshots for that as-of are lost; the next run rebuilds from the store on main.
+
 **Failed-input hold (no loop on a red suite):** when a Production run is classified **red** and the gate recorded an input
 hash `<results_fp>-<lines_fp>`, the workflow stores that hash in the Actions cache `refresh-hold-*`. The next scheduled run with the SAME inputs stops at the gate
 ("Held: …" in the summary) instead of rerunning the 15-min models. New results or new spreads give a new hash: one retry. `force=true` overrides.

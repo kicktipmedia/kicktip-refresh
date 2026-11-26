@@ -26,7 +26,8 @@ OLD=$(python3 -c "import json;print(json.load(open('state.json'))['live_id'])")
 ghr gh release upload base $TMP/kicktip-site.zip --clobber
 if [ -n "$S0" ]; then A=$(python3 -c "import json;print(json.load(open('state.json')).get('s0_asset','s0-site.tar.gz'))"); tar czf "$TMP/$A" -C "$S0" .; ghr gh release upload base "$TMP/$A" --clobber; fi
 # pipeline inputs/outputs of this as-of, so tools/rebuild_s0.sh can re-render S0 with new templates (feature ships)
-if [ -n "$S0IN" ]; then tar czf $TMP/s0-inputs.tar.gz --exclude=data/store/forecast_log.jsonl --exclude=data/store/snapshots-archive -C "$S0IN" data/store data/out data/cache/scoreboard; ghr gh release upload base $TMP/s0-inputs.tar.gz --clobber; fi
+# The tarball is made here (before the commit and pull); its upload waits until state.json is pushed (end of script).
+if [ -n "$S0IN" ]; then tar czf $TMP/s0-inputs.tar.gz --exclude=data/store/forecast_log.jsonl --exclude=data/store/snapshots-archive -C "$S0IN" data/store data/out data/cache/scoreboard; fi
 python3 - "$ID" "$SHA" "$OLD" "$ASOF" "$FP" "$DONE" "$LFP" "$LEP" <<'P'
 import json,sys,datetime
 i,sha,old,asof,fp,done,lfp,lep=sys.argv[1:9]; s=json.load(open('state.json'))
@@ -46,3 +47,11 @@ git -c user.name="kicktipmedia" -c user.email="kicktipmedia@users.noreply.github
 OK=0; for i in 1 2 3 4 5; do git pull -q --rebase --autostash && git push -q && { OK=1; break; }; sleep $(( 10 * i )); done
 [ $OK = 1 ] || { echo "push of state.json failed after 5 tries: live $ID NOT recorded"; exit 4; }
 echo "recorded live $ID sha $SHA"
+# s0-inputs only feeds tools/rebuild_s0.sh (feature ships), and rebuild_s0.sh refuses when its as-of != the live as-of, so a stale
+# copy is safe. It is uploaded only after state.json is pushed, and a failed upload is a warning, not a failed record: on Nov 25
+# (run 45650845621) an HTTP 500 on this upload, after kicktip-site.zip and the S0 site were already replaced, left state.json
+# unrecorded, and every later run stopped at fetch_base (exit 12, release zip sha != state.live_sha) for 19 runs.
+if [ -n "$S0IN" ]; then
+  if ghr gh release upload base $TMP/s0-inputs.tar.gz --clobber; then echo "s0-inputs uploaded (as-of ${ASOF:-unchanged})"
+  else echo "::warning::s0-inputs.tar.gz upload failed; live $ID IS recorded; tools/rebuild_s0.sh will refuse until the next refresh replaces it"; fi
+fi

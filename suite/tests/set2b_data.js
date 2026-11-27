@@ -231,8 +231,9 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
   a = await X.answer("team_compare", { teams: ["utah", "byu"] }); cardOk("fixture no games left: tc utah/byu", a);
   { const by = idx.byu, t0 = a.r.facts.teams[0], t1 = a.r.facts.teams[1], bN = sch[by].remaining.n, bMean = bN ? sch[by].remaining.s / bN : null;
     const show = m => m === null ? "None" : Math.abs(m).toFixed(1);
+    const showP = x => x.mean === null ? (x.fcs > 0 ? "No FBS games left" : "No games left") : Math.abs(x.mean).toFixed(1);   // sos_copy team_compare patch
     ok(t0.games_left === 0 && t0.sched.mean === null && t1.games_left === rec2[by].left && (bMean === null ? t1.sched.mean === null : Math.abs(t1.sched.mean - bMean) < 1e-9), "fixture no games left: Utah 0/None, BYU follows its own remaining schedule", [t0.games_left, t0.sched.mean, t1.games_left, t1.sched.mean, rec2[by].left, bMean]);
-    ok(a.card.text.indexOf("Games left " + t0.games_left + " " + t1.games_left) >= 0 && a.card.text.indexOf("Remaining opponents' average KickTip rating " + show(t0.sched.mean) + " " + show(t1.sched.mean)) >= 0, "fixture no games left: tc games-left row matches those facts", a.card && a.card.text.slice(500, 900));
+    ok(a.card.text.indexOf("Games left " + t0.games_left + " " + t1.games_left) >= 0 && (a.card.text.indexOf("Remaining opponents' average KickTip rating " + show(t0.sched.mean) + " " + show(t1.sched.mean)) >= 0 || a.card.text.indexOf("Remaining opponents' average KickTip rating " + showP(t0.sched) + " " + showP(t1.sched)) >= 0), "fixture no games left: tc games-left row matches those facts (patched 'No games left' or unpatched None)", a.card && a.card.text.slice(500, 900));
   }
   const FC = B.fcs, bbyu = idx.byu;
   // Fixture team: Utah while it still has games left, else the first FBS team that does (after the last regular-season

@@ -32,4 +32,18 @@ with tempfile.TemporaryDirectory(prefix="sos_", dir=os.environ.get("TMPDIR")) as
     os.makedirs(os.path.join(d, "site", "assets", "tb")); g = os.path.join(d, "site", S.REL); open(g, "w", encoding="utf-8").write(live)
     S.patch_site(os.path.join(d, "site")); ck(open(g, encoding="utf-8").read() == p1, "patch_site writes the patched file")
     S.patch_site(os.path.join(d, "site")); ck(open(g, encoding="utf-8").read() == p1, "patch_site twice: same bytes")
+# team_compare.js
+tc = open(os.path.join(HERE, "fixtures", "team_compare_live_c58f2e5f.js"), encoding="utf-8").read()
+t1, te = S.patch_tc(tc)
+ck(te is None and t1 != tc and S.TC_MARK in t1 and t1.count("sos_copy:") == 1, "team_compare patches (copy + sched row)")
+ck('"sched.mean", T[0].sched.mean, T[1].sched.mean, COPY.cNone, COPY.cNone' not in t1, "team_compare sched row no longer falls back to cNone")
+ck(S.patch_tc(t1) == (t1, None), "team_compare idempotent")
+ck(S.patch_text(S.TC_REL, tc) == t1, "patch_text routes team_compare.js")
+moved = tc.replace(S.TC_ROW_OLD, S.TC_ROW_OLD.replace("COPY.cNone, COPY.cNone", "COPY.cNone,COPY.cNone"))
+ck(S.patch_tc(moved)[0] == moved and S.patch_tc(moved)[1] is not None, "team_compare moved anchor: left as is, error reported")
+tcnew = re.findall(r'^    c\w+: "([^"]*)",$', S.TC_COPY_NEW, re.M)[1:]
+ck(tcnew == ["No games left", "No FBS games left"] and not any(re.search(BANNED, c, re.I) or re.search(r"\d", c) for c in tcnew), "team_compare new copy: %s" % tcnew)
+with tempfile.TemporaryDirectory(prefix="sos_", dir=os.environ.get("TMPDIR")) as d:
+    f = os.path.join(d, "t.js"); open(f, "w", encoding="utf-8").write(t1)
+    ck(subprocess.run(["node", "--check", f]).returncode == 0, "patched team_compare parses (node --check)")
 print("%d checks, %d failed" % (n, bad)); sys.exit(1 if bad else 0)

@@ -255,7 +255,7 @@ def build_once(tmp, a, network):
                     continue
             except Exception as e:
                 print('WARNING polls: CFP display allow check failed (%s)' % e)
-        if rel == 'assets/tb/schedule_strength.js':
+        if rel in ('assets/tb/schedule_strength.js', 'assets/tb/team_compare.js'):
             try:
                 import sos_copy
                 base_t = open(base + '/' + rel, encoding='utf-8').read()

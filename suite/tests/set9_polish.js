@@ -47,7 +47,7 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
   // After the last scheduled game (Army-Navy, Dec 12) sim-bundle.games is empty: the slate tool then refuses cleanly (no_data) and
   // there is no week to classify. That is a legitimate end-of-season state and must not block publish.
   const NOGAMES = !(T.raw("sim-bundle").games || []).length;
-  if (NOGAMES) { const a = await T.answer("slate_this_week", { view: "all", day: "saturday" }); ck(a.r && a.r.ok === false && !!a.r.reason, "no games left anywhere: slate refuses cleanly (" + (a.r && a.r.reason) + ")"); }
+  if (NOGAMES) { const a = await T.answer("slate_this_week", { view: "all", day: "saturday" }); ck(a.r && a.r.ok === false && a.r.reason === "no_data", "no games left anywhere: slate refuses cleanly with no_data (" + (a.r && a.r.reason) + ")"); }
   for (const day of (NOGAMES ? [] : DAYS)) {
     const all = await T.answer("slate_this_week", { view: "all", day });
     const big = await T.answer("slate_this_week", { view: "biggest", day });

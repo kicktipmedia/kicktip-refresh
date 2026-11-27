@@ -78,6 +78,7 @@ print('sums',s,'teams',len(T)); sys.exit(0 if ok else 1)
 P
 $TOOLS/suite_subset.sh $RD/deploy $RD/suite > $RD/suite.txt 2>&1; cat $RD/suite.txt
 grep -q "SUITE_DONE fail=0" $RD/suite.txt || fail 17 "suite subset failed: $(grep -v 'rc=0' $RD/suite.txt | head -n 3 | tr '\n' ' ')"
+grep -E '^WARN ' $RD/suite.txt | while IFS= read -r w; do say "WARNING (does not block publish) $w"; echo "::warning title=KickTip warn-only check::$w"; done || true   # warn-only checks (sos_none_warn): visible, never fail
 say "build OK sha $NEW_SHA as_of $ASOF ($(python3 -c "import json;print(len(json.load(open('$RD/report.json')).get('changed',{})))") files changed)"
 if [ $NODEPLOY = 1 ]; then
   C=$(curl -s -m 30 -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN:-}" https://api.cloudflare.com/client/v4/accounts/$ACCT/pages/projects/$PROJ | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['canonical_deployment']['id'])" 2>/dev/null)

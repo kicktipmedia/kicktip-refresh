@@ -35,7 +35,8 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
   const rk = (a) => (a.r.facts.rows || []).filter(x => x.rank !== null).map(x => x.id || x.team || x.name);
   const ur = (a) => (a.r.facts.rows || []).filter(x => x.rank === null).map(x => x.id || x.team || x.name);
   const t1 = nm(tough), e1 = nm(easy), tr = rk(tough), er = rk(easy), tu = ur(tough), eu = ur(easy);
-  ck(t1.length > 3 && t1.length === e1.length && JSON.stringify(tr.slice().reverse()) === JSON.stringify(er) && JSON.stringify(tu) === JSON.stringify(eu) && JSON.stringify(e1) === JSON.stringify(er.concat(eu)), "easiest reverses the ranked rows of toughest; finished teams stay last (" + t1.length + " teams, " + tr.length + " ranked)");
+  ck(t1.length > 3 && t1.length === e1.length && JSON.stringify(tr.slice().reverse()) === JSON.stringify(er) && JSON.stringify(tu) === JSON.stringify(eu) && JSON.stringify(e1) === JSON.stringify(er.concat(eu)) && JSON.stringify(t1) === JSON.stringify(tr.concat(tu)), "easiest reverses the ranked rows of toughest; finished teams stay last (" + t1.length + " teams, " + tr.length + " ranked)");
+  // 4b (no raw "None" in SOS cards) is warn-only: suite/tests/sos_none_warn.js, run by tools/suite_subset.sh outside the gate.
   { const m = await T.match("Easiest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && m.params.order === "easiest" && m.params.conference === "big12", "match carries order=easiest for a conference: " + JSON.stringify(m && m.params)); }
   { const m = await T.match("Toughest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && !m.params.order, "toughest has no order param (default)"); }
   // 5. empty days vs days that still have games. The current week is whatever is still in sim-bundle.games
@@ -43,7 +44,11 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
   // game and some weeks have no Tuesday left. Classify each weekday from the card's own facts.
   const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   let emptyDays = 0, busyDays = 0;
-  for (const day of DAYS) {
+  // After the last scheduled game (Army-Navy, Dec 12) sim-bundle.games is empty: the slate tool then refuses cleanly (no_data) and
+  // there is no week to classify. That is a legitimate end-of-season state and must not block publish.
+  const NOGAMES = !(T.raw("sim-bundle").games || []).length;
+  if (NOGAMES) { const a = await T.answer("slate_this_week", { view: "all", day: "saturday" }); ck(a.r && a.r.ok === false && !!a.r.reason, "no games left anywhere: slate refuses cleanly (" + (a.r && a.r.reason) + ")"); }
+  for (const day of (NOGAMES ? [] : DAYS)) {
     const all = await T.answer("slate_this_week", { view: "all", day });
     const big = await T.answer("slate_this_week", { view: "biggest", day });
     if (!all.card || !big.card || !all.r || !all.r.facts || !big.r || !big.r.facts) { ck(false, "slate " + day + " no card"); continue; }
@@ -59,8 +64,8 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
       else ck(/Biggest games/.test(big.card.text) && !/No games on that day this week/.test(big.card.text), "biggest " + day + " lists games that move chances");
     }
   }
-  ck(emptyDays + busyDays === DAYS.length, "every weekday classified from the current week's remaining games (" + emptyDays + " empty, " + busyDays + " with games)");
+  if (!NOGAMES) ck(emptyDays + busyDays === DAYS.length, "every weekday classified from the current week's remaining games (" + emptyDays + " empty, " + busyDays + " with games)");
   // 6. TBD
-  for (const [id, p] of [["team_schedule", { team: "utah", view: "remaining" }], ["team_schedule", { team: "byu", view: "both" }], ["head_to_head", { teams: ["utah", "byu"] }], ["team_compare", { teams: ["texas", "lsu"], aspect: "all" }], ["slate_this_week", { view: "all" }]]) { const a = await T.answer(id, p); if (!a.card) { ck(false, id + " no card"); continue; } ck(!/\bTBA\b/.test(a.card.text), id + " " + JSON.stringify(p) + " has no TBA" + (/time TBD/.test(a.card.text) ? " (shows time TBD)" : "")); }
+  for (const [id, p] of [["team_schedule", { team: "utah", view: "remaining" }], ["team_schedule", { team: "byu", view: "both" }], ["head_to_head", { teams: ["utah", "byu"] }], ["team_compare", { teams: ["texas", "lsu"], aspect: "all" }], ["slate_this_week", { view: "all" }]].filter(([id]) => !(NOGAMES && id === "slate_this_week"))) { const a = await T.answer(id, p); if (!a.card) { ck(false, id + " no card"); continue; } ck(!/\bTBA\b/.test(a.card.text), id + " " + JSON.stringify(p) + " has no TBA" + (/time TBD/.test(a.card.text) ? " (shows time TBD)" : "")); }
   console.log(n + " checks, " + bad + " failed"); process.exit(bad ? 1 : 0);
 })();

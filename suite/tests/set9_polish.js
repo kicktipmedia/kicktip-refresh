@@ -30,7 +30,12 @@ const L19 = ["conf_race_alive", "conf_standings", "games_that_matter", "path_com
   ck(tough.card && easy.card && tough.card.text !== easy.card.text, "conference easiest differs from toughest");
   const rowsOf = (a) => a.r.facts ? (a.r.facts.rows || a.r.facts.list || []) : [];
   const nm = (a) => (a.r.facts.rows || []).map(x => x.id || x.team || x.name);
-  const t1 = nm(tough), e1 = nm(easy); ck(t1.length > 3 && JSON.stringify(t1.slice().reverse()) === JSON.stringify(e1), "easiest is the exact reverse order of toughest (" + t1.length + " teams)");
+  // Teams with no games left have rank null and stay last (by slug) in BOTH orders, so only the ranked rows reverse.
+  // Late in the season more conference teams finish (Thanksgiving, then Saturday), so do not assume every row is ranked.
+  const rk = (a) => (a.r.facts.rows || []).filter(x => x.rank !== null).map(x => x.id || x.team || x.name);
+  const ur = (a) => (a.r.facts.rows || []).filter(x => x.rank === null).map(x => x.id || x.team || x.name);
+  const t1 = nm(tough), e1 = nm(easy), tr = rk(tough), er = rk(easy), tu = ur(tough), eu = ur(easy);
+  ck(t1.length > 3 && t1.length === e1.length && JSON.stringify(tr.slice().reverse()) === JSON.stringify(er) && JSON.stringify(tu) === JSON.stringify(eu) && JSON.stringify(e1) === JSON.stringify(er.concat(eu)), "easiest reverses the ranked rows of toughest; finished teams stay last (" + t1.length + " teams, " + tr.length + " ranked)");
   { const m = await T.match("Easiest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && m.params.order === "easiest" && m.params.conference === "big12", "match carries order=easiest for a conference: " + JSON.stringify(m && m.params)); }
   { const m = await T.match("Toughest schedule left in the Big 12", { dark: true }); ck(m && m.tool === "schedule_strength" && !m.params.order, "toughest has no order param (default)"); }
   // 5. empty days vs days that still have games. The current week is whatever is still in sim-bundle.games

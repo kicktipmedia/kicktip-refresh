@@ -78,7 +78,9 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
     ok(f.rows.length === confs[c].length, "ss conf " + c + " " + view + " row count = members", [f.rows.length, confs[c].length]);
     ok(f.rows.every((r, i, l) => (r.rank === null ? 1e9 : r.rank) >= (i ? (l[i - 1].rank === null ? 1e9 : l[i - 1].rank) : 0)), "ss conf " + c + " sorted toughest first");
     ok(f.rows.every(r => { const t = idx[r.slug]; return r.games === sch[t][view].n && (r.rank === null ? sch[t][view].n === 0 : r.rank === rk[view][t] && Math.abs(r.mean - sch[t][view].s / sch[t][view].n) < 1e-9); }), "ss conf " + c + " " + view + " rows equal recomputation");
-    ok(a.card.text.indexOf(fm(f.rows.filter(r => r.mean !== null)[0].mean)) >= 0, "ss conf " + c + " card prints the toughest mean");
+    { const withMean = f.rows.filter(r => r.mean !== null && r.mean !== undefined);   // after the last regular-season Saturday a whole conference can have no games left
+      if (withMean.length) ok(a.card.text.indexOf(fm(withMean[0].mean)) >= 0, "ss conf " + c + " card prints the toughest mean");
+      else ok(view === "remaining" && f.rows.every(r => r.rank === null && r.games === 0), "ss conf " + c + " " + view + " has no mean only when no member has a game left", f.rows.map(r => [r.slug, r.games, r.rank])); }
     if (c === "ind") ok(/Independent teams are listed together/.test(a.card.text), "ss independents note");
   }
   /* national lists */
@@ -230,10 +232,16 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
     ok(a.card.text.indexOf("Games left " + t0.games_left + " " + t1.games_left) >= 0 && a.card.text.indexOf("Remaining opponents' average KickTip rating " + show(t0.sched.mean) + " " + show(t1.sched.mean)) >= 0, "fixture no games left: tc games-left row matches those facts", a.card && a.card.text.slice(500, 900));
   }
   const FC = B.fcs, bbyu = idx.byu;
-  X = mk((n, d) => { if (n === "sim-bundle") { d.games.forEach(g => { if (g.h === U) g.a = FC; else if (g.a === U) g.h = FC; }); } });
-  const NU = B.games.filter(g => g.h === U || g.a === U).length;   // Utah games left in the data (was a fixed 5; 4 after Oct 31)
-  a = await X.answer("schedule_strength", { team: "utah", view: "remaining" }); cardOk("fixture FCS-only games left: ss utah", a);
-  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.fcs === NU && /No FBS games left\./.test(a.card.text) && new RegExp("FCS games left, not counted \\(" + NU + "\\)\\.").test(a.card.text), "fixture FCS-only games left: notes", a.card && a.card.text.slice(0, 500));
+  // Fixture team: Utah while it still has games left, else the first FBS team that does (after the last regular-season
+  // Saturday only championship and service-academy games remain). With no FBS games left at all the fixture has nothing to convert.
+  const leftOf = t => B.games.filter(g => (g.h === t || g.a === t) && g.h !== FC && g.a !== FC).length;
+  const FU = leftOf(U) ? U : (fbs.find(t => leftOf(t) > 0) ?? -1), FUS = FU >= 0 ? B.teams[FU].g : null;
+  if (FU >= 0) {
+  X = mk((n, d) => { if (n === "sim-bundle") { d.games.forEach(g => { if (g.h === FU) g.a = FC; else if (g.a === FU) g.h = FC; }); } });
+  const NU = B.games.filter(g => g.h === FU || g.a === FU).length;   // fixture team's games left in the data (was a fixed 5 for Utah; 4 after Oct 31)
+  a = await X.answer("schedule_strength", { team: FUS, view: "remaining" }); cardOk("fixture FCS-only games left: ss " + FUS, a);
+  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.fcs === NU && /No FBS games left\./.test(a.card.text) && new RegExp("FCS games left, not counted \\(" + NU + "\\)\\.").test(a.card.text), "fixture FCS-only games left: notes (" + FUS + ")", a.card && a.card.text.slice(0, 500));
+  } else console.log("fixture FCS-only games left: skipped, no FBS team has a game left");
   X = mk((n, d) => { if (n === "sim-bundle") d.played = d.played.filter(g => g[0] !== U && g[1] !== U); });
   a = await X.answer("schedule_strength", { team: "utah", view: "played" }); cardOk("fixture no games played: ss utah", a); ok(/No games played\./.test(a.card.text), "fixture no games played: note", a.card && a.card.text.slice(0, 400));
   a = await X.answer("quality_wins", { team: "utah", view: "both" }); cardOk("fixture no games played: qw utah", a); ok(/No wins over FBS teams yet\./.test(a.card.text) && /No losses yet\./.test(a.card.text), "fixture no games played: qw empty texts", a.card && a.card.text.slice(0, 500));

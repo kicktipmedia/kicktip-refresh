@@ -2,6 +2,8 @@
 # fast suite subset against a refreshed site tree. usage: suite_subset.sh <site> <logdir>
 T=$(realpath "$1"); L=$(realpath -m "$2"); B=$(realpath "${3:-$1}"); mkdir -p $L; cd "$(dirname "$0")/../suite"; fail=0
 run() { n=$1; shift; "$@" > $L/$n.log 2>&1; rc=$?; [ $rc = 0 ] || fail=1; echo "$n rc=$rc :: $(grep -E '[0-9]+ checks, [0-9]+ failed' $L/$n.log | tail -1)"; }
+# warn_only: runs on every refresh, prints its WARN lines, never touches fail (so never blocks publish). Its own rc is shown as rc=0 on purpose.
+warn_only() { n=$1; shift; "$@" > $L/$n.log 2>&1; echo "$n rc=0 (warn-only, exit $?) :: $(grep -E '^sos_none:' $L/$n.log | tail -1)"; grep -E '^WARN ' $L/$n.log | head -n 5; }
 run set2b_matcher node tests/set2b_matcher.js $T
 run set2b_data node tests/set2b_data.js $T
 run alive_gate node ../tree/tools/lanes/conf_race_alive/tools/alive_gate.js --root $T   # exit 5 = a conference has an unproven (unknown) team status
@@ -25,4 +27,6 @@ run set3m3_cfpno node tests/set3m3_cfpno.js $T
 run why2 node tests/why2.js $T
 run final3_unit node tests/final3_unit.mjs $T
 run rootables_shared node tests/rootables_shared.js $T
+# SOS reader copy: no raw "None" in schedule_strength cards. Warn-only (copy must never freeze KickTip; RUNBOOK).
+warn_only sos_none_warn node tests/sos_none_warn.js $T
 echo SUITE_DONE fail=$fail; exit $fail

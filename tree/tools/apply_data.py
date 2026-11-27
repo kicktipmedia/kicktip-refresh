@@ -256,11 +256,14 @@ def build_once(tmp, a, network):
             except Exception as e:
                 print('WARNING polls: CFP display allow check failed (%s)' % e)
         if rel == 'assets/tb/schedule_strength.js':
-            import sos_copy
-            base_t = open(base + '/' + rel, encoding='utf-8').read()
-            if TOK.sub('?v=0', open(of[rel], encoding='utf-8').read()) == TOK.sub('?v=0', sos_copy.patch_text(rel, base_t)):
-                changed[rel] = 'sos copy'
-                continue
+            try:
+                import sos_copy
+                base_t = open(base + '/' + rel, encoding='utf-8').read()
+                if TOK.sub('?v=0', open(of[rel], encoding='utf-8').read()) == TOK.sub('?v=0', sos_copy.patch_text(rel, base_t)):
+                    changed[rel] = 'sos copy'
+                    continue
+            except Exception as e:
+                print('WARNING sos copy: allow check failed (%s)' % e)
         if rel.endswith('.html'): changed[rel] = 'html: data/stamps/tokens'
         elif rel.startswith('data/'): changed[rel] = 'data'
         elif OGC and OGRE.match(rel): changed[rel] = 'og card'

@@ -79,7 +79,8 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
     ok(f.rows.every((r, i, l) => (r.rank === null ? 1e9 : r.rank) >= (i ? (l[i - 1].rank === null ? 1e9 : l[i - 1].rank) : 0)), "ss conf " + c + " sorted toughest first");
     ok(f.rows.every(r => { const t = idx[r.slug]; return r.games === sch[t][view].n && (r.rank === null ? sch[t][view].n === 0 : r.rank === rk[view][t] && Math.abs(r.mean - sch[t][view].s / sch[t][view].n) < 1e-9); }), "ss conf " + c + " " + view + " rows equal recomputation");
     { const withMean = f.rows.filter(r => r.mean !== null && r.mean !== undefined);   // after the last regular-season Saturday a whole conference can have no games left
-      if (withMean.length) ok(a.card.text.indexOf(fm(withMean[0].mean)) >= 0, "ss conf " + c + " card prints the toughest mean");
+      if (withMean.length) { const i0 = f.rows.indexOf(withMean[0]), pm = a.card.parts.find(p => p.where === "row" + i0 + "c2" && p.val === "mean");
+        ok(!!pm && pm.text === fm(withMean[0].mean), "ss conf " + c + " " + view + " card prints the toughest mean in its own cell", [pm && pm.text, fm(withMean[0].mean)]); }
       else ok(view === "remaining" && f.rows.every(r => r.rank === null && r.games === 0), "ss conf " + c + " " + view + " has no mean only when no member has a game left", f.rows.map(r => [r.slug, r.games, r.rank])); }
     if (c === "ind") ok(/Independent teams are listed together/.test(a.card.text), "ss independents note");
   }
@@ -211,7 +212,7 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
   const U = idx.utah;
   X = mk((n, d) => { if (n === "sim-bundle") d.games = d.games.filter(g => g.h !== U && g.a !== U); });
   let a = await X.answer("schedule_strength", { team: "utah", view: "both" }); cardOk("fixture no games left: ss utah", a);
-  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.mean === null && a.r.facts.remaining.rank === null && /No games left\./.test(a.card.text) && /Opponents left \(0 FBS games\) None None/.test(a.card.text), "fixture no games left: ss utah card text", a.card && a.card.text.slice(0, 400));
+  ok(a.r.facts.remaining.games === 0 && a.r.facts.remaining.mean === null && a.r.facts.remaining.rank === null && /No games left\./.test(a.card.text) && /Opponents left No games left/.test(a.card.text) && !/\bNone\b/.test(a.card.text), "fixture no games left: ss utah card text", a.card && a.card.text.slice(0, 400));
   a = await X.answer("schedule_strength", { conference: "big12", view: "remaining" }); cardOk("fixture no games left: ss big12", a);
   { /* Utah's remaining games are removed in this fixture. Other Big 12 teams keep theirs, so Utah is last only while it is the only team with no FBS games left. Order is the tool's: national rank (null last), then slug. */
     const Bm = JSON.parse(JSON.stringify(B)); Bm.games = Bm.games.filter(g => g.h !== U && g.a !== U);
@@ -223,7 +224,7 @@ const sl = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
     const expect = ranked.concat(none).map(t => B.teams[t].g), got = a.r.facts.rows.map(r => r.slug);
     const urow = a.r.facts.rows.find(r => r.slug === "utah");
     ok(!!urow && urow.games === 0 && urow.mean === null && urow.rank === null && JSON.stringify(got) === JSON.stringify(expect), "fixture no games left: Utah is a None row, placed by rank then slug", [got, expect]);
-    ok(/Utah 0 None None/.test(a.card.text), "fixture no games left: Utah row text is 0 / None / None", a.card && a.card.text.slice(0, 300));
+    ok(/Utah No games left/.test(a.card.text) && !/\bNone\b/.test(a.card.text), "fixture no games left: Utah row text is 'No games left' (no None, no 0)", a.card && a.card.text.slice(0, 300));
   }
   a = await X.answer("team_compare", { teams: ["utah", "byu"] }); cardOk("fixture no games left: tc utah/byu", a);
   { const by = idx.byu, t0 = a.r.facts.teams[0], t1 = a.r.facts.teams[1], bN = sch[by].remaining.n, bMean = bN ? sch[by].remaining.s / bN : null;

@@ -217,6 +217,12 @@ def build_once(tmp, a, network):
         cfp_refresh.patch_site(out)
     except Exception as e:
         print('WARNING polls: CFP display patch failed (%s)' % e)
+    # SOS reader copy: schedule_strength.js ships in the live zip only, so empty-schedule rows are fixed by a deterministic patch (tree/src/sos_copy.py).
+    try:
+        import sos_copy
+        sos_copy.patch_site(out)
+    except Exception as e:
+        print('WARNING sos copy: patch failed (%s)' % e)
     # 5b. nojs1: bake default-model numbers + exact 'Updated' stamps into static HTML from the regenerated data (after step 5 so every data-asof is already new), then verify nothing is stale
     if BAKE:
         run(['node', HERE + '/bake_static.js', out, '--check'], env, 'bake-static')
@@ -249,6 +255,12 @@ def build_once(tmp, a, network):
                     continue
             except Exception as e:
                 print('WARNING polls: CFP display allow check failed (%s)' % e)
+        if rel == 'assets/tb/schedule_strength.js':
+            import sos_copy
+            base_t = open(base + '/' + rel, encoding='utf-8').read()
+            if TOK.sub('?v=0', open(of[rel], encoding='utf-8').read()) == TOK.sub('?v=0', sos_copy.patch_text(rel, base_t)):
+                changed[rel] = 'sos copy'
+                continue
         if rel.endswith('.html'): changed[rel] = 'html: data/stamps/tokens'
         elif rel.startswith('data/'): changed[rel] = 'data'
         elif OGC and OGRE.match(rel): changed[rel] = 'og card'
